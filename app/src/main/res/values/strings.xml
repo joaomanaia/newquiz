@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NewQuiz</string>
+
+    <!-- Facebook -->
+    <string name="facebook_application_id" translatable="false">2647446435546006</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb2647446435546006</string>
+</resources>
