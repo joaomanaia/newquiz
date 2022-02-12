@@ -16,21 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
-import coil.transform.CircleCropTransformation
-import com.infinitepower.newquiz.compose.core.navigation.Screen
 import com.infinitepower.newquiz.compose.data.remote.auth.user.AuthUserApi
 
 @Composable
-fun AuthUserMainScreen(
-    navController: NavHostController,
+fun HomeUserContent(
+    goToLoginScreen: () -> Unit,
     authUserApi: AuthUserApi
 ) {
     val isSignedIn = authUserApi.isSignedIn
@@ -45,9 +38,7 @@ fun AuthUserMainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            onSignInClick = {
-                navController.navigate(Screen.LoginScreen.route)
-            }
+            onSignInClick = goToLoginScreen
         )
     }
 }

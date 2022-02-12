@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -18,26 +17,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.compose.model.quiz.QuizStep
-import com.infinitepower.newquiz.compose.model.quiz.getBasicQuestion
+import com.infinitepower.newquiz.compose.data.local.question.QuestionStep
+import com.infinitepower.newquiz.compose.data.local.question.getBasicQuestion
 import com.infinitepower.newquiz.compose.ui.theme.NewQuizTheme
 
 @Composable
 @OptIn(ExperimentalAnimationApi::class)
 fun QuizStepView(
-    quizStep: QuizStep,
-    position: Int
+    questionStep: QuestionStep,
+    position: Int,
 ) {
     val stepBackgroundColor by animateColorAsState(
-        targetValue = if (quizStep.current) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
+        targetValue = if (questionStep is QuestionStep.Current) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
     )
 
     val stepTextColor by animateColorAsState(
-        targetValue = if (quizStep.current) MaterialTheme.colorScheme.inverseOnSurface else LocalTextStyle.current.color
+        targetValue = if (questionStep is QuestionStep.Current) MaterialTheme.colorScheme.inverseOnSurface else LocalTextStyle.current.color
     )
 
     Surface(
@@ -51,19 +49,20 @@ fun QuizStepView(
             modifier = Modifier.fillMaxSize()
         ) {
             AnimatedVisibility(
-                visible = quizStep.completed,
+                visible = questionStep is QuestionStep.Completed,
                 enter = scaleIn(),
                 exit = scaleOut()
             ) {
+                val correct = questionStep is QuestionStep.Completed && questionStep.correct
                 Icon(
-                    imageVector = if (quizStep.correct) Icons.Rounded.Check else Icons.Rounded.Close,
-                    contentDescription = "Question $position ${if (quizStep.correct) "correct" else "wrong"}",
+                    imageVector = if (correct) Icons.Rounded.Check else Icons.Rounded.Close,
+                    contentDescription = "Question $position ${if (correct) "correct" else "wrong"}",
                     Modifier.size(25.dp),
                 )
             }
 
             AnimatedVisibility(
-                visible = !quizStep.completed,
+                visible = questionStep !is QuestionStep.Completed,
                 enter = scaleIn(),
                 exit = scaleOut()
             ) {
@@ -90,30 +89,16 @@ fun QuizStepView(
 )
 private fun AllStepsPreview() {
     val items = listOf(
-        QuizStep(
+        QuestionStep.Completed(
             question = getBasicQuestion(),
-            current = false,
-            completed = true,
             correct = true
         ),
-        QuizStep(
+        QuestionStep.Completed(
             question = getBasicQuestion(),
-            current = false,
-            completed = true,
             correct = false
         ),
-        QuizStep(
-            question = getBasicQuestion(),
-            current = false,
-            completed = false,
-            correct = false
-        ),
-        QuizStep(
-            question = getBasicQuestion(),
-            current = true,
-            completed = false,
-            correct = false
-        ),
+        QuestionStep.Current(question = getBasicQuestion()),
+        QuestionStep.NotCurrent(question = getBasicQuestion()),
     )
 
     NewQuizTheme {
@@ -122,9 +107,9 @@ private fun AllStepsPreview() {
         ) {
             itemsIndexed(
                 items = items,
-                key = { index, step -> index }
-            ) { index, step ->
-                QuizStepView(quizStep = step, position = (1..9).random())
+                key = { index, _ -> index }
+            ) { _, step ->
+                QuizStepView(questionStep = step, position = (1..9).random())
             }
         }
     }

@@ -1,8 +1,8 @@
 package com.infinitepower.newquiz.compose.data.repository.question
 
-import com.infinitepower.newquiz.compose.data.remote.opentdb.NewQuizApi
-import com.infinitepower.newquiz.compose.model.quiz.Question
-import com.infinitepower.newquiz.quiz.question.QuestionLanguage
+import com.infinitepower.newquiz.compose.data.local.question.Question
+import com.infinitepower.newquiz.compose.data.local.quiz.QuestionLanguage
+import com.infinitepower.newquiz.compose.data.remote.newquizapi.NewQuizApi
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList

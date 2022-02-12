@@ -17,9 +17,17 @@ import androidx.compose.ui.unit.dp
 internal fun CardQuestion(
     description: String,
     selected: Boolean,
+    isResults: Boolean = false,
+    resultAnswerCorrect: Boolean = false,
     onClick: () -> Unit
 ) {
-    val color = animateColorAsState(targetValue = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface)
+    val color = animateColorAsState(
+        targetValue = when {
+            selected -> MaterialTheme.colorScheme.primary
+            isResults && resultAnswerCorrect -> MaterialTheme.colorScheme.tertiary
+            else -> MaterialTheme.colorScheme.surface
+        }
+    )
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
