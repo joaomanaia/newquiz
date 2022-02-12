@@ -9,7 +9,7 @@ object AppConfig {
 
 object Plugins {
     object Gradle {
-        const val VERSION = "7.2.0-alpha03"
+        const val VERSION = "7.3.0-alpha02"
 
         const val APPLICATION = "com.android.application"
         const val LIBRARY = "com.android.library"
@@ -26,18 +26,6 @@ object Plugins {
         const val VERSION = "4.3.5"
 
         const val GOOGLE_SERVICES = "com.google.gms.google.services"
-    }
-
-    object Compose {
-        private const val VERSION = "1.1.0-rc1"
-    }
-
-    object Coroutines {
-        private const val VERSION = "1.6.0"
-    }
-
-    object Accompanist {
-        private const val VERSION = "0.21.2-beta"
     }
 }
 

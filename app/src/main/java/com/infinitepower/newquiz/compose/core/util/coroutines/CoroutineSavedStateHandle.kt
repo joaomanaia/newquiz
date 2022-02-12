@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 fun <T> SavedStateHandle.getStateFlow(
     key: String,
     scope: CoroutineScope,
-    initialValue: T? = get(key)
+    initialValue: T? = get(key),
 ): MutableStateFlow<T?> = this.let { handle ->
     val liveData = handle.getLiveData<T?>(key, initialValue).also { liveData ->
         if (liveData.value === initialValue) {

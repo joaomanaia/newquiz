@@ -23,31 +23,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
-import com.infinitepower.newquiz.compose.model.quiz.Question
-import com.infinitepower.newquiz.compose.model.quiz.QuizStep
-import com.infinitepower.newquiz.compose.model.quiz.getBasicQuestion
+import com.infinitepower.newquiz.compose.core.common.UiEvent
+import com.infinitepower.newquiz.compose.data.local.question.Question
+import com.infinitepower.newquiz.compose.data.local.question.QuestionStep
+import com.infinitepower.newquiz.compose.data.local.question.QuestionStep.Companion.questionId
+import com.infinitepower.newquiz.compose.data.local.question.getBasicQuestion
 import com.infinitepower.newquiz.compose.ui.RoundCircularProgressIndicator
+import com.infinitepower.newquiz.compose.ui.destinations.QuizScreenDestination
 import com.infinitepower.newquiz.compose.ui.quiz.components.CardQuestion
 import com.infinitepower.newquiz.compose.ui.quiz.components.QuizStepView
 import com.infinitepower.newquiz.compose.ui.theme.NewQuizTheme
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.serialization.encodeToString
 
 private const val QUIZ_AD_UNIT_ID = "ca-app-pub-1923025671607389/6337508872"
 
 @Composable
+@Destination
 @OptIn(ExperimentalMaterial3Api::class)
 fun QuizScreen(
-    navController: NavController,
-    quizViewModel: QuizViewModel = hiltViewModel()
+    navigator: DestinationsNavigator,
+    quizOptions: QuizOption,
+    defaultQuestionsString: String = "[]"
 ) {
+    val quizViewModel: QuizViewModel = hiltViewModel()
+
+    LaunchedEffect(key1 = true) {
+        quizViewModel.onEvent(QuizScreenEvent.UpdateDataAndStartQuiz(quizOptions, defaultQuestionsString))
+    }
+
     val questions = quizViewModel.questions.collectAsState(initial = emptyList())
     val currentQuestion = quizViewModel.currentQuestion.collectAsState()
     val questionPosition = quizViewModel.questionPosition.collectAsState()
     val selectedPosition = quizViewModel.selectedPosition.collectAsState()
-    val quizSteps = quizViewModel.quizSteps.collectAsState()
+    val quizSteps = quizViewModel.questionSteps.collectAsState()
 
     val progress = quizViewModel.remainingTime.collectAsState(initial = 0)
     val animatedProgressText by animateIntAsState(targetValue = progress.value.toInt())
@@ -57,6 +70,21 @@ fun QuizScreen(
     )
 
     val configuration = LocalConfiguration.current
+
+    LaunchedEffect(key1 = true) {
+        quizViewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> navigator.navigate(event.direction) {
+                    launchSingleTop = true
+                    popUpTo(QuizScreenDestination.route) {
+                        inclusive = true
+                    }
+                }
+                is UiEvent.PopBackStack -> navigator.popBackStack()
+                else -> Unit
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -83,11 +111,7 @@ fun QuizScreen(
                         modifier = Modifier.fillMaxHeight(),
                         contentAlignment = Alignment.Center
                     ) {
-                        IconButton(
-                            onClick = {
-                                navController.popBackStack()
-                            }
-                        ) {
+                        IconButton(onClick = { navigator.popBackStack() }) {
                             Icon(
                                 imageVector = Icons.Rounded.ArrowBack,
                                 contentDescription = "Back",
@@ -101,28 +125,29 @@ fun QuizScreen(
             )
         }
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) Spacer(modifier = Modifier.height(16.dp))
-            QuizFrontLayer(
-                question = currentQuestion.value,
-                questionsSize = questions.value.size,
-                questionPosition = questionPosition.value,
-                selectedPosition = selectedPosition.value,
-                quizSteps = quizSteps.value,
-                cardQuestionClick = { position ->
-                    quizViewModel.updateSelectedPosition(position)
-                },
-                cardVerifyClick = {
-                    quizViewModel.verifyQuestion()
-                },
-                configuration = configuration
-            )
-            QuizBannerAdView(isInEditMode = true)
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) Spacer(modifier = Modifier.height(16.dp))
+                QuizFrontLayer(
+                    question = currentQuestion.value,
+                    questionsSize = questions.value.size,
+                    questionPosition = questionPosition.value,
+                    selectedPosition = selectedPosition.value,
+                    quizSteps = quizSteps.value,
+                    cardQuestionClick = { position -> quizViewModel.onEvent(QuizScreenEvent.OnOptionClick(position)) },
+                    cardVerifyClick = { quizViewModel.onEvent(QuizScreenEvent.OnVerifyQuestionClick) },
+                    configuration = configuration,
+                    saveQuestionClick = { quizViewModel.onEvent(QuizScreenEvent.OnSaveButtonClick) }
+                )
+                QuizBannerAdView(isInEditMode = true)
+            }
         }
     }
 }
@@ -133,10 +158,11 @@ fun ColumnScope.QuizFrontLayer(
     questionsSize: Int = 0,
     questionPosition: Int = 0,
     selectedPosition: Int,
-    quizSteps: List<QuizStep>,
+    quizSteps: List<QuestionStep>,
     cardQuestionClick: (position: Int) -> Unit,
     cardVerifyClick: () -> Unit,
-    configuration: Configuration
+    configuration: Configuration,
+    saveQuestionClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -145,7 +171,8 @@ fun ColumnScope.QuizFrontLayer(
                 start = 16.dp,
                 end = 16.dp,
                 top = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 16.dp else 0.dp
-            ).fillMaxWidth()
+            )
+            .fillMaxWidth()
     ) {
         when (configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> {
@@ -156,7 +183,8 @@ fun ColumnScope.QuizFrontLayer(
                     selectedPosition = selectedPosition,
                     quizSteps = quizSteps,
                     cardQuestionClick = cardQuestionClick,
-                    cardVerifyClick = cardVerifyClick
+                    cardVerifyClick = cardVerifyClick,
+                    saveQuestionClick = saveQuestionClick
                 )
             }
             else -> {
@@ -167,7 +195,8 @@ fun ColumnScope.QuizFrontLayer(
                     selectedPosition = selectedPosition,
                     quizSteps = quizSteps,
                     cardQuestionClick = cardQuestionClick,
-                    cardVerifyClick = cardVerifyClick
+                    cardVerifyClick = cardVerifyClick,
+                    saveQuestionClick = saveQuestionClick
                 )
             }
         }
@@ -180,20 +209,21 @@ private fun ColumnScope.PortraitQuizScreen(
     questionsSize: Int = 0,
     questionPosition: Int = 0,
     selectedPosition: Int,
-    quizSteps: List<QuizStep>,
+    quizSteps: List<QuestionStep>,
     cardQuestionClick: (position: Int) -> Unit,
     cardVerifyClick: () -> Unit,
+    saveQuestionClick: () -> Unit
 ) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
     ) {
         itemsIndexed(
             items = quizSteps,
-            key = { _, step -> step.question.id }
+            key = { _, step -> step.questionId }
         ) { index, step ->
-            QuizStepView(quizStep = step, position = index + 1)
+            QuizStepView(questionStep = step, position = index + 1)
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
@@ -213,13 +243,16 @@ private fun ColumnScope.PortraitQuizScreen(
                 )
             }
             item { Spacer(modifier = Modifier.height(16.dp)) }
+
             itemsIndexed(
                 items = question?.options.orEmpty(),
                 key = { index, option -> "${index}_$option" }
             ) { index, option ->
                 CardQuestion(
                     description = option,
-                    selected = selectedPosition == index
+                    selected = selectedPosition == index,
+                    isResults = false,
+                    resultAnswerCorrect = question?.correctAns == index
                 ) {
                     cardQuestionClick(index)
                 }
@@ -232,6 +265,12 @@ private fun ColumnScope.PortraitQuizScreen(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    TextButton(
+                        onClick = saveQuestionClick,
+                    ) {
+                        Text(text = "Save")
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
                     Button(
                         onClick = cardVerifyClick,
                         enabled = question != null && question.options.indices.contains(
@@ -252,9 +291,10 @@ private fun LandscapeQuizScreen(
     questionsSize: Int = 0,
     questionPosition: Int = 0,
     selectedPosition: Int,
-    quizSteps: List<QuizStep>,
+    quizSteps: List<QuestionStep>,
     cardQuestionClick: (position: Int) -> Unit,
     cardVerifyClick: () -> Unit,
+    saveQuestionClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxSize()
@@ -273,9 +313,9 @@ private fun LandscapeQuizScreen(
             ) {
                 itemsIndexed(
                     items = quizSteps,
-                    key = { _, step -> step.question.id }
+                    key = { _, step -> step.questionId }
                 ) { index, step ->
-                    QuizStepView(quizStep = step, position = index + 1)
+                    QuizStepView(questionStep = step, position = index + 1)
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -296,6 +336,10 @@ private fun LandscapeQuizScreen(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        TextButton(onClick = saveQuestionClick) {
+                            Text(text = "Save")
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
                         Button(
                             onClick = cardVerifyClick,
                             enabled = question != null && question.options.indices.contains(
@@ -316,7 +360,7 @@ private fun LandscapeQuizScreen(
                 .wrapContentWidth(Alignment.End)
         ) {
             AnimatedVisibility(visible = question != null) {
-                LazyColumn{
+                LazyColumn {
                     itemsIndexed(
                         items = question?.options.orEmpty(),
                         key = { index, option -> "${index}_$option" }
@@ -376,7 +420,7 @@ fun QuizBannerAdView(
 
 @Composable
 @ReadOnlyComposable
-fun BoxWithConstraintsScope.adSizeBox(): AdSize {
+private fun BoxWithConstraintsScope.adSizeBox(): AdSize {
     val width = maxWidth.value.toInt()
     val context = LocalContext.current
     return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, width)
@@ -387,19 +431,86 @@ object QuizScreenTestTags {
 }
 
 @Composable
-@Preview(showBackground = true)
-fun PreviewQuizFrontLayer() {
-    Column {
-        QuizFrontLayer(
-            question = getBasicQuestion(),
-            questionsSize = 5,
-            questionPosition = 2,
-            selectedPosition = 1,
-            quizSteps = emptyList(),
-            cardQuestionClick = {},
-            cardVerifyClick = {},
-            configuration = LocalConfiguration.current
-        )
+@Preview(
+    name = "Portrait Light",
+    group = "Portrait",
+    showBackground = true
+)
+@Preview(
+    name = "Portrait Night",
+    group = "Portrait",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
+fun PreviewQuizFrontLayerPortrait() {
+    val question = getBasicQuestion()
+
+    NewQuizTheme {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            PortraitQuizScreen(
+                question = question,
+                questionsSize = 5,
+                questionPosition = 2,
+                selectedPosition = 1,
+                quizSteps = listOf(
+                    QuestionStep.Completed(question = question, correct = false),
+                    QuestionStep.Completed(question = getBasicQuestion(), correct = true),
+                    QuestionStep.Current(question = getBasicQuestion()),
+                    QuestionStep.NotCurrent(question = getBasicQuestion()),
+                    QuestionStep.NotCurrent(question = getBasicQuestion()),
+                ),
+                cardQuestionClick = {},
+                cardVerifyClick = {},
+                saveQuestionClick = {}
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(
+    name = "Landscape Light",
+    group = "Landscape",
+    showBackground = true,
+    device = "spec:shape=Normal,width=1920,height=1080,unit=px,dpi=420",
+)
+@Preview(
+    name = "Landscape Night",
+    group = "Landscape",
+    showBackground = true,
+    device = "spec:shape=Normal,width=1920,height=1080,unit=px,dpi=420",
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
+fun PreviewQuizFrontLayerLandscape() {
+    val question = getBasicQuestion()
+
+    NewQuizTheme {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            LandscapeQuizScreen(
+                question = question,
+                questionsSize = 5,
+                questionPosition = 2,
+                selectedPosition = 1,
+                quizSteps = listOf(
+                    QuestionStep.Completed(question = question, correct = false),
+                    QuestionStep.Completed(question = getBasicQuestion(), correct = true),
+                    QuestionStep.Current(question = getBasicQuestion()),
+                    QuestionStep.NotCurrent(question = getBasicQuestion()),
+                    QuestionStep.NotCurrent(question = getBasicQuestion()),
+                ),
+                cardQuestionClick = {},
+                cardVerifyClick = {},
+                saveQuestionClick = {}
+            )
+        }
     }
 }
 

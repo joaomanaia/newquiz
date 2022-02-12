@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/DOCS/.gradle/caches/transforms-3/44f46b8a321478ae694d04c498aebbf7/transformed/jetified-firebase-ui-auth-8.0.0/res/layout/fui_auth_method_picker_layout.xml" value="0.2824074074074074" />
         <entry key="..\:/DOCS/.gradle/caches/transforms-3/fa9c3ffe8cb60046a37c779b88c6733e/transformed/jetified-firebase-ui-auth-8.0.0/res/drawable/fui_ic_anonymous_white_24dp.xml" value="0.1975" />
+        <entry key="..\:/NewQuiz/NewQuizCompose/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/NewQuiz/NewQuizCompose/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/NewQuiz/NewQuizCompose/app/src/main/res/layout/auth_ui.xml" value="0.2824074074074074" />
+        <entry key="..\:/NewQuiz/NewQuizCompose/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/NewQuiz/NewQuizCompose/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1975" />
       </map>
     </option>

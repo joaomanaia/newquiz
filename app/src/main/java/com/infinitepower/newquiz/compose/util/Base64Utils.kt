@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.compose.util
 
 import com.google.android.gms.common.util.Base64Utils
-import com.infinitepower.newquiz.compose.model.quiz.Question
+import com.infinitepower.newquiz.compose.data.local.question.Question
 
 private fun decodeToString(coded: String) = String(Base64Utils.decode(coded))
 
