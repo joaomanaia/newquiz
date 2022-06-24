@@ -4,14 +4,12 @@ import androidx.lifecycle.*
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.infinitepower.newquiz.compose.core.common.UiEvent
 import com.infinitepower.newquiz.compose.core.countdown.CountDownFlow
 import com.infinitepower.newquiz.compose.core.util.quiz.QuizXPUtil
-import com.infinitepower.newquiz.compose.data.local.question.Question
-import com.infinitepower.newquiz.compose.data.local.question.QuestionStep
+import com.infinitepower.newquiz.compose.model.question.QuestionStep
 import com.infinitepower.newquiz.compose.data.remote.auth.user.AuthUserApi
 import com.infinitepower.newquiz.compose.domain.use_case.saved_questions.SaveQuestionUseCase
-import com.infinitepower.newquiz.compose.ui.destinations.QuizResultsScreenDestination
+import com.infinitepower.newquiz.compose.model.question.Question
 import com.infinitepower.newquiz.compose.worker.quiz.GetQuizDataWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -38,7 +36,7 @@ class QuizViewModel @Inject constructor(
     private val saveQuestionUseCase: SaveQuestionUseCase
 ) : ViewModel() {
 
-    private val _uiEvent = Channel<UiEvent>()
+    private val _uiEvent = Channel<com.infinitepower.newquiz.compose.core.common.UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     fun onEvent(event: QuizScreenEvent) = viewModelScope.launch(Dispatchers.IO) {
@@ -54,11 +52,11 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    private suspend fun sendUiEvent(event: UiEvent) {
+    private suspend fun sendUiEvent(event: com.infinitepower.newquiz.compose.core.common.UiEvent) {
         _uiEvent.send(event)
     }
 
-    private val quizOption = MutableStateFlow(QuizOption.QUICK_QUIZ)
+    private val quizOption = MutableStateFlow(com.infinitepower.newquiz.compose.quiz_presentation.QuizType.QUICK_QUIZ)
     private val initialQuestions = MutableStateFlow("")
 
     private suspend fun loadQuestions() {
@@ -81,7 +79,7 @@ class QuizViewModel @Inject constructor(
                     val questionStepsResult = info.outputData.getString(GetQuizDataWorker.OUT_QUESTIONS_STEP_PARAM)
 
                     val questionsFormatted = Json.decodeFromString<List<Question>>(questionsResult.orEmpty())
-                    val questionStepsFormatted = Json.decodeFromString<List<QuestionStep.NotCurrent>>(questionStepsResult.orEmpty())
+                    val questionStepsFormatted = Json.decodeFromString<List<com.infinitepower.newquiz.compose.model.question.QuestionStep.NotCurrent>>(questionStepsResult.orEmpty())
 
                     _questions.emit(questionsFormatted)
                     _questionSteps.emit(questionStepsFormatted)
@@ -93,7 +91,7 @@ class QuizViewModel @Inject constructor(
     private val _questions = MutableStateFlow<List<Question>>(emptyList())
     val questions = _questions.asStateFlow()
 
-    private val _questionSteps = MutableStateFlow<List<QuestionStep>>(emptyList())
+    private val _questionSteps = MutableStateFlow<List<com.infinitepower.newquiz.compose.model.question.QuestionStep>>(emptyList())
     val questionSteps = _questionSteps.asStateFlow()
 
     private val countDownFlow = CountDownFlow(QUIZ_COUNTDOWN_IN_MILLIS, 250)
@@ -181,7 +179,7 @@ class QuizViewModel @Inject constructor(
     }
 
     private suspend fun finishGame() {
-        val steps = questionSteps.first().filterIsInstance<QuestionStep.Completed>()
+        val steps = questionSteps.first().filterIsInstance<com.infinitepower.newquiz.compose.model.question.QuestionStep.Completed>()
         val resultXp = xpUtil.getNewUserXPByQuizSteps(steps)
         val stepsString = Json.encodeToString(steps)
 
@@ -201,7 +199,7 @@ class QuizViewModel @Inject constructor(
 
          */
 
-        sendUiEvent(UiEvent.Navigate(QuizResultsScreenDestination(stepsString, resultXp)))
+        //sendUiEvent(com.infinitepower.newquiz.compose.core.common.UiEvent.Navigate(QuizResultsScreenDestination(stepsString, resultXp)))
     }
 
     private suspend fun saveQuestion() {

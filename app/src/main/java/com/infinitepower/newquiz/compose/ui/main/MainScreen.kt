@@ -1,5 +1,7 @@
 package com.infinitepower.newquiz.compose.ui.main
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,29 +11,26 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.infinitepower.newquiz.compose.R
-import com.infinitepower.newquiz.compose.data.remote.auth.user.AuthUserApi
+import com.infinitepower.newquiz.compose.quiz_presentation.QuizType
+import com.infinitepower.newquiz.compose.quiz_presentation.destinations.QuizScreenDestination
 import com.infinitepower.newquiz.compose.ui.destinations.LoginScreenDestination
-import com.infinitepower.newquiz.compose.ui.destinations.QuizScreenDestination
 import com.infinitepower.newquiz.compose.ui.destinations.SavedQuestionsListDestination
 import com.infinitepower.newquiz.compose.ui.destinations.UnscrambleWordQuizScreenDestination
-import com.infinitepower.newquiz.compose.ui.quiz.QuizOption
-import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination(start = true)
 @OptIn(ExperimentalMaterial3Api::class)
 fun MainScreen(
     navigator: DestinationsNavigator,
@@ -61,11 +60,7 @@ fun MainScreen(
             item {
                 QuickQuizItem(
                     onClick = {
-                        navigator.navigate(
-                            QuizScreenDestination(
-                                quizOptions = QuizOption.QUICK_QUIZ
-                            )
-                        )
+                        navigator.navigate(QuizScreenDestination(quizType = QuizType.QUICK_QUIZ))
                     }
                 )
             }
@@ -105,14 +100,17 @@ private fun QuickQuizItem(
     onClick: () -> Unit
 ) {
     Surface(
-        onClick = onClick,
-        role = Role.Button,
         tonalElevation = 8.dp,
         shape = RoundedCornerShape(10.dp),
-        indication = rememberRipple(),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp)
+            .clickable(
+                onClick = onClick,
+                indication = rememberRipple(),
+                interactionSource = remember { MutableInteractionSource() },
+                role = Role.Button
+            )
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
@@ -145,11 +143,13 @@ private fun OfflineSavedCard(
     onClick: () -> Unit
 ) {
     Surface(
-        modifier = modifier,
+        modifier = modifier.clickable(
+            onClick = onClick,
+            indication = rememberRipple(),
+            interactionSource = remember { MutableInteractionSource() },
+            role = Role.Button
+        ),
         tonalElevation = 8.dp,
-        indication = rememberRipple(),
-        role = Role.Button,
-        onClick = onClick,
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -185,11 +185,13 @@ private fun LargeCard(
     onClick: () -> Unit
 ) {
     Surface(
-        modifier = modifier,
+        modifier = modifier.clickable(
+            onClick = onClick,
+            indication = rememberRipple(),
+            interactionSource = remember { MutableInteractionSource() },
+            role = Role.Button
+        ),
         tonalElevation = 8.dp,
-        indication = rememberRipple(),
-        role = Role.Button,
-        onClick = onClick,
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {

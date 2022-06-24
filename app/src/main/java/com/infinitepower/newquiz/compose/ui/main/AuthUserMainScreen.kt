@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.infinitepower.newquiz.compose.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.compose.data.remote.auth.user.AuthUserApi
 
 @Composable
@@ -126,10 +127,14 @@ private fun SignedAuthUserContentPreview() {
 @Composable
 @Preview(showBackground = true)
 private fun SignUpUserContentPreview() {
-    SignUpUserContent(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        onSignInClick = {}
-    )
+    NewQuizTheme {
+        Surface {
+            SignUpUserContent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                onSignInClick = {}
+            )
+        }
+    }
 }

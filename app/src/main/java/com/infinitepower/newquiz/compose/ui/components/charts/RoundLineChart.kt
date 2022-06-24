@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.compose.ui.components.charts
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
@@ -9,10 +8,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.compose.ui.theme.NewQuizTheme
+import com.infinitepower.newquiz.compose.core.theme.NewQuizTheme
 
 data class RoundLineChartData(
     val x: Double,

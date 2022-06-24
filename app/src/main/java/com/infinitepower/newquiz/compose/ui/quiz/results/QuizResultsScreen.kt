@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.compose.ui.quiz.results
 
+/*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -13,18 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.infinitepower.newquiz.compose.R
-import com.infinitepower.newquiz.compose.data.local.question.QuestionStep
-import com.infinitepower.newquiz.compose.data.local.question.QuestionStep.Companion.questionId
+import com.infinitepower.newquiz.compose.quiz_presentation.QuizType
+import com.infinitepower.newquiz.compose.quiz_presentation.destinations.QuizScreenDestination
 import com.infinitepower.newquiz.compose.ui.RoundCircularProgressIndicator
-import com.infinitepower.newquiz.compose.ui.destinations.QuizScreenDestination
-import com.infinitepower.newquiz.compose.ui.quiz.QuizOption
-import com.infinitepower.newquiz.compose.ui.quiz.components.QuizStepView
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -77,7 +74,7 @@ fun QuizResultsScreen(
                         Text(text = "Back")
                     }
                     Spacer(modifier = Modifier.height(8.dp))
-                    Button(onClick = { navigation.navigate(QuizScreenDestination(quizOptions = QuizOption.QUICK_QUIZ)) }) {
+                    Button(onClick = { navigation.navigate(QuizScreenDestination(quizType = QuizType.QUICK_QUIZ)) }) {
                         Text(text = "Play Again")
                     }
                 }
@@ -100,7 +97,7 @@ fun QuizResultsScreen(
                 ) {
                     itemsIndexed(
                         items = questionSteps.value,
-                        key = { _, step -> step.questionId }
+                        key = { _, step -> step.question.id }
                     ) { index, step ->
                         QuizStepView(questionStep = step, position = index + 1)
                     }
@@ -165,3 +162,5 @@ fun QuizResultsScreen(
         }
     }
 }
+
+ */

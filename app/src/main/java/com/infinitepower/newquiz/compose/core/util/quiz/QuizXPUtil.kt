@@ -1,8 +1,8 @@
 package com.infinitepower.newquiz.compose.core.util.quiz
 
 import com.infinitepower.newquiz.compose.core.quiz.xp.QuizXP
-import com.infinitepower.newquiz.compose.data.local.question.QuestionStep
-import com.infinitepower.newquiz.compose.data.local.quiz.QuestionDifficulty
+import com.infinitepower.newquiz.compose.model.question.QuestionDifficulty
+import com.infinitepower.newquiz.compose.model.question.QuestionStep
 import javax.inject.Inject
 import javax.inject.Singleton
 

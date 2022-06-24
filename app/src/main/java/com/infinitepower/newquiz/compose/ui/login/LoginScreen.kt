@@ -3,14 +3,13 @@ package com.infinitepower.newquiz.compose.ui.login
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.infinitepower.newquiz.compose.ui.destinations.LoginScreenDestination
-import com.infinitepower.newquiz.compose.ui.destinations.MainScreenDestination
+import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination
+@Destination(start = true)
 fun LoginScreen(
     navigator: DestinationsNavigator
 ) {
@@ -28,7 +27,7 @@ fun LoginScreen(
 
     when (authResultCode) {
         AuthResultCode.OK -> {
-            navigator.navigate(MainScreenDestination) {
+            navigator.navigate(HomeScreenDestination) {
                 launchSingleTop = true
                 popUpTo(LoginScreenDestination.route) {
                     inclusive = true

@@ -3,17 +3,8 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-    }
-
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.id) {
-                "dagger.hilt.android.plugin" -> useModule("com.google.dagger:hilt-android-gradle-plugin:2.39.1")
-                "com.google.gms.google.services" -> useModule("com.google.gms:google-services:4.3.5")
-                "com.google.firebase.firebase-perf" -> useModule("com.google.firebase:perf-plugin:1.4.0")
-                "com.google.firebase.crashlytics" -> useModule("com.google.firebase:firebase-crashlytics-gradle:2.8.0")
-            }
-        }
+        jcenter()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
@@ -22,7 +13,20 @@ dependencyResolutionManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        jcenter()
+        maven { url = uri("https://jitpack.io") }
     }
 }
+
+plugins {
+    id("de.fayard.refreshVersions") version "0.40.2"
+}
+
 rootProject.name = "NewQuiz"
 include(":app")
+include(":core")
+include(":model")
+include(":domain")
+include(":data")
+include(":home-presentation")
+include(":quiz-presentation")

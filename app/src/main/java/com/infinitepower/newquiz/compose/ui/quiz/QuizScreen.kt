@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.compose.ui.quiz
 
+/*
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.animation.*
@@ -21,33 +22,25 @@ import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.infinitepower.newquiz.compose.core.common.UiEvent
-import com.infinitepower.newquiz.compose.data.local.question.Question
-import com.infinitepower.newquiz.compose.data.local.question.QuestionStep
-import com.infinitepower.newquiz.compose.data.local.question.QuestionStep.Companion.questionId
-import com.infinitepower.newquiz.compose.data.local.question.getBasicQuestion
 import com.infinitepower.newquiz.compose.ui.RoundCircularProgressIndicator
-import com.infinitepower.newquiz.compose.ui.destinations.QuizScreenDestination
 import com.infinitepower.newquiz.compose.ui.quiz.components.CardQuestion
-import com.infinitepower.newquiz.compose.ui.quiz.components.QuizStepView
-import com.infinitepower.newquiz.compose.ui.theme.NewQuizTheme
-import com.ramcosta.composedestinations.annotation.Destination
+import com.infinitepower.newquiz.compose.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.compose.model.question.Question
+import com.infinitepower.newquiz.compose.model.question.QuestionStep
+import com.infinitepower.newquiz.compose.model.question.getBasicQuestion
+import com.infinitepower.newquiz.compose.quiz_presentation.QuizType
+import com.infinitepower.newquiz.compose.quiz_presentation.components.QuizStepView
+import com.infinitepower.newquiz.compose.quiz_presentation.destinations.QuizScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.serialization.encodeToString
 
 private const val QUIZ_AD_UNIT_ID = "ca-app-pub-1923025671607389/6337508872"
 
 @Composable
-@Destination
 @OptIn(ExperimentalMaterial3Api::class)
 fun QuizScreen(
     navigator: DestinationsNavigator,
-    quizOptions: QuizOption,
+    quizOptions: QuizType,
     defaultQuestionsString: String = "[]"
 ) {
     val quizViewModel: QuizViewModel = hiltViewModel()
@@ -74,13 +67,13 @@ fun QuizScreen(
     LaunchedEffect(key1 = true) {
         quizViewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.Navigate -> navigator.navigate(event.direction) {
+                is com.infinitepower.newquiz.compose.core.common.UiEvent.Navigate -> navigator.navigate(event.direction) {
                     launchSingleTop = true
                     popUpTo(QuizScreenDestination.route) {
                         inclusive = true
                     }
                 }
-                is UiEvent.PopBackStack -> navigator.popBackStack()
+                is com.infinitepower.newquiz.compose.core.common.UiEvent.PopBackStack -> navigator.popBackStack()
                 else -> Unit
             }
         }
@@ -221,7 +214,7 @@ private fun ColumnScope.PortraitQuizScreen(
     ) {
         itemsIndexed(
             items = quizSteps,
-            key = { _, step -> step.questionId }
+            key = { _, step -> step.question.id }
         ) { index, step ->
             QuizStepView(questionStep = step, position = index + 1)
         }
@@ -313,7 +306,7 @@ private fun LandscapeQuizScreen(
             ) {
                 itemsIndexed(
                     items = quizSteps,
-                    key = { _, step -> step.questionId }
+                    key = { _, step -> step.question.id }
                 ) { index, step ->
                     QuizStepView(questionStep = step, position = index + 1)
                 }
@@ -397,33 +390,8 @@ fun QuizBannerAdView(
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
             }
-        } else {
-            BoxWithConstraints(
-                modifier = modifier.fillMaxWidth()
-            ) {
-                val adSizeBox = adSizeBox()
-
-                AndroidView(
-                    modifier = modifier.fillMaxWidth(),
-                    factory = { context ->
-                        AdView(context).apply {
-                            adSize = adSizeBox
-                            adUnitId = QUIZ_AD_UNIT_ID
-                            loadAd(AdRequest.Builder().build())
-                        }
-                    }
-                )
-            }
         }
     }
-}
-
-@Composable
-@ReadOnlyComposable
-private fun BoxWithConstraintsScope.adSizeBox(): AdSize {
-    val width = maxWidth.value.toInt()
-    val context = LocalContext.current
-    return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, width)
 }
 
 object QuizScreenTestTags {
@@ -519,3 +487,5 @@ fun PreviewQuizFrontLayerLandscape() {
 fun QuizBannerAdViewPreview() {
     QuizBannerAdView()
 }
+
+ */

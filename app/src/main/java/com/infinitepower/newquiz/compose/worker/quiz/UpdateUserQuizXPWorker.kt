@@ -5,7 +5,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.compose.core.util.quiz.QuizXPUtil
-import com.infinitepower.newquiz.compose.data.local.question.QuestionStep
+import com.infinitepower.newquiz.compose.model.question.QuestionStep
 import com.infinitepower.newquiz.compose.data.remote.user.UserApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -31,7 +31,7 @@ class UpdateUserQuizXPWorker @AssistedInject constructor(
         if (newXP <= 0) return Result.failure()
 
         val questionStepsString = inputData.getString(QUESTION_STEPS_STRING) ?: return Result.failure()
-        val questionSteps = Json.decodeFromString<List<QuestionStep.Completed>>(questionStepsString)
+        val questionSteps = Json.decodeFromString<List<com.infinitepower.newquiz.compose.model.question.QuestionStep.Completed>>(questionStepsString)
 
         val correctAnswerRatio = getCorrectQuestionsRatio(questionSteps)
         val newXPBonus = getBonus(correctAnswerRatio)
@@ -47,7 +47,7 @@ class UpdateUserQuizXPWorker @AssistedInject constructor(
         }
     }
 
-    private fun getCorrectQuestionsRatio(steps: List<QuestionStep.Completed>): Float {
+    private fun getCorrectQuestionsRatio(steps: List<com.infinitepower.newquiz.compose.model.question.QuestionStep.Completed>): Float {
         val totalQuestions = steps.size
         val correctQuestionNum = steps.count { step -> step.correct }
         return correctQuestionNum.toFloat() / totalQuestions.toFloat()

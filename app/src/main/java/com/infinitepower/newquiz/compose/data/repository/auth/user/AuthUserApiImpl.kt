@@ -4,7 +4,7 @@ import androidx.core.net.toUri
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.infinitepower.newquiz.compose.core.DEFAULT_USER_PHOTO
+import com.infinitepower.newquiz.compose.core.common.DEFAULT_USER_PHOTO
 import com.infinitepower.newquiz.compose.data.remote.auth.user.AuthUserApi
 import kotlinx.coroutines.tasks.await
 import java.security.SecureRandom

@@ -1,6 +1,6 @@
 package com.infinitepower.newquiz.compose.ui.saved_questions_list
 
-import com.infinitepower.newquiz.compose.data.local.question.Question
+import com.infinitepower.newquiz.compose.model.question.Question
 
 sealed class SavedQuestionsListEvent {
     data class OnDeleteQuestionClick(val question: Question) : SavedQuestionsListEvent()

@@ -1,7 +1,5 @@
 package com.infinitepower.newquiz.compose.ui.quiz
 
-import com.infinitepower.newquiz.compose.data.local.question.Question
-
 sealed class QuizScreenEvent {
     object OnVerifyQuestionClick : QuizScreenEvent()
 
@@ -12,7 +10,7 @@ sealed class QuizScreenEvent {
     object OnSaveButtonClick : QuizScreenEvent()
 
     data class UpdateDataAndStartQuiz(
-        val quizOption: QuizOption,
+        val quizOption: com.infinitepower.newquiz.compose.quiz_presentation.QuizType,
         val defaultQuestionsString: String
     ) : QuizScreenEvent()
 }

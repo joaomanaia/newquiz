@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.compose.ui.saved_questions_list
 
 import androidx.annotation.Keep
 import androidx.paging.PagingData
-import com.infinitepower.newquiz.compose.data.local.question.Question
+import com.infinitepower.newquiz.compose.model.question.Question
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.compose.data.local.question
 
 import androidx.paging.PagingSource
 import androidx.room.*
+import com.infinitepower.newquiz.compose.model.question.Question
 
 @Dao
 interface SavedQuestionDao {
