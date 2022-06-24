@@ -1,0 +1,3 @@
+package com.infinitepower.newquiz.compose.quiz_presentation
+
+sealed class QuizScreenUiEvent

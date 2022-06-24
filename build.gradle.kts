@@ -1,9 +1,22 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath(Firebase.crashlyticsGradlePlugin)
+    }
+}
+
 plugins {
-    id(Plugins.Gradle.APPLICATION) version Plugins.Gradle.VERSION apply false
-    id(Plugins.Gradle.LIBRARY) version Plugins.Gradle.VERSION apply false
-    id(Plugins.Kotlin.KOTLIN_ANDROID) version Plugins.Kotlin.VERSION apply false
-    id(Plugins.Kotlin.SERIALIZATION) version Plugins.Kotlin.VERSION apply false
-    id(Plugins.Google.GOOGLE_SERVICES) version Plugins.Google.VERSION apply false
+    id("com.android.application") version "7.4.0-alpha05" apply false
+    id("com.android.library") version "7.4.0-alpha05" apply false
+    id("org.jetbrains.kotlin.android") apply false
+    id("org.jetbrains.kotlin.plugin.serialization") apply false
+    id("com.google.dagger.hilt.android") apply false
+    id("com.google.gms.google-services") apply false
 }
 
 tasks.register("clean", Delete::class) {

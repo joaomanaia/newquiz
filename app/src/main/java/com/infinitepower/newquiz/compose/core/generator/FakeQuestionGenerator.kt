@@ -1,8 +1,8 @@
 package com.infinitepower.newquiz.compose.core.generator
 
-import com.infinitepower.newquiz.compose.data.local.question.Question
-import com.infinitepower.newquiz.compose.data.local.quiz.QuestionDifficulty
-import com.infinitepower.newquiz.compose.data.local.quiz.QuestionLanguage
+import com.infinitepower.newquiz.compose.model.question.Question
+import com.infinitepower.newquiz.compose.model.question.QuestionDifficulty
+import com.infinitepower.newquiz.compose.model.question.QuestionLanguage
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,7 +24,7 @@ class FakeQuestionGenerator @Inject constructor() {
             difficulty = QuestionDifficulty.Medium.keyName,
             lang = QuestionLanguage.EN.name,
             type = "multiple",
-            options = listOf(
+            answers = listOf(
                 "Answer A",
                 "Answer B",
                 "Answer C",

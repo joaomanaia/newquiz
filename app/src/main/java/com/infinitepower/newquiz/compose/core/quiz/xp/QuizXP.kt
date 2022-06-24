@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.compose.core.quiz.xp
 
 import androidx.annotation.VisibleForTesting
-import com.infinitepower.newquiz.compose.data.local.quiz.QuestionDifficulty
+import com.infinitepower.newquiz.compose.model.question.QuestionDifficulty
 import kotlin.math.pow
 import kotlin.math.roundToLong
 import kotlin.math.sqrt

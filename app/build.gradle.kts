@@ -6,7 +6,62 @@ plugins {
     id("kotlinx-serialization")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
-    id("com.google.devtools.ksp") version "1.6.10-1.0.2"
+    id("com.google.devtools.ksp") version "1.6.21-1.0.6"
+}
+
+android {
+    compileSdk = ProjectConfig.compileSdk
+
+    defaultConfig {
+        applicationId = ProjectConfig.applicationId
+        minSdk = ProjectConfig.minSdk
+        targetSdk = ProjectConfig.targetSdk
+        versionCode = ProjectConfig.versionCode
+        versionName = ProjectConfig.versionName
+
+        testInstrumentationRunner = ProjectConfig.testInstrumentationRunner
+        vectorDrawables.useSupportLibrary = true
+
+        androidResources {
+            noCompress("tflite")
+        }
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+
+        getByName("debug") {
+            extra["enableCrashlytics"] = false
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
+        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Compose.composeVersion
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+    namespace = "com.infinitepower.newquiz.compose"
 }
 
 kotlin {
@@ -20,150 +75,101 @@ kotlin {
     }
 }
 
-android {
-    compileSdk = AppConfig.COMPILE_SDK_VERSION
-
-    defaultConfig {
-        applicationId = "com.infinitepower.newquiz.compose"
-        minSdk = AppConfig.MIN_SDK_VERSION
-        targetSdk = AppConfig.TARGET_SDK_VERSION
-        versionCode = AppConfig.VERSION_CODE
-        versionName = AppConfig.VERSION_NAME
-
-        testInstrumentationRunner = AppConfig.TEST_INSTRUMENTAL_RUNNER
-        vectorDrawables.useSupportLibrary = true
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += mapOf("room.schemaLocation" to "$projectDir/schemas")
-            }
-        }
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            isDebuggable = false
-            isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-        freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0-alpha03"
-    }
-    packagingOptions {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    namespace = "com.infinitepower.newquiz.compose"
-}
-
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.activity:activity-ktx:1.4.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0")
-    implementation("androidx.core:core-splashscreen:1.0.0-beta01")
+    implementation(AndroidX.core.ktx)
+    implementation(AndroidX.appCompat)
+    implementation(AndroidX.activity.ktx)
+    implementation(AndroidX.lifecycle.runtimeKtx)
+    implementation(AndroidX.lifecycle.liveDataKtx)
+    implementation(AndroidX.constraintLayout.compose)
+    implementation(AndroidX.core.splashscreen)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation(AndroidX.test.ext.junit)
+    androidTestImplementation(AndroidX.test.espresso.core)
 
-    implementation("androidx.compose.ui:ui:1.2.0-alpha03")
-    implementation("androidx.compose.ui:ui-tooling:1.2.0-alpha03")
-    implementation("androidx.compose.material:material-icons-extended:1.2.0-alpha03")
-    implementation("androidx.activity:activity-compose:1.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.0-alpha03")
+    implementation(AndroidX.compose.ui)
+    implementation(AndroidX.compose.ui.tooling)
+    implementation(AndroidX.compose.material.icons.extended)
+    implementation(AndroidX.activity.compose)
+    androidTestImplementation(AndroidX.compose.ui.testJunit4)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.6.10")
-    androidTestImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.6.10")
+    testImplementation(Testing.junit4)
+    testImplementation(Testing.junit.jupiter)
+    testImplementation("com.google.truth:truth:_")
+    testImplementation(Kotlin.test.junit)
+    androidTestImplementation(Kotlin.test.junit)
 
-    implementation("com.google.android.material:material:1.6.0-alpha02")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha05")
-    implementation("androidx.compose.material:material:1.2.0-alpha03")
+    implementation(Google.android.material)
+    implementation(AndroidX.compose.material3)
+    implementation(AndroidX.compose.material3.windowSizeClass)
+    implementation(AndroidX.compose.material)
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    implementation(AndroidX.lifecycle.viewModelCompose)
 
-    implementation("com.google.dagger:hilt-android:2.40.5")
-    kapt("com.google.dagger:hilt-android-compiler:2.40.5")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.40.5")
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.40.5")
-    implementation("androidx.hilt:hilt-work:1.0.0")
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.android.compiler)
+    kapt(AndroidX.hilt.compiler)
+    implementation(AndroidX.hilt.navigationCompose)
+    androidTestImplementation(Google.dagger.hilt.android.testing)
+    kaptAndroidTest(Google.dagger.hilt.android.compiler)
+    implementation(AndroidX.hilt.work)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
+    implementation(KotlinX.coroutines.android)
+    implementation(KotlinX.coroutines.test)
+    implementation(KotlinX.coroutines.playServices)
 
-    implementation("io.coil-kt:coil-compose:2.0.0-alpha08")
+    implementation(COIL.compose)
 
-    implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
+    implementation(platform(Firebase.bom))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
 
-    //implementation("com.google.mlkit:translate:16.1.2")
-
     // FirebaseUI for Firebase Auth
-    implementation("com.firebaseui:firebase-ui-auth:8.0.0")
+    implementation("com.firebaseui:firebase-ui-auth:_")
 
-    implementation("androidx.navigation:navigation-compose:2.5.0-alpha02")
+    implementation(AndroidX.navigation.compose)
 
-    implementation("com.facebook.android:facebook-login:12.3.0")
+    implementation("com.facebook.android:facebook-login:_")
 
-    implementation("com.airbnb.android:lottie-compose:4.2.2")
+    implementation("com.airbnb.android:lottie-compose:_")
 
-    implementation("com.google.android.gms:play-services-ads:20.5.0")
+    implementation("com.google.android.gms:play-services-ads:_")
 
-    implementation("io.ktor:ktor-client-core:1.6.7")
-    implementation("io.ktor:ktor-client-android:1.6.7")
-    implementation("io.ktor:ktor-client-serialization:1.6.7")
+    implementation(Ktor.client.core)
+    implementation(Ktor.client.okHttp)
+    implementation(Ktor.client.serialization)
 
     // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
+    debugImplementation(Square.leakCanary.android)
 
-    val work_version = "2.7.1"
-    implementation("androidx.work:work-runtime-ktx:$work_version")
-    androidTestImplementation("androidx.work:work-testing:$work_version")
+    implementation(AndroidX.work.runtimeKtx)
+    androidTestImplementation(AndroidX.work.testing)
 
-    val roomVersion = "2.4.1"
+    val roomVersion = "2.4.2"
 
-    implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    testImplementation("androidx.room:room-testing:$roomVersion")
-    implementation("androidx.room:room-paging:$roomVersion")
+    implementation(AndroidX.room.runtime)
+    annotationProcessor(AndroidX.room.compiler)
+    ksp(AndroidX.room.compiler)
+    implementation(AndroidX.room.ktx)
+    testImplementation(AndroidX.room.testing)
+    implementation(AndroidX.room.paging)
 
-    testImplementation("com.google.truth:truth:1.1.3")
-    androidTestImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("com.google.truth:truth:_")
+    androidTestImplementation("com.google.truth:truth:_")
 
-    val paging_version = "3.1.0"
-    implementation("androidx.paging:paging-runtime:$paging_version")
-    implementation("androidx.paging:paging-compose:1.0.0-alpha14")
+    implementation(AndroidX.paging.runtime)
+    implementation(AndroidX.paging.compose)
 
-    implementation("io.github.serpro69:kotlin-faker:1.9.0")
+    implementation("io.github.serpro69:kotlin-faker:_")
 
-    implementation("io.github.raamcosta.compose-destinations:core:1.2.2-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.2.2-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
+
+    implementation(project(Modules.core))
+    implementation(project(Modules.model))
+    implementation(project(Modules.homePresentation))
+    implementation(project(Modules.quizPresentation))
 }
 
 tasks.withType<Test> {

@@ -17,8 +17,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.google.android.material.snackbar.Snackbar
-import com.infinitepower.newquiz.compose.core.common.UiEvent
-import com.infinitepower.newquiz.compose.data.local.question.Question
+import com.infinitepower.newquiz.compose.model.question.Question
 import com.infinitepower.newquiz.compose.ui.components.dropdown_menu.DropdownMenu
 import com.infinitepower.newquiz.compose.ui.components.dropdown_menu.DropdownMenuItem
 import com.infinitepower.newquiz.compose.ui.saved_questions_list.components.SavedQuestionItem
@@ -42,7 +41,7 @@ fun SavedQuestionsList(
     LaunchedEffect(key1 = true) {
         savedQuestionsListViewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.ShowSnackBar -> {
+                is com.infinitepower.newquiz.compose.core.common.UiEvent.ShowSnackBar -> {
                     val snackbar =
                         Snackbar.make(context, localView, event.message, Snackbar.LENGTH_LONG)
                     if (event.action != null) snackbar.setAction(event.action) {
@@ -50,9 +49,9 @@ fun SavedQuestionsList(
                     }
                     snackbar.show()
                 }
-                is UiEvent.Navigate -> navigator.navigate(event.direction)
-                is UiEvent.PopBackStack -> navigator.popBackStack()
-                is UiEvent.RefreshData -> {
+                is com.infinitepower.newquiz.compose.core.common.UiEvent.Navigate -> navigator.navigate(event.direction)
+                is com.infinitepower.newquiz.compose.core.common.UiEvent.PopBackStack -> navigator.popBackStack()
+                is com.infinitepower.newquiz.compose.core.common.UiEvent.RefreshData -> {
                     savedQuestions.refresh()
                 }
             }

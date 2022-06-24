@@ -5,10 +5,9 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.google.android.gms.common.util.Base64Utils
-import com.infinitepower.newquiz.compose.data.local.question.Question
-import com.infinitepower.newquiz.compose.data.local.question.QuestionStep
+import com.infinitepower.newquiz.compose.model.question.QuestionStep
 import com.infinitepower.newquiz.compose.domain.use_case.question.GetQuestions
+import com.infinitepower.newquiz.compose.model.question.Question
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.serialization.decodeFromString

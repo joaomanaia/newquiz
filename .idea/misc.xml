@@ -10,6 +10,13 @@
         <entry key="..\:/NewQuiz/NewQuizCompose/app/src/main/res/layout/auth_ui.xml" value="0.2824074074074074" />
         <entry key="..\:/NewQuiz/NewQuizCompose/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/NewQuiz/NewQuizCompose/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1975" />
+        <entry key="app/src/main/java/com/infinitepower/newquiz/compose/ui/main/AuthUserMainScreen.kt" value="0.4666666666666667" />
+        <entry key="app/src/main/java/com/infinitepower/newquiz/compose/ui/quiz/components/QuizStepView.kt" value="1.2436781609195402" />
+        <entry key="home-presentation/src/main/java/com/infinitepower/newquiz/home_presentation/HomeScreen.kt" value="0.31165540540540543" />
+        <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/compose/quiz_presentation/QuizScreen.kt" value="0.25" />
+        <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/compose/quiz_presentation/components/CardQuestion.kt" value="0.5009259259259259" />
+        <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/compose/quiz_presentation/components/CardQuestionOption.kt" value="0.335559265442404" />
+        <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/compose/quiz_presentation/components/QuizStepView.kt" value="1.0" />
       </map>
     </option>
   </component>

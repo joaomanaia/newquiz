@@ -5,15 +5,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.infinitepower.newquiz.compose.core.common.Resource
-import com.infinitepower.newquiz.compose.core.common.UiEvent
-import com.infinitepower.newquiz.compose.data.local.question.Question
 import com.infinitepower.newquiz.compose.domain.use_case.saved_questions.DeleteSavedQuestionUseCase
 import com.infinitepower.newquiz.compose.domain.use_case.saved_questions.GetAllSavedQuestionsUseCase
 import com.infinitepower.newquiz.compose.domain.use_case.saved_questions.GetSavedQuestionsPagingUseCase
 import com.infinitepower.newquiz.compose.domain.use_case.saved_questions.SaveQuestionUseCase
-import com.infinitepower.newquiz.compose.ui.destinations.QuizScreenDestination
-import com.infinitepower.newquiz.compose.ui.quiz.QuizOption
+import com.infinitepower.newquiz.compose.model.question.Question
+import com.infinitepower.newquiz.compose.quiz_presentation.QuizType
+import com.infinitepower.newquiz.compose.quiz_presentation.destinations.QuizScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,7 +31,7 @@ class SavedQuestionsListViewModel @Inject constructor(
     private val getAllSavedQuestionsUseCase: GetAllSavedQuestionsUseCase
 ) : ViewModel() {
 
-    private val _uiEvent = Channel<UiEvent>()
+    private val _uiEvent = Channel<com.infinitepower.newquiz.compose.core.common.UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     private var deletedQuestion: Question? = null
@@ -62,13 +60,13 @@ class SavedQuestionsListViewModel @Inject constructor(
             is SavedQuestionsListEvent.OnDeleteQuestionClick -> {
                 deletedQuestion = event.question
                 deleteSavedQuestionUseCase(event.question)
-                sendUiEvent(UiEvent.ShowSnackBar(message = "Question Deleted", action = "Undo"))
-                sendUiEvent(UiEvent.RefreshData)
+                sendUiEvent(com.infinitepower.newquiz.compose.core.common.UiEvent.ShowSnackBar(message = "Question Deleted", action = "Undo"))
+                sendUiEvent(com.infinitepower.newquiz.compose.core.common.UiEvent.RefreshData)
             }
             is SavedQuestionsListEvent.OnUndoDeleteClick -> {
                 deletedQuestion?.let { question ->
                     saveQuestionUseCase(question)
-                    sendUiEvent(UiEvent.RefreshData)
+                    sendUiEvent(com.infinitepower.newquiz.compose.core.common.UiEvent.RefreshData)
                     deletedQuestion = null
                 }
             }
@@ -85,7 +83,7 @@ class SavedQuestionsListViewModel @Inject constructor(
 
     private suspend fun selectAllQuestions() {
         getAllSavedQuestionsUseCase().collect { result ->
-            if (result is Resource.Success) {
+            if (result is com.infinitepower.newquiz.compose.core.common.Resource.Success) {
                 _selectedQuestions.emit(result.data.orEmpty())
             }
         }
@@ -105,16 +103,16 @@ class SavedQuestionsListViewModel @Inject constructor(
         //val questionsBase64 = Base64Utils.encode(questionsString.toByteArray())
 
         sendUiEvent(
-            UiEvent.Navigate(
+            com.infinitepower.newquiz.compose.core.common.UiEvent.Navigate(
                 direction = QuizScreenDestination(
-                    quizOptions = QuizOption.QUICK_QUIZ,
-                    defaultQuestionsString = questionsString
+                    quizType = QuizType.QUICK_QUIZ,
+                    //defaultQuestionsString = questionsString
                 )
             )
         )
     }
 
-    private suspend fun sendUiEvent(event: UiEvent) {
+    private suspend fun sendUiEvent(event: com.infinitepower.newquiz.compose.core.common.UiEvent) {
         _uiEvent.send(event)
     }
 }

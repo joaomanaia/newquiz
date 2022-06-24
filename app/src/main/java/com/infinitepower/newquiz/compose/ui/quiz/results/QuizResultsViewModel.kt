@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.compose.core.util.coroutines.getStateFlow
 import com.infinitepower.newquiz.compose.core.util.quiz.QuizXPUtil
-import com.infinitepower.newquiz.compose.data.local.question.QuestionStep
+import com.infinitepower.newquiz.compose.model.question.QuestionStep
 import com.infinitepower.newquiz.compose.data.remote.auth.user.AuthUserApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
@@ -28,7 +28,7 @@ class QuizResultsViewModel @Inject constructor(
         ).filterNotNull()
 
     val questionSteps = questionStepsString.map { stepsString ->
-        Json.decodeFromString<List<QuestionStep.Completed>>(stepsString)
+        Json.decodeFromString<List<com.infinitepower.newquiz.compose.model.question.QuestionStep.Completed>>(stepsString)
     }
 
     val correctQuestionsRatio = questionSteps.map { steps ->

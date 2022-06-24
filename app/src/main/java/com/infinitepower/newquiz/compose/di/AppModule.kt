@@ -24,32 +24,23 @@ import com.infinitepower.newquiz.compose.domain.repository.saved_questions.Saved
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.serpro69.kfaker.Faker
 import io.github.serpro69.kfaker.faker
 import io.ktor.client.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.http.*
+import io.ktor.client.engine.okhttp.*
 import java.util.*
 import javax.inject.Singleton
-import kotlin.random.Random
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
     @Provides
     @Singleton
-    fun providerKtorClient(): HttpClient = HttpClient(Android) {
+    fun providerKtorClient(): HttpClient = HttpClient(OkHttp) {
         engine {
             threadsCount = 4
-        }
-        install(JsonFeature) {
-            serializer = KotlinxSerializer()
-            accept(ContentType.Application.Json)
         }
     }
 

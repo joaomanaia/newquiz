@@ -2,7 +2,6 @@ package com.infinitepower.newquiz.compose.ui.unscramble_word_quiz
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
@@ -14,14 +13,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import com.infinitepower.newquiz.compose.core.common.spacing
+import com.infinitepower.newquiz.compose.core.theme.spacing
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.infinitepower.newquiz.compose.ui.components.text_field.filled.BackgroundOpacity
 import com.infinitepower.newquiz.compose.ui.components.text_field.filled.IconOpacity
 import com.infinitepower.newquiz.compose.ui.components.text_field.filled.UnfocusedIndicatorLineOpacity
-import com.infinitepower.newquiz.compose.ui.theme.NewQuizTheme
+import com.infinitepower.newquiz.compose.core.theme.NewQuizTheme
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable

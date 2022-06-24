@@ -4,8 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.infinitepower.newquiz.compose.core.room.data_converter.DataConverter
-import com.infinitepower.newquiz.compose.data.local.question.Question
 import com.infinitepower.newquiz.compose.data.local.question.SavedQuestionDao
+import com.infinitepower.newquiz.compose.model.question.Question
 
 @Database(
     entities = [Question::class],

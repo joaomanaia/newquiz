@@ -43,7 +43,7 @@ class QuizScreenTest {
         viewModel = QuizViewModel(
             savedStateHandle = SavedStateHandle(
                 mapOf(
-                    "quizOptions" to QuizOption.QuickQuiz.id
+                    "quizOptions" to com.infinitepower.newquiz.compose.quiz_presentation.QuizType.QuickQuiz.id
                 )
             ),
             xpUtil = QuizXPUtil(),

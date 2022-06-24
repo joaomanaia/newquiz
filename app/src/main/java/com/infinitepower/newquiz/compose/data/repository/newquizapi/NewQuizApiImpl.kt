@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.compose.data.repository.newquizapi
 
 import com.infinitepower.newquiz.compose.data.remote.newquizapi.NewQuizApi
-import com.infinitepower.newquiz.compose.data.local.question.Question
+import com.infinitepower.newquiz.compose.model.question.Question
 import com.infinitepower.newquiz.compose.util.decodeBase64Question
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -20,7 +20,7 @@ class NewQuizApiImpl(
                 append(HttpHeaders.Accept, "application/json")
             }
         }
-        val questions = response.receive<List<Question>>().map { question ->
+        val questions = response.body<List<Question>>().map { question ->
             question.decodeBase64Question()
         }
         return questions

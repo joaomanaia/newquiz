@@ -1,10 +1,8 @@
 package com.infinitepower.newquiz.compose.data.repository.saved_questions
 
-import androidx.paging.PagingSource
-import com.infinitepower.newquiz.compose.data.local.question.Question
 import com.infinitepower.newquiz.compose.data.local.question.SavedQuestionDao
 import com.infinitepower.newquiz.compose.domain.repository.saved_questions.SavedQuestionsRepository
-import com.infinitepower.newquiz.compose.ui.saved_questions_list.SavedQuestionsListSortOrder
+import com.infinitepower.newquiz.compose.model.question.Question
 
 class SavedQuestionsRepositoryImpl(
     private val savedQuestionDao: SavedQuestionDao

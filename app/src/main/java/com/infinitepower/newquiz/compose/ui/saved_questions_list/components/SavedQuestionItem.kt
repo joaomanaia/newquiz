@@ -1,12 +1,15 @@
 package com.infinitepower.newquiz.compose.ui.saved_questions_list.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.*
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,14 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.infinitepower.newquiz.compose.core.common.spacing
-import com.infinitepower.newquiz.compose.data.local.question.Question
-import com.infinitepower.newquiz.compose.data.local.question.getBasicQuestion
+import com.infinitepower.newquiz.compose.core.theme.spacing
 import com.infinitepower.newquiz.compose.ui.saved_questions_list.SavedQuestionsListEvent
-import com.infinitepower.newquiz.compose.ui.theme.NewQuizTheme
+import com.infinitepower.newquiz.compose.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.compose.model.question.Question
+import com.infinitepower.newquiz.compose.model.question.getBasicQuestion
 
 @Composable
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 internal fun SavedQuestionItem(
     modifier: Modifier = Modifier,
     question: Question,
@@ -73,12 +76,14 @@ internal fun SavedQuestionItem(
         modifier = modifier
     ) {
         Surface(
-            onClick = {
-                onEvent(SavedQuestionsListEvent.OnQuestionClick(question))
-            },
-            role = Role.Button,
-            indication = rememberRipple(),
-            modifier = modifier
+            modifier = modifier.clickable(
+                onClick = {
+                    onEvent(SavedQuestionsListEvent.OnQuestionClick(question))
+                },
+                indication = rememberRipple(),
+                interactionSource = remember { MutableInteractionSource() },
+                role = Role.Button
+            )
         ) {
             Row(
                 modifier = Modifier.padding(vertical = MaterialTheme.spacing.medium),
@@ -101,6 +106,7 @@ internal fun SavedQuestionItem(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SavedQuestionItemPlaceHolder(
     modifier: Modifier = Modifier
