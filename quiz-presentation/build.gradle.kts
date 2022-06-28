@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.infinitepower.newquiz.compose.quiz_presentation"
+    namespace = "com.infinitepower.newquiz.quiz_presentation"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -59,13 +59,17 @@ dependencies {
     testImplementation("com.google.truth:truth:_")
     androidTestImplementation(Kotlin.test.junit)
 
+    debugImplementation(AndroidX.compose.ui.testManifest)
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material3)
     implementation(AndroidX.compose.material3.windowSizeClass)
     implementation(AndroidX.constraintLayout.compose)
+
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
+    androidTestImplementation(AndroidX.test.runner)
+    androidTestImplementation(AndroidX.test.rules)
 
     implementation(Google.dagger.hilt.android)
     kapt(Google.dagger.hilt.compiler)
@@ -74,8 +78,8 @@ dependencies {
     androidTestImplementation(Google.dagger.hilt.android.testing)
     kaptAndroidTest(Google.dagger.hilt.compiler)
 
-    implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:_")
+    ksp("io.github.raamcosta.compose-destinations:ksp:_")
 
     implementation(KotlinX.serialization.json)
 
@@ -83,6 +87,10 @@ dependencies {
     implementation(project(Modules.model))
     implementation(project(Modules.domain))
     implementation(project(Modules.data))
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 ksp {

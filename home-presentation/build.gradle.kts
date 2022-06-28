@@ -71,8 +71,8 @@ dependencies {
     androidTestImplementation(Google.dagger.hilt.android.testing)
     kaptAndroidTest(Google.dagger.hilt.android.compiler)
 
-    implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:_")
+    ksp("io.github.raamcosta.compose-destinations:ksp:_")
 
     implementation("com.airbnb.android:lottie-compose:_")
 

@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.infinitepower.newquiz.compose.core.theme.spacing
+import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.home_presentation.model.HomeCardItem
 
 @Composable

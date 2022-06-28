@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "918326212841-louh9iclja2eglued55egica2bev41gh.apps.googleusercontent.com",
+          "client_id": "918326212841-99br1r54778dg2ln9f8d9vceeaj2t3c6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.infinitepower.newquiz",
-            "certificate_hash": "d0005248dc3707a233c0cfd9389a3fbfdc3f6b9f"
+            "certificate_hash": "d350d4e3b40ed95f916eba1d7775819f475fb676"
           }
         },
         {
@@ -43,35 +43,6 @@
         }
       },
       "admob_app_id": "ca-app-pub-1923025671607389~2529814126"
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:918326212841:android:b4096a57e14c08a3f49878",
-        "android_client_info": {
-          "package_name": "com.infinitepower.newquiz.compose"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "918326212841-sca9f1fog4mjvhrq73kvql2nbahr68pv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCTKwn9VeNBHQ67hH2CtZVLkJQscaNfS4c"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "918326212841-sca9f1fog4mjvhrq73kvql2nbahr68pv.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

@@ -1,7 +1,7 @@
 object ProjectConfig {
-    const val testInstrumentationRunner = "com.infinitepower.newquiz.compose.core.HiltTestRunner"
+    const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-    const val applicationId = "com.infinitepower.newquiz.compose"
+    const val applicationId = "com.infinitepower.newquiz"
 
     const val compileSdk = 33
 
@@ -9,7 +9,7 @@ object ProjectConfig {
 
     const val targetSdk = 33
 
-    const val versionCode = 1
+    const val versionCode = 2
 
-    const val versionName = "0.1.0"
+    const val versionName = "1.0.0"
 }
