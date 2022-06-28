@@ -9,9 +9,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import com.infinitepower.newquiz.compose.core.common.annotation.compose.PreviewNightLight
-import com.infinitepower.newquiz.compose.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.compose.core.theme.spacing
+import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.home_presentation.components.HomeGroupTitle
 import com.infinitepower.newquiz.home_presentation.components.HomeLargeCard
 import com.infinitepower.newquiz.home_presentation.data.HomeCardItemData

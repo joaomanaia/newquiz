@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.infinitepower.newquiz.compose.core"
+    namespace = "com.infinitepower.newquiz.core"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -50,9 +50,8 @@ android {
 }
 
 dependencies {
-    testImplementation(Testing.junit4)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
+    testImplementation(Testing.junit.jupiter)
+    testImplementation("com.google.truth:truth:_")
 
     implementation(AndroidX.core.ktx)
 
@@ -65,4 +64,8 @@ dependencies {
 
     implementation("io.github.raamcosta.compose-destinations:core:_")
     ksp("io.github.raamcosta.compose-destinations:ksp:_")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

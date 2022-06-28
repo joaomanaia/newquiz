@@ -61,7 +61,7 @@ android {
     lint {
         baseline = file("lint-baseline.xml")
     }
-    namespace = "com.infinitepower.newquiz.compose"
+    namespace = "com.infinitepower.newquiz"
 }
 
 kotlin {
@@ -80,7 +80,6 @@ dependencies {
     implementation(AndroidX.appCompat)
     implementation(AndroidX.activity.ktx)
     implementation(AndroidX.lifecycle.runtimeKtx)
-    implementation(AndroidX.lifecycle.liveDataKtx)
     implementation(AndroidX.constraintLayout.compose)
     implementation(AndroidX.core.splashscreen)
 
@@ -95,7 +94,6 @@ dependencies {
 
     testImplementation(Testing.junit4)
     testImplementation(Testing.junit.jupiter)
-    testImplementation("com.google.truth:truth:_")
     testImplementation(Kotlin.test.junit)
     androidTestImplementation(Kotlin.test.junit)
 
@@ -107,34 +105,19 @@ dependencies {
     implementation(AndroidX.lifecycle.viewModelCompose)
 
     implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.android.compiler)
+    kapt(Google.dagger.hilt.compiler)
     kapt(AndroidX.hilt.compiler)
     implementation(AndroidX.hilt.navigationCompose)
     androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.android.compiler)
+    kaptAndroidTest(Google.dagger.hilt.compiler)
     implementation(AndroidX.hilt.work)
 
-    implementation(KotlinX.coroutines.android)
-    implementation(KotlinX.coroutines.test)
+    testImplementation(KotlinX.coroutines.test)
     implementation(KotlinX.coroutines.playServices)
-
-    implementation(COIL.compose)
-
-    implementation(platform(Firebase.bom))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-
-    // FirebaseUI for Firebase Auth
-    implementation("com.firebaseui:firebase-ui-auth:_")
 
     implementation(AndroidX.navigation.compose)
 
-    implementation("com.facebook.android:facebook-login:_")
-
     implementation("com.airbnb.android:lottie-compose:_")
-
-    implementation("com.google.android.gms:play-services-ads:_")
 
     implementation(Ktor.client.core)
     implementation(Ktor.client.okHttp)
@@ -146,8 +129,6 @@ dependencies {
     implementation(AndroidX.work.runtimeKtx)
     androidTestImplementation(AndroidX.work.testing)
 
-    val roomVersion = "2.4.2"
-
     implementation(AndroidX.room.runtime)
     annotationProcessor(AndroidX.room.compiler)
     ksp(AndroidX.room.compiler)
@@ -158,13 +139,8 @@ dependencies {
     testImplementation("com.google.truth:truth:_")
     androidTestImplementation("com.google.truth:truth:_")
 
-    implementation(AndroidX.paging.runtime)
-    implementation(AndroidX.paging.compose)
-
-    implementation("io.github.serpro69:kotlin-faker:_")
-
-    implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:_")
+    ksp("io.github.raamcosta.compose-destinations:ksp:_")
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))

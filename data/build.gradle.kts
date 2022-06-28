@@ -1,10 +1,13 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
+    id("kotlinx-serialization")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
-    namespace = "com.infinitepower.newquiz.compose.data"
+    namespace = "com.infinitepower.newquiz.data"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -49,6 +52,18 @@ dependencies {
     implementation(KotlinX.coroutines.android)
     implementation(KotlinX.coroutines.playServices)
 
+    implementation(Ktor.client.core)
+    implementation(Ktor.client.okHttp)
+    implementation(Ktor.client.serialization)
+
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.android.compiler)
+    kapt(AndroidX.hilt.compiler)
+    implementation(AndroidX.hilt.navigationCompose)
+    androidTestImplementation(Google.dagger.hilt.android.testing)
+    kaptAndroidTest(Google.dagger.hilt.android.compiler)
+
     implementation(project(":core"))
     implementation(project(":domain"))
+    implementation(project(":model"))
 }

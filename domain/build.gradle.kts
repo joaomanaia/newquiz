@@ -1,10 +1,12 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
-    namespace = "com.infinitepower.newquiz.compose.domain"
+    namespace = "com.infinitepower.newquiz.domain"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -39,6 +41,14 @@ dependencies {
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)
 
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.android.compiler)
+    kapt(AndroidX.hilt.compiler)
+    implementation(AndroidX.hilt.navigationCompose)
+    androidTestImplementation(Google.dagger.hilt.android.testing)
+    kaptAndroidTest(Google.dagger.hilt.android.compiler)
+
+    implementation(project(":core"))
     implementation(project(":model"))
 
     implementation(AndroidX.paging.runtime)

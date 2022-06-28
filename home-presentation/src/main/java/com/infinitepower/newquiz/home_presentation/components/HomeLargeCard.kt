@@ -12,7 +12,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.infinitepower.newquiz.compose.core.theme.spacing
+import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.home_presentation.model.CardIcon
 import com.infinitepower.newquiz.home_presentation.model.HomeCardItem
 

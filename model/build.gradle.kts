@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.infinitepower.newquiz.compose.model"
+    namespace = "com.infinitepower.newquiz.model"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -38,9 +38,8 @@ android {
 }
 
 dependencies {
-    testImplementation(Testing.junit4)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
+    testImplementation(Testing.junit.jupiter)
+    testImplementation("com.google.truth:truth:_")
 
     implementation(AndroidX.annotation)
 
