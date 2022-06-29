@@ -45,16 +45,17 @@ class QuizScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            /*
             val initialQuestions = List(5) {
                 getBasicQuestion()
             }
-            /*
+
+             */
+
             val initialQuestions = savedStateHandle
                 .get<ArrayList<Question>>(QuizScreenNavArg::initialQuestions.name)
                 .orEmpty()
                 .toList()
-
-             */
 
             if (initialQuestions.isEmpty()) {
                 loadByCloudQuestions()

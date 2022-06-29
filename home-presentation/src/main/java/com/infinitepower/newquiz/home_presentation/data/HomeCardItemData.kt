@@ -1,13 +1,13 @@
 package com.infinitepower.newquiz.home_presentation.data
 
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.infinitepower.newquiz.home_presentation.HomeNavigator
+import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
 import com.infinitepower.newquiz.home_presentation.model.CardIcon
 import com.infinitepower.newquiz.home_presentation.model.HomeCardItem
 import com.infinitepower.newquiz.core.R as CoreR
 
 internal class HomeCardItemData(
-    homeNavigator: HomeNavigator
+    homeNavigator: HomeScreenNavigator
 ) {
     val items = listOf(
         HomeCardItem.GroupTitle(

@@ -146,6 +146,7 @@ dependencies {
     implementation(project(Modules.model))
     implementation(project(Modules.homePresentation))
     implementation(project(Modules.quizPresentation))
+    implementation(project(Modules.settingsPresentation))
 }
 
 tasks.withType<Test> {

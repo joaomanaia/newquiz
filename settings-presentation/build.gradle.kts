@@ -3,11 +3,11 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp") version "1.6.21-1.0.6"
+    id("com.google.devtools.ksp") version "1.6.21-1.0.5"
 }
 
 android {
-    namespace = "com.infinitepower.newquiz.core"
+    namespace = "com.infinitepower.newquiz.settings_presentation"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -51,18 +51,22 @@ android {
 }
 
 dependencies {
+    implementation(AndroidX.core.ktx)
+    implementation(AndroidX.lifecycle.runtimeKtx)
+
     testImplementation(Testing.junit.jupiter)
     testImplementation("com.google.truth:truth:_")
+    androidTestImplementation(Kotlin.test.junit)
 
-    implementation(AndroidX.core.ktx)
+    implementation(Google.android.material)
 
+    debugImplementation(AndroidX.compose.ui.testManifest)
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material)
     implementation(AndroidX.compose.material3)
-
-    implementation(Google.android.material)
+    implementation(AndroidX.compose.material.icons.extended)
 
     implementation(Google.dagger.hilt.android)
     kapt(Google.dagger.hilt.compiler)
@@ -71,14 +75,19 @@ dependencies {
     androidTestImplementation(Google.dagger.hilt.android.testing)
     kaptAndroidTest(Google.dagger.hilt.compiler)
 
-    implementation(Google.android.material)
-
     implementation(AndroidX.dataStore.preferences)
 
     implementation("io.github.raamcosta.compose-destinations:core:_")
     ksp("io.github.raamcosta.compose-destinations:ksp:_")
+
+    implementation(project(Modules.core))
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+ksp {
+    arg("compose-destinations.mode", "destinations")
+    arg("compose-destinations.moduleName", "settings")
 }

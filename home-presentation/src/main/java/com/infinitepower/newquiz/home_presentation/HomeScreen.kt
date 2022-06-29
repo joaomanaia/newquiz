@@ -3,12 +3,17 @@ package com.infinitepower.newquiz.home_presentation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -21,19 +26,19 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Composable
 @Destination
 fun HomeScreen(
-    homeNavigator: HomeNavigator
+    homeScreenNavigator: HomeScreenNavigator,
+    homeViewModel: HomeScreenViewModel = hiltViewModel()
 ) {
-    val uiState = remember {
-        HomeScreenUiState()
-    }
+    val uiState by homeViewModel.uiState.collectAsState()
 
     val homeCardItemData = remember {
-        HomeCardItemData(homeNavigator = homeNavigator)
+        HomeCardItemData(homeNavigator = homeScreenNavigator)
     }
 
     HomeScreenImpl(
         uiState = uiState,
-        homeCardItemData = homeCardItemData.items
+        homeCardItemData = homeCardItemData.items,
+        homeScreenNavigator = homeScreenNavigator
     )
 }
 
@@ -41,7 +46,8 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun HomeScreenImpl(
     uiState: HomeScreenUiState,
-    homeCardItemData: List<HomeCardItem>
+    homeCardItemData: List<HomeCardItem>,
+    homeScreenNavigator: HomeScreenNavigator
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
         rememberTopAppBarScrollState()
@@ -56,7 +62,15 @@ private fun HomeScreenImpl(
                 title = {
                     Text(text = "NewQuiz")
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                actions = {
+                    IconButton(onClick = homeScreenNavigator::navigateToSettings) {
+                        Icon(
+                            imageVector = Icons.Rounded.Settings,
+                            contentDescription = "Navigate to settings"
+                        )
+                    }
+                }
             )
         }
     ) { innerPadding ->
@@ -73,16 +87,16 @@ private fun HomeScreenImpl(
                         onDismissClick = {}
                     )
                 }
+            }
 
-                items(
-                    items = homeCardItemData,
-                    key = { it.getId() },
-                ) { item ->
-                    HomeCardItemContent(
-                        modifier = Modifier.fillParentMaxWidth(),
-                        item = item
-                    )
-                }
+            items(
+                items = homeCardItemData,
+                key = { it.getId() },
+            ) { item ->
+                HomeCardItemContent(
+                    modifier = Modifier.fillParentMaxWidth(),
+                    item = item
+                )
             }
         }
     }
@@ -160,7 +174,8 @@ private fun HomeScreenPreview() {
     NewQuizTheme {
         HomeScreenImpl(
             uiState = uiState,
-            homeCardItemData = homeCardItemData.items
+            homeCardItemData = homeCardItemData.items,
+            homeScreenNavigator = HomeNavigatorPreviewImpl()
         )
     }
 }
