@@ -60,9 +60,11 @@ fun NewQuizTheme(
     }
 
     val colorsWithHarmonizedError = setupErrorColors(colorScheme, !darkTheme)
+    val extendedColors = setupCustomColors(colorScheme, !darkTheme)
 
     CompositionLocalProvider(
-        LocalSpacing provides Spacing()
+        LocalSpacing provides Spacing(),
+        LocalExtendedColors provides extendedColors,
     ) {
         MaterialTheme(
             colorScheme = colorsWithHarmonizedError,

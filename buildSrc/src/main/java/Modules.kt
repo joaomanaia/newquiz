@@ -5,4 +5,5 @@ object Modules {
     const val data = ":data"
     const val homePresentation = ":home-presentation"
     const val quizPresentation = ":quiz-presentation"
+    const val settingsPresentation = ":settings-presentation"
 }
