@@ -38,7 +38,8 @@ fun HomeScreen(
     HomeScreenImpl(
         uiState = uiState,
         homeCardItemData = homeCardItemData.items,
-        homeScreenNavigator = homeScreenNavigator
+        homeScreenNavigator = homeScreenNavigator,
+        onEvent = homeViewModel::onEvent
     )
 }
 
@@ -47,7 +48,8 @@ fun HomeScreen(
 private fun HomeScreenImpl(
     uiState: HomeScreenUiState,
     homeCardItemData: List<HomeCardItem>,
-    homeScreenNavigator: HomeScreenNavigator
+    homeScreenNavigator: HomeScreenNavigator,
+    onEvent: (event: HomeScreenUiEvent) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
         rememberTopAppBarScrollState()
@@ -84,7 +86,9 @@ private fun HomeScreenImpl(
                     SignInCard(
                         modifier = Modifier.fillParentMaxWidth(),
                         onSignInClick = {},
-                        onDismissClick = {}
+                        onDismissClick = {
+                            onEvent(HomeScreenUiEvent.DismissLoginCard)
+                        }
                     )
                 }
             }
@@ -106,7 +110,7 @@ private fun HomeScreenImpl(
 @ExperimentalMaterial3Api
 private fun HomeCardItemContent(
     modifier: Modifier = Modifier,
-    item: HomeCardItem
+    item: HomeCardItem,
 ) {
     when (item) {
         is HomeCardItem.GroupTitle -> {
@@ -129,7 +133,7 @@ private fun HomeCardItemContent(
 private fun SignInCard(
     modifier: Modifier = Modifier,
     onSignInClick: () -> Unit,
-    onDismissClick: () -> Unit,
+    onDismissClick: () -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -175,7 +179,8 @@ private fun HomeScreenPreview() {
         HomeScreenImpl(
             uiState = uiState,
             homeCardItemData = homeCardItemData.items,
-            homeScreenNavigator = HomeNavigatorPreviewImpl()
+            homeScreenNavigator = HomeNavigatorPreviewImpl(),
+            onEvent = {}
         )
     }
 }

@@ -2,4 +2,5 @@
 <resources>
     <string name="quick_quiz">Quick Quiz</string>
     <string name="back">Back</string>
+    <string name="saved_questions">Saved questions</string>
 </resources>

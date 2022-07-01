@@ -10,10 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.EmojiEmotions
-import androidx.compose.material.icons.rounded.Message
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -31,6 +28,7 @@ import com.infinitepower.newquiz.core.navigation.MainNavGraph
 import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.extendedColors
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.settings_presentation.components.PreferencesScreen
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
@@ -66,7 +64,10 @@ private fun SettingsScreenImpl(
     onNavigateClickClick: (direction: Direction) -> Unit
 ) {
     when (uiState.screenKey) {
-        SettingsScreenPageData.MainPage.key -> MainSettingsScreen(onNavigateClickClick = onNavigateClickClick)
+        SettingsScreenPageData.MainPage.key -> MainSettingsScreen(
+            onNavigateClickClick = onNavigateClickClick,
+            onBackClick = onBackClick
+        )
         else -> PreferencesScreen(
             page = SettingsScreenPageData.getPage(uiState.screenKey),
             onBackClick = onBackClick
@@ -77,7 +78,8 @@ private fun SettingsScreenImpl(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun MainSettingsScreen(
-    onNavigateClickClick: (direction: Direction) -> Unit
+    onNavigateClickClick: (direction: Direction) -> Unit,
+    onBackClick: () -> Unit
 ) {
     val (searchQuery, setSearchQuery) = remember {
         mutableStateOf("")
@@ -96,6 +98,12 @@ fun MainSettingsScreen(
             name = stringResource(id = SettingsScreenPageData.General.stringRes),
             colorRoles = MaterialTheme.extendedColors.getColorRolesByKey(key = CustomColor.Keys.Blue)
         ),
+        SettingsBaseItemData(
+            key = SettingsScreenPageData.Quiz.key,
+            icon = Icons.Rounded.Quiz,
+            name = stringResource(id = SettingsScreenPageData.Quiz.stringRes),
+            colorRoles = MaterialTheme.extendedColors.getColorRolesByKey(key = CustomColor.Keys.Blue)
+        ),
     )
 
     val spaceMedium = MaterialTheme.spacing.medium
@@ -106,7 +114,8 @@ fun MainSettingsScreen(
                 title = {
                     Text(text = stringResource(id = R.string.settings))
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                navigationIcon = { BackIconButton(onClick = onBackClick) }
             )
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)

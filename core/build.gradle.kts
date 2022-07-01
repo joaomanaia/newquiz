@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("kotlinx-serialization")
     id("dagger.hilt.android.plugin")
     id("com.google.devtools.ksp") version "1.6.21-1.0.6"
 }

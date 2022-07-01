@@ -88,7 +88,7 @@ sealed class Preference {
          * A [PreferenceItem] that displays a seekBar and the currently selected value.
          */
         data class SeekBarPreference(
-            val request: PreferenceRequest<Float>,
+            val request: PreferenceRequest<Int>,
             override val title: String,
             override val summary: String? = null,
             override val singleLineTitle: Boolean,
@@ -96,10 +96,10 @@ sealed class Preference {
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
 
-            val valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
+            val valueRange: ClosedRange<Int> = 0..10,
             val steps: Int = 0,
-            val valueRepresentation: (Float) -> String
-        ) : PreferenceItem<Float>()
+            val valueRepresentation: (Int) -> String
+        ) : PreferenceItem<Int>()
 
         /**
          * 	A [PreferenceItem] that displays a list of entries as a DropDownMenu.

@@ -4,4 +4,6 @@ sealed class QuizScreenUiEvent {
     data class SelectAnswer(val answer: SelectedAnswer) : QuizScreenUiEvent()
 
     object VerifyAnswer : QuizScreenUiEvent()
+
+    object SaveQuestion : QuizScreenUiEvent()
 }

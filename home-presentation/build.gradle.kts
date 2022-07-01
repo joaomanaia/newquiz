@@ -61,6 +61,7 @@ dependencies {
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.activity.compose)
+    implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.compose.material3)
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
 
@@ -75,8 +76,10 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:_")
 
     implementation("com.airbnb.android:lottie-compose:_")
+    implementation(AndroidX.dataStore.preferences)
 
     implementation(project(Modules.core))
+    implementation(project(Modules.model))
 }
 
 ksp {

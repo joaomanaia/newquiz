@@ -4,7 +4,6 @@ import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.infinitepower.newquiz.model.question.opentdb.OpenTDBQuestionResponse
 import kotlinx.serialization.Serializable
 import java.security.SecureRandom
 
@@ -21,7 +20,7 @@ data class Question(
     @ColumnInfo(name = "correct_ans") val correctAns: Int,
     val type: String,
     val difficulty: String
-) {
+) : java.io.Serializable {
     fun toQuestionStep() = QuestionStep.NotCurrent(this)
 }
 
