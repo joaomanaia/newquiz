@@ -18,6 +18,9 @@
         <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/compose/quiz_presentation/components/CardQuestionAnswer.kt" value="0.48055555555555557" />
         <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/compose/quiz_presentation/components/CardQuestionOption.kt" value="0.335559265442404" />
         <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/compose/quiz_presentation/components/QuizStepView.kt" value="1.0" />
+        <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/quiz_presentation/QuizScreen.kt" value="0.33" />
+        <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/quiz_presentation/components/QuizStepView.kt" value="1.0497131931166348" />
+        <entry key="quiz-presentation/src/main/java/com/infinitepower/newquiz/quiz_presentation/saved_questions/SavedQuestionsScreen.kt" value="0.33" />
       </map>
     </option>
   </component>

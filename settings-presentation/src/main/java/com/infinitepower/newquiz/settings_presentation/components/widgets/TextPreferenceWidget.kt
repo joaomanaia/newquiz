@@ -2,17 +2,15 @@ package com.infinitepower.newquiz.settings_presentation.components.widgets
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
 import com.infinitepower.newquiz.core.ui.StatusWrapper
-import com.infinitepower.newquiz.settings_presentation.components.MaterialListItem
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 internal fun TextPreferenceWidget(
     preference: Preference.PreferenceItem<*>,
     summary: String? = null,
@@ -25,98 +23,100 @@ internal fun TextPreferenceWidget(
 
     StatusWrapper(enabled = isEnabled) {
         if (summaryText == null) {
-            MaterialListItem(
-                text = {
+            ListItem(
+                headlineText = {
                     Text(
                         text = preference.title,
                         maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE
                     )
                 },
-                icon = preference.icon,
+                leadingContent = preference.icon,
                 modifier = Modifier.clickable(
                     enabled = isEnabled,
                     onClick = onClick
                 ),
-                trailing = trailing,
+                trailingContent = trailing,
             )
         } else {
-            MaterialListItem(
-                text = {
+            ListItem(
+                headlineText = {
                     Text(
                         text = preference.title,
                         maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE
                     )
                 },
-                secondaryText = {
+                supportingText = {
                     Text(text = summaryText)
                 },
-                icon = preference.icon,
+                leadingContent = preference.icon,
                 modifier = Modifier.clickable(
                     enabled = isEnabled,
                     onClick = onClick
                 ),
-                trailing = trailing,
+                trailingContent = trailing
             )
         }
     }
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 internal fun TextPreferenceWidgetRes(
     preference: Preference.PreferenceItem<*>,
-    @StringRes summary: String? = null,
+    summary: String? = null,
     onClick: () -> Unit = { },
     trailing: @Composable (() -> Unit)? = null
 ) {
     val isEnabled = LocalPreferenceEnabledStatus.current && preference.enabled
 
     StatusWrapper(enabled = isEnabled) {
-        MaterialListItem(
-            text = {
+        ListItem(
+            headlineText = {
                 Text(
                     text = preference.title,
                     maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE
                 )
             },
-            secondaryText = {
+            supportingText = {
                 val text = summary ?: preference.summary
                 if (text != null) Text(text = text)
             },
-            icon = preference.icon,
+            leadingContent = preference.icon,
             modifier = Modifier.clickable(
                 enabled = isEnabled,
                 onClick = onClick
             ),
-            trailing = trailing,
+            trailingContent = trailing,
         )
     }
 }
 
 @Composable
-fun TextPreferenceWidget(
+@OptIn(ExperimentalMaterial3Api::class)
+internal fun TextPreferenceWidget(
     preference: Preference.PreferenceItem<*>,
     summary: @Composable () -> Unit,
-    onClick: () -> Unit = { },
-    trailing: @Composable (() -> Unit)? = null
+    trailing: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit = { }
 ) {
     val isEnabled = LocalPreferenceEnabledStatus.current && preference.enabled
 
     StatusWrapper(enabled = isEnabled) {
-        MaterialListItem(
-            text = {
+        ListItem(
+            headlineText = {
                 Text(
                     text = preference.title,
                     maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE,
                     style = MaterialTheme.typography.titleMedium
                 )
             },
-            secondaryText = summary,
-            icon = preference.icon,
+            supportingText = summary,
+            leadingContent = preference.icon,
             modifier = Modifier.clickable(
                 enabled = isEnabled,
                 onClick = onClick
             ),
-            trailing = trailing,
+            trailingContent = trailing,
         )
     }
 }

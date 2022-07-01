@@ -1,5 +1,7 @@
 package com.infinitepower.newquiz.home_presentation.data
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Save
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
 import com.infinitepower.newquiz.home_presentation.model.CardIcon
@@ -17,6 +19,14 @@ internal class HomeCardItemData(
             title = CoreR.string.quick_quiz,
             icon = CardIcon.Lottie(LottieCompositionSpec.RawRes(CoreR.raw.quick_quiz)),
             onClick = homeNavigator::navigateToQuickQuiz
+        ),
+        HomeCardItem.GroupTitle(
+            title = CoreR.string.saved_questions,
+        ),
+        HomeCardItem.LargeCard(
+            title = CoreR.string.saved_questions,
+            icon = CardIcon.Icon(Icons.Rounded.Save),
+            onClick = homeNavigator::navigateToSavedQuestions
         )
     )
 }

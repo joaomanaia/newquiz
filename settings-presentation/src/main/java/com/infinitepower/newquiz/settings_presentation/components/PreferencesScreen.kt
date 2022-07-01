@@ -60,6 +60,7 @@ fun PreferencesScreen(
             items = when(page) {
                 is SettingsScreenPageData.MainPage -> emptyList()
                 is SettingsScreenPageData.General -> page.items(scope, dataStoreManager)
+                is SettingsScreenPageData.Quiz -> page.items()
             },
             dataStore = dataStore,
             modifier = Modifier

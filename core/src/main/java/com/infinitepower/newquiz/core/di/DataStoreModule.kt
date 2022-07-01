@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.infinitepower.newquiz.core.common.dataStore.settingsDataStore
+import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
 import dagger.Module
 import dagger.Provides
@@ -28,7 +29,7 @@ object DataStoreModule {
     @SettingsDataStoreManager
     fun provideDataStoreManager(
         @SettingsDataStore dataStore: DataStore<Preferences>
-    ): DataStoreManagerImpl = DataStoreManagerImpl(dataStore)
+    ): DataStoreManager = DataStoreManagerImpl(dataStore)
 }
 
 @Qualifier

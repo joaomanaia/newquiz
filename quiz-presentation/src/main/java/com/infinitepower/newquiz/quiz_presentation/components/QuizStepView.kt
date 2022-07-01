@@ -92,6 +92,10 @@ private fun QuizStepViewImpl(
                 )
             }
 
+            val textStyle = if (position >= 100) {
+                MaterialTheme.typography.bodyMedium
+            } else MaterialTheme.typography.titleLarge
+
             AnimatedVisibility(
                 visible = questionStep !is QuestionStep.Completed,
                 enter = scaleIn(),
@@ -100,7 +104,7 @@ private fun QuizStepViewImpl(
                 Text(
                     text = position.toString(),
                     color = stepTextColor,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = textStyle,
                     textAlign = TextAlign.Center
                 )
             }

@@ -33,8 +33,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Keep
 data class QuizScreenNavArg(
-    val quizType: QuizType,
-    val initialQuestions: ArrayList<Question> = arrayListOf()
+    val initialQuestions: ArrayList<Question> = arrayListOf(),
+    val category: String? = null
 )
 
 @Composable
@@ -102,6 +102,7 @@ private fun ColumnScope.QuizContentWidthCompact(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
+        contentPadding = PaddingValues(horizontal = spaceMedium)
     ) {
         itemsIndexed(
             items = uiState.questionSteps,
@@ -148,18 +149,11 @@ private fun ColumnScope.QuizContentWidthCompact(
                 }
             )
             Spacer(modifier = Modifier.height(spaceMedium))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(spaceMedium, Alignment.CenterHorizontally),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Button(
-                    onClick = { onEvent(QuizScreenUiEvent.VerifyAnswer) },
-                    enabled = uiState.selectedAnswer.isSelected
-                ) {
-                    Text(text = "Verify")
-                }
-            }
+            RowActionButtons(
+                answerSelected = uiState.selectedAnswer.isSelected,
+                onVerifyQuestionClick = { onEvent(QuizScreenUiEvent.VerifyAnswer) },
+                onSaveQuestionClick = { onEvent(QuizScreenUiEvent.SaveQuestion) }
+            )
         }
     }
 }
@@ -216,18 +210,11 @@ private fun ColumnScope.QuizContentWidthMedium(
                     )
                 }
                 Spacer(modifier = Modifier.height(spaceMedium))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(spaceMedium, Alignment.CenterHorizontally),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Button(
-                        onClick = { onEvent(QuizScreenUiEvent.VerifyAnswer) },
-                        enabled = uiState.selectedAnswer.isSelected
-                    ) {
-                        Text(text = "Verify")
-                    }
-                }
+                RowActionButtons(
+                    answerSelected = uiState.selectedAnswer.isSelected,
+                    onVerifyQuestionClick = { onEvent(QuizScreenUiEvent.VerifyAnswer) },
+                    onSaveQuestionClick = { onEvent(QuizScreenUiEvent.SaveQuestion) }
+                )
             }
             CardQuestionAnswers(
                 answers = currentQuestion?.answers.orEmpty(),
@@ -237,6 +224,32 @@ private fun ColumnScope.QuizContentWidthMedium(
                 },
                 modifier = Modifier.weight(1f)
             )
+        }
+    }
+}
+
+@Composable
+private fun RowActionButtons(
+    modifier: Modifier = Modifier,
+    answerSelected: Boolean,
+    onVerifyQuestionClick: () -> Unit,
+    onSaveQuestionClick: () -> Unit,
+) {
+    val spaceMedium = MaterialTheme.spacing.medium
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(spaceMedium, Alignment.CenterHorizontally),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        TextButton(onClick = onSaveQuestionClick) {
+            Text(text = "Save")
+        }
+        Button(
+            onClick = onVerifyQuestionClick,
+            enabled = answerSelected
+        ) {
+            Text(text = "Verify")
         }
     }
 }

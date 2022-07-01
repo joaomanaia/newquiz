@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.infinitepower.newquiz.quiz_presentation.destinations.QuizScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
+import com.infinitepower.newquiz.quiz_presentation.destinations.SavedQuestionsScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
@@ -31,7 +32,8 @@ internal object AppNavGraphs {
         destinations = listOf(
             HomeScreenDestination,
             QuizScreenDestination,
-            SettingsScreenDestination
+            SettingsScreenDestination,
+            SavedQuestionsScreenDestination
         )
     )
 }

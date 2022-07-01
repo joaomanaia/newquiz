@@ -64,7 +64,6 @@ dependencies {
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.activity.compose)
-    implementation(AndroidX.compose.material)
     implementation(AndroidX.compose.material3)
     implementation(AndroidX.compose.material.icons.extended)
 

@@ -65,6 +65,7 @@ dependencies {
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material3)
     implementation(AndroidX.compose.material3.windowSizeClass)
+    implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.constraintLayout.compose)
 
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
@@ -82,6 +83,13 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:_")
 
     implementation(KotlinX.serialization.json)
+
+    implementation(AndroidX.room.runtime)
+    annotationProcessor(AndroidX.room.compiler)
+    ksp(AndroidX.room.compiler)
+    implementation(AndroidX.room.ktx)
+    testImplementation(AndroidX.room.testing)
+    implementation(AndroidX.room.paging)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))

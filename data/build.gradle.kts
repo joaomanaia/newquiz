@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     id("kotlinx-serialization")
     id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp") version "1.6.21-1.0.5"
 }
 
 android {
@@ -62,6 +63,11 @@ dependencies {
     implementation(AndroidX.hilt.navigationCompose)
     androidTestImplementation(Google.dagger.hilt.android.testing)
     kaptAndroidTest(Google.dagger.hilt.android.compiler)
+
+    implementation(AndroidX.room.runtime)
+    annotationProcessor(AndroidX.room.compiler)
+    ksp(AndroidX.room.compiler)
+    implementation(AndroidX.room.ktx)
 
     implementation(project(":core"))
     implementation(project(":domain"))

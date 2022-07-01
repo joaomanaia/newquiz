@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp") version "1.6.21-1.0.5"
 }
 
 android {
@@ -50,6 +51,11 @@ dependencies {
 
     implementation(project(":core"))
     implementation(project(":model"))
+
+    implementation(AndroidX.room.runtime)
+    annotationProcessor(AndroidX.room.compiler)
+    ksp(AndroidX.room.compiler)
+    implementation(AndroidX.room.ktx)
 
     implementation(AndroidX.paging.runtime)
 }

@@ -15,12 +15,13 @@ import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
 import com.infinitepower.newquiz.settings_presentation.components.widgets.TextPreferenceWidget
 import com.infinitepower.newquiz.settings_presentation.model.Preference
+import kotlin.math.roundToInt
 
 @Composable
 internal fun SeekBarPreferenceWidget(
     preference: Preference.PreferenceItem.SeekBarPreference,
-    value: Float,
-    onValueChange: (Float) -> Unit,
+    value: Int,
+    onValueChange: (Int) -> Unit,
 ) {
     val currentValue = remember(value) { mutableStateOf(value) }
 
@@ -40,8 +41,8 @@ internal fun SeekBarPreferenceWidget(
 @Composable
 private fun PreferenceSummary(
     preference: Preference.PreferenceItem.SeekBarPreference,
-    sliderValue: Float,
-    onValueChange: (Float) -> Unit,
+    sliderValue: Int,
+    onValueChange: (Int) -> Unit,
     onValueChangeEnd: () -> Unit,
 ) {
     val isEnabled = LocalPreferenceEnabledStatus.current && preference.enabled
@@ -53,9 +54,9 @@ private fun PreferenceSummary(
             Text(text = preference.valueRepresentation(sliderValue))
             Spacer(modifier = Modifier.width(16.dp))
             Slider(
-                value = sliderValue,
-                onValueChange = { if (preference.enabled) onValueChange(it) },
-                valueRange = preference.valueRange,
+                value = sliderValue.toFloat(),
+                onValueChange = { if (preference.enabled) onValueChange(it.roundToInt()) },
+                valueRange = preference.valueRange.toClosedFloatingPointRange(),
                 steps = preference.steps,
                 onValueChangeFinished = onValueChangeEnd,
                 enabled = isEnabled
@@ -63,3 +64,5 @@ private fun PreferenceSummary(
         }
     }
 }
+
+private fun ClosedRange<Int>.toClosedFloatingPointRange(): ClosedFloatingPointRange<Float> = (start.toFloat()..endInclusive.toFloat())

@@ -129,13 +129,6 @@ dependencies {
     implementation(AndroidX.work.runtimeKtx)
     androidTestImplementation(AndroidX.work.testing)
 
-    implementation(AndroidX.room.runtime)
-    annotationProcessor(AndroidX.room.compiler)
-    ksp(AndroidX.room.compiler)
-    implementation(AndroidX.room.ktx)
-    testImplementation(AndroidX.room.testing)
-    implementation(AndroidX.room.paging)
-
     testImplementation("com.google.truth:truth:_")
     androidTestImplementation("com.google.truth:truth:_")
 
