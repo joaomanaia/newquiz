@@ -53,7 +53,7 @@ private fun SavedQuestionsScreenImpl(
     onEvent: (event: SavedQuestionsUiEvent) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
-        rememberTopAppBarScrollState()
+        rememberTopAppBarState()
     )
 
     val (moreVertPopupExpanded, setMoreVertPopupExpanded) = remember {

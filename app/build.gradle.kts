@@ -51,7 +51,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Compose.composeVersion
+        kotlinCompilerExtensionVersion = Compose.composeCompilerVersion
     }
     packagingOptions {
         resources {
@@ -140,6 +140,7 @@ dependencies {
     implementation(project(Modules.homePresentation))
     implementation(project(Modules.quizPresentation))
     implementation(project(Modules.settingsPresentation))
+    implementation(project(Modules.wordle))
 }
 
 tasks.withType<Test> {

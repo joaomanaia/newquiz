@@ -40,7 +40,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Compose.composeVersion
+        kotlinCompilerExtensionVersion = Compose.composeCompilerVersion
     }
     libraryVariants.all {
         kotlin.sourceSets {
@@ -71,10 +71,15 @@ dependencies {
     implementation(AndroidX.hilt.navigationCompose)
     androidTestImplementation(Google.dagger.hilt.android.testing)
     kaptAndroidTest(Google.dagger.hilt.compiler)
+    implementation(AndroidX.hilt.work)
 
     implementation(Google.android.material)
 
     implementation(AndroidX.dataStore.preferences)
+
+    implementation(platform(Firebase.bom))
+    api(Google.firebase.analyticsKtx.withVersionPlaceholder())
+    implementation(Google.firebase.remoteConfigKtx)
 
     implementation("io.github.raamcosta.compose-destinations:core:_")
     ksp("io.github.raamcosta.compose-destinations:ksp:_")

@@ -8,6 +8,8 @@ interface HomeScreenNavigator {
     fun navigateToSettings()
 
     fun navigateToSavedQuestions()
+
+    fun navigateToWordle()
 }
 
 internal class HomeNavigatorPreviewImpl : HomeScreenNavigator {
@@ -21,5 +23,9 @@ internal class HomeNavigatorPreviewImpl : HomeScreenNavigator {
 
     override fun navigateToSavedQuestions() {
         println("Navigating to Saved Questions")
+    }
+
+    override fun navigateToWordle() {
+        println("Navigating to Wordle")
     }
 }

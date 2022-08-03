@@ -26,7 +26,7 @@ fun PreferencesScreen(
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
         decayAnimationSpec = decayAnimationSpec,
-        state = rememberTopAppBarScrollState()
+        state = rememberTopAppBarState()
     )
 
     val context = LocalContext.current

@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/quiz-presentation" />
             <option value="$PROJECT_DIR$/settings-presentation" />
+            <option value="$PROJECT_DIR$/wordle" />
           </set>
         </option>
       </GradleProjectSettings>
