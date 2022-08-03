@@ -88,7 +88,7 @@ fun MainSettingsScreen(
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
         decayAnimationSpec = decayAnimationSpec,
-        state = rememberTopAppBarScrollState()
+        state = rememberTopAppBarState()
     )
 
     val settingsItems = listOf(

@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewQuiz.Starting"
-        android:name="com.infinitepower.newquiz.MyApp"
+        android:name=".NewQuizApp"
         android:hardwareAccelerated="true">
         <activity
             android:name="com.infinitepower.newquiz.MainActivity"

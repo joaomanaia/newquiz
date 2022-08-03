@@ -52,7 +52,7 @@ private fun HomeScreenImpl(
     onEvent: (event: HomeScreenUiEvent) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
-        rememberTopAppBarScrollState()
+        rememberTopAppBarState()
     )
 
     val spaceMedium = MaterialTheme.spacing.medium

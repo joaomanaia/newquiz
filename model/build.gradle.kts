@@ -49,3 +49,7 @@ dependencies {
     ksp(AndroidX.room.compiler)
     implementation(AndroidX.room.ktx)
 }
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}

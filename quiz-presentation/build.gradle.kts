@@ -40,7 +40,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Compose.composeVersion
+        kotlinCompilerExtensionVersion = Compose.composeCompilerVersion
     }
     libraryVariants.all {
         kotlin.sourceSets {
