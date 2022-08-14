@@ -4,11 +4,20 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.analytics.logging.wordle.LocalWordleLoggingAnalyticsImpl
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.domain.repository.wordle.word.WordleRepository
+import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
+import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
+import com.infinitepower.newquiz.wordle.data.repository.wordle.daily.FakeDailyWordleRepository
+import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.ramcosta.composedestinations.navigation.dependency
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -30,6 +39,7 @@ class WordleScreenTest {
     private lateinit var viewModel: WordleScreenViewModel
 
     @Inject lateinit var wordleRepository: WordleRepository
+    @Inject lateinit var workManager: WorkManager
 
     @Before
     fun setup() {
@@ -40,12 +50,10 @@ class WordleScreenTest {
                 Surface {
                     savedStateHandle = SavedStateHandle(mapOf(WordleScreenNavArgs::rowLimit.name to 3))
 
-                    // TODO: change to di
                     val localAnalytics: WordleLoggingAnalytics = LocalWordleLoggingAnalyticsImpl()
+                    viewModel = WordleScreenViewModel(wordleRepository, savedStateHandle, localAnalytics, workManager)
 
-                    viewModel = WordleScreenViewModel(wordleRepository, savedStateHandle, localAnalytics)
-
-                    WordleScreen(wordleScreenViewModel = viewModel)
+                    WordleScreen(wordleScreenViewModel = viewModel, navigator = EmptyDestinationsNavigator)
                 }
             }
         }
@@ -223,7 +231,7 @@ class WordleScreenTest {
             .onAllNodesWithTag(WordleScreenTestTags.WORDLE_ROW)
             .assertCountEquals(3)
 
-        assert(!viewModel.uiState.value.isGamedEnded)
+        //assert(!viewModel.uiState.value.isGamedEnded)
 
         clickFirstKeyWordTimes()
 
@@ -241,6 +249,52 @@ class WordleScreenTest {
             .assertDoesNotExist()
 
         assert(viewModel.uiState.value.isGamedEnded)
+    }
+
+    @Test
+    fun wordleScreen_correctWord() {
+        composeRule.waitUntil {
+            !viewModel.uiState.value.loading
+        }
+
+        composeRule.onNodeWithTag(WordleScreenTestTags.VERIFY_FAB).assertDoesNotExist()
+
+        composeRule
+            .onNodeWithTag(WordleScreenTestTags.KEYBOARD)
+            .onChildren()
+            .assertCountEquals(WordleScreenUiState.ALL_LETTERS.length)
+            .assertAll(isEnabled())
+            .assertAll(hasClickAction())
+
+        composeRule
+            .onAllNodesWithTag(WordleScreenTestTags.WORDLE_ROW)
+            .assertCountEquals(1)
+            .onFirst()
+            .onChildren()
+            .assertAll(hasText(" "))
+            .assertAll(hasContentDescription("Item empty"))
+
+        val keyboardSemantics = composeRule
+            .onNodeWithTag(WordleScreenTestTags.KEYBOARD)
+            .onChildren()
+
+        keyboardSemantics[WordleScreenUiState.ALL_LETTERS.indexOf('T')].performClick()
+        keyboardSemantics[WordleScreenUiState.ALL_LETTERS.indexOf('E')].performClick()
+        keyboardSemantics[WordleScreenUiState.ALL_LETTERS.indexOf('S')].performClick()
+        keyboardSemantics[WordleScreenUiState.ALL_LETTERS.indexOf('T')].performClick()
+
+        composeRule
+            .onNodeWithTag(WordleScreenTestTags.VERIFY_FAB)
+            .performClick()
+            .assertDoesNotExist()
+
+        composeRule
+            .onAllNodesWithTag(WordleScreenTestTags.WORDLE_ROW)
+            .assertCountEquals(1)
+
+        composeRule
+            .onNodeWithTag(WordleScreenTestTags.KEYBOARD)
+            .assertDoesNotExist()
     }
 
     private fun clickFirstKeyWordTimes() {

@@ -15,8 +15,6 @@ data class QuizScreenUiState(
 ) {
     val currentQuestionStep: QuestionStep.Current? = questionSteps.getOrNull(currentQuestionIndex)?.asCurrent()
 
-    @Composable
-    @ReadOnlyComposable
     fun getQuestionPositionFormatted(): String =
         "Question ${currentQuestionIndex + 1}/${questionSteps.size}"
 

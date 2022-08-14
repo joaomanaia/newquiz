@@ -4,4 +4,6 @@
     <string name="back">Back</string>
     <string name="saved_questions">Saved questions</string>
     <string name="wordle">Wordle</string>
+    <string name="wordle_infinite">Wordle infinite</string>
+    <string name="wordle_daily">Daily wordle</string>
 </resources>

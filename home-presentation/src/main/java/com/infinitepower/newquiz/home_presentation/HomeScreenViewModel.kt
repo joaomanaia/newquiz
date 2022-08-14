@@ -5,31 +5,37 @@ import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    @SettingsDataStoreManager private val dataStoreManager: DataStoreManager
+    @SettingsDataStoreManager private val dataStoreManager: DataStoreManager,
+    private val authUserRepository: AuthUserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            dataStoreManager
-                .getPreferenceFlow(SettingsCommon.ShowLoginCard)
-                .collect { showLoginCard ->
-                    _uiState.update { currentState ->
-                        currentState.copy(showLoginCard = showLoginCard)
-                    }
+        dataStoreManager
+            .getPreferenceFlow(SettingsCommon.ShowLoginCard)
+            .onEach { showLoginCard ->
+                _uiState.update { currentState ->
+                    currentState.copy(showLoginCard = showLoginCard)
                 }
-        }
+            }.launchIn(viewModelScope)
+
+        authUserRepository
+            .isSignedInFlow
+            .onEach { isLoggedIn ->
+                _uiState.update { currentState ->
+                    currentState.copy(isLoggedIn = isLoggedIn)
+                }
+            }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: HomeScreenUiEvent) {

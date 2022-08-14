@@ -23,13 +23,4 @@ class LocalWordleLoggingAnalyticsImpl : WordleLoggingAnalytics {
             "Game end: Word length: $wordLength, Quiz max rows: $maxRows, Last row position: $lastRow, Is last round correct: $lastRowCorrect, Word day: $day"
         )
     }
-
-    override fun logRowCompleted(
-        wordLength: Int,
-        maxRows: Int,
-        correctItems: Int,
-        presentItems: Int
-    ) {
-        Log.d(TAG, "Row completed: Word length: $wordLength, Quiz max rows: $maxRows, Correct items: $correctItems, Present items: $presentItems")
-    }
 }

@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.core.navigation
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -9,10 +10,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.google.android.ump.ConsentInformation
 import com.infinitepower.newquiz.quiz_presentation.destinations.QuizScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
+import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
+import com.infinitepower.newquiz.quiz_presentation.destinations.QuizListScreenDestination
 import com.infinitepower.newquiz.quiz_presentation.destinations.SavedQuestionsScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
+import com.infinitepower.newquiz.wordle.destinations.DailyWordSelectorScreenDestination
+import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
@@ -46,7 +52,11 @@ internal object AppNavGraphs {
             QuizScreenDestination,
             SettingsScreenDestination,
             SavedQuestionsScreenDestination,
-            WordleScreenDestination
+            WordleScreenDestination,
+            WordleListScreenDestination,
+            DailyWordSelectorScreenDestination,
+            QuizListScreenDestination,
+            LoginScreenDestination
         )
     )
 }
@@ -66,7 +76,8 @@ internal fun AppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     windowWidthSizeClass: WindowWidthSizeClass,
-    windowHeightSizeClass: WindowHeightSizeClass
+    windowHeightSizeClass: WindowHeightSizeClass,
+    consentInformation: ConsentInformation
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -75,6 +86,7 @@ internal fun AppNavigation(
         drawerState = drawerState,
         drawerContent = {
             NavigationDrawerContent(
+                modifier = Modifier.fillMaxHeight(),
                 navController = navController,
                 drawerState = drawerState,
                 onItemClick = { item ->
@@ -92,6 +104,7 @@ internal fun AppNavigation(
                 dependency(currentNavigator())
                 dependency(windowWidthSizeClass)
                 dependency(windowHeightSizeClass)
+                dependency(consentInformation)
             }
         )
     }

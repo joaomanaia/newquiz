@@ -1,24 +1,30 @@
-package com.infinitepower.newquiz.home_presentation.components
+package com.infinitepower.newquiz.core.ui.home_card.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.infinitepower.newquiz.core.R
+import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.home_presentation.model.CardIcon
-import com.infinitepower.newquiz.home_presentation.model.HomeCardItem
+import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
+import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 
 @Composable
 @ExperimentalMaterial3Api
-internal fun HomeLargeCard(
+fun HomeLargeCard(
     modifier: Modifier = Modifier,
     data: HomeCardItem.LargeCard
 ) {
@@ -64,6 +70,24 @@ internal fun HomeLargeCard(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+@PreviewNightLight
+@OptIn(ExperimentalMaterial3Api::class)
+private fun HomeLargeCardPreview() {
+    NewQuizTheme {
+        Surface {
+            HomeLargeCard(
+                data = HomeCardItem.LargeCard(
+                    title = R.string.quick_quiz,
+                    icon = CardIcon.Icon(Icons.Rounded.Check),
+                    onClick = {}
+                ),
+                modifier = Modifier.padding(16.dp)
+            )
         }
     }
 }

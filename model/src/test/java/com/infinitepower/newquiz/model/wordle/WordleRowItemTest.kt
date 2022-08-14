@@ -6,6 +6,37 @@ import org.junit.jupiter.api.Test
 internal class WordleRowItemTest {
 
     @Test
+    fun isRowCorrect() {
+        val rowItem1 = WordleRowItem(items = listOf(WordleItem.Empty))
+        assertThat(rowItem1.isRowCorrect).isFalse()
+
+        val rowItem2 = WordleRowItem(items = listOf(WordleItem.fromChar('A')))
+        assertThat(rowItem2.isRowCorrect).isFalse()
+
+        val rowItem3 = WordleRowItem(
+            items = listOf(
+                WordleItem.fromChar('A'),
+                WordleItem.Present(WordleChar('B')),
+                WordleItem.Correct(WordleChar('C'))
+            )
+        )
+        assertThat(rowItem3.isRowCorrect).isFalse()
+
+        val rowItem4 = WordleRowItem(
+            items = listOf(
+                WordleItem.fromChar('A'),
+                WordleItem.Empty,
+                WordleItem.Present(WordleChar('B')),
+                WordleItem.Correct(WordleChar('C'))
+            )
+        )
+        assertThat(rowItem4.isRowCorrect).isFalse()
+
+        val rowItem5 = WordleRowItem(items = listOf(WordleItem.Correct(WordleChar('C'))))
+        assertThat(rowItem5.isRowCorrect).isTrue()
+    }
+
+    @Test
     fun isRowCompleted() {
         val rowItem1 = WordleRowItem(items = listOf(WordleItem.Empty))
         assertThat(rowItem1.isRowCompleted).isFalse()

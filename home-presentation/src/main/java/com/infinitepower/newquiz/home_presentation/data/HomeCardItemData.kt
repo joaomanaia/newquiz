@@ -4,15 +4,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Save
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.infinitepower.newquiz.core.ui.home_card.data.CardItemDataCore
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
-import com.infinitepower.newquiz.home_presentation.model.CardIcon
-import com.infinitepower.newquiz.home_presentation.model.HomeCardItem
+import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
+import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 import com.infinitepower.newquiz.core.R as CoreR
 
 internal class HomeCardItemData(
     homeNavigator: HomeScreenNavigator
-) {
-    val items = listOf(
+) : CardItemDataCore {
+    override val items = listOf(
         HomeCardItem.GroupTitle(
             title = CoreR.string.quick_quiz,
         ),
@@ -20,14 +21,6 @@ internal class HomeCardItemData(
             title = CoreR.string.quick_quiz,
             icon = CardIcon.Lottie(LottieCompositionSpec.RawRes(CoreR.raw.quick_quiz)),
             onClick = homeNavigator::navigateToQuickQuiz
-        ),
-        HomeCardItem.GroupTitle(
-            title = CoreR.string.saved_questions,
-        ),
-        HomeCardItem.LargeCard(
-            title = CoreR.string.saved_questions,
-            icon = CardIcon.Icon(Icons.Rounded.Save),
-            onClick = homeNavigator::navigateToSavedQuestions
         ),
         HomeCardItem.GroupTitle(
             title = CoreR.string.wordle,

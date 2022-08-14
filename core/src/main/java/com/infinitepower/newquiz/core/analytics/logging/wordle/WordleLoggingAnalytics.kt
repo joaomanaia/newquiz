@@ -14,11 +14,4 @@ interface WordleLoggingAnalytics {
         lastRowCorrect: Boolean,
         day: String? = null
     )
-
-    fun logRowCompleted(
-        wordLength: Int,
-        maxRows: Int,
-        correctItems: Int,
-        presentItems: Int
-    )
 }

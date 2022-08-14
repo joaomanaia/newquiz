@@ -3,8 +3,6 @@ package com.infinitepower.newquiz.home_presentation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,15 +15,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.home_presentation.components.HomeGroupTitle
-import com.infinitepower.newquiz.home_presentation.components.HomeLargeCard
+import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemContent
 import com.infinitepower.newquiz.home_presentation.data.HomeCardItemData
-import com.infinitepower.newquiz.home_presentation.model.HomeCardItem
+import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
+import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
 fun HomeScreen(
+    navigator: DestinationsNavigator,
     homeScreenNavigator: HomeScreenNavigator,
     homeViewModel: HomeScreenViewModel = hiltViewModel()
 ) {
@@ -38,8 +38,8 @@ fun HomeScreen(
     HomeScreenImpl(
         uiState = uiState,
         homeCardItemData = homeCardItemData.items,
-        homeScreenNavigator = homeScreenNavigator,
-        onEvent = homeViewModel::onEvent
+        onEvent = homeViewModel::onEvent,
+        navigateToLoginScreen = { navigator.navigate(LoginScreenDestination) }
     )
 }
 
@@ -48,8 +48,8 @@ fun HomeScreen(
 private fun HomeScreenImpl(
     uiState: HomeScreenUiState,
     homeCardItemData: List<HomeCardItem>,
-    homeScreenNavigator: HomeScreenNavigator,
-    onEvent: (event: HomeScreenUiEvent) -> Unit
+    onEvent: (event: HomeScreenUiEvent) -> Unit,
+    navigateToLoginScreen: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
         rememberTopAppBarState()
@@ -64,15 +64,7 @@ private fun HomeScreenImpl(
                 title = {
                     Text(text = "NewQuiz")
                 },
-                scrollBehavior = scrollBehavior,
-                actions = {
-                    IconButton(onClick = homeScreenNavigator::navigateToSettings) {
-                        Icon(
-                            imageVector = Icons.Rounded.Settings,
-                            contentDescription = "Navigate to settings"
-                        )
-                    }
-                }
+                scrollBehavior = scrollBehavior
             )
         }
     ) { innerPadding ->
@@ -85,7 +77,7 @@ private fun HomeScreenImpl(
                 item {
                     SignInCard(
                         modifier = Modifier.fillParentMaxWidth(),
-                        onSignInClick = {},
+                        onSignInClick = navigateToLoginScreen,
                         onDismissClick = {
                             onEvent(HomeScreenUiEvent.DismissLoginCard)
                         }
@@ -107,29 +99,6 @@ private fun HomeScreenImpl(
 }
 
 @Composable
-@ExperimentalMaterial3Api
-private fun HomeCardItemContent(
-    modifier: Modifier = Modifier,
-    item: HomeCardItem,
-) {
-    when (item) {
-        is HomeCardItem.GroupTitle -> {
-            HomeGroupTitle(
-                modifier = modifier,
-                data = item
-            )
-        }
-        is HomeCardItem.LargeCard -> {
-            HomeLargeCard(
-                modifier = modifier,
-                data = item
-            )
-        }
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun SignInCard(
     modifier: Modifier = Modifier,
     onSignInClick: () -> Unit,
@@ -179,8 +148,8 @@ private fun HomeScreenPreview() {
         HomeScreenImpl(
             uiState = uiState,
             homeCardItemData = homeCardItemData.items,
-            homeScreenNavigator = HomeNavigatorPreviewImpl(),
-            onEvent = {}
+            onEvent = {},
+            navigateToLoginScreen = {}
         )
     }
 }

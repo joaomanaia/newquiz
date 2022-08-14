@@ -14,35 +14,44 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.navigation.NavController
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
+import com.infinitepower.newquiz.quiz_presentation.destinations.QuizListScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
+import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import kotlinx.coroutines.launch
 
 private val navDrawerItems = listOf(
-    NavigationDrawerItem.Item(
-        text = "Normal Quiz",
-        icon = Icons.Rounded.Quiz,
+    NavDrawerItem.Item(
+        text = "Home",
+        icon = Icons.Rounded.Home,
         direction = HomeScreenDestination
     ),
-    NavigationDrawerItem.Item(
+    NavDrawerItem.Item(
+        text = "Normal quiz",
+        icon = Icons.Rounded.Quiz,
+        direction = QuizListScreenDestination
+    ),
+    NavDrawerItem.Item(
         text = "Wordle",
         icon = Icons.Rounded.Quiz,
-        direction = HomeScreenDestination
+        direction = WordleListScreenDestination
     ),
-    NavigationDrawerItem.Label(text = "Other"),
-    NavigationDrawerItem.Item(
+    NavDrawerItem.Label(text = "Other"),
+    NavDrawerItem.Item(
         text = "Settings",
         icon = Icons.Rounded.Settings,
         direction = SettingsScreenDestination()
     ),
 )
 
-private fun getDrawerItemBy(route:  DestinationSpec<*>?) = navDrawerItems
-    .filterIsInstance<NavigationDrawerItem.Item>()
+private fun getDrawerItemBy(route: DestinationSpec<*>?) = navDrawerItems
+    .filterIsInstance<NavDrawerItem.Item>()
     .find { item ->
         item.direction == route
     }
@@ -50,9 +59,10 @@ private fun getDrawerItemBy(route:  DestinationSpec<*>?) = navDrawerItems
 @Composable
 @ExperimentalMaterial3Api
 fun NavigationDrawerContent(
+    modifier: Modifier = Modifier,
     navController: NavController,
     drawerState: DrawerState,
-    onItemClick: (item: NavigationDrawerItem.Item) -> Unit
+    onItemClick: (item: NavDrawerItem.Item) -> Unit
 ) {
     val destination by navController.currentDestinationAsState()
 
@@ -61,6 +71,7 @@ fun NavigationDrawerContent(
     val items = remember { navDrawerItems }
 
     NavigationDrawerContentImpl(
+        modifier = modifier,
         drawerState = drawerState,
         items = items,
         selectedItem = selectedItem,
@@ -71,14 +82,15 @@ fun NavigationDrawerContent(
 @Composable
 @ExperimentalMaterial3Api
 private fun NavigationDrawerContentImpl(
+    modifier: Modifier = Modifier,
     drawerState: DrawerState,
-    items: List<NavigationDrawerItem>,
-    selectedItem: NavigationDrawerItem.Item?,
-    onItemClick: (item: NavigationDrawerItem.Item) -> Unit
+    items: List<NavDrawerItem>,
+    selectedItem: NavDrawerItem.Item?,
+    onItemClick: (item: NavDrawerItem.Item) -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
-    Surface {
+    Surface(modifier = modifier) {
         LazyColumn(
             contentPadding = NavigationDrawerItemDefaults.ItemPadding
         ) {
@@ -88,16 +100,23 @@ private fun NavigationDrawerContentImpl(
 
             itemsIndexed(items = items) { index, item ->
                 when (item) {
-                    is NavigationDrawerItem.Label -> {
-                        if (items.getOrNull(index - 1) is NavigationDrawerItem.Item) {
+                    is NavDrawerItem.Label -> {
+                        if (items.getOrNull(index - 1) is NavDrawerItem.Item) {
                             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                         }
                         NavigationDrawerLabel(text = item.text)
                         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                     }
-                    is NavigationDrawerItem.Item -> {
+                    is NavDrawerItem.Item -> {
                         NavigationDrawerItem(
-                            icon = { Icon(item.icon, contentDescription = null) },
+                            icon = {
+                                NavDrawerIconWithBadge(
+                                    item = item,
+                                    icon = {
+                                        Icon(item.icon, contentDescription = item.text)
+                                    }
+                                )
+                            },
                             label = { Text(item.text) },
                             selected = item == selectedItem,
                             onClick = {
@@ -108,6 +127,32 @@ private fun NavigationDrawerContentImpl(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+@ExperimentalMaterial3Api
+private fun NavDrawerIconWithBadge(
+    item: NavDrawerItem.Item,
+    icon: @Composable () -> Unit
+) {
+    if (item.badge == null) {
+        icon()
+    } else {
+        BadgedBox(
+            badge = {
+                Badge {
+                    Text(
+                        text = item.badge.value.toString(),
+                        modifier = Modifier.semantics {
+                            contentDescription = item.badge.description
+                        }
+                    )
+                }
+            }
+        ) {
+            icon()
         }
     }
 }

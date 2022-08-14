@@ -73,13 +73,19 @@ dependencies {
     kaptAndroidTest(Google.dagger.hilt.compiler)
     implementation(AndroidX.hilt.work)
 
+    implementation(AndroidX.work.runtimeKtx)
+
     implementation(Google.android.material)
 
     implementation(AndroidX.dataStore.preferences)
 
-    implementation(platform(Firebase.bom))
     api(Google.firebase.analyticsKtx.withVersionPlaceholder())
-    implementation(Google.firebase.remoteConfigKtx)
+
+    implementation("com.airbnb.android:lottie-compose:_")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+
+    implementation("com.google.android.gms:play-services-ads:21.1.0")
 
     implementation("io.github.raamcosta.compose-destinations:core:_")
     ksp("io.github.raamcosta.compose-destinations:ksp:_")

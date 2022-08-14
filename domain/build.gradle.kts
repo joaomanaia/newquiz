@@ -57,5 +57,7 @@ dependencies {
     ksp(AndroidX.room.compiler)
     implementation(AndroidX.room.ktx)
 
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+
     implementation(AndroidX.paging.runtime)
 }

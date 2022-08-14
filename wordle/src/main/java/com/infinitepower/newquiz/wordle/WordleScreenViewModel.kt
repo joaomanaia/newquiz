@@ -4,13 +4,16 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
-import com.infinitepower.newquiz.domain.repository.wordle.word.WordleRepository
+import com.infinitepower.newquiz.data.worker.wordle.WordleEndGameWorker
+import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
-import com.infinitepower.newquiz.model.wordle.countByItem
 import com.infinitepower.newquiz.model.wordle.emptyRowItem
 import com.infinitepower.newquiz.wordle.util.word.getKeysDisabled
 import com.infinitepower.newquiz.wordle.util.word.verifyFromWord
@@ -24,21 +27,19 @@ import javax.inject.Inject
 class WordleScreenViewModel @Inject constructor(
     private val wordleRepository: WordleRepository,
     private val savedStateHandle: SavedStateHandle,
-    private val wordleLoggingAnalytics: WordleLoggingAnalytics
+    private val wordleLoggingAnalytics: WordleLoggingAnalytics,
+    private val workManager: WorkManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(WordleScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
         generateGame()
+    }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            uiState
-                .distinctUntilChangedBy { state -> state.currentRowPosition }
-                .collect { state ->
-                    if (state.isGamedEnded) endGame()
-                }
-        }
+    override fun onCleared() {
+        endGame()
+        super.onCleared()
     }
 
     fun onEvent(event: WordleScreenUiEvent) {
@@ -46,10 +47,20 @@ class WordleScreenViewModel @Inject constructor(
             is WordleScreenUiEvent.OnKeyClick -> addKeyToCurrentRow(event.key)
             is WordleScreenUiEvent.OnRemoveKeyClick -> removeKeyFromCurrentRow(event.index)
             is WordleScreenUiEvent.VerifyRow -> verifyRow()
+            is WordleScreenUiEvent.OnPlayAgainClick -> generateGame()
+            is WordleScreenUiEvent.AddOneRow -> addNewOneRow()
         }
     }
 
     private fun generateGame() = viewModelScope.launch(Dispatchers.IO) {
+        val initialWord = savedStateHandle.get<String?>(WordleScreenNavArgs::word.name)
+        val date = savedStateHandle.get<String?>(WordleScreenNavArgs::date.name)
+
+        if (initialWord != null) {
+            generateRows(initialWord, date)
+            return@launch
+        }
+
         wordleRepository
             .generateRandomWord()
             .collect { res ->
@@ -63,26 +74,32 @@ class WordleScreenViewModel @Inject constructor(
 
                 if (res is Resource.Success) {
                     res.data?.let { word ->
-                        val rows = List(1) {
-                            emptyRowItem(size = word.length)
-                        }
-
-                        val rowLimit = savedStateHandle.get<Int>(WordleScreenNavArgs::rowLimit.name) ?: Int.MAX_VALUE
-
-                        wordleLoggingAnalytics.logGameStart(word.length, rowLimit)
-
-                        _uiState.update { currentState ->
-                            currentState.copy(
-                                loading = false,
-                                word = word,
-                                rowLimit = rowLimit,
-                                rows = rows,
-                                currentRowPosition = 0
-                            )
-                        }
+                       generateRows(word)
                     }
                 }
             }
+    }
+
+    private fun generateRows(word: String, day: String? = null) {
+        val rows = List(1) {
+            emptyRowItem(size = word.length)
+        }
+
+        val rowLimit = savedStateHandle.get<Int>(WordleScreenNavArgs::rowLimit.name) ?: Int.MAX_VALUE
+
+        wordleLoggingAnalytics.logGameStart(word.length, rowLimit, day)
+
+        _uiState.update { currentState ->
+            currentState.copy(
+                loading = false,
+                word = word,
+                rowLimit = rowLimit,
+                rows = rows,
+                currentRowPosition = 0,
+                day = day,
+                keysDisabled = emptyList()
+            )
+        }
     }
 
 
@@ -135,6 +152,7 @@ class WordleScreenViewModel @Inject constructor(
             val currentItems = currentRow.items
 
             val verifiedItems = currentItems verifyFromWord currentState.word
+            val isRowCorrect = verifiedItems.all { it is WordleItem.Correct }
 
             val newRowPosition = currentState.currentRowPosition + 1
 
@@ -143,17 +161,12 @@ class WordleScreenViewModel @Inject constructor(
                 .toMutableList()
                 .apply {
                     set(currentState.currentRowPosition, WordleRowItem(verifiedItems))
-                    if (newRowPosition < currentState.rowLimit) add(emptyRowItem(currentState.word.length))
+
+                    val gameEnd = newRowPosition >= currentState.rowLimit || isRowCorrect
+                    if (!gameEnd) add(emptyRowItem(currentState.word.length))
                 }
 
             val keysDisabled = verifiedItems.getKeysDisabled()
-
-            wordleLoggingAnalytics.logRowCompleted(
-                wordLength = currentState.word.length,
-                maxRows = currentState.rowLimit,
-                correctItems = verifiedItems.countByItem<WordleItem.Correct>(),
-                presentItems = verifiedItems.countByItem<WordleItem.Present>()
-            )
 
             currentState.copy(
                 currentRowPosition = newRowPosition,
@@ -163,17 +176,40 @@ class WordleScreenViewModel @Inject constructor(
         }
     }
 
-    private fun endGame() = viewModelScope.launch(Dispatchers.IO) {
-        val currentState = uiState.first()
-        val wordLength = currentState.word?.length ?: return@launch
+    private fun endGame() {
+        val currentState = uiState.value
 
         val isLastRowCorrect = currentState.rows.lastOrNull()?.isRowCorrect == true
 
-        wordleLoggingAnalytics.logGameEnd(
-            wordLength = wordLength,
-            maxRows = currentState.rowLimit,
-            lastRow = currentState.currentRowPosition,
-            lastRowCorrect = isLastRowCorrect
-        )
+        val workRequest = OneTimeWorkRequestBuilder<WordleEndGameWorker>()
+            .setInputData(
+                workDataOf(
+                    WordleEndGameWorker.INPUT_WORD to currentState.word,
+                    WordleEndGameWorker.INPUT_ROW_LIMIT to currentState.rowLimit,
+                    WordleEndGameWorker.INPUT_CURRENT_ROW_POSITION to currentState.currentRowPosition,
+                    WordleEndGameWorker.INPUT_IS_LAST_ROW_CORRECT to isLastRowCorrect,
+                    WordleEndGameWorker.INPUT_DAY to currentState.day,
+                )
+            ).build()
+
+        workManager.enqueue(workRequest)
+    }
+
+    private fun addNewOneRow() {
+        _uiState.update { currentState ->
+            val currentWord = currentState.word ?: return
+
+            val newRows = currentState
+                .rows
+                .toMutableList()
+                .apply {
+                    add(emptyRowItem(currentWord.length))
+                }
+
+            currentState.copy(
+                rowLimit = currentState.rowLimit + 1,
+                rows = newRows
+            )
+        }
     }
 }

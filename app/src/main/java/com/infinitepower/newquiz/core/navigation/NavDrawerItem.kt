@@ -1,30 +1,26 @@
 package com.infinitepower.newquiz.core.navigation
 
+import androidx.annotation.Keep
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ramcosta.composedestinations.spec.Direction
 
-@JvmInline
-value class NavigationDrawerItemGroup(
-    val id: String
-) {
-    init {
-        require(id.isNotBlank()) { "id must not be blank" }
-    }
-}
-
-sealed class NavigationDrawerItem {
+sealed class NavDrawerItem {
     abstract val text: String
-    abstract val group: NavigationDrawerItemGroup?
 
     data class Label(
         override val text: String,
-        override val group: NavigationDrawerItemGroup? = null
-    ) : NavigationDrawerItem()
+    ) : NavDrawerItem()
 
     data class Item(
         override val text: String,
-        override val group: NavigationDrawerItemGroup? = null,
         val icon: ImageVector,
+        val badge: NavDrawerBadgeItem? = null,
         val direction: Direction
-    ) : NavigationDrawerItem()
+    ) : NavDrawerItem()
 }
+
+@Keep
+data class NavDrawerBadgeItem(
+    val value: Int,
+    val description: String
+)
