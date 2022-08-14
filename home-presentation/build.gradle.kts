@@ -63,14 +63,15 @@ dependencies {
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.compose.material3)
+    implementation(AndroidX.activity.compose)
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
 
     implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.android.compiler)
+    kapt(Google.dagger.hilt.compiler)
     kapt(AndroidX.hilt.compiler)
     implementation(AndroidX.hilt.navigationCompose)
     androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.android.compiler)
+    kaptAndroidTest(Google.dagger.hilt.compiler)
 
     implementation("io.github.raamcosta.compose-destinations:core:_")
     ksp("io.github.raamcosta.compose-destinations:ksp:_")
@@ -78,8 +79,12 @@ dependencies {
     implementation("com.airbnb.android:lottie-compose:_")
     implementation(AndroidX.dataStore.preferences)
 
+    implementation("com.firebaseui:firebase-ui-auth:8.0.1")
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
+    implementation(project(Modules.data))
+    implementation(project(Modules.domain))
 }
 
 ksp {

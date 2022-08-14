@@ -1,10 +1,16 @@
-package com.infinitepower.newquiz.home_presentation.model
+package com.infinitepower.newquiz.core.ui.home_card.model
 
 import androidx.annotation.StringRes
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.airbnb.lottie.compose.LottieCompositionSpec
 
-internal sealed class HomeCardItem {
+sealed class HomeCardItem {
     @get:StringRes
     abstract val title: Int
 
@@ -20,9 +26,17 @@ internal sealed class HomeCardItem {
         val enabled: Boolean = true,
         val onClick: () -> Unit
     ) : HomeCardItem()
+
+    data class MediumCard(
+        override val title: Int,
+        val description: String? = null,
+        val icon: CardIcon,
+        val enabled: Boolean = true,
+        val onClick: () -> Unit
+    ) : HomeCardItem()
 }
 
-internal sealed class CardIcon {
+sealed class CardIcon {
     data class Icon(val vector: ImageVector) : CardIcon()
 
     data class Lottie(val spec: LottieCompositionSpec) : CardIcon()

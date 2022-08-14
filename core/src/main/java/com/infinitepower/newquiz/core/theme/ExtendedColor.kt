@@ -21,7 +21,8 @@ data class CustomColor(
     enum class Keys {
         Blue,
         Green,
-        Yellow
+        Yellow,
+        Red
     }
 
     @Keep
@@ -94,6 +95,12 @@ private val initializeExtend = ExtendedColors(
         CustomColor(
             key = CustomColor.Keys.Yellow,
             color = Color.Yellow,
+            harmonized = true,
+            roles = initializeColorRoles()
+        ),
+        CustomColor(
+            key = CustomColor.Keys.Red,
+            color = Color.Red,
             harmonized = true,
             roles = initializeColorRoles()
         ),

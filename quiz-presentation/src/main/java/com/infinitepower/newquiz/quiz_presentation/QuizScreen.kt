@@ -242,12 +242,16 @@ private fun RowActionButtons(
         horizontalArrangement = Arrangement.spacedBy(spaceMedium, Alignment.CenterHorizontally),
         modifier = modifier.fillMaxWidth()
     ) {
-        TextButton(onClick = onSaveQuestionClick) {
+        TextButton(
+            onClick = onSaveQuestionClick,
+            modifier = Modifier.weight(1f)
+        ) {
             Text(text = "Save")
         }
         Button(
             onClick = onVerifyQuestionClick,
-            enabled = answerSelected
+            enabled = answerSelected,
+            modifier = Modifier.weight(1f)
         ) {
             Text(text = "Verify")
         }
@@ -273,7 +277,8 @@ private fun QuizScreenPreviewWidthCompact() {
     val uiState = remember {
         QuizScreenUiState(
             questionSteps = questionSteps,
-            selectedAnswer = SelectedAnswer.fromIndex((0..3).random())
+            selectedAnswer = SelectedAnswer.fromIndex((0..3).random()),
+            currentQuestionIndex = 2
         )
     }
 
@@ -315,7 +320,8 @@ private fun QuizScreenPreviewWidthMedium() {
     val uiState = remember {
         QuizScreenUiState(
             questionSteps = questionSteps,
-            selectedAnswer = SelectedAnswer.fromIndex((0..3).random())
+            selectedAnswer = SelectedAnswer.fromIndex((0..3).random()),
+            currentQuestionIndex = 2
         )
     }
 

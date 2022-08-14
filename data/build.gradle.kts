@@ -63,11 +63,18 @@ dependencies {
     implementation(AndroidX.hilt.navigationCompose)
     androidTestImplementation(Google.dagger.hilt.android.testing)
     kaptAndroidTest(Google.dagger.hilt.android.compiler)
+    implementation(AndroidX.hilt.work)
+
+    implementation(AndroidX.work.runtimeKtx)
 
     implementation(AndroidX.room.runtime)
     annotationProcessor(AndroidX.room.compiler)
     ksp(AndroidX.room.compiler)
     implementation(AndroidX.room.ktx)
+
+    implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
+
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     implementation(project(":core"))
     implementation(project(":domain"))

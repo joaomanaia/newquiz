@@ -19,7 +19,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
+import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.extendedColors
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.quiz_presentation.SelectedAnswer
 
@@ -65,8 +67,8 @@ internal fun CardQuestionAnswer(
 ) {
     val color = animateColorAsState(
         targetValue = when {
-            selected -> MaterialTheme.colorScheme.secondary
-            isResults && resultAnswerCorrect -> MaterialTheme.colorScheme.tertiary
+            selected -> MaterialTheme.colorScheme.primary
+            isResults && resultAnswerCorrect -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Green)
             else -> MaterialTheme.colorScheme.surface
         }
     )

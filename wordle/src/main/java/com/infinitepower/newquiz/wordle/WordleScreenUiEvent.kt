@@ -6,4 +6,8 @@ sealed class WordleScreenUiEvent {
     data class OnRemoveKeyClick(val index: Int) : WordleScreenUiEvent()
 
     object VerifyRow : WordleScreenUiEvent()
+
+    object OnPlayAgainClick : WordleScreenUiEvent()
+
+    object AddOneRow : WordleScreenUiEvent()
 }

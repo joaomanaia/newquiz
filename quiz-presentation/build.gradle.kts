@@ -91,6 +91,8 @@ dependencies {
     testImplementation(AndroidX.room.testing)
     implementation(AndroidX.room.paging)
 
+    implementation("com.airbnb.android:lottie-compose:_")
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.domain))

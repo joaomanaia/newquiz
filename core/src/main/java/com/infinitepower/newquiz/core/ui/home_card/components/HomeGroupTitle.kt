@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.home_presentation.components
+package com.infinitepower.newquiz.core.ui.home_card.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -9,11 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.home_presentation.model.HomeCardItem
+import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 
 @Composable
 @ExperimentalMaterial3Api
-internal fun HomeGroupTitle(
+fun HomeGroupTitle(
     modifier: Modifier = Modifier,
     data: HomeCardItem.GroupTitle
 ) {

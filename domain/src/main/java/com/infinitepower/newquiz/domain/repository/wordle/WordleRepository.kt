@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.domain.repository.wordle.word
+package com.infinitepower.newquiz.domain.repository.wordle
 
 import com.infinitepower.newquiz.core.common.FlowResource
 

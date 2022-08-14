@@ -42,6 +42,11 @@ class QuizScreenViewModel @Inject constructor(
         }
     }
 
+    override fun onCleared() {
+        timer.cancel()
+        super.onCleared()
+    }
+
     fun onEvent(event: QuizScreenUiEvent) {
         when (event) {
             is QuizScreenUiEvent.SelectAnswer -> selectAnswer(event.answer)
@@ -52,13 +57,6 @@ class QuizScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            /*
-            val initialQuestions = List(5) {
-                getBasicQuestion()
-            }
-
-             */
-
             val initialQuestions = savedStateHandle
                 .get<ArrayList<Question>>(QuizScreenNavArg::initialQuestions.name)
                 .orEmpty()

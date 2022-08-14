@@ -135,12 +135,22 @@ dependencies {
     implementation("io.github.raamcosta.compose-destinations:core:_")
     ksp("io.github.raamcosta.compose-destinations:ksp:_")
 
+    implementation(Google.firebase.analyticsKtx.withVersionPlaceholder())
+    implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
+
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+
+    implementation("com.google.android.gms:play-services-ads:21.1.0")
+    implementation("com.google.android.ump:user-messaging-platform:2.0.0")
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.homePresentation))
     implementation(project(Modules.quizPresentation))
     implementation(project(Modules.settingsPresentation))
     implementation(project(Modules.wordle))
+    implementation(project(Modules.data))
+    implementation(project(Modules.domain))
 }
 
 tasks.withType<Test> {

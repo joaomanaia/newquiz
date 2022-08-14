@@ -84,6 +84,12 @@ dependencies {
 
     implementation(Google.accompanist.flowlayout)
 
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+
+    implementation("com.google.android.gms:play-services-ads:21.1.0")
+
+    implementation(AndroidX.work.runtimeKtx)
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.domain))
