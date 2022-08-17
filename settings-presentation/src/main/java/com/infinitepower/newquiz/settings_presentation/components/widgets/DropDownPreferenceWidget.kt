@@ -2,10 +2,7 @@ package com.infinitepower.newquiz.settings_presentation.components.widgets
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 @Composable
+@ExperimentalMaterial3Api
 internal fun DropDownPreferenceWidget(
     preference: Preference.PreferenceItem.DropDownMenuPreference,
     value: String,

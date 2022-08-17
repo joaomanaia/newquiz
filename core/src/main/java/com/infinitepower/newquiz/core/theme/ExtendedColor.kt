@@ -104,6 +104,12 @@ private val initializeExtend = ExtendedColors(
             harmonized = true,
             roles = initializeColorRoles()
         ),
+        CustomColor(
+            key = CustomColor.Keys.Blue,
+            color = Color.Blue,
+            harmonized = true,
+            roles = initializeColorRoles()
+        ),
     )
 )
 

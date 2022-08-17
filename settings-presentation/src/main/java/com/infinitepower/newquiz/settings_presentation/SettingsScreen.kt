@@ -29,10 +29,12 @@ import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.extendedColors
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
+import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.settings_presentation.components.PreferencesScreen
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
+import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
@@ -52,6 +54,7 @@ fun SettingsScreen(
 
     SettingsScreenImpl(
         uiState = uiState,
+        dailyWordleRepository = settingsViewModel.dailyWordleRepository,
         onBackClick = navigator::popBackStack,
         onNavigateClickClick = navigator::navigate
     )
@@ -60,6 +63,7 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenImpl(
     uiState: SettingsUiState,
+    dailyWordleRepository: DailyWordleRepository,
     onBackClick: () -> Unit,
     onNavigateClickClick: (direction: Direction) -> Unit
 ) {
@@ -70,7 +74,8 @@ private fun SettingsScreenImpl(
         )
         else -> PreferencesScreen(
             page = SettingsScreenPageData.getPage(uiState.screenKey),
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            dailyWordleRepository = dailyWordleRepository
         )
     }
 }
@@ -95,14 +100,17 @@ fun MainSettingsScreen(
         SettingsBaseItemData(
             key = SettingsScreenPageData.General.key,
             icon = Icons.Rounded.Settings,
-            name = stringResource(id = SettingsScreenPageData.General.stringRes),
-            colorRoles = MaterialTheme.extendedColors.getColorRolesByKey(key = CustomColor.Keys.Blue)
+            name = stringResource(id = SettingsScreenPageData.General.stringRes)
         ),
         SettingsBaseItemData(
             key = SettingsScreenPageData.Quiz.key,
             icon = Icons.Rounded.Quiz,
-            name = stringResource(id = SettingsScreenPageData.Quiz.stringRes),
-            colorRoles = MaterialTheme.extendedColors.getColorRolesByKey(key = CustomColor.Keys.Blue)
+            name = stringResource(id = SettingsScreenPageData.Quiz.stringRes)
+        ),
+        SettingsBaseItemData(
+            key = SettingsScreenPageData.Wordle.key,
+            icon = Icons.Rounded.Password,
+            name = stringResource(id = SettingsScreenPageData.Wordle.stringRes)
         ),
     )
 
@@ -112,7 +120,7 @@ fun MainSettingsScreen(
         topBar = {
             LargeTopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.settings))
+                    Text(text = stringResource(id = CoreR.string.settings))
                 },
                 scrollBehavior = scrollBehavior,
                 navigationIcon = { BackIconButton(onClick = onBackClick) }
@@ -150,6 +158,7 @@ fun MainSettingsScreen(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun SettingsBaseItem(
     modifier: Modifier = Modifier,
     data: SettingsBaseItemData,
@@ -169,13 +178,13 @@ private fun SettingsBaseItem(
             modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
             Surface(
-                color = data.colorRoles.accent,
+                color = MaterialTheme.colorScheme.secondary,
                 shape = CircleShape
             ) {
                 Icon(
                     imageVector = data.icon,
                     contentDescription = data.name,
-                    tint = data.colorRoles.onAccent,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.padding(12.dp)
                 )
             }
@@ -191,8 +200,7 @@ private fun SettingsBaseItem(
 private data class SettingsBaseItemData(
     val key: ScreenKey,
     val icon: ImageVector,
-    val name: String,
-    val colorRoles: CustomColor.ColorRoles
+    val name: String
 )
 
 @Composable

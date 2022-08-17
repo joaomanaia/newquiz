@@ -15,12 +15,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.common.dataStore.settingsDataStore
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
+import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun PreferencesScreen(
     page: SettingsScreenPageData,
+    dailyWordleRepository: DailyWordleRepository,
     onBackClick: () -> Unit
 ) {
     val decayAnimationSpec = rememberSplineBasedDecay<Float>()
@@ -61,6 +63,11 @@ fun PreferencesScreen(
                 is SettingsScreenPageData.MainPage -> emptyList()
                 is SettingsScreenPageData.General -> page.items(scope, dataStoreManager)
                 is SettingsScreenPageData.Quiz -> page.items()
+                is SettingsScreenPageData.Wordle -> page.items(
+                    scope,
+                    dataStoreManager,
+                    dailyWordleRepository
+                )
             },
             dataStore = dataStore,
             modifier = Modifier

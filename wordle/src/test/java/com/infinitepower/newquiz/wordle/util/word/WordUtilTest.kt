@@ -103,4 +103,71 @@ internal class WordUtilTest {
         val expectedItems2 = listOf('F')
         assertThat(keysDisabled2).containsExactlyElementsIn(expectedItems2)
     }
+
+    @Test
+    fun `wordle list item contains all last revealed hints, returns true`() {
+        val items = listOf(
+            WordleItem.Present(WordleChar('A')),
+            WordleItem.None(WordleChar('B')),
+            WordleItem.None(WordleChar('B')),
+            WordleItem.Correct(WordleChar('A')),
+        )
+
+        val lastRevealedHints = listOf(
+            WordleItem.Present(WordleChar('A')),
+        )
+
+        val containsAllLastRevealedHints = items containsAllLastRevealedHints lastRevealedHints
+        assertThat(containsAllLastRevealedHints).isTrue()
+
+        val items2 = listOf(
+            WordleItem.Correct(WordleChar('E')),
+            WordleItem.None(WordleChar('F')),
+            WordleItem.None(WordleChar('N')),
+            WordleItem.None(WordleChar('F')),
+            WordleItem.Present(WordleChar('I')),
+        )
+
+        val lastRevealedHints2 = listOf(
+            WordleItem.Present(WordleChar('E')),
+            WordleItem.Present(WordleChar('I')),
+        )
+
+        val containsAllLastRevealedHints2 = items2 containsAllLastRevealedHints lastRevealedHints2
+        assertThat(containsAllLastRevealedHints2).isTrue()
+    }
+
+    @Test
+    fun `wordle list item not contains all last revealed hints, returns false`() {
+        val items = listOf(
+            WordleItem.Present(WordleChar('A')),
+            WordleItem.None(WordleChar('B')),
+            WordleItem.None(WordleChar('B')),
+            WordleItem.Correct(WordleChar('A')),
+        )
+
+        val lastRevealedHints = listOf(
+            WordleItem.Present(WordleChar('A')),
+            WordleItem.Correct(WordleChar('K')),
+            WordleItem.Present(WordleChar('Z')),
+        )
+
+        val containsAllLastRevealedHints = items containsAllLastRevealedHints lastRevealedHints
+        assertThat(containsAllLastRevealedHints).isFalse()
+    }
+
+    @Test
+    fun `wordle list item contains all empty list last revealed hints, returns true`() {
+        val items = listOf(
+            WordleItem.Present(WordleChar('A')),
+            WordleItem.None(WordleChar('B')),
+            WordleItem.None(WordleChar('B')),
+            WordleItem.Correct(WordleChar('A')),
+        )
+
+        val lastRevealedHints = emptyList<WordleItem>()
+
+        val containsAllLastRevealedHints = items containsAllLastRevealedHints lastRevealedHints
+        assertThat(containsAllLastRevealedHints).isTrue()
+    }
 }

@@ -15,7 +15,7 @@ internal class HomeCardItemData(
 ) : CardItemDataCore {
     override val items = listOf(
         HomeCardItem.GroupTitle(
-            title = CoreR.string.quick_quiz,
+            title = CoreR.string.normal_quiz,
         ),
         HomeCardItem.LargeCard(
             title = CoreR.string.quick_quiz,
@@ -26,7 +26,7 @@ internal class HomeCardItemData(
             title = CoreR.string.wordle,
         ),
         HomeCardItem.LargeCard(
-            title = CoreR.string.wordle,
+            title = CoreR.string.wordle_infinite,
             icon = CardIcon.Icon(Icons.Rounded.QuestionMark),
             onClick = homeNavigator::navigateToWordle
         ),

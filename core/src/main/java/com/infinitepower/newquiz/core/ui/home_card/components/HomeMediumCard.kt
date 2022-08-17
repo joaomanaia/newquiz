@@ -45,7 +45,9 @@ fun HomeMediumCard(
                 HomeCardIcon(
                     icon = data.icon,
                     contentDescription = title,
-                    modifier = Modifier.size(75.dp)
+                    modifier = Modifier
+                        .size(75.dp)
+                        .padding(MaterialTheme.spacing.small),
                 )
             }
             Spacer(modifier = Modifier.width(spaceMedium))

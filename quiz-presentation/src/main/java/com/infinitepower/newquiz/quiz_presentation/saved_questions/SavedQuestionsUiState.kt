@@ -11,7 +11,7 @@ data class SavedQuestionsUiState(
     val arrayListSelectedQuestions: ArrayList<Question>
         get() = ArrayList(selectedQuestions.takeLast(100))
 
-    fun randomQuestions(limit: Int = 10): ArrayList<Question> {
+    fun randomQuestions(limit: Int = 5): ArrayList<Question> {
         val randomQuestions = questions.shuffled().take(limit)
         return ArrayList(randomQuestions)
     }

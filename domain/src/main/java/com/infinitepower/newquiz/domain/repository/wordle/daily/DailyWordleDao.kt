@@ -21,5 +21,5 @@ interface DailyWordleDao {
     suspend fun insertCalendarItem(item: WordleDailyCalendarItem)
 
     @Query("DELETE FROM wordle_daily_calendar")
-    suspend fun clearAll()
+    suspend fun clearAllCalendarItems()
 }

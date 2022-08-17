@@ -15,6 +15,7 @@ import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
 import com.infinitepower.newquiz.model.wordle.emptyRowItem
+import com.infinitepower.newquiz.wordle.util.word.containsAllLastRevealedHints
 import com.infinitepower.newquiz.wordle.util.word.getKeysDisabled
 import com.infinitepower.newquiz.wordle.util.word.verifyFromWord
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +35,30 @@ class WordleScreenViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
+        wordleRepository
+            .isColorBlindEnabled()
+            .onEach { res ->
+                _uiState.update { currentState ->
+                    currentState.copy(isColorBlindEnabled = res.data == true)
+                }
+            }.launchIn(viewModelScope)
+
+        wordleRepository
+            .isLetterHintEnabled()
+            .onEach { res ->
+                _uiState.update { currentState ->
+                    currentState.copy(isLetterHintEnabled = res.data == true)
+                }
+            }.launchIn(viewModelScope)
+
+        wordleRepository
+            .isHardModeEnabled()
+            .onEach { res ->
+                _uiState.update { currentState ->
+                    currentState.copy(isHardModeEnabled = res.data == true)
+                }
+            }.launchIn(viewModelScope)
+
         generateGame()
     }
 
@@ -74,18 +99,20 @@ class WordleScreenViewModel @Inject constructor(
 
                 if (res is Resource.Success) {
                     res.data?.let { word ->
-                       generateRows(word)
+                        generateRows(word)
                     }
                 }
             }
     }
 
-    private fun generateRows(word: String, day: String? = null) {
+    private suspend fun generateRows(word: String, day: String? = null) {
         val rows = List(1) {
             emptyRowItem(size = word.length)
         }
 
-        val rowLimit = savedStateHandle.get<Int>(WordleScreenNavArgs::rowLimit.name) ?: Int.MAX_VALUE
+        val rowLimit = wordleRepository.getWordleMaxRows(
+            savedStateHandle.get<Int>(WordleScreenNavArgs::rowLimit.name) ?: Int.MAX_VALUE
+        )
 
         wordleLoggingAnalytics.logGameStart(word.length, rowLimit, day)
 
@@ -97,7 +124,8 @@ class WordleScreenViewModel @Inject constructor(
                 rows = rows,
                 currentRowPosition = 0,
                 day = day,
-                keysDisabled = emptyList()
+                keysDisabled = emptyList(),
+                errorMessage = null
             )
         }
     }
@@ -112,7 +140,8 @@ class WordleScreenViewModel @Inject constructor(
                     val currentRowItem = this[currentState.currentRowPosition]
 
                     val newRow = currentRowItem.items.toMutableList().apply {
-                        val emptyIndex = indexOfFirstOrNull { item -> item is WordleItem.Empty } ?: return
+                        val emptyIndex =
+                            indexOfFirstOrNull { item -> item is WordleItem.Empty } ?: return
 
                         set(emptyIndex, WordleItem.fromChar(key))
                     }
@@ -145,13 +174,35 @@ class WordleScreenViewModel @Inject constructor(
 
     private fun verifyRow() {
         _uiState.update { currentState ->
+            // Stops the verification if the word is null or current row is not completed.
             if (currentState.word == null) return
             if (!currentState.currentRowCompleted) return
 
-            val currentRow = currentState.rows.lastOrNull() ?: return
-            val currentItems = currentRow.items
+            // Get current row items, if the current row is null stop the verification.
+            // Current row is the last row of the list.
+            val currentItems = currentState.rows.lastOrNull()?.items ?: return
 
+            // Verifies items with the word and verifies if the word is correct
             val verifiedItems = currentItems verifyFromWord currentState.word
+
+            if (currentState.isHardModeEnabled) {
+                val last2RowItems = currentState
+                    .rows
+                    .getOrNull(currentState.rows.lastIndex - 1)
+                    ?.items
+                    .orEmpty()
+                    .filter { it is WordleItem.Correct || it is WordleItem.Present }
+
+                val containsAllLastRevealedHints =
+                    verifiedItems containsAllLastRevealedHints last2RowItems
+
+                if (!containsAllLastRevealedHints) {
+                    return@update currentState.copy(
+                        errorMessage = "You need to use all hints from last row!"
+                    )
+                }
+            }
+
             val isRowCorrect = verifiedItems.all { it is WordleItem.Correct }
 
             val newRowPosition = currentState.currentRowPosition + 1
@@ -160,8 +211,12 @@ class WordleScreenViewModel @Inject constructor(
                 .rows
                 .toMutableList()
                 .apply {
+                    // Updates the current row with the verified items
                     set(currentState.currentRowPosition, WordleRowItem(verifiedItems))
 
+                    // Checks if is game end.
+                    // Is game end if new row position >= row limit and current row is correct.
+                    // If is not game end add new empty row.
                     val gameEnd = newRowPosition >= currentState.rowLimit || isRowCorrect
                     if (!gameEnd) add(emptyRowItem(currentState.word.length))
                 }
@@ -171,7 +226,8 @@ class WordleScreenViewModel @Inject constructor(
             currentState.copy(
                 currentRowPosition = newRowPosition,
                 rows = newRows,
-                keysDisabled = currentState.keysDisabled + keysDisabled
+                keysDisabled = currentState.keysDisabled + keysDisabled,
+                errorMessage = null
             )
         }
     }

@@ -27,7 +27,7 @@ class FakeDailyWordleRepository @Inject constructor() : DailyWordleRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun clearAll() {
+    override suspend fun clearAllCalendarItems() {
         TODO("Not yet implemented")
     }
 

@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.settings_presentation.components.widgets
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -10,11 +9,11 @@ import com.infinitepower.newquiz.core.ui.StatusWrapper
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun TextPreferenceWidget(
     preference: Preference.PreferenceItem<*>,
     summary: String? = null,
-    onClick: () -> Unit = { },
+    onClick: () -> Unit = {},
     trailing: @Composable (() -> Unit)? = null
 ) {
     val isEnabled = LocalPreferenceEnabledStatus.current && preference.enabled
@@ -60,7 +59,7 @@ internal fun TextPreferenceWidget(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun TextPreferenceWidgetRes(
     preference: Preference.PreferenceItem<*>,
     summary: String? = null,
@@ -92,7 +91,7 @@ internal fun TextPreferenceWidgetRes(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun TextPreferenceWidget(
     preference: Preference.PreferenceItem<*>,
     summary: @Composable () -> Unit,

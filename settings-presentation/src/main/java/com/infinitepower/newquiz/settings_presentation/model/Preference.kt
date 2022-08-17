@@ -31,7 +31,7 @@ sealed class Preference {
         data class TextPreference(
             override val title: String,
             override val summary: String? = null,
-            override val singleLineTitle: Boolean,
+            override val singleLineTitle: Boolean = true,
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
@@ -46,7 +46,7 @@ sealed class Preference {
             val request: PreferenceRequest<Boolean>,
             override val title: String,
             override val summary: String? = null,
-            override val singleLineTitle: Boolean,
+            override val singleLineTitle: Boolean = true,
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
@@ -60,12 +60,12 @@ sealed class Preference {
             val request: PreferenceRequest<String>,
             override val title: String,
             override val summary: String? = null,
-            override val singleLineTitle: Boolean,
+            override val singleLineTitle: Boolean = true,
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
 
-            val entries: Map<String, String>,
+            val entries: Map<String, String>
         ) : PreferenceItem<String>()
 
         /**
@@ -76,7 +76,7 @@ sealed class Preference {
             val request: PreferenceRequest<Set<String>>,
             override val title: String,
             override val summary: String? = null,
-            override val singleLineTitle: Boolean,
+            override val singleLineTitle: Boolean = true,
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
@@ -91,14 +91,14 @@ sealed class Preference {
             val request: PreferenceRequest<Int>,
             override val title: String,
             override val summary: String? = null,
-            override val singleLineTitle: Boolean,
+            override val singleLineTitle: Boolean = true,
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
 
             val valueRange: ClosedRange<Int> = 0..10,
             val steps: Int = 0,
-            val valueRepresentation: (Int) -> String
+            val valueRepresentation: (Int) -> String = { it.toString() }
         ) : PreferenceItem<Int>()
 
         /**
@@ -109,7 +109,7 @@ sealed class Preference {
             val request: PreferenceRequest<String>,
             override val title: String,
             override val summary: String? = null,
-            override val singleLineTitle: Boolean,
+            override val singleLineTitle: Boolean = true,
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,

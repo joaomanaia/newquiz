@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
+@ExperimentalMaterial3Api
 internal fun PreferenceItem(
     item: Preference.PreferenceItem<*>,
     prefs: Preferences?,

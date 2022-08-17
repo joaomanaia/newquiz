@@ -11,9 +11,13 @@ abstract class NavEventViewModel : ViewModel() {
     private val _navEvent = MutableSharedFlow<NavEvent>()
     val navEvent = _navEvent.asSharedFlow()
 
-    fun sendUiEvent(uiEvent: NavEvent) {
+    suspend fun sendNavEvent(event: NavEvent) {
+        _navEvent.emit(event)
+    }
+
+    fun sendNavEventAsync(event: NavEvent) {
         viewModelScope.launch(Dispatchers.IO) {
-            _navEvent.emit(uiEvent)
+            _navEvent.emit(event)
         }
     }
 }

@@ -1,8 +1,5 @@
 package com.infinitepower.newquiz.settings_presentation.components.widgets
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
@@ -11,81 +8,102 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
+import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 @Composable
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun ListPreferenceWidget(
     preference: Preference.PreferenceItem.ListPreference,
     value: String,
     onValueChange: (String) -> Unit
 ) {
     val (isDialogShown, showDialog) = remember { mutableStateOf(false) }
+    val dismissDialog = { showDialog(false) }
+
+    val (newValue, setNewValue) = remember(value) {
+        mutableStateOf(value)
+    }
 
     TextPreferenceWidget(
         preference = preference,
-        summary = value,
+        summary = preference.entries[value],
         onClick = { showDialog(!isDialogShown) },
     )
 
     if (isDialogShown) {
         AlertDialog(
-            onDismissRequest = { showDialog(!isDialogShown) },
+            onDismissRequest = dismissDialog,
             title = { Text(text = preference.title) },
             text = {
                 LazyColumn(modifier = Modifier.selectableGroup()) {
                     items(preference.entries.keys.toList()) { key ->
-                        val isSelected = value == key
-                        val onSelected = {
-                            onValueChange(key)
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .selectable(
-                                    selected = isSelected,
-                                    onClick = { if (!isSelected) onSelected() }
-                                ).padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = isSelected,
-                                onClick = { if (!isSelected) onSelected() },
-                            )
-                            preference.entries[key]?.let { value ->
-                                Text(
-                                    text = value,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    modifier = Modifier.padding(start = 16.dp)
-                                )
-                            }
-                        }
+                        val isSelected = newValue == key
+                        val onSelected = { setNewValue(key) }
+
+                        SelectableListItem(
+                            text = preference.entries[key].orEmpty(),
+                            isSelected = isSelected,
+                            onClick = onSelected
+                        )
                     }
                 }
             },
-            properties = DialogProperties(
-                usePlatformDefaultWidth = true
-            ),
             confirmButton = {
                 TextButton(
-                    onClick = { showDialog(false) }
+                    onClick = {
+                        dismissDialog()
+                        onValueChange(newValue)
+                    }
                 ) {
                     Text(text = "Confirm")
                 }
             },
             dismissButton = {
-                TextButton(
-                    onClick = { showDialog(false) }
-                ) {
+                TextButton(onClick = dismissDialog) {
                     Text(text = "Dismiss")
                 }
             }
         )
+    }
+}
+
+@Composable
+@ExperimentalMaterial3Api
+private fun SelectableListItem(
+    modifier: Modifier = Modifier,
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    ListItem(
+        headlineText = { Text(text = text) },
+        leadingContent = {
+            RadioButton(
+                selected = isSelected,
+                onClick = onClick,
+            )
+        },
+        modifier = modifier.selectable(
+            selected = isSelected,
+            onClick = onClick
+        )
+    )
+}
+
+@Composable
+@PreviewNightLight
+@OptIn(ExperimentalMaterial3Api::class)
+private fun SelectableListItemPreview() {
+    NewQuizTheme {
+        Surface {
+            SelectableListItem(
+                text = "NewQuiz",
+                isSelected = true,
+                onClick = {}
+            )
+        }
     }
 }

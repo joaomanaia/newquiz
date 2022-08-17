@@ -11,7 +11,11 @@ data class WordleScreenUiState(
     val rows: List<WordleRowItem> = emptyList(),
     val currentRowPosition: Int = -1,
     val keysDisabled: List<Char> = emptyList(),
-    val day: String? = null
+    val day: String? = null,
+    val isColorBlindEnabled: Boolean = false,
+    val isLetterHintEnabled: Boolean = false,
+    val isHardModeEnabled: Boolean = false,
+    val errorMessage: String? = null
 ) {
     companion object {
         const val ALL_LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM"

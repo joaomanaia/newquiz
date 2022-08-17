@@ -17,7 +17,7 @@ interface DailyWordleRepository {
 
     suspend fun insertCalendarItem(item: WordleDailyCalendarItem)
 
-    suspend fun clearAll()
+    suspend fun clearAllCalendarItems()
 
     fun getAllDailyWords(
         wordSize: Int,
