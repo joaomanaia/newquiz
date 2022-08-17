@@ -36,15 +36,13 @@ class SavedQuestionsViewModel @Inject constructor(
      */
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            savedQuestionsRepository
-                .getFlowQuestions()
-                .collect { questions ->
-                    _uiState.update { currentState ->
-                        currentState.copy(questions = questions)
-                    }
+        savedQuestionsRepository
+            .getFlowQuestions()
+            .onEach { questions ->
+                _uiState.update { currentState ->
+                    currentState.copy(questions = questions)
                 }
-        }
+            }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: SavedQuestionsUiEvent) {

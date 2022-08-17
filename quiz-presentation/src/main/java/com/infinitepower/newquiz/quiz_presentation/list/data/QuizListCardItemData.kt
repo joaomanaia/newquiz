@@ -12,7 +12,8 @@ import com.infinitepower.newquiz.quiz_presentation.destinations.SavedQuestionsSc
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 internal class QuizListCardItemData(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    savedQuestionsSize: Int
 ) : CardItemDataCore {
     override val items = listOf(
         HomeCardItem.GroupTitle(
@@ -26,10 +27,11 @@ internal class QuizListCardItemData(
         HomeCardItem.GroupTitle(
             title = R.string.saved_questions,
         ),
-        HomeCardItem.LargeCard(
+        HomeCardItem.MediumCard(
             title = R.string.saved_questions,
             icon = CardIcon.Icon(Icons.Rounded.Save),
-            onClick = { navigator.navigate(SavedQuestionsScreenDestination) }
+            onClick = { navigator.navigate(SavedQuestionsScreenDestination) },
+            description = "$savedQuestionsSize questions available"
         ),
     )
 }

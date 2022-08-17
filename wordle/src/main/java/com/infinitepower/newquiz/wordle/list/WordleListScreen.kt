@@ -10,11 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemContent
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
-import com.infinitepower.newquiz.wordle.list.data.WordListCardItemData
+import com.infinitepower.newquiz.wordle.list.data.getWordListCardItemData
+import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -23,11 +24,9 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun WordleListScreen(
     navigator: DestinationsNavigator
 ) {
-    val cardItemData = remember {
-        WordListCardItemData(navigator)
-    }
+    val cardItemData = remember { getWordListCardItemData(navigator) }
 
-    WordleListScreenImpl(cardItemData = cardItemData.items)
+    WordleListScreenImpl(cardItemData = cardItemData)
 }
 
 @Composable
@@ -46,7 +45,7 @@ private fun WordleListScreenImpl(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(text = "Wordle")
+                    Text(text = stringResource(id = CoreR.string.wordle))
                 },
                 scrollBehavior = scrollBehavior
             )

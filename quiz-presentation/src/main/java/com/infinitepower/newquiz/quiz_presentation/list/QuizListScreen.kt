@@ -7,9 +7,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemContent
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
@@ -20,10 +23,13 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 @Destination
 fun QuizListScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    viewModel: QuizListScreenViewModel = hiltViewModel()
 ) {
-    val cardItemData = remember {
-        QuizListCardItemData(navigator)
+    val uiState by viewModel.uiState.collectAsState()
+
+    val cardItemData = remember(uiState.savedQuestionsSize) {
+        QuizListCardItemData(navigator, uiState.savedQuestionsSize)
     }
 
     QuizListScreenImpl(cardItemData = cardItemData.items)

@@ -72,13 +72,13 @@ class DailyWordleSelectorViewModel @Inject constructor(
             .collect { res ->
                 if (res is Resource.Success && res.data != null) {
                     val wordleQuiz = WordleScreenDestination(rowLimit = 6, word = res.data, date = date.toString())
-                    sendUiEvent(NavEvent.Navigate(wordleQuiz))
+                    sendNavEventAsync(NavEvent.Navigate(wordleQuiz))
                     return@collect
                 }
 
                 if (res is Resource.Error) {
                     Log.e("DailyWordleSelector", "Error while loading item", Throwable(res.message))
-                    sendUiEvent(NavEvent.ShowSnackBar(res.message ?: "Error while loading item"))
+                    sendNavEventAsync(NavEvent.ShowSnackBar(res.message ?: "Error while loading item"))
                     return@collect
                 }
             }

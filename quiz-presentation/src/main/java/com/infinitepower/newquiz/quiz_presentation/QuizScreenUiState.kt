@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import com.infinitepower.newquiz.model.question.Question
 import com.infinitepower.newquiz.model.question.QuestionStep
+import com.infinitepower.newquiz.model.question.SelectedAnswer
+import com.infinitepower.newquiz.model.question.isAllCompleted
 
 @Keep
 data class QuizScreenUiState(
@@ -18,29 +20,15 @@ data class QuizScreenUiState(
     fun getQuestionPositionFormatted(): String =
         "Question ${currentQuestionIndex + 1}/${questionSteps.size}"
 
+    /**
+     * Gets new question index.
+     * If question is the last question retuns -1.
+     * @return new question index
+     */
     fun getNextIndex(): Int = if (currentQuestionIndex == questionSteps.lastIndex) -1 else currentQuestionIndex + 1
-}
 
-@JvmInline
-value class SelectedAnswer private constructor(val index: Int) {
-    companion object {
-        val NONE = SelectedAnswer(-1)
-
-        fun fromIndex(index: Int): SelectedAnswer = SelectedAnswer(index)
-    }
-
-    private val isNone: Boolean
-        get() = index == -1
-
-    val isSelected: Boolean
-        get() = !isNone
-
-    fun isCorrect(question: Question): Boolean =
-        !isNone && question.correctAns == index
-
-    init {
-        require(index >= -1) { "SelectedAnswer index must be greater than -1" }
-    }
+    val isGameEnded: Boolean
+        get() = questionSteps.isAllCompleted()
 }
 
 @JvmInline

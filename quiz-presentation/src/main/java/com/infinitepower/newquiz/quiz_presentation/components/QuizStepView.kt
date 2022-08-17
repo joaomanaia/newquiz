@@ -18,8 +18,38 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.question.QuestionStep
 import com.infinitepower.newquiz.model.question.getBasicQuestion
+
+@Composable
+internal fun QuizStepViewRow(
+    modifier: Modifier = Modifier,
+    questionSteps: List<QuestionStep>,
+    isResultsScreen: Boolean = false,
+    onClick: (index: Int, questionStep: QuestionStep) -> Unit = { _, _ -> }
+) {
+    LazyRow(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
+        contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium)
+    ) {
+        itemsIndexed(
+            items = questionSteps,
+            key = { _, step -> step.question.id }
+        ) { index, step ->
+            val position = index + 1
+
+            QuizStepView(
+                questionStep = step,
+                position = position,
+                enabled = isResultsScreen,
+                onClick = { onClick(index, step) }
+            )
+        }
+    }
+}
 
 @Composable
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)

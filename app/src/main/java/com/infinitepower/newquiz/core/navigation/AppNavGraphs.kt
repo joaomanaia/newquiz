@@ -15,6 +15,7 @@ import com.infinitepower.newquiz.quiz_presentation.destinations.QuizScreenDestin
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
 import com.infinitepower.newquiz.quiz_presentation.destinations.QuizListScreenDestination
+import com.infinitepower.newquiz.quiz_presentation.destinations.ResultsScreenDestination
 import com.infinitepower.newquiz.quiz_presentation.destinations.SavedQuestionsScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.DailyWordSelectorScreenDestination
@@ -56,7 +57,8 @@ internal object AppNavGraphs {
             WordleListScreenDestination,
             DailyWordSelectorScreenDestination,
             QuizListScreenDestination,
-            LoginScreenDestination
+            LoginScreenDestination,
+            ResultsScreenDestination
         )
     )
 }

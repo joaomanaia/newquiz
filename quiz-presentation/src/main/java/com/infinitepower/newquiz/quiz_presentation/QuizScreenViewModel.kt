@@ -2,20 +2,26 @@ package com.infinitepower.newquiz.quiz_presentation
 
 import android.os.CountDownTimer
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
+import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
+import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.domain.repository.question.saved_questions.SavedQuestionsRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomQuestionUseCase
 import com.infinitepower.newquiz.model.question.Question
-import com.infinitepower.newquiz.model.question.getBasicQuestion
+import com.infinitepower.newquiz.model.question.QuestionStep
+import com.infinitepower.newquiz.model.question.SelectedAnswer
+import com.infinitepower.newquiz.quiz_presentation.destinations.ResultsScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 const val QUIZ_COUNTDOWN_IN_MILLIS = 30000L
@@ -26,7 +32,7 @@ class QuizScreenViewModel @Inject constructor(
     @SettingsDataStoreManager private val dataStoreManager: DataStoreManager,
     private val savedQuestionsRepository: SavedQuestionsRepository,
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(QuizScreenUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -84,9 +90,7 @@ class QuizScreenViewModel @Inject constructor(
         val questionSteps = questions.map { question -> question.toQuestionStep() }
 
         _uiState.update { currentState ->
-            currentState.copy(
-                questionSteps = questionSteps
-            )
+            currentState.copy(questionSteps = questionSteps)
         }
 
         nextQuestion()
@@ -96,24 +100,30 @@ class QuizScreenViewModel @Inject constructor(
         _uiState.update { currentState ->
             val nextIndex = currentState.getNextIndex()
 
-            val steps = if (nextIndex == -1) {
-                currentState.questionSteps
-            } else {
-                timer.start()
+            when {
+                currentState.isGameEnded -> {
+                    endGame(currentState.questionSteps.filterIsInstance<QuestionStep.Completed>())
 
-                currentState
-                    .questionSteps
-                    .toMutableList()
-                    .apply {
-                        val step = currentState.questionSteps[nextIndex].asCurrent()
-                        set(nextIndex, step)
-                    }
+                    currentState.copy(currentQuestionIndex = -1)
+                }
+                nextIndex == -1 -> currentState.copy(currentQuestionIndex = nextIndex)
+                else -> {
+                    timer.start()
+
+                    val newSteps = currentState
+                        .questionSteps
+                        .toMutableList()
+                        .apply {
+                            val step = currentState.questionSteps[nextIndex].asCurrent()
+                            set(nextIndex, step)
+                        }
+
+                    currentState.copy(
+                        questionSteps = newSteps,
+                        currentQuestionIndex = nextIndex
+                    )
+                }
             }
-
-            currentState.copy(
-                questionSteps = steps,
-                currentQuestionIndex = nextIndex
-            )
         }
     }
 
@@ -125,6 +135,7 @@ class QuizScreenViewModel @Inject constructor(
 
     private fun verifyQuestion() {
         timer.cancel()
+
         _uiState.update { currentState ->
             val steps = currentState
                 .questionSteps
@@ -135,7 +146,9 @@ class QuizScreenViewModel @Inject constructor(
 
                     if (currentQuestionStep != null) {
                         val questionCorrect = currentState.selectedAnswer.isCorrect(currentQuestionStep.question)
-                        set(currentQuestionIndex, currentQuestionStep.changeToCompleted(questionCorrect))
+
+                        val completedQuestionStep = currentQuestionStep.changeToCompleted(questionCorrect, currentState.selectedAnswer)
+                        set(currentQuestionIndex, completedQuestionStep)
                     }
                 }
 
@@ -153,5 +166,13 @@ class QuizScreenViewModel @Inject constructor(
         val currentQuestion = currentQuestionStep.question
 
         savedQuestionsRepository.insertQuestions(currentQuestion)
+    }
+
+    private fun endGame(questionSteps: List<QuestionStep.Completed>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val questionStepsStr = Json.encodeToString(questionSteps)
+            delay(1000)
+            sendNavEventAsync(NavEvent.Navigate(ResultsScreenDestination(questionStepsStr)))
+        }
     }
 }

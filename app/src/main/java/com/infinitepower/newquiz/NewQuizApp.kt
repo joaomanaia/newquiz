@@ -33,7 +33,7 @@ class NewQuizApp : Application(), Configuration.Provider {
         initializeMobileAds()
         initializeRemoteConfig()
         createNotificationChannels()
-        //createDailyWordleWork()
+        createDailyWordleWork()
     }
 
     private fun initializeMobileAds() {

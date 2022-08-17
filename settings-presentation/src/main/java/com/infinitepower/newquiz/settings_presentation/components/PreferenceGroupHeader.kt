@@ -28,9 +28,9 @@ internal fun LazyItemScope.PreferenceGroupHeader(title: String) {
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.labelLarge,
             modifier = Modifier.padding(start = spaceMedium),
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

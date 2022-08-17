@@ -1,22 +1,24 @@
 package com.infinitepower.newquiz.quiz_presentation.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.SkipNext
+import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.compose.ui.RoundCircularProgressIndicator
+import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.theme.NewQuizTheme
 
 @Composable
 internal fun QuizTopBar(
@@ -29,7 +31,7 @@ internal fun QuizTopBar(
     val spaceMedium = MaterialTheme.spacing.medium
 
     ConstraintLayout(modifier = modifier) {
-        val (btnBackRef, progressRef) = createRefs()
+        val (btnBackRef, progressRef, btnSkipRef) = createRefs()
 
         BackIconButton(
             onClick = onBackClick,
@@ -58,6 +60,38 @@ internal fun QuizTopBar(
                 text = progressText,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium
+            )
+        }
+
+        FilledTonalIconButton(
+            onClick = {},
+            modifier = Modifier.constrainAs(btnSkipRef) {
+                top.linkTo(progressRef.top)
+                bottom.linkTo(progressRef.bottom)
+                end.linkTo(parent.end, spaceMedium)
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.SkipNext,
+                contentDescription = "Skip question",
+            )
+        }
+    }
+}
+
+@Composable
+@PreviewNightLight
+private fun QuizTopBarPreview() {
+    NewQuizTheme {
+        Surface {
+            QuizTopBar(
+                windowHeightSizeClass = WindowHeightSizeClass.Medium,
+                progressText = "0:00",
+                progressIndicatorValue = 0f,
+                onBackClick = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             )
         }
     }

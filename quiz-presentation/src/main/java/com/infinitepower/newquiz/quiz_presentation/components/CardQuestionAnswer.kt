@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -23,7 +24,7 @@ import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.extendedColors
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.quiz_presentation.SelectedAnswer
+import com.infinitepower.newquiz.model.question.SelectedAnswer
 
 @Composable
 @ExperimentalMaterial3Api
@@ -31,7 +32,9 @@ internal fun CardQuestionAnswers(
     modifier: Modifier = Modifier,
     answers: List<String>,
     selectedAnswer: SelectedAnswer,
-    onOptionClick: (selectedAnswer: SelectedAnswer) -> Unit
+    isResultsScreen: Boolean = false,
+    resultsSelectedAnswer: SelectedAnswer = SelectedAnswer.NONE,
+    onOptionClick: (selectedAnswer: SelectedAnswer) -> Unit = {}
 ) {
     val spaceSmall = MaterialTheme.spacing.small
 
@@ -42,12 +45,13 @@ internal fun CardQuestionAnswers(
         verticalArrangement = Arrangement.spacedBy(spaceSmall),
     ) {
         answers.forEachIndexed { index, answer ->
-            val selected = selectedAnswer.index == index
-
             CardQuestionAnswer(
                 modifier = Modifier.fillMaxWidth(),
                 description = answer,
-                selected = selected,
+                selected = selectedAnswer.index == index,
+                isResults = isResultsScreen,
+                resultAnswerCorrect = resultsSelectedAnswer.index == index,
+                answerCorrect = selectedAnswer == resultsSelectedAnswer,
                 onClick = { onOptionClick(SelectedAnswer.fromIndex(index)) }
             )
         }
@@ -63,13 +67,24 @@ internal fun CardQuestionAnswer(
     selected: Boolean,
     isResults: Boolean = false,
     resultAnswerCorrect: Boolean = false,
+    answerCorrect: Boolean = false,
     onClick: () -> Unit
 ) {
-    val color = animateColorAsState(
+    val color by animateColorAsState(
         targetValue = when {
-            selected -> MaterialTheme.colorScheme.primary
+            isResults && selected && !answerCorrect -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Red)
             isResults && resultAnswerCorrect -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Green)
+            selected -> MaterialTheme.colorScheme.primary
             else -> MaterialTheme.colorScheme.surface
+        }
+    )
+
+    val textColor by animateColorAsState(
+        targetValue = when {
+            isResults && selected && !answerCorrect ->MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Red)
+            isResults && resultAnswerCorrect -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Green)
+            selected -> MaterialTheme.colorScheme.onPrimary
+            else -> MaterialTheme.colorScheme.onSurface
         }
     )
 
@@ -77,14 +92,16 @@ internal fun CardQuestionAnswer(
         modifier = modifier.fillMaxWidth(),
         shape = CircleShape,
         tonalElevation = 8.dp,
-        color = color.value,
+        color = color,
         onClick = onClick,
-        selected = selected
+        selected = selected,
+        enabled = !isResults
     ) {
         Text(
             text = description,
             modifier = Modifier.padding(MaterialTheme.spacing.medium),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
+            color = textColor
         )
     }
 }

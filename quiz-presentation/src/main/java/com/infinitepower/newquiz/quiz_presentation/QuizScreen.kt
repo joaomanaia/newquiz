@@ -5,31 +5,32 @@ import androidx.annotation.Keep
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.question.Question
 import com.infinitepower.newquiz.model.question.QuestionStep
+import com.infinitepower.newquiz.model.question.SelectedAnswer
 import com.infinitepower.newquiz.model.question.getBasicQuestion
 import com.infinitepower.newquiz.quiz_presentation.components.CardQuestionAnswers
-import com.infinitepower.newquiz.quiz_presentation.components.QuizStepView
+import com.infinitepower.newquiz.quiz_presentation.components.QuizStepViewRow
 import com.infinitepower.newquiz.quiz_presentation.components.QuizTopBar
+import com.infinitepower.newquiz.quiz_presentation.destinations.QuizScreenDestination
+import com.infinitepower.newquiz.quiz_presentation.destinations.ResultsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.navigate
+import kotlinx.coroutines.launch
 
 @Keep
 data class QuizScreenNavArg(
@@ -40,12 +41,32 @@ data class QuizScreenNavArg(
 @Composable
 @Destination(navArgsDelegate = QuizScreenNavArg::class)
 fun QuizScreen(
-    navigator: DestinationsNavigator,
+    navigator: NavController,
     windowWidthSizeClass: WindowWidthSizeClass,
     windowHeightSizeClass: WindowHeightSizeClass,
     viewModel: QuizScreenViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = true) {
+        viewModel
+            .navEvent
+            .collect { event ->
+                when (event) {
+                    is NavEvent.Navigate -> {
+                        navigator.navigate(event.direction) {
+                            navigator.currentDestination?.route?.let { route ->
+                                launchSingleTop = true
+                                popUpTo(route) {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }
+                    else -> {}
+                }
+            }
+    }
 
     QuizScreenImpl(
         onBackClick = navigator::popBackStack,
@@ -98,26 +119,10 @@ private fun ColumnScope.QuizContentWidthCompact(
     val spaceLarge = MaterialTheme.spacing.large
 
     Spacer(modifier = Modifier.height(spaceMedium))
-    LazyRow(
+    QuizStepViewRow(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
-        contentPadding = PaddingValues(horizontal = spaceMedium)
-    ) {
-        itemsIndexed(
-            items = uiState.questionSteps,
-            key = { _, step -> step.question.id }
-        ) { index, step ->
-            val position = index + 1
-
-            QuizStepView(
-                questionStep = step,
-                position = position,
-                enabled = false
-            )
-        }
-    }
-
+        questionSteps = uiState.questionSteps
+    )
     AnimatedVisibility(
         visible = uiState.currentQuestionStep != null
     ) {
@@ -179,24 +184,10 @@ private fun ColumnScope.QuizContentWidthMedium(
                     .weight(1f)
                     .padding(horizontal = spaceMedium),
             ) {
-                LazyRow(
+                QuizStepViewRow(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
-                ) {
-                    itemsIndexed(
-                        items = uiState.questionSteps,
-                        key = { _, step -> step.question.id }
-                    ) { index, step ->
-                        val position = index + 1
-
-                        QuizStepView(
-                            questionStep = step,
-                            position = position,
-                            enabled = false
-                        )
-                    }
-                }
+                    questionSteps = uiState.questionSteps
+                )
                 Spacer(modifier = Modifier.height(spaceMedium))
                 if (currentQuestion!= null) {
                     Text(

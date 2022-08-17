@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun MultiSelectListPreferenceWidget(
     preference: Preference.PreferenceItem.MultiSelectListPreference,
     values: Set<String>,

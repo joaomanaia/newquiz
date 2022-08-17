@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quick_quiz">Quiz rápido</string>
+    <string name="back">Voltar</string>
+    <string name="saved_questions">Perguntas guardadas</string>
+    <string name="wordle">Wordle</string>
+    <string name="wordle_infinite">Wordle infinito</string>
+    <string name="wordle_daily">Wordle diário</string>
+    <string name="verify">Verificar</string>
+    <string name="play_again">Jogar novamente</string>
+    <string name="close">Fechar</string>
+    <string name="watch_ad">Ver anúncio</string>
+    <string name="loading_rewarded_ad">A carregar o anúncio</string>
+    <string name="game_over">Fim de jogo</string>
+    <string name="you_lost_the_game_watch_ad_q">Você perdeu o jogo.\\n Quer assistir um anúncio para poder adicionar mais uma linha?</string>
+    <string name="item_empty">Item vazio</string>
+    <string name="item_i_none">Item %1$s nada</string>
+    <string name="item_i_present">Item %1$s present</string>
+    <string name="item_i_correct">Item %1$s correto</string>
+    <string name="four_letters">4 Letras</string>
+    <string name="five_letters">5 Letras</string>
+    <string name="six_letters">6 Letras</string>
+    <string name="back_month">Voltar o mês</string>
+    <string name="next_month">Próximo mês</string>
+    <string name="settings">Opções</string>
+    <string name="general">Geral</string>
+    <string name="quiz">Quiz</string>
+    <string name="quiz_language">Idioma do quiz</string>
+    <string name="english">Inglês</string>
+    <string name="portuguese">Português</string>
+    <string name="normal_quiz">Quiz normal</string>
+    <string name="color_blind_mode">Modo daltónico</string>
+    <string name="high_contrast_colors">Cores com alto contraste</string>
+    <string name="info">Informações</string>
+    <string name="letter_hints">Ajudas da letra</string>
+    <string name="hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word">Ajuda sobre a letra presente que aparece duas ou mais vezes.</string>
+    <string name="hard_mode">Modo difícil</string>
+    <string name="any_revealed_hints_must_be_used_in_subsequest_guesses">Todas as dicas usadas têm de ser usadas na próxima linha</string>
+    <string name="wordle_infinite_row_limited">Linhas limitadas no wordle infinito</string>
+    <string name="row_limit">Limite das linhas</string>
+    <string name="wordle_infinite_row_limit_value">Limite das linhas do wordle infinito.</string>
+    <string name="clean_calendar_data">Limpar os dados do calendário</string>
+    <string name="clean_saved_calendar_wins_losses">Limpar todas vitórias/derrotas do calendário.</string>
+    <string name="rows_limited">Linhas limitadas</string>
+    <string name="clear_settings">Apagar Definições</string>
+    <string name="remove_all_saved_settings">Remova todas as definições guardadas</string>
+</resources>

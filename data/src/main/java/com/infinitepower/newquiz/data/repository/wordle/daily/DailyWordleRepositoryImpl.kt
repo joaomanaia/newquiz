@@ -55,8 +55,8 @@ class DailyWordleRepositoryImpl @Inject constructor(
         dailyWordleDao.insertCalendarItem(item)
     }
 
-    override suspend fun clearAll() {
-        dailyWordleDao.clearAll()
+    override suspend fun clearAllCalendarItems() {
+        dailyWordleDao.clearAllCalendarItems()
     }
 
     override fun getAllDailyWords(

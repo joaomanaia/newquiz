@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,7 @@ import com.infinitepower.newquiz.model.wordle.daily.CalendarItemState
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -139,7 +141,7 @@ private fun CalendarHeader(
     ) {
         HeaderNavigationButton(
             icon = Icons.Rounded.ArrowBack,
-            contentDescription = "Back month",
+            contentDescription = stringResource(id = CoreR.string.back_month),
             onClick = backMonth
         )
 
@@ -150,7 +152,7 @@ private fun CalendarHeader(
 
         HeaderNavigationButton(
             icon = Icons.Rounded.ArrowForward,
-            contentDescription = "Next month",
+            contentDescription = stringResource(id = CoreR.string.next_month),
             onClick = nextMonth
         )
     }

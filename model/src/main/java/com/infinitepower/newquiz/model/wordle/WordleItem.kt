@@ -43,6 +43,7 @@ sealed class WordleItem {
         }
 
     companion object {
+        /** Creates [None] wordle item from char with false verified */
         fun fromChar(char: Char) = None(WordleChar(char), false)
     }
 }

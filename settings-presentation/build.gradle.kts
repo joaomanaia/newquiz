@@ -80,6 +80,8 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:_")
 
     implementation(project(Modules.core))
+    implementation(project(Modules.data))
+    implementation(project(Modules.domain))
 }
 
 tasks.withType<Test> {

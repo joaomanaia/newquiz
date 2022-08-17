@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.theme.spacing
@@ -17,6 +18,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
@@ -48,8 +50,12 @@ private fun DailyWordSelectorScreenImpl(
         rememberTopAppBarState()
     )
 
+    val fourLettersStr = stringResource(id = CoreR.string.four_letters)
+    val fiveLettersStr = stringResource(id = CoreR.string.five_letters)
+    val sixLettersStr = stringResource(id = CoreR.string.six_letters)
+
     val tabs = remember {
-        listOf("4 Letters", "5 Letters", "6 Letters")
+        listOf(fourLettersStr, fiveLettersStr, sixLettersStr)
     }
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -77,13 +83,13 @@ private fun DailyWordSelectorScreenImpl(
             Column {
                 SmallTopAppBar(
                     title = {
-                        Text(text = "Wordle")
+                        Text(text = stringResource(id = CoreR.string.wordle))
                     },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.Rounded.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(id = CoreR.string.back)
                             )
                         }
                     },

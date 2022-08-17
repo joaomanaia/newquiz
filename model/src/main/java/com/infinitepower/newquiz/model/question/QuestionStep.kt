@@ -21,15 +21,23 @@ sealed class QuestionStep {
     data class Current(
         override val question: Question
     ) : QuestionStep() {
-        fun changeToCompleted(correct: Boolean) = Completed(question, correct)
+        fun changeToCompleted(
+            correct: Boolean,
+            selectedAnswer: SelectedAnswer
+        ) = Completed(question, correct, selectedAnswer)
     }
 
     @Keep
     @Serializable
     data class Completed(
         override val question: Question,
-        val correct: Boolean
+        val correct: Boolean,
+        val selectedAnswer: SelectedAnswer = SelectedAnswer.NONE
     ) : QuestionStep()
 
     fun asCurrent() = Current(question)
 }
+
+fun List<QuestionStep>.isAllCompleted(): Boolean = all { it is QuestionStep.Completed }
+
+fun List<QuestionStep.Completed>.countCorrectQuestions(): Int = count { it.correct }
