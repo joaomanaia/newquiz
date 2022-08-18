@@ -1,15 +1,18 @@
 package com.infinitepower.newquiz.model.question.opentdb
 
+import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.question.Question
 import com.infinitepower.newquiz.model.util.base64.base64Decoded
 import kotlinx.serialization.Serializable
 import java.security.SecureRandom
 
+@Keep
 @Serializable
 data class OpenTDBQuestionResponse(
     val response_code: Int,
     val results: List<OpenTDBResult>
 ) {
+    @Keep
     @Serializable
     data class OpenTDBResult(
         val category: String,

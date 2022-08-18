@@ -6,6 +6,8 @@ plugins {
     id("kotlinx-serialization")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
     id("com.google.devtools.ksp") version "1.6.21-1.0.6"
 }
 
@@ -137,6 +139,8 @@ dependencies {
 
     implementation(Google.firebase.analyticsKtx.withVersionPlaceholder())
     implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
+    implementation(Google.firebase.crashlyticsKtx.withVersionPlaceholder())
+    implementation(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 

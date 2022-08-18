@@ -7,6 +7,7 @@ buildscript {
 
     dependencies {
         classpath(Firebase.crashlyticsGradlePlugin)
+        classpath(Firebase.performanceMonitoringGradlePlugin)
     }
 }
 
