@@ -1,18 +1,20 @@
 package com.infinitepower.newquiz.core.navigation
 
 import androidx.annotation.Keep
+import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ramcosta.composedestinations.spec.Direction
 
 sealed class NavDrawerItem {
-    abstract val text: String
+    @get:StringRes
+    abstract val text: Int
 
     data class Label(
-        override val text: String,
+        @StringRes override val text: Int
     ) : NavDrawerItem()
 
     data class Item(
-        override val text: String,
+        @StringRes override val text: Int,
         val icon: ImageVector,
         val badge: NavDrawerBadgeItem? = null,
         val direction: Direction

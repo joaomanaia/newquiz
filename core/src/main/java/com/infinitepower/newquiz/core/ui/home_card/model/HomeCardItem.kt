@@ -34,6 +34,12 @@ sealed class HomeCardItem {
         val enabled: Boolean = true,
         val onClick: () -> Unit
     ) : HomeCardItem()
+
+    data class HorizontalItems <out T : Any> (
+        override val title: Int,
+        val items: List<T>,
+        val itemContent: @Composable (item: @UnsafeVariance T) -> Unit
+    ) : HomeCardItem()
 }
 
 sealed class CardIcon {

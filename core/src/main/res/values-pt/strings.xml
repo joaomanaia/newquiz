@@ -28,7 +28,6 @@
     <string name="quiz_language">Idioma do quiz</string>
     <string name="english">Inglês</string>
     <string name="portuguese">Português</string>
-    <string name="normal_quiz">Quiz normal</string>
     <string name="color_blind_mode">Modo daltónico</string>
     <string name="high_contrast_colors">Cores com alto contraste</string>
     <string name="info">Informações</string>
@@ -44,4 +43,7 @@
     <string name="rows_limited">Linhas limitadas</string>
     <string name="clear_settings">Apagar Definições</string>
     <string name="remove_all_saved_settings">Remova todas as definições guardadas</string>
+    <string name="home">Inicio</string>
+    <string name="multi_choice_quiz">Quiz de escolha multipla</string>
+    <string name="other">Outro</string>
 </resources>

@@ -15,7 +15,7 @@ internal class HomeCardItemData(
 ) : CardItemDataCore {
     override val items = listOf(
         HomeCardItem.GroupTitle(
-            title = CoreR.string.normal_quiz,
+            title = CoreR.string.multi_choice_quiz,
         ),
         HomeCardItem.LargeCard(
             title = CoreR.string.quick_quiz,

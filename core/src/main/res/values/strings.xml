@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="normal_quiz">Normal Quiz</string>
     <string name="quick_quiz">Quick Quiz</string>
     <string name="back">Back</string>
     <string name="saved_questions">Saved questions</string>
@@ -44,4 +43,31 @@
     <string name="clean_saved_calendar_wins_losses">Cleans all saved calendar wins/losses.</string>
     <string name="clear_settings">Clear Preferences</string>
     <string name="remove_all_saved_settings">Remove all saved settings</string>
+    <string name="home">Home</string>
+    <string name="multi_choice_quiz">Multi choice quiz</string>
+    <string name="other">Other</string>
+    <string name="general_knowledge">General knowledge</string>
+    <string name="entertainment_books">Entertainment: Books</string>
+    <string name="entertainment_film">Entertainment: Film</string>
+    <string name="entertainment_music">Entertainment: Music</string>
+    <string name="entertainment_musicals_and_theatres"><![CDATA[Entertainment: Musicals & Theatres]]></string>
+    <string name="entertainment_television">Entertainment: Television</string>
+    <string name="entertainment_video_games">Entertainment: Video Games</string>
+    <string name="entertainment_board_games">Entertainment: Board Games</string>
+    <string name="science_and_nature"><![CDATA[Science & Nature]]></string>
+    <string name="science_computers">Science: Computers</string>
+    <string name="science_mathematics">Science: Mathematics</string>
+    <string name="mythology">Mythology</string>
+    <string name="sports">Sports</string>
+    <string name="geography">Geography</string>
+    <string name="history">History</string>
+    <string name="politics">Politics</string>
+    <string name="art">Art</string>
+    <string name="celebrities">Celebrities</string>
+    <string name="animals">Animals</string>
+    <string name="vehicles">Vehicles</string>
+    <string name="entertainment_comics">Entertainment: Comics</string>
+    <string name="science_gadgets">Science: Gadgets</string>
+    <string name="entertainment_japanese_anime_and_manga"><![CDATA[Entertainment: Japanese Anime & Manga]]></string>
+    <string name="entertainment_cartoon_and_animations"><![CDATA[Entertainment: Cartoon & Animations]]></string>
 </resources>
