@@ -30,5 +30,11 @@ fun HomeCardItemContent(
                 data = item
             )
         }
+        is HomeCardItem.HorizontalItems<*> -> {
+            HomeHorizontalItems(
+                items = item.items,
+                itemContent = item.itemContent
+            )
+        }
     }
 }

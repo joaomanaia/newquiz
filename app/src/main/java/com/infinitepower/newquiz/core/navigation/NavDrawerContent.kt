@@ -14,37 +14,39 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.navigation.NavController
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
-import com.infinitepower.newquiz.quiz_presentation.destinations.QuizListScreenDestination
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
+import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import kotlinx.coroutines.launch
 
 private val navDrawerItems = listOf(
     NavDrawerItem.Item(
-        text = "Home",
+        text = CoreR.string.home,
         icon = Icons.Rounded.Home,
         direction = HomeScreenDestination
     ),
     NavDrawerItem.Item(
-        text = "Normal quiz",
+        text = CoreR.string.multi_choice_quiz,
         icon = Icons.Rounded.Quiz,
-        direction = QuizListScreenDestination
+        direction = MultiChoiceQuizListScreenDestination
     ),
     NavDrawerItem.Item(
-        text = "Wordle",
+        text = CoreR.string.wordle,
         icon = Icons.Rounded.Quiz,
         direction = WordleListScreenDestination
     ),
-    NavDrawerItem.Label(text = "Other"),
+    NavDrawerItem.Label(text = CoreR.string.other),
     NavDrawerItem.Item(
-        text = "Settings",
+        text = CoreR.string.settings,
         icon = Icons.Rounded.Settings,
         direction = SettingsScreenDestination()
     ),
@@ -99,12 +101,14 @@ private fun NavigationDrawerContentImpl(
             }
 
             itemsIndexed(items = items) { index, item ->
+                val text = stringResource(id = item.text)
+
                 when (item) {
                     is NavDrawerItem.Label -> {
                         if (items.getOrNull(index - 1) is NavDrawerItem.Item) {
                             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                         }
-                        NavigationDrawerLabel(text = item.text)
+                        NavigationDrawerLabel(text = text)
                         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                     }
                     is NavDrawerItem.Item -> {
@@ -113,11 +117,11 @@ private fun NavigationDrawerContentImpl(
                                 NavDrawerIconWithBadge(
                                     item = item,
                                     icon = {
-                                        Icon(item.icon, contentDescription = item.text)
+                                        Icon(item.icon, contentDescription = text)
                                     }
                                 )
                             },
-                            label = { Text(item.text) },
+                            label = { Text(text = text) },
                             selected = item == selectedItem,
                             onClick = {
                                 scope.launch { drawerState.close() }
