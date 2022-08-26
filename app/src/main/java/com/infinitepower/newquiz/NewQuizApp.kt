@@ -16,10 +16,7 @@ import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private const val ONE_HOUR_IN_SECONDS = 3600L
 private const val TWELVE_HOUR_IN_SECONDS = 3600L
-
-private const val WORDLE_NOTIFICATION_HOUR = 8
 
 @HiltAndroidApp
 class NewQuizApp : Application(), Configuration.Provider {
@@ -43,7 +40,7 @@ class NewQuizApp : Application(), Configuration.Provider {
     private fun initializeRemoteConfig() {
         val remoteConfig = Firebase.remoteConfig
 
-        val remoteConfigMinFetchInterval = if (BuildConfig.DEBUG) ONE_HOUR_IN_SECONDS else TWELVE_HOUR_IN_SECONDS
+        val remoteConfigMinFetchInterval = if (BuildConfig.DEBUG) 0L else TWELVE_HOUR_IN_SECONDS
         val remoteConfigSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = remoteConfigMinFetchInterval
         }

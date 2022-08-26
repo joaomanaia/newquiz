@@ -1,5 +1,7 @@
 package com.infinitepower.newquiz.core.ui.ads.admob
 
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
@@ -21,13 +23,14 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.ump.ConsentInformation
 import com.infinitepower.newquiz.core.util.kotlin.toInt
+import kotlin.math.roundToInt
 
 @Composable
 fun BannerAd(
     modifier: Modifier = Modifier,
     inEditMode: Boolean = LocalInspectionMode.current,
     adId: String?,
-    adSize: AdSize = AdSize.BANNER
+    adSize: AdSize? = null
 ) {
     if (inEditMode || adId == null) {
         Surface(
@@ -43,11 +46,13 @@ fun BannerAd(
             )
         }
     } else {
-        BannerAdImpl(
-            modifier = Modifier,
-            adId = adId,
-            adSize = adSize
-        )
+        BoxWithConstraints(modifier = modifier) {
+            BannerAdImpl(
+                modifier = Modifier,
+                adId = adId,
+                adSize = adSize ?: getAdaptiveAdSize()
+            )
+        }
     }
 }
 
@@ -83,9 +88,7 @@ private fun BannerAdImpl(
 
 @Composable
 @ReadOnlyComposable
-fun getAdaptiveAdSize(): AdSize {
+fun BoxWithConstraintsScope.getAdaptiveAdSize(): AdSize {
     val context = LocalContext.current
-    val width = LocalConfiguration.current.screenWidthDp
-
-    return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, width)
+    return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, maxWidth.value.roundToInt())
 }

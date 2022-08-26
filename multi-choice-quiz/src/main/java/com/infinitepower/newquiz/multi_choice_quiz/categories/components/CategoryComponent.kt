@@ -23,11 +23,13 @@ import com.infinitepower.newquiz.core.R as CoreR
 internal fun CategoryComponent(
     modifier: Modifier = Modifier,
     category: MultiChoiceQuestionCategory,
+    maxLines: Int = 2,
     onClick: () -> Unit
 ) {
     CategoryComponentImpl(
         modifier = modifier,
         category = category,
+        maxLines = maxLines,
         onClick = onClick
     )
 }
@@ -37,13 +39,14 @@ internal fun CategoryComponent(
 private fun CategoryComponentImpl(
     modifier: Modifier = Modifier,
     category: MultiChoiceQuestionCategory,
+    maxLines: Int = 2,
     onClick: () -> Unit
 ) {
     val mediumShape = MaterialTheme.shapes.medium
     val mediumSpace = MaterialTheme.spacing.medium
 
     Card(
-        modifier = modifier.requiredWidth(175.dp),
+        modifier = modifier.width(175.dp),
         onClick = onClick,
     ) {
         Column(
@@ -64,7 +67,7 @@ private fun CategoryComponentImpl(
             Text(
                 text = categoryName,
                 style = MaterialTheme.typography.titleMedium,
-                maxLines = 2,
+                maxLines = maxLines,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis
             )

@@ -17,11 +17,23 @@ fun HomeGroupTitle(
     modifier: Modifier = Modifier,
     data: HomeCardItem.GroupTitle
 ) {
+    HomeGroupTitle(
+        modifier = modifier,
+        title = stringResource(id = data.title)
+    )
+}
+
+@Composable
+@ExperimentalMaterial3Api
+fun HomeGroupTitle(
+    modifier: Modifier = Modifier,
+    title: String
+) {
     Surface(
         modifier = modifier
     ) {
         Text(
-            text = stringResource(id = data.title),
+            text = title,
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(vertical = MaterialTheme.spacing.medium)
         )

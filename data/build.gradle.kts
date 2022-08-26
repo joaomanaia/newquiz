@@ -65,6 +65,8 @@ dependencies {
     kaptAndroidTest(Google.dagger.hilt.android.compiler)
     implementation(AndroidX.hilt.work)
 
+    implementation(AndroidX.dataStore.preferences)
+
     implementation(AndroidX.work.runtimeKtx)
 
     implementation(AndroidX.room.runtime)
