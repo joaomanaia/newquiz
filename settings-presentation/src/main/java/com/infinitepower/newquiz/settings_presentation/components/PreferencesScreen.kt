@@ -25,11 +25,7 @@ fun PreferencesScreen(
     dailyWordleRepository: DailyWordleRepository,
     onBackClick: () -> Unit
 ) {
-    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
-        decayAnimationSpec = decayAnimationSpec,
-        state = rememberTopAppBarState()
-    )
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     val context = LocalContext.current
     val dataStore = context.settingsDataStore

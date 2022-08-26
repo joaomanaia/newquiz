@@ -32,7 +32,7 @@ fun HomeCardItemContent(
         }
         is HomeCardItem.HorizontalItems<*> -> {
             HomeHorizontalItems(
-                items = item.items,
+                item = item,
                 itemContent = item.itemContent
             )
         }

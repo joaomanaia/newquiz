@@ -34,6 +34,7 @@ import kotlinx.serialization.json.Json
 @Destination
 fun MultiChoiceQuizResultsScreen(
     questionStepsStr: String,
+    category: Int? = null,
     navigator: DestinationsNavigator
 ) {
     val questionSteps: List<MultiChoiceQuestionStep.Completed> = Json.decodeFromString(questionStepsStr)
@@ -41,7 +42,7 @@ fun MultiChoiceQuizResultsScreen(
     MultiChoiceQuizResultsScreenImpl(
         questionSteps = questionSteps,
         onBackClick = navigator::popBackStack,
-        onPlayAgainClick = { navigator.navigate(MultiChoiceQuizScreenDestination()) }
+        onPlayAgainClick = { navigator.navigate(MultiChoiceQuizScreenDestination(category = category)) }
     )
 }
 

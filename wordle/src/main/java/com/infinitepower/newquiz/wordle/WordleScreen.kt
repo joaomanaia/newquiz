@@ -142,10 +142,7 @@ private fun WordleScreenImpl(
             }
         },
         bottomBar = {
-            BannerAd(
-                adId = WORDLE_BANNER_AD_ID,
-                adSize = getAdaptiveAdSize()
-            )
+            BannerAd(adId = WORDLE_BANNER_AD_ID)
         }
     ) { innerPadding ->
         Column(

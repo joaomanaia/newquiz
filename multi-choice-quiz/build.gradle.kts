@@ -95,6 +95,8 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.2.0")
 
+    implementation("com.google.android.gms:play-services-ads:21.1.0")
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.domain))

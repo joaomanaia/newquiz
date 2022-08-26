@@ -26,30 +26,22 @@ fun HomeMediumCard(
 
     val title = stringResource(id = data.title)
 
-    Surface(
+    Card(
         onClick = data.onClick,
         enabled = data.enabled,
-        modifier = modifier,
-        tonalElevation = 8.dp,
-        shape = MaterialTheme.shapes.medium
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier.padding(spaceMedium),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                color = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary
-            ) {
-                HomeCardIcon(
-                    icon = data.icon,
-                    contentDescription = title,
-                    modifier = Modifier
-                        .size(75.dp)
-                        .padding(MaterialTheme.spacing.small),
-                )
-            }
+            HomeCardIcon(
+                icon = data.icon,
+                contentDescription = title,
+                modifier = Modifier
+                    .size(75.dp)
+                    .padding(MaterialTheme.spacing.small),
+            )
             Spacer(modifier = Modifier.width(spaceMedium))
             Column {
                 Text(

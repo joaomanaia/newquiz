@@ -30,6 +30,20 @@ object DataStoreModule {
     fun provideDataStoreManager(
         @SettingsDataStore dataStore: DataStore<Preferences>
     ): DataStoreManager = DataStoreManagerImpl(dataStore)
+
+    @Provides
+    @Singleton
+    @MultiChoiceQuestionDataStore
+    fun provideMultiChoiceQuestionDatastore(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> = context.settingsDataStore
+
+    @Provides
+    @Singleton
+    @MultiChoiceQuestionDataStoreManager
+    fun provideMultiChoiceQuestionStoreManager(
+        @MultiChoiceQuestionDataStore dataStore: DataStore<Preferences>
+    ): DataStoreManager = DataStoreManagerImpl(dataStore)
 }
 
 @Qualifier
@@ -39,3 +53,11 @@ annotation class SettingsDataStore
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class SettingsDataStoreManager
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class MultiChoiceQuestionDataStore
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class MultiChoiceQuestionDataStoreManager

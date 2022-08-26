@@ -9,6 +9,7 @@ import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
 import com.infinitepower.newquiz.model.multi_choice_quiz.RemainingTime
@@ -30,9 +31,10 @@ const val QUIZ_COUNTDOWN_IN_MILLIS = 30000L
 @HiltViewModel
 class QuizScreenViewModel @Inject constructor(
     private val getRandomQuestionUseCase: GetRandomMultiChoiceQuestionUseCase,
-    @SettingsDataStoreManager private val dataStoreManager: DataStoreManager,
+    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
-    savedStateHandle: SavedStateHandle
+    private val multiChoiceQuestionsRepository: MultiChoiceQuestionRepository,
+    private val savedStateHandle: SavedStateHandle,
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -78,9 +80,12 @@ class QuizScreenViewModel @Inject constructor(
     }
 
     private suspend fun loadByCloudQuestions() {
-        val questionSize = dataStoreManager.getPreference(SettingsCommon.QuickQuizQuestionsSize)
+        val questionSize = settingsDataStoreManager.getPreference(SettingsCommon.QuickQuizQuestionsSize)
+        val category = savedStateHandle.get<Int?>(MultiChoiceQuizScreenNavArg::category.name)
 
-        getRandomQuestionUseCase(questionSize).collect { res ->
+        if (category != null) multiChoiceQuestionsRepository.addCategoryToRecent(category)
+
+        getRandomQuestionUseCase(questionSize, category).collect { res ->
             if (res is Resource.Success) {
                 createQuestionSteps(res.data.orEmpty())
             }
@@ -172,8 +177,9 @@ class QuizScreenViewModel @Inject constructor(
     private fun endGame(questionSteps: List<MultiChoiceQuestionStep.Completed>) {
         viewModelScope.launch(Dispatchers.IO) {
             val questionStepsStr = Json.encodeToString(questionSteps)
+            val category = savedStateHandle.get<Int?>(MultiChoiceQuizScreenNavArg::category.name)
             delay(1000)
-            sendNavEventAsync(NavEvent.Navigate(MultiChoiceQuizResultsScreenDestination(questionStepsStr)))
+            sendNavEventAsync(NavEvent.Navigate(MultiChoiceQuizResultsScreenDestination(questionStepsStr, category)))
         }
     }
 }

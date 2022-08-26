@@ -5,6 +5,7 @@ import androidx.annotation.Keep
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -18,6 +19,8 @@ import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLigh
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.ads.admob.BannerAd
+import com.infinitepower.newquiz.core.ui.ads.admob.getAdaptiveAdSize
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
@@ -31,7 +34,7 @@ import com.ramcosta.composedestinations.navigation.navigate
 @Keep
 data class MultiChoiceQuizScreenNavArg(
     val initialQuestions: ArrayList<MultiChoiceQuestion> = arrayListOf(),
-    val category: String? = null
+    val category: Int? = null
 )
 
 @Composable
@@ -124,37 +127,49 @@ private fun ColumnScope.QuizContentWidthCompact(
     ) {
         val currentQuestion = uiState.currentQuestionStep?.question
 
-        Column(
-            modifier = Modifier
-                .padding(horizontal = spaceMedium)
-                .fillMaxWidth(),
-        ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.height(spaceLarge))
-            if (currentQuestion != null) {
-                Text(
-                    text = uiState.getQuestionPositionFormatted(),
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Spacer(modifier = Modifier.height(spaceMedium))
-                Text(
-                    text = currentQuestion.description,
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
-            Spacer(modifier = Modifier.height(spaceLarge))
-            CardQuestionAnswers(
-                answers = currentQuestion?.answers.orEmpty(),
-                selectedAnswer = uiState.selectedAnswer,
-                onOptionClick = { answer ->
-                    onEvent(MultiChoiceQuizScreenUiEvent.SelectAnswer(answer))
+            LazyColumn(
+                modifier = Modifier
+                    .padding(horizontal = spaceMedium)
+                    .fillMaxWidth()
+            ) {
+                if (currentQuestion != null) {
+                    item {
+                        Column {
+                            Text(
+                                text = uiState.getQuestionPositionFormatted(),
+                                style = MaterialTheme.typography.headlineSmall
+                            )
+                            Spacer(modifier = Modifier.height(spaceMedium))
+                            Text(
+                                text = currentQuestion.description,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+                    }
                 }
-            )
-            Spacer(modifier = Modifier.height(spaceMedium))
-            RowActionButtons(
-                answerSelected = uiState.selectedAnswer.isSelected,
-                onVerifyQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.VerifyAnswer) },
-                onSaveQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) }
-            )
+                item {
+                    Spacer(modifier = Modifier.height(spaceLarge))
+                    CardQuestionAnswers(
+                        answers = currentQuestion?.answers.orEmpty(),
+                        selectedAnswer = uiState.selectedAnswer,
+                        onOptionClick = { answer ->
+                            onEvent(MultiChoiceQuizScreenUiEvent.SelectAnswer(answer))
+                        }
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(spaceMedium))
+                    RowActionButtons(
+                        answerSelected = uiState.selectedAnswer.isSelected,
+                        onVerifyQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.VerifyAnswer) },
+                        onSaveQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) }
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            BannerAd(adId = "ca-app-pub-1923025671607389/9840723939")
         }
     }
 }
@@ -202,6 +217,8 @@ private fun ColumnScope.QuizContentWidthMedium(
                     onVerifyQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.VerifyAnswer) },
                     onSaveQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) }
                 )
+                Spacer(modifier = Modifier.height(spaceMedium))
+                BannerAd(adId = "ca-app-pub-1923025671607389/9840723939")
             }
             CardQuestionAnswers(
                 answers = currentQuestion?.answers.orEmpty(),
