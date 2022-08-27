@@ -36,5 +36,6 @@ fun HomeCardItemContent(
                 itemContent = item.itemContent
             )
         }
+        is HomeCardItem.CustomItem -> item.content()
     }
 }

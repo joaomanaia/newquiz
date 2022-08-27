@@ -81,11 +81,15 @@ class QuizScreenViewModel @Inject constructor(
 
     private suspend fun loadByCloudQuestions() {
         val questionSize = settingsDataStoreManager.getPreference(SettingsCommon.QuickQuizQuestionsSize)
-        val category = savedStateHandle.get<Int?>(MultiChoiceQuizScreenNavArg::category.name)
 
-        if (category != null) multiChoiceQuestionsRepository.addCategoryToRecent(category)
+        val categoryState = savedStateHandle.get<Int>(MultiChoiceQuizScreenNavArg::category.name)
+        val category = if (categoryState == -1) null else categoryState
 
-        getRandomQuestionUseCase(questionSize, category).collect { res ->
+        val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
+
+        if (category != null && category != -1) multiChoiceQuestionsRepository.addCategoryToRecent(category)
+
+        getRandomQuestionUseCase(questionSize, category, difficulty).collect { res ->
             if (res is Resource.Success) {
                 createQuestionSteps(res.data.orEmpty())
             }

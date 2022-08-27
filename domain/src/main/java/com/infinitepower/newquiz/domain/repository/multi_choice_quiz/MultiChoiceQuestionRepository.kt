@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface MultiChoiceQuestionRepository {
     suspend fun getRandomQuestions(
         amount: Int = 5,
-        category: Int? = null
+        category: Int? = null,
+        difficulty: String? = null,
     ): List<MultiChoiceQuestion>
 
     fun getRecentCategories(): Flow<List<MultiChoiceQuestionCategory>>

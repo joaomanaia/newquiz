@@ -73,4 +73,8 @@
     <string name="categories">Categorias</string>
     <string name="n_questions_available">%1$s questões disponíveis</string>
     <string name="see_all">Ver tudo</string>
+    <string name="easy">Fácil</string>
+    <string name="medium">Médio</string>
+    <string name="hard">Dificil</string>
+    <string name="difficulty">Dificuldade</string>
 </resources>

@@ -31,6 +31,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
+@OptIn(ExperimentalMaterial3Api::class)
 fun MultiChoiceQuizListScreen(
     navigator: DestinationsNavigator,
     viewModel: MultiChoiceQuizListScreenViewModel = hiltViewModel()
@@ -43,26 +44,20 @@ fun MultiChoiceQuizListScreen(
     )
 
     val cardItemData = remember(uiState.savedQuestionsSize) {
-        getMultiChoiceQuizListCardItemData(navigator, questionsAvailableText)
+        getMultiChoiceQuizListCardItemData(
+            navigator = navigator,
+            savedQuestionsText = questionsAvailableText,
+            recentCategories = uiState.recentCategories
+        )
     }
 
-    MultiChoiceQuizListScreenImpl(
-        uiState = uiState,
-        cardItemData = cardItemData,
-        navigateToCategoriesScreen = { navigator.navigate(MultiChoiceCategoriesScreenDestination) },
-        navigateToQuizScreen = { categoryId ->
-            navigator.navigate(MultiChoiceQuizScreenDestination(category = categoryId))
-        }
-    )
+    MultiChoiceQuizListScreenImpl(cardItemData = cardItemData)
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MultiChoiceQuizListScreenImpl(
-    uiState: MultiChoiceQuizListScreenUiState,
     cardItemData: List<HomeCardItem>,
-    navigateToCategoriesScreen: () -> Unit,
-    navigateToQuizScreen: (category: Int) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
         rememberTopAppBarState()
@@ -95,21 +90,13 @@ private fun MultiChoiceQuizListScreenImpl(
                     item = item
                 )
             }
-
-            item {
-                MultiChoiceCategoriesSelector(
-                    recentCategories = uiState.recentCategories,
-                    navigateToCategoriesScreen = navigateToCategoriesScreen,
-                    navigateToQuizScreen = navigateToQuizScreen
-                )
-            }
         }
     }
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun MultiChoiceCategoriesSelector(
+fun MultiChoiceCategoriesSelector(
     recentCategories: List<MultiChoiceQuestionCategory>,
     navigateToCategoriesScreen: () -> Unit,
     navigateToQuizScreen: (category: Int) -> Unit
