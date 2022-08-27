@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemContent
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
+import com.infinitepower.newquiz.core.util.ui.nav_drawer.NavDrawerUtil
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
 import com.infinitepower.newquiz.multi_choice_quiz.categories.components.CategoryComponent
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceCategoriesScreenDestination
@@ -34,6 +36,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @OptIn(ExperimentalMaterial3Api::class)
 fun MultiChoiceQuizListScreen(
     navigator: DestinationsNavigator,
+    navDrawerUtil: NavDrawerUtil,
     viewModel: MultiChoiceQuizListScreenViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -51,13 +54,17 @@ fun MultiChoiceQuizListScreen(
         )
     }
 
-    MultiChoiceQuizListScreenImpl(cardItemData = cardItemData)
+    MultiChoiceQuizListScreenImpl(
+        cardItemData = cardItemData,
+        openDrawer = navDrawerUtil::open
+    )
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MultiChoiceQuizListScreenImpl(
     cardItemData: List<HomeCardItem>,
+    openDrawer: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
         rememberTopAppBarState()
@@ -72,7 +79,15 @@ private fun MultiChoiceQuizListScreenImpl(
                 title = {
                     Text(text = stringResource(id = CoreR.string.multi_choice_quiz))
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                navigationIcon = {
+                    IconButton(onClick = openDrawer) {
+                        Icon(
+                            imageVector = Icons.Rounded.Menu,
+                            contentDescription = "Open drawer"
+                        )
+                    }
+                }
             )
         }
     ) { innerPadding ->

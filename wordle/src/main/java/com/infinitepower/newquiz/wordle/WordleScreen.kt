@@ -26,7 +26,6 @@ import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLigh
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.ads.admob.BannerAd
-import com.infinitepower.newquiz.core.ui.ads.admob.getAdaptiveAdSize
 import com.infinitepower.newquiz.core.util.ads.admob.rewarded.RewardedAdUtil
 import com.infinitepower.newquiz.core.util.ads.admob.rewarded.RewardedAdUtilImpl
 import com.infinitepower.newquiz.core.util.compose.activity.getActivity
@@ -253,7 +252,7 @@ private fun WordleScreenImpl(
                         }
                         rewardedAdUtil?.loadAndShow(
                             adId = WORDLE_REWARDED_AD_ID,
-                            onUserEarnedReward = { onEvent(WordleScreenUiEvent.AddOneRow) }
+                            onUserEarnedReward = { onEvent(WordleScreenUiEvent.OnUserAdRewardedRow) }
                         )
                     }
                 ) {

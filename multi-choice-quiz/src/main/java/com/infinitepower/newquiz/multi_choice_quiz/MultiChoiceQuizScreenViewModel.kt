@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.multi_choice_quiz
 import android.os.CountDownTimer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
@@ -35,6 +36,7 @@ class QuizScreenViewModel @Inject constructor(
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
     private val multiChoiceQuestionsRepository: MultiChoiceQuestionRepository,
     private val savedStateHandle: SavedStateHandle,
+    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -91,17 +93,27 @@ class QuizScreenViewModel @Inject constructor(
 
         getRandomQuestionUseCase(questionSize, category, difficulty).collect { res ->
             if (res is Resource.Success) {
-                createQuestionSteps(res.data.orEmpty())
+                createQuestionSteps(res.data.orEmpty(), category, difficulty)
             }
         }
     }
 
-    private fun createQuestionSteps(questions: List<MultiChoiceQuestion>) {
+    private fun createQuestionSteps(
+        questions: List<MultiChoiceQuestion>,
+        category: Int? = null,
+        difficulty: String? = null
+    ) {
         val questionSteps = questions.map { question -> question.toQuestionStep() }
 
         _uiState.update { currentState ->
             currentState.copy(questionSteps = questionSteps)
         }
+
+        multiChoiceQuizLoggingAnalytics.logGameStart(
+            questionsSize = questionSteps.size,
+            category = category,
+            difficulty = difficulty
+        )
 
         nextQuestion()
     }
@@ -182,7 +194,14 @@ class QuizScreenViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val questionStepsStr = Json.encodeToString(questionSteps)
             val category = savedStateHandle.get<Int?>(MultiChoiceQuizScreenNavArg::category.name)
+
+            multiChoiceQuizLoggingAnalytics.logGameEnd(
+                questionsSize = questionSteps.size,
+                correctAnswers = questionSteps.count { it.correct }
+            )
+
             delay(1000)
+
             sendNavEventAsync(NavEvent.Navigate(MultiChoiceQuizResultsScreenDestination(questionStepsStr, category)))
         }
     }

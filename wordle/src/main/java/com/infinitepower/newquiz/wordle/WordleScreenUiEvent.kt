@@ -9,5 +9,5 @@ sealed class WordleScreenUiEvent {
 
     object OnPlayAgainClick : WordleScreenUiEvent()
 
-    object AddOneRow : WordleScreenUiEvent()
+    object OnUserAdRewardedRow : WordleScreenUiEvent()
 }

@@ -9,6 +9,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.google.android.ump.ConsentInformation
+import com.infinitepower.newquiz.core.util.ui.nav_drawer.NavDrawerUtil
+import com.infinitepower.newquiz.core.util.ui.nav_drawer.NavDrawerUtilImpl
+import com.infinitepower.newquiz.home_presentation.HomeScreen
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.*
@@ -17,6 +20,7 @@ import com.infinitepower.newquiz.wordle.destinations.DailyWordSelectorScreenDest
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.navigation.dependency
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.scope.DestinationScope
@@ -60,11 +64,6 @@ internal fun DestinationScope<*>.currentNavigator(): CommonNavGraphNavigator {
     return CommonNavGraphNavigator(navController)
 }
 
-private val navDrawerVisibleDestinations = listOf(
-    HomeScreenDestination,
-    SettingsScreenDestination
-)
-
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun AppNavigation(
@@ -77,6 +76,8 @@ internal fun AppNavigation(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    val navDrawerUtil: NavDrawerUtil = NavDrawerUtilImpl(drawerState, scope)
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -85,7 +86,7 @@ internal fun AppNavigation(
                 navController = navController,
                 drawerState = drawerState,
                 onItemClick = { item ->
-                    scope.launch { drawerState.close() }
+                    navDrawerUtil.close()
                     navController.navigate(item.direction)
                 }
             )
@@ -100,6 +101,7 @@ internal fun AppNavigation(
                 dependency(windowWidthSizeClass)
                 dependency(windowHeightSizeClass)
                 dependency(consentInformation)
+                dependency(navDrawerUtil)
             }
         )
     }
