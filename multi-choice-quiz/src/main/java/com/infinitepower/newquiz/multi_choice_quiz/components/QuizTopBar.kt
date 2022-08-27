@@ -63,6 +63,8 @@ internal fun QuizTopBar(
             )
         }
 
+        // TODO: Add skip to multi choice quiz
+        /*
         FilledTonalIconButton(
             onClick = {},
             modifier = Modifier.constrainAs(btnSkipRef) {
@@ -76,6 +78,8 @@ internal fun QuizTopBar(
                 contentDescription = "Skip question",
             )
         }
+
+         */
     }
 }
 
