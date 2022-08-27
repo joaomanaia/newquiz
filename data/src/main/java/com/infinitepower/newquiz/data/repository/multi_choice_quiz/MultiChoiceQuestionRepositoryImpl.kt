@@ -35,9 +35,10 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
 
     override suspend fun getRandomQuestions(
         amount: Int,
-        category: Int?
+        category: Int?,
+        difficulty: String?
     ): List<MultiChoiceQuestion> = withContext(Dispatchers.IO) {
-        val openTDBResults = getOpenTDBResponse(amount, category).results
+        val openTDBResults = getOpenTDBResponse(amount, category, difficulty).results
 
         val questions = openTDBResults.map { result ->
             async(Dispatchers.IO) {
@@ -50,13 +51,15 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
 
     private suspend fun getOpenTDBResponse(
         amount: Int,
-        category: Int?
+        category: Int?,
+        difficulty: String?
     ): OpenTDBQuestionResponse {
         val response: HttpResponse = client.request("https://opentdb.com/api.php") {
             method = HttpMethod.Get
             parameter("encode", "base64")
             parameter("amount", amount)
             if (category != null) parameter("category", category)
+            if (difficulty != null) parameter("difficulty", difficulty)
 
             headers {
                 append(HttpHeaders.Accept, "application/json")

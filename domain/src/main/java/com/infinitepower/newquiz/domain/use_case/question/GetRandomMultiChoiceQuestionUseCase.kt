@@ -14,13 +14,14 @@ class GetRandomMultiChoiceQuestionUseCase @Inject constructor(
     private val questionRepository: MultiChoiceQuestionRepository
 ) {
     operator fun invoke(
-        @IntRange(from = 0, to = 50) amount: Int = 10,
-        @IntRange(from = 0) category: Int? = null
+        amount: Int = 10,
+        category: Int? = null,
+        difficulty: String? = null
     ): FlowResource<List<MultiChoiceQuestion>> = flow {
         try {
             emit(Resource.Loading())
 
-            val questions = questionRepository.getRandomQuestions(amount, category)
+            val questions = questionRepository.getRandomQuestions(amount, category, difficulty)
             emit(Resource.Success(questions))
         } catch (e: Exception) {
             e.printStackTrace()

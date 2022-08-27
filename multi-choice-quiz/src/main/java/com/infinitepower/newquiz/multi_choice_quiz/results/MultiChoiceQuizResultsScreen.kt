@@ -42,7 +42,7 @@ fun MultiChoiceQuizResultsScreen(
     MultiChoiceQuizResultsScreenImpl(
         questionSteps = questionSteps,
         onBackClick = navigator::popBackStack,
-        onPlayAgainClick = { navigator.navigate(MultiChoiceQuizScreenDestination(category = category)) }
+        onPlayAgainClick = { navigator.navigate(MultiChoiceQuizScreenDestination(category = category ?: -1)) }
     )
 }
 

@@ -21,7 +21,8 @@ fun getWordListCardItemData(
         icon = CardIcon.Icon(Icons.Rounded.Quiz),
         onClick = {
             navigator.navigate(WordleScreenDestination())
-        }
+        },
+        backgroundPrimary = true
     ),
     HomeCardItem.GroupTitle(
         title = R.string.wordle_daily,

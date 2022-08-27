@@ -30,10 +30,22 @@ fun HomeLargeCard(
 
     val title = stringResource(id = data.title)
 
+    val containerColor = if (data.backgroundPrimary) {
+        MaterialTheme.colorScheme.primary
+    } else MaterialTheme.colorScheme.surfaceVariant
+
+    val contentColor = if (data.backgroundPrimary) {
+        MaterialTheme.colorScheme.onPrimary
+    } else MaterialTheme.colorScheme.onSurfaceVariant
+
     Card(
         onClick = data.onClick,
         enabled = data.enabled,
-        modifier = modifier
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+        )
     ) {
         Column(
             modifier = Modifier.padding(spaceMedium),

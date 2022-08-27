@@ -34,7 +34,8 @@ import com.ramcosta.composedestinations.navigation.navigate
 @Keep
 data class MultiChoiceQuizScreenNavArg(
     val initialQuestions: ArrayList<MultiChoiceQuestion> = arrayListOf(),
-    val category: Int? = null
+    val category: Int = -1,
+    val difficulty: String? = null
 )
 
 @Composable
