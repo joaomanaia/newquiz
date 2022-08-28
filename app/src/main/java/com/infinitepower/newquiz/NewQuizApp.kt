@@ -3,6 +3,7 @@ package com.infinitepower.newquiz
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.*
@@ -29,8 +30,8 @@ class NewQuizApp : Application(), Configuration.Provider {
 
         initializeMobileAds()
         initializeRemoteConfig()
-        createNotificationChannels()
-        createDailyWordleWork()
+        //createNotificationChannels()
+        //createDailyWordleWork()
     }
 
     private fun initializeMobileAds() {

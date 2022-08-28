@@ -28,6 +28,7 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQues
 import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswers
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizTopBar
+import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
 
@@ -39,7 +40,12 @@ data class MultiChoiceQuizScreenNavArg(
 )
 
 @Composable
-@Destination(navArgsDelegate = MultiChoiceQuizScreenNavArg::class)
+@Destination(
+    navArgsDelegate = MultiChoiceQuizScreenNavArg::class,
+    deepLinks = [
+        DeepLink(uriPattern = "newquiz://quickquiz")
+    ]
+)
 fun MultiChoiceQuizScreen(
     navigator: NavController,
     windowWidthSizeClass: WindowWidthSizeClass,

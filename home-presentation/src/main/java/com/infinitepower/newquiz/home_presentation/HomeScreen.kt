@@ -87,6 +87,8 @@ private fun HomeScreenImpl(
             contentPadding = PaddingValues(spaceMedium),
             verticalArrangement = Arrangement.spacedBy(spaceMedium)
         ) {
+            // TODO: Add login
+            /*
             if (!uiState.isLoggedIn && uiState.showLoginCard) {
                 item {
                     SignInCard(
@@ -98,6 +100,8 @@ private fun HomeScreenImpl(
                     )
                 }
             }
+
+             */
 
             items(
                 items = homeCardItemData,

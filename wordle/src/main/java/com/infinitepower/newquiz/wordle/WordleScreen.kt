@@ -36,6 +36,7 @@ import com.infinitepower.newquiz.wordle.components.WordleKeyBoard
 import com.infinitepower.newquiz.wordle.components.WordleRowComponent
 import com.infinitepower.newquiz.wordle.components.getItemRowBackgroundColor
 import com.infinitepower.newquiz.wordle.components.getItemRowTextColor
+import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -52,7 +53,12 @@ data class WordleScreenNavArgs(
 )
 
 @Composable
-@Destination(navArgsDelegate = WordleScreenNavArgs::class)
+@Destination(
+    navArgsDelegate = WordleScreenNavArgs::class,
+    deepLinks = [
+        DeepLink(uriPattern = "newquiz://wordleinfinite")
+    ]
+)
 fun WordleScreen(
     navigator: DestinationsNavigator,
     wordleScreenViewModel: WordleScreenViewModel = hiltViewModel()
