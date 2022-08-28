@@ -45,6 +45,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             scope: CoroutineScope,
             dataStoreManager: DataStoreManager
         ) = listOf(
+            // TODO: Add login
+            /*
             Preference.PreferenceItem.SwitchPreference(
                 request = SettingsCommon.ShowLoginCard,
                 title = "Show login card",
@@ -57,6 +59,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     )
                 }
             ),
+
+             */
             Preference.PreferenceItem.TextPreference(
                 title = stringResource(id = CoreR.string.clear_settings),
                 summary = stringResource(id = CoreR.string.remove_all_saved_settings),

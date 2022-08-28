@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="quick_quiz"
+        android:enabled="true"
+        android:icon="@drawable/round_quiz_24"
+        android:shortcutShortLabel="@string/quick_quiz"
+        android:shortcutLongLabel="@string/quick_quiz">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.infinitepower.newquiz"
+            android:targetClass="com.infinitepower.newquiz.MainActivity"
+            android:data="newquiz://quickquiz"/>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="wordle_infinite"
+        android:enabled="true"
+        android:icon="@drawable/round_password_24"
+        android:shortcutShortLabel="@string/wordle_infinite"
+        android:shortcutLongLabel="@string/wordle_infinite">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.infinitepower.newquiz"
+            android:targetClass="com.infinitepower.newquiz.MainActivity"
+            android:data="newquiz://wordleinfinite"/>
+    </shortcut>
+</shortcuts>

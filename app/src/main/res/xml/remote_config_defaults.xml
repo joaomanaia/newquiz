@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
+        <key>wordle_ad_row_reward_amount</key>
+        <value>1</value>
+    </entry>
+    <entry>
         <key>wordle_daily_words</key>
         <value>[{"date":"2022-08-01","words":{"4":"QUIZ","5":"LEARN","6":"FRIEND"}}]</value>
     </entry>

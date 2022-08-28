@@ -9,10 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.infinitepower.newquiz.core.R
@@ -32,10 +30,22 @@ fun HomeLargeCard(
 
     val title = stringResource(id = data.title)
 
+    val containerColor = if (data.backgroundPrimary) {
+        MaterialTheme.colorScheme.primary
+    } else MaterialTheme.colorScheme.surfaceVariant
+
+    val contentColor = if (data.backgroundPrimary) {
+        MaterialTheme.colorScheme.onPrimary
+    } else MaterialTheme.colorScheme.onSurfaceVariant
+
     Card(
         onClick = data.onClick,
         enabled = data.enabled,
-        modifier = modifier
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+        )
     ) {
         Column(
             modifier = Modifier.padding(spaceMedium),

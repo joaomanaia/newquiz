@@ -46,9 +46,7 @@ private fun DailyWordSelectorScreenImpl(
     navigate: (direction: Direction) -> Unit,
     onEvent: (event: DailyWordleSelectorUiEvent) -> Unit
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
-        rememberTopAppBarState()
-    )
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     val fourLettersStr = stringResource(id = CoreR.string.four_letters)
     val fiveLettersStr = stringResource(id = CoreR.string.five_letters)

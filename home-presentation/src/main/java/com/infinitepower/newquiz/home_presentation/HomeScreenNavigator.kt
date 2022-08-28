@@ -1,9 +1,9 @@
 package com.infinitepower.newquiz.home_presentation
 
-import com.infinitepower.newquiz.model.question.Question
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 
 interface HomeScreenNavigator {
-    fun navigateToQuickQuiz(initialQuestions: ArrayList<Question> = arrayListOf())
+    fun navigateToQuickQuiz(initialQuestions: ArrayList<MultiChoiceQuestion> = arrayListOf())
 
     fun navigateToSettings()
 
@@ -13,7 +13,7 @@ interface HomeScreenNavigator {
 }
 
 internal class HomeNavigatorPreviewImpl : HomeScreenNavigator {
-    override fun navigateToQuickQuiz(initialQuestions: ArrayList<Question>) {
+    override fun navigateToQuickQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {
         println("Navigating to Quick Quiz")
     }
 
