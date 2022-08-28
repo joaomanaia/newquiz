@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.data.database.util.converters
 
 import androidx.room.TypeConverter
-import com.infinitepower.newquiz.model.question.Question
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

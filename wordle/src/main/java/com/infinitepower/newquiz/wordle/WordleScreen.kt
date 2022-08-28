@@ -26,7 +26,6 @@ import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLigh
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.ads.admob.BannerAd
-import com.infinitepower.newquiz.core.ui.ads.admob.getAdaptiveAdSize
 import com.infinitepower.newquiz.core.util.ads.admob.rewarded.RewardedAdUtil
 import com.infinitepower.newquiz.core.util.ads.admob.rewarded.RewardedAdUtilImpl
 import com.infinitepower.newquiz.core.util.compose.activity.getActivity
@@ -37,6 +36,7 @@ import com.infinitepower.newquiz.wordle.components.WordleKeyBoard
 import com.infinitepower.newquiz.wordle.components.WordleRowComponent
 import com.infinitepower.newquiz.wordle.components.getItemRowBackgroundColor
 import com.infinitepower.newquiz.wordle.components.getItemRowTextColor
+import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -53,7 +53,12 @@ data class WordleScreenNavArgs(
 )
 
 @Composable
-@Destination(navArgsDelegate = WordleScreenNavArgs::class)
+@Destination(
+    navArgsDelegate = WordleScreenNavArgs::class,
+    deepLinks = [
+        DeepLink(uriPattern = "newquiz://wordleinfinite")
+    ]
+)
 fun WordleScreen(
     navigator: DestinationsNavigator,
     wordleScreenViewModel: WordleScreenViewModel = hiltViewModel()
@@ -142,10 +147,7 @@ private fun WordleScreenImpl(
             }
         },
         bottomBar = {
-            BannerAd(
-                adId = WORDLE_BANNER_AD_ID,
-                adSize = getAdaptiveAdSize()
-            )
+            BannerAd(adId = WORDLE_BANNER_AD_ID)
         }
     ) { innerPadding ->
         Column(
@@ -256,7 +258,7 @@ private fun WordleScreenImpl(
                         }
                         rewardedAdUtil?.loadAndShow(
                             adId = WORDLE_REWARDED_AD_ID,
-                            onUserEarnedReward = { onEvent(WordleScreenUiEvent.AddOneRow) }
+                            onUserEarnedReward = { onEvent(WordleScreenUiEvent.OnUserAdRewardedRow) }
                         )
                     }
                 ) {

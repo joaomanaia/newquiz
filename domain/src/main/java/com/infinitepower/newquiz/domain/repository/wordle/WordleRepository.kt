@@ -16,4 +16,6 @@ interface WordleRepository {
     suspend fun getWordleMaxRows(
         defaultMaxRow: Int = Int.MAX_VALUE
     ): Int
+
+    fun getAdRewardRowsToAdd(): Int
 }

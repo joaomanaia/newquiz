@@ -73,7 +73,7 @@ class WordleScreenViewModel @Inject constructor(
             is WordleScreenUiEvent.OnRemoveKeyClick -> removeKeyFromCurrentRow(event.index)
             is WordleScreenUiEvent.VerifyRow -> verifyRow()
             is WordleScreenUiEvent.OnPlayAgainClick -> generateGame()
-            is WordleScreenUiEvent.AddOneRow -> addNewOneRow()
+            is WordleScreenUiEvent.OnUserAdRewardedRow -> addNewAdRewardedRow()
         }
     }
 
@@ -251,9 +251,11 @@ class WordleScreenViewModel @Inject constructor(
         workManager.enqueue(workRequest)
     }
 
-    private fun addNewOneRow() {
+    private fun addNewAdRewardedRow() {
         _uiState.update { currentState ->
             val currentWord = currentState.word ?: return
+
+            val rowsToAdd = wordleRepository.getAdRewardRowsToAdd()
 
             val newRows = currentState
                 .rows
@@ -263,7 +265,7 @@ class WordleScreenViewModel @Inject constructor(
                 }
 
             currentState.copy(
-                rowLimit = currentState.rowLimit + 1,
+                rowLimit = currentState.rowLimit + rowsToAdd,
                 rows = newRows
             )
         }
