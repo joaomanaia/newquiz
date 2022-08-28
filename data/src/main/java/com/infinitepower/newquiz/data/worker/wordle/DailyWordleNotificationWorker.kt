@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.data.worker.wordle
 
 import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -15,6 +16,9 @@ class DailyWordleNotificationWorker @AssistedInject constructor(
     private val dailyWordleNotificationService: DailyWordleNotificationService
 ) : Worker(appContext, workerParams) {
     override fun doWork(): Result {
+        val notificationManager = NotificationManagerCompat.from(applicationContext)
+        if (!notificationManager.areNotificationsEnabled()) return Result.failure()
+
         dailyWordleNotificationService.showNotification()
 
         return Result.success()
