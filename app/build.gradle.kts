@@ -23,10 +23,6 @@ android {
 
         testInstrumentationRunner = ProjectConfig.testInstrumentationRunner
         vectorDrawables.useSupportLibrary = true
-
-        androidResources {
-            noCompress("tflite")
-        }
     }
 
     buildTypes {

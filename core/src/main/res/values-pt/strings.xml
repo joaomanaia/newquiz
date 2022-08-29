@@ -54,7 +54,7 @@
     <string name="entertainment_television">Televisão</string>
     <string name="entertainment_video_games">Vídeo jogos</string>
     <string name="entertainment_board_games">Jogos de tabuleiro</string>
-    <string name="science_and_nature">Siencia e natureza</string>
+    <string name="science_and_nature">Ciência e natureza</string>
     <string name="science_computers">Computadores</string>
     <string name="science_mathematics">Matemática</string>
     <string name="mythology">Mitologia</string>
@@ -75,6 +75,6 @@
     <string name="see_all">Ver tudo</string>
     <string name="easy">Fácil</string>
     <string name="medium">Médio</string>
-    <string name="hard">Dificil</string>
+    <string name="hard">Difícil</string>
     <string name="difficulty">Dificuldade</string>
 </resources>
