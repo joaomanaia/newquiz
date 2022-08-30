@@ -4,5 +4,4 @@
 
     <style name="Theme.NewQuiz" parent="Base.Theme.NewQuiz" />
 
-    <style name="Theme.NewQuiz.AppBar" parent="Theme.Material3.DayNight"/>
 </resources>

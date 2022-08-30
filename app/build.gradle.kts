@@ -57,6 +57,7 @@ android {
         }
     }
     lint {
+        disable += "DialogFragmentCallbacksDetector"
         baseline = file("lint-baseline.xml")
     }
     namespace = "com.infinitepower.newquiz"
@@ -121,8 +122,7 @@ dependencies {
     implementation(Ktor.client.okHttp)
     implementation(Ktor.client.serialization)
 
-    // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation(Square.leakCanary.android)
+    //debugImplementation(Square.leakCanary.android)
 
     implementation(AndroidX.work.runtimeKtx)
     androidTestImplementation(AndroidX.work.testing)

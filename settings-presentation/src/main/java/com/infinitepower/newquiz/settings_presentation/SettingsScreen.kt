@@ -44,7 +44,6 @@ data class SettingsScreenNavArgs(
 )
 
 @Composable
-@MainNavGraph
 @Destination(navArgsDelegate = SettingsScreenNavArgs::class)
 fun SettingsScreen(
     navigator: DestinationsNavigator,

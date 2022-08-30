@@ -1,0 +1,1097 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.4.0-alpha10" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.0-alpha10)" variant="all" version="7.4.0-alpha10">
+
+    <issue
+        id="LintError"
+        message="Unexpected failure during lint analysis of FirebaseAnalyticsExtensions.kt (this is a bug in lint or one of the libraries it depends on)&#xA;&#xA;Message: class androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler tried to access protected method &apos;org.jetbrains.kotlin.psi.KtClassOrObject org.jetbrains.uast.kotlin.KotlinUClass.getKtClass()&apos; (androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler is in unnamed module of loader com.intellij.util.lang.UrlClassLoader @1e602875; org.jetbrains.uast.kotlin.KotlinUClass is in unnamed module of loader java.net.URLClassLoader @4ac162ab)&#xA;&#xA;The crash seems to involve the detector `androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector`.&#xA;You can try disabling it with something like this:&#xA;    android {&#xA;        lint {&#xA;            disable &quot;DialogFragmentCallbacksDetector&quot;&#xA;        }&#xA;    }&#xA;&#xA;Stack: `IllegalAccessError:OnCreateDialogIncorrectCallbackDetector$UastHandler.visitClass(OnCreateDialogIncorrectCallbackDetector.kt:78)←UElementVisitor$DispatchPsiVisitor.visitClass(UElementVisitor.kt:553)←UElementVisitor$DelegatingPsiVisitor.visitClass(UElementVisitor.kt:1162)←AbstractKotlinUClass.accept(AbstractKotlinUClass.kt:43)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←UFile$DefaultImpls.accept(UFile.kt:87)←KotlinUFile.accept(KotlinUFile.kt:15)←UastLintUtilsKt.acceptSourceFile(UastLintUtils.kt:526)←UElementVisitor$visitFile$3.run(UElementVisitor.kt:274)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←UElementVisitor.visitFile(UElementVisitor.kt:271)←LintDriver$visitUastDetectors$1.run(LintDriver.kt:2072)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←LintDriver.visitUastDetectors(LintDriver.kt:2072)←LintDriver.visitUast(LintDriver.kt:2031)←LintDriver.runFileDetectors(LintDriver.kt:1420)←LintDriver.checkProject(LintDriver.kt:1184)←LintDriver.checkProjectRoot(LintDriver.kt:644)←LintDriver.access$checkProjectRoot(LintDriver.kt:151)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:455)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:448)←LintDriver.doAnalyze(LintDriver.kt:515)←LintDriver.analyzeOnly(LintDriver.kt:448)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient.run(LintCliClient.kt:289)←LintCliClient.run$default(LintCliClient.kt:272)←LintCliClient.analyzeOnly(LintCliClient.kt:247)←Main.run(Main.java:1668)←Main.run(Main.java:274)←NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)←NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)←DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)←Method.invoke(Method.java:566)←AndroidLintWorkAction.invokeLintMainRunMethod(AndroidLintWorkAction.kt:96)←AndroidLintWorkAction.runLint(AndroidLintWorkAction.kt:85)←AndroidLintWorkAction.execute(AndroidLintWorkAction.kt:61)←DefaultWorkerServer.execute(DefaultWorkerServer.java:63)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)←ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)←NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)←AbstractWorker$1.call(AbstractWorker.java:44)←AbstractWorker$1.call(AbstractWorker.java:41)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)←DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)←AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)←NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)←DefaultWorkerExecutor.lambda$submitWork$2(DefaultWorkerExecutor.java:205)←FutureTask.run(FutureTask.java:264)←DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:187)←DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:120)←DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:162)←Factories$1.create(Factories.java:31)←DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:249)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:109)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:114)←DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:157)←DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:126)←Executors$RunnableAdapter.call(Executors.java:515)←FutureTask.run(FutureTask.java:264)←ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)←ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)←ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)←ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)←Thread.run(Thread.java:829)`&#xA;&#xA;You can run with --stacktrace or set environment variable `LINT_PRINT_STACKTRACE=true` to dump a full stacktrace to stdout.">
+        <location
+            file="src/main/java/com/infinitepower/newquiz/core/analytics/logging/FirebaseAnalyticsExtensions.kt"/>
+    </issue>
+
+    <issue
+        id="LintError"
+        message="Unexpected failure during lint analysis of LocalWordleLoggingAnalyticsImpl.kt (this is a bug in lint or one of the libraries it depends on)&#xA;&#xA;Message: class androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler tried to access protected method &apos;org.jetbrains.kotlin.psi.KtClassOrObject org.jetbrains.uast.kotlin.KotlinUClass.getKtClass()&apos; (androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler is in unnamed module of loader com.intellij.util.lang.UrlClassLoader @1e602875; org.jetbrains.uast.kotlin.KotlinUClass is in unnamed module of loader java.net.URLClassLoader @4ac162ab)&#xA;&#xA;The crash seems to involve the detector `androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector`.&#xA;You can try disabling it with something like this:&#xA;    android {&#xA;        lint {&#xA;            disable &quot;DialogFragmentCallbacksDetector&quot;&#xA;        }&#xA;    }&#xA;&#xA;Stack: `IllegalAccessError:OnCreateDialogIncorrectCallbackDetector$UastHandler.visitClass(OnCreateDialogIncorrectCallbackDetector.kt:78)←UElementVisitor$DispatchPsiVisitor.visitClass(UElementVisitor.kt:553)←UElementVisitor$DelegatingPsiVisitor.visitClass(UElementVisitor.kt:1162)←AbstractKotlinUClass.accept(AbstractKotlinUClass.kt:43)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←UFile$DefaultImpls.accept(UFile.kt:87)←KotlinUFile.accept(KotlinUFile.kt:15)←UastLintUtilsKt.acceptSourceFile(UastLintUtils.kt:526)←UElementVisitor$visitFile$3.run(UElementVisitor.kt:274)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←UElementVisitor.visitFile(UElementVisitor.kt:271)←LintDriver$visitUastDetectors$1.run(LintDriver.kt:2072)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←LintDriver.visitUastDetectors(LintDriver.kt:2072)←LintDriver.visitUast(LintDriver.kt:2031)←LintDriver.runFileDetectors(LintDriver.kt:1420)←LintDriver.checkProject(LintDriver.kt:1184)←LintDriver.checkProjectRoot(LintDriver.kt:644)←LintDriver.access$checkProjectRoot(LintDriver.kt:151)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:455)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:448)←LintDriver.doAnalyze(LintDriver.kt:515)←LintDriver.analyzeOnly(LintDriver.kt:448)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient.run(LintCliClient.kt:289)←LintCliClient.run$default(LintCliClient.kt:272)←LintCliClient.analyzeOnly(LintCliClient.kt:247)←Main.run(Main.java:1668)←Main.run(Main.java:274)←NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)←NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)←DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)←Method.invoke(Method.java:566)←AndroidLintWorkAction.invokeLintMainRunMethod(AndroidLintWorkAction.kt:96)←AndroidLintWorkAction.runLint(AndroidLintWorkAction.kt:85)←AndroidLintWorkAction.execute(AndroidLintWorkAction.kt:61)←DefaultWorkerServer.execute(DefaultWorkerServer.java:63)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)←ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)←NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)←AbstractWorker$1.call(AbstractWorker.java:44)←AbstractWorker$1.call(AbstractWorker.java:41)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)←DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)←AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)←NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)←DefaultWorkerExecutor.lambda$submitWork$2(DefaultWorkerExecutor.java:205)←FutureTask.run(FutureTask.java:264)←DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:187)←DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:120)←DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:162)←Factories$1.create(Factories.java:31)←DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:249)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:109)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:114)←DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:157)←DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:126)←Executors$RunnableAdapter.call(Executors.java:515)←FutureTask.run(FutureTask.java:264)←ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)←ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)←ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)←ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)←Thread.run(Thread.java:829)`&#xA;&#xA;You can run with --stacktrace or set environment variable `LINT_PRINT_STACKTRACE=true` to dump a full stacktrace to stdout.">
+        <location
+            file="src/main/java/com/infinitepower/newquiz/core/analytics/logging/wordle/LocalWordleLoggingAnalyticsImpl.kt"/>
+    </issue>
+
+    <issue
+        id="LintError"
+        message="Unexpected failure during lint analysis of MultiChoiceQuizLoggingAnalytics.kt (this is a bug in lint or one of the libraries it depends on)&#xA;&#xA;Message: class androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler tried to access protected method &apos;org.jetbrains.kotlin.psi.KtClassOrObject org.jetbrains.uast.kotlin.KotlinUClass.getKtClass()&apos; (androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler is in unnamed module of loader com.intellij.util.lang.UrlClassLoader @1e602875; org.jetbrains.uast.kotlin.KotlinUClass is in unnamed module of loader java.net.URLClassLoader @4ac162ab)&#xA;&#xA;The crash seems to involve the detector `androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector`.&#xA;You can try disabling it with something like this:&#xA;    android {&#xA;        lint {&#xA;            disable &quot;DialogFragmentCallbacksDetector&quot;&#xA;        }&#xA;    }&#xA;&#xA;Stack: `IllegalAccessError:OnCreateDialogIncorrectCallbackDetector$UastHandler.visitClass(OnCreateDialogIncorrectCallbackDetector.kt:78)←UElementVisitor$DispatchPsiVisitor.visitClass(UElementVisitor.kt:553)←UElementVisitor$DelegatingPsiVisitor.visitClass(UElementVisitor.kt:1162)←AbstractKotlinUClass.accept(AbstractKotlinUClass.kt:43)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←UFile$DefaultImpls.accept(UFile.kt:87)←KotlinUFile.accept(KotlinUFile.kt:15)←UastLintUtilsKt.acceptSourceFile(UastLintUtils.kt:526)←UElementVisitor$visitFile$3.run(UElementVisitor.kt:274)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←UElementVisitor.visitFile(UElementVisitor.kt:271)←LintDriver$visitUastDetectors$1.run(LintDriver.kt:2072)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←LintDriver.visitUastDetectors(LintDriver.kt:2072)←LintDriver.visitUast(LintDriver.kt:2031)←LintDriver.runFileDetectors(LintDriver.kt:1420)←LintDriver.checkProject(LintDriver.kt:1184)←LintDriver.checkProjectRoot(LintDriver.kt:644)←LintDriver.access$checkProjectRoot(LintDriver.kt:151)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:455)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:448)←LintDriver.doAnalyze(LintDriver.kt:515)←LintDriver.analyzeOnly(LintDriver.kt:448)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient.run(LintCliClient.kt:289)←LintCliClient.run$default(LintCliClient.kt:272)←LintCliClient.analyzeOnly(LintCliClient.kt:247)←Main.run(Main.java:1668)←Main.run(Main.java:274)←NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)←NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)←DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)←Method.invoke(Method.java:566)←AndroidLintWorkAction.invokeLintMainRunMethod(AndroidLintWorkAction.kt:96)←AndroidLintWorkAction.runLint(AndroidLintWorkAction.kt:85)←AndroidLintWorkAction.execute(AndroidLintWorkAction.kt:61)←DefaultWorkerServer.execute(DefaultWorkerServer.java:63)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)←ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)←NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)←AbstractWorker$1.call(AbstractWorker.java:44)←AbstractWorker$1.call(AbstractWorker.java:41)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)←DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)←AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)←NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)←DefaultWorkerExecutor.lambda$submitWork$2(DefaultWorkerExecutor.java:205)←FutureTask.run(FutureTask.java:264)←DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:187)←DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:120)←DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:162)←Factories$1.create(Factories.java:31)←DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:249)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:109)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:114)←DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:157)←DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:126)←Executors$RunnableAdapter.call(Executors.java:515)←FutureTask.run(FutureTask.java:264)←ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)←ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)←ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)←ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)←Thread.run(Thread.java:829)`&#xA;&#xA;You can run with --stacktrace or set environment variable `LINT_PRINT_STACKTRACE=true` to dump a full stacktrace to stdout.">
+        <location
+            file="src/main/java/com/infinitepower/newquiz/core/analytics/logging/multi_choice_quiz/MultiChoiceQuizLoggingAnalytics.kt"/>
+    </issue>
+
+    <issue
+        id="LintError"
+        message="Unexpected failure during lint analysis of MultiChoiceQuizLoggingAnalyticsImpl.kt (this is a bug in lint or one of the libraries it depends on)&#xA;&#xA;Message: class androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler tried to access protected method &apos;org.jetbrains.kotlin.psi.KtClassOrObject org.jetbrains.uast.kotlin.KotlinUClass.getKtClass()&apos; (androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler is in unnamed module of loader com.intellij.util.lang.UrlClassLoader @1e602875; org.jetbrains.uast.kotlin.KotlinUClass is in unnamed module of loader java.net.URLClassLoader @4ac162ab)&#xA;&#xA;The crash seems to involve the detector `androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector`.&#xA;You can try disabling it with something like this:&#xA;    android {&#xA;        lint {&#xA;            disable &quot;DialogFragmentCallbacksDetector&quot;&#xA;        }&#xA;    }&#xA;&#xA;Stack: `IllegalAccessError:OnCreateDialogIncorrectCallbackDetector$UastHandler.visitClass(OnCreateDialogIncorrectCallbackDetector.kt:78)←UElementVisitor$DispatchPsiVisitor.visitClass(UElementVisitor.kt:553)←UElementVisitor$DelegatingPsiVisitor.visitClass(UElementVisitor.kt:1162)←AbstractKotlinUClass.accept(AbstractKotlinUClass.kt:43)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←UFile$DefaultImpls.accept(UFile.kt:87)←KotlinUFile.accept(KotlinUFile.kt:15)←UastLintUtilsKt.acceptSourceFile(UastLintUtils.kt:526)←UElementVisitor$visitFile$3.run(UElementVisitor.kt:274)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←UElementVisitor.visitFile(UElementVisitor.kt:271)←LintDriver$visitUastDetectors$1.run(LintDriver.kt:2072)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←LintDriver.visitUastDetectors(LintDriver.kt:2072)←LintDriver.visitUast(LintDriver.kt:2031)←LintDriver.runFileDetectors(LintDriver.kt:1420)←LintDriver.checkProject(LintDriver.kt:1184)←LintDriver.checkProjectRoot(LintDriver.kt:644)←LintDriver.access$checkProjectRoot(LintDriver.kt:151)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:455)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:448)←LintDriver.doAnalyze(LintDriver.kt:515)←LintDriver.analyzeOnly(LintDriver.kt:448)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient.run(LintCliClient.kt:289)←LintCliClient.run$default(LintCliClient.kt:272)←LintCliClient.analyzeOnly(LintCliClient.kt:247)←Main.run(Main.java:1668)←Main.run(Main.java:274)←NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)←NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)←DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)←Method.invoke(Method.java:566)←AndroidLintWorkAction.invokeLintMainRunMethod(AndroidLintWorkAction.kt:96)←AndroidLintWorkAction.runLint(AndroidLintWorkAction.kt:85)←AndroidLintWorkAction.execute(AndroidLintWorkAction.kt:61)←DefaultWorkerServer.execute(DefaultWorkerServer.java:63)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)←ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)←NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)←AbstractWorker$1.call(AbstractWorker.java:44)←AbstractWorker$1.call(AbstractWorker.java:41)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)←DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)←AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)←NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)←DefaultWorkerExecutor.lambda$submitWork$2(DefaultWorkerExecutor.java:205)←FutureTask.run(FutureTask.java:264)←DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:187)←DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:120)←DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:162)←Factories$1.create(Factories.java:31)←DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:249)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:109)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:114)←DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:157)←DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:126)←Executors$RunnableAdapter.call(Executors.java:515)←FutureTask.run(FutureTask.java:264)←ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)←ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)←ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)←ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)←Thread.run(Thread.java:829)`&#xA;&#xA;You can run with --stacktrace or set environment variable `LINT_PRINT_STACKTRACE=true` to dump a full stacktrace to stdout.">
+        <location
+            file="src/main/java/com/infinitepower/newquiz/core/analytics/logging/multi_choice_quiz/MultiChoiceQuizLoggingAnalyticsImpl.kt"/>
+    </issue>
+
+    <issue
+        id="LintError"
+        message="Unexpected failure during lint analysis of WordleLoggingAnalytics.kt (this is a bug in lint or one of the libraries it depends on)&#xA;&#xA;Message: class androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler tried to access protected method &apos;org.jetbrains.kotlin.psi.KtClassOrObject org.jetbrains.uast.kotlin.KotlinUClass.getKtClass()&apos; (androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector$UastHandler is in unnamed module of loader com.intellij.util.lang.UrlClassLoader @1e602875; org.jetbrains.uast.kotlin.KotlinUClass is in unnamed module of loader java.net.URLClassLoader @4ac162ab)&#xA;&#xA;The crash seems to involve the detector `androidx.fragment.lint.OnCreateDialogIncorrectCallbackDetector`.&#xA;You can try disabling it with something like this:&#xA;    android {&#xA;        lint {&#xA;            disable &quot;DialogFragmentCallbacksDetector&quot;&#xA;        }&#xA;    }&#xA;&#xA;Stack: `IllegalAccessError:OnCreateDialogIncorrectCallbackDetector$UastHandler.visitClass(OnCreateDialogIncorrectCallbackDetector.kt:78)←UElementVisitor$DispatchPsiVisitor.visitClass(UElementVisitor.kt:553)←UElementVisitor$DelegatingPsiVisitor.visitClass(UElementVisitor.kt:1162)←AbstractKotlinUClass.accept(AbstractKotlinUClass.kt:43)←ImplementationUtilsKt.acceptList(implementationUtils.kt:29)←UFile$DefaultImpls.accept(UFile.kt:87)←KotlinUFile.accept(KotlinUFile.kt:15)←UastLintUtilsKt.acceptSourceFile(UastLintUtils.kt:526)←UElementVisitor$visitFile$3.run(UElementVisitor.kt:274)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←UElementVisitor.visitFile(UElementVisitor.kt:271)←LintDriver$visitUastDetectors$1.run(LintDriver.kt:2072)←LintClient.runReadAction(LintClient.kt:1788)←LintDriver$LintClientWrapper.runReadAction(LintDriver.kt:2756)←LintDriver.visitUastDetectors(LintDriver.kt:2072)←LintDriver.visitUast(LintDriver.kt:2031)←LintDriver.runFileDetectors(LintDriver.kt:1420)←LintDriver.checkProject(LintDriver.kt:1184)←LintDriver.checkProjectRoot(LintDriver.kt:644)←LintDriver.access$checkProjectRoot(LintDriver.kt:151)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:455)←LintDriver$analyzeOnly$1.invoke(LintDriver.kt:448)←LintDriver.doAnalyze(LintDriver.kt:515)←LintDriver.analyzeOnly(LintDriver.kt:448)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient$analyzeOnly$1.invoke(LintCliClient.kt:247)←LintCliClient.run(LintCliClient.kt:289)←LintCliClient.run$default(LintCliClient.kt:272)←LintCliClient.analyzeOnly(LintCliClient.kt:247)←Main.run(Main.java:1668)←Main.run(Main.java:274)←NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:-2)←NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)←DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)←Method.invoke(Method.java:566)←AndroidLintWorkAction.invokeLintMainRunMethod(AndroidLintWorkAction.kt:96)←AndroidLintWorkAction.runLint(AndroidLintWorkAction.kt:85)←AndroidLintWorkAction.execute(AndroidLintWorkAction.kt:61)←DefaultWorkerServer.execute(DefaultWorkerServer.java:63)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)←NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)←ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)←NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)←AbstractWorker$1.call(AbstractWorker.java:44)←AbstractWorker$1.call(AbstractWorker.java:41)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)←DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:199)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)←DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:157)←DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)←DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)←DefaultBuildOperationExecutor.call(DefaultBuildOperationExecutor.java:73)←AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)←NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)←DefaultWorkerExecutor.lambda$submitWork$2(DefaultWorkerExecutor.java:205)←FutureTask.run(FutureTask.java:264)←DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:187)←DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:120)←DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:162)←Factories$1.create(Factories.java:31)←DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:249)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:109)←DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:114)←DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:157)←DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:126)←Executors$RunnableAdapter.call(Executors.java:515)←FutureTask.run(FutureTask.java:264)←ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)←ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)←ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)←ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)←Thread.run(Thread.java:829)`&#xA;&#xA;You can run with --stacktrace or set environment variable `LINT_PRINT_STACKTRACE=true` to dump a full stacktrace to stdout.">
+        <location
+            file="src/main/java/com/infinitepower/newquiz/core/analytics/logging/wordle/WordleLoggingAnalytics.kt"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.animals` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/animals.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.art` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/art.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.books` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/books.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.celebrities` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/celebrities.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.entertainment_board_games` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/entertainment_board_games.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.entertainment_cartoon_and_animations` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/entertainment_cartoon_and_animations.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.entertainment_comics` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/entertainment_comics.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.entertainment_japanese_anime_and_manga` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/entertainment_japanese_anime_and_manga.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.entertainment_television` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/entertainment_television.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.entertainment_video_games` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/entertainment_video_games.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.films` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/films.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.general_knowledge` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/general_knowledge.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.geography` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/geography.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.history` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/history.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.ic_launcher_round` appears to be unused">
+        <location
+            file="src/main/res/mipmap/ic_launcher_round.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.music` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/music.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.musicals_and_theatres` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/musicals_and_theatres.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.mythology` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/mythology.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.politics` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/politics.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.quick_quiz` appears to be unused">
+        <location
+            file="src/main/res/raw/quick_quiz.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.science_and_nature` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/science_and_nature.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.science_computers` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/science_computers.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.science_gadgets` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/science_gadgets.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.science_mathematics` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/science_mathematics.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.sports` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/sports.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.saved_questions` appears to be unused"
+        errorLine1="    &lt;string name=&quot;saved_questions&quot;>Saved questions&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="5"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.wordle` appears to be unused"
+        errorLine1="    &lt;string name=&quot;wordle&quot;>Wordle&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.wordle_infinite` appears to be unused"
+        errorLine1="    &lt;string name=&quot;wordle_infinite&quot;>Wordle infinite&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="7"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.wordle_daily` appears to be unused"
+        errorLine1="    &lt;string name=&quot;wordle_daily&quot;>Daily wordle&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="8"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.verify` appears to be unused"
+        errorLine1="    &lt;string name=&quot;verify&quot;>Verify&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="9"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.play_again` appears to be unused"
+        errorLine1="    &lt;string name=&quot;play_again&quot;>Play again&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="10"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.close` appears to be unused"
+        errorLine1="    &lt;string name=&quot;close&quot;>Close&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="11"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.watch_ad` appears to be unused"
+        errorLine1="    &lt;string name=&quot;watch_ad&quot;>Watch ad&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="12"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.loading_rewarded_ad` appears to be unused"
+        errorLine1="    &lt;string name=&quot;loading_rewarded_ad&quot;>Loading rewarded ad&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="13"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.game_over` appears to be unused"
+        errorLine1="    &lt;string name=&quot;game_over&quot;>Game Over&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="14"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.you_lost_the_game_watch_ad_q` appears to be unused"
+        errorLine1="    &lt;string name=&quot;you_lost_the_game_watch_ad_q&quot;>You lost the game.\nDo you want to watch one ad to try one more row?&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="15"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.item_empty` appears to be unused"
+        errorLine1="    &lt;string name=&quot;item_empty&quot;>Item empty&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="16"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.item_i_none` appears to be unused"
+        errorLine1="    &lt;string name=&quot;item_i_none&quot;>Item %1$s none&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="17"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.item_i_present` appears to be unused"
+        errorLine1="    &lt;string name=&quot;item_i_present&quot;>Item %1$s present&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="18"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.item_i_correct` appears to be unused"
+        errorLine1="    &lt;string name=&quot;item_i_correct&quot;>Item %1$s correct&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="19"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.four_letters` appears to be unused"
+        errorLine1="    &lt;string name=&quot;four_letters&quot;>4 Letters&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="20"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.five_letters` appears to be unused"
+        errorLine1="    &lt;string name=&quot;five_letters&quot;>5 Letters&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="21"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.six_letters` appears to be unused"
+        errorLine1="    &lt;string name=&quot;six_letters&quot;>6 Letters&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="22"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.back_month` appears to be unused"
+        errorLine1="    &lt;string name=&quot;back_month&quot;>Back month&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="23"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.next_month` appears to be unused"
+        errorLine1="    &lt;string name=&quot;next_month&quot;>Next month&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="24"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.settings` appears to be unused"
+        errorLine1="    &lt;string name=&quot;settings&quot;>Settings&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="25"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.general` appears to be unused"
+        errorLine1="    &lt;string name=&quot;general&quot;>General&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="26"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.quiz` appears to be unused"
+        errorLine1="    &lt;string name=&quot;quiz&quot;>Quiz&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="27"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.quiz_language` appears to be unused"
+        errorLine1="    &lt;string name=&quot;quiz_language&quot;>Quiz language&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="28"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.color_blind_mode` appears to be unused"
+        errorLine1="    &lt;string name=&quot;color_blind_mode&quot;>Color blind mode&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="31"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.high_contrast_colors` appears to be unused"
+        errorLine1="    &lt;string name=&quot;high_contrast_colors&quot; >High contrast colors&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="32"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.info` appears to be unused"
+        errorLine1="    &lt;string name=&quot;info&quot;>Info&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.letter_hints` appears to be unused"
+        errorLine1="    &lt;string name=&quot;letter_hints&quot;>Letter hints&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="34"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word` appears to be unused"
+        errorLine1="    &lt;string name=&quot;hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word&quot;>Hint above the letter that it appears twice or more in the hidden word&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="35"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.hard_mode` appears to be unused"
+        errorLine1="    &lt;string name=&quot;hard_mode&quot;>Hard mode&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="36"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.any_revealed_hints_must_be_used_in_subsequest_guesses` appears to be unused"
+        errorLine1="    &lt;string name=&quot;any_revealed_hints_must_be_used_in_subsequest_guesses&quot;>Any revealed hints must be used in subsequent guesses&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="37"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.rows_limited` appears to be unused"
+        errorLine1="    &lt;string name=&quot;rows_limited&quot;>Rows limited&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="38"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.wordle_infinite_row_limited` appears to be unused"
+        errorLine1="    &lt;string name=&quot;wordle_infinite_row_limited&quot;>Wordle infinite row limited.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="39"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.row_limit` appears to be unused"
+        errorLine1="    &lt;string name=&quot;row_limit&quot;>Row limit&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="40"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.wordle_infinite_row_limit_value` appears to be unused"
+        errorLine1="    &lt;string name=&quot;wordle_infinite_row_limit_value&quot;>Wordle infinite row limit value.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="41"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.clean_calendar_data` appears to be unused"
+        errorLine1="    &lt;string name=&quot;clean_calendar_data&quot;>Clean calendar data&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="42"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.clean_saved_calendar_wins_losses` appears to be unused"
+        errorLine1="    &lt;string name=&quot;clean_saved_calendar_wins_losses&quot;>Cleans all saved calendar wins/losses.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="43"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.clear_settings` appears to be unused"
+        errorLine1="    &lt;string name=&quot;clear_settings&quot;>Clear Preferences&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="44"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.remove_all_saved_settings` appears to be unused"
+        errorLine1="    &lt;string name=&quot;remove_all_saved_settings&quot;>Remove all saved settings&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="45"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.home` appears to be unused"
+        errorLine1="    &lt;string name=&quot;home&quot;>Home&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="46"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.multi_choice_quiz` appears to be unused"
+        errorLine1="    &lt;string name=&quot;multi_choice_quiz&quot;>Multi choice quiz&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="47"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.other` appears to be unused"
+        errorLine1="    &lt;string name=&quot;other&quot;>Other&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="48"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.general_knowledge` appears to be unused"
+        errorLine1="    &lt;string name=&quot;general_knowledge&quot;>General knowledge&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_books` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_books&quot;>Books&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="50"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_film` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_film&quot;>Film&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="51"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_music` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_music&quot;>Music&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="52"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_musicals_and_theatres` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_musicals_and_theatres&quot;>Musicals &amp;amp; Theatres&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="53"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_television` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_television&quot;>Television&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="54"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_video_games` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_video_games&quot;>Video Games&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="55"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_board_games` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_board_games&quot;>Board Games&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="56"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.science_and_nature` appears to be unused"
+        errorLine1="    &lt;string name=&quot;science_and_nature&quot;>Science &amp;amp; Nature&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="57"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.science_computers` appears to be unused"
+        errorLine1="    &lt;string name=&quot;science_computers&quot;>Computers&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="58"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.science_mathematics` appears to be unused"
+        errorLine1="    &lt;string name=&quot;science_mathematics&quot;>Mathematics&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="59"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.mythology` appears to be unused"
+        errorLine1="    &lt;string name=&quot;mythology&quot;>Mythology&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="60"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.sports` appears to be unused"
+        errorLine1="    &lt;string name=&quot;sports&quot;>Sports&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="61"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.geography` appears to be unused"
+        errorLine1="    &lt;string name=&quot;geography&quot;>Geography&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="62"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.history` appears to be unused"
+        errorLine1="    &lt;string name=&quot;history&quot;>History&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="63"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.politics` appears to be unused"
+        errorLine1="    &lt;string name=&quot;politics&quot;>Politics&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="64"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.art` appears to be unused"
+        errorLine1="    &lt;string name=&quot;art&quot;>Art&lt;/string>"
+        errorLine2="            ~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="65"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.celebrities` appears to be unused"
+        errorLine1="    &lt;string name=&quot;celebrities&quot;>Celebrities&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="66"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.animals` appears to be unused"
+        errorLine1="    &lt;string name=&quot;animals&quot;>Animals&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="67"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.vehicles` appears to be unused"
+        errorLine1="    &lt;string name=&quot;vehicles&quot;>Vehicles&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="68"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_comics` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_comics&quot;>Comics&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="69"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.science_gadgets` appears to be unused"
+        errorLine1="    &lt;string name=&quot;science_gadgets&quot;>Gadgets&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="70"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_japanese_anime_and_manga` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_japanese_anime_and_manga&quot;>Japanese Anime &amp;amp; Manga&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="71"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.entertainment_cartoon_and_animations` appears to be unused"
+        errorLine1="    &lt;string name=&quot;entertainment_cartoon_and_animations&quot;>Cartoon &amp;amp; Animations&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="72"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.categories` appears to be unused"
+        errorLine1="    &lt;string name=&quot;categories&quot;>Categories&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="73"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.n_questions_available` appears to be unused"
+        errorLine1="    &lt;string name=&quot;n_questions_available&quot;>%1$s questions available&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="74"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.see_all` appears to be unused"
+        errorLine1="    &lt;string name=&quot;see_all&quot;>See all&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="75"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.easy` appears to be unused"
+        errorLine1="    &lt;string name=&quot;easy&quot;>Easy&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="76"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.medium` appears to be unused"
+        errorLine1="    &lt;string name=&quot;medium&quot;>Medium&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="77"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.hard` appears to be unused"
+        errorLine1="    &lt;string name=&quot;hard&quot;>Hard&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="78"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.difficulty` appears to be unused"
+        errorLine1="    &lt;string name=&quot;difficulty&quot;>Difficulty&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="79"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.is_not_in_the_target_word_wordle` appears to be unused"
+        errorLine1="    &lt;string name=&quot;is_not_in_the_target_word_wordle&quot;>&quot; is not in the target word.&quot;&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="80"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.is_in_the_word_but_in_the_wrong_spot_wordle` appears to be unused"
+        errorLine1="    &lt;string name=&quot;is_in_the_word_but_in_the_wrong_spot_wordle&quot;>&quot; is in the word but in the wrong spot.&quot;&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="81"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.is_in_the_word_and_in_the_correct_spot_wordle` appears to be unused"
+        errorLine1="    &lt;string name=&quot;is_in_the_word_and_in_the_correct_spot_wordle&quot;>&quot; is in the word and in the correct spot.&quot;&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="82"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Base_Theme_NewQuiz` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Base.Theme.NewQuiz&quot; parent=&quot;Theme.Material3.DayNight.NoActionBar&quot;/>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="3"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Theme_NewQuiz` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Theme.NewQuiz&quot; parent=&quot;Base.Theme.NewQuiz&quot; />"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="5"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Theme_NewQuiz_AppBar` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Theme.NewQuiz.AppBar&quot; parent=&quot;Theme.Material3.DayNight&quot;/>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="7"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.trophy_winner` appears to be unused">
+        <location
+            file="src/main/res/raw/trophy_winner.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.vehicles` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/vehicles.png"/>
+    </issue>
+
+</issues>

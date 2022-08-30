@@ -49,6 +49,10 @@ android {
             }
         }
     }
+    lint {
+        disable += "DialogFragmentCallbacksDetector"
+        disable += "UnusedResources"
+    }
 }
 
 dependencies {

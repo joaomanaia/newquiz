@@ -364,7 +364,7 @@ private fun InfoDialogCard(
                     ) {
                         append('Q')
                     }
-                    append(" is not in the target word.")
+                    append(stringResource(id = CoreR.string.is_not_in_the_target_word_wordle))
                 }
             )
 
@@ -392,7 +392,7 @@ private fun InfoDialogCard(
                     ) {
                         append('Z')
                     }
-                    append(" is in the word but in the wrong spot.")
+                    append(stringResource(id = CoreR.string.is_in_the_word_but_in_the_wrong_spot_wordle))
                 }
             )
 
@@ -409,7 +409,7 @@ private fun InfoDialogCard(
                     ) {
                         append('I')
                     }
-                    append(" is in the word and in the correct spot.")
+                    append(stringResource(id = CoreR.string.is_in_the_word_and_in_the_correct_spot_wordle))
                 }
             )
         }

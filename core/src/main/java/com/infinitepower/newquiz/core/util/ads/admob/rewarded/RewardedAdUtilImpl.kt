@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.core.util.ads.admob.rewarded
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
 import com.google.android.gms.ads.AdRequest
@@ -16,6 +17,7 @@ class RewardedAdUtilImpl @Inject constructor(
         private const val TAG = "RewardAdUtil"
     }
 
+    @delegate:SuppressLint("VisibleForTests")
     private val adRequest: AdRequest by lazy {
         AdRequest.Builder().build()
     }

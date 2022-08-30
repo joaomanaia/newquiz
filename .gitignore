@@ -15,3 +15,5 @@
 local.properties
 
 /app/build
+
+/buildSrc/build

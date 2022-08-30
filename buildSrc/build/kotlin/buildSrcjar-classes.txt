@@ -1,1 +1,0 @@
-/mnt/sdb1/newquiz/newquizcompose/buildSrc/build/classes/kotlin/main/Compose.class:/mnt/sdb1/newquiz/newquizcompose/buildSrc/build/classes/kotlin/main/Modules.class:/mnt/sdb1/newquiz/newquizcompose/buildSrc/build/classes/kotlin/main/ProjectConfig.class
