@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -25,6 +26,7 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQues
 import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswers
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
+import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.serialization.decodeFromString
@@ -67,7 +69,7 @@ private fun MultiChoiceQuizResultsScreenImpl(
         topBar = {
             SmallTopAppBar(
                 title = {
-                    Text(text = "Results screen")
+                    Text(text = stringResource(id = CoreR.string.results_screen))
                 }
             )
         }
@@ -94,7 +96,7 @@ private fun MultiChoiceQuizResultsScreenImpl(
             }
             Spacer(modifier = Modifier.height(spaceLarge))
             Text(
-                text = "${questionSteps.countCorrectQuestions()}/${questionSteps.size} correct questions",
+                text = stringResource(id = CoreR.string.results_screen, "${questionSteps.countCorrectQuestions()}/${questionSteps.size}"),
                 style = MaterialTheme.typography.headlineMedium
             )
             Spacer(modifier = Modifier.height(spaceLarge))
@@ -116,13 +118,13 @@ private fun MultiChoiceQuizResultsScreenImpl(
                     onClick = onPlayAgainClick,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = "Play again")
+                    Text(text = stringResource(id = CoreR.string.play_again))
                 }
                 Button(
                     onClick = onBackClick,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = "Back")
+                    Text(text = stringResource(id = CoreR.string.back))
                 }
             }
         }
@@ -145,7 +147,7 @@ private fun MultiChoiceQuizResultsScreenImpl(
             },
             confirmButton = {
                 TextButton(onClick = { setQuestionDialog(null) }) {
-                    Text(text = "Close")
+                    Text(text = stringResource(id = CoreR.string.close))
                 }
             }
         )

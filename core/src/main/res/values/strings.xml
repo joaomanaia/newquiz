@@ -79,4 +79,6 @@
     <string name="is_not_in_the_target_word_wordle">" is not in the target word."</string>
     <string name="is_in_the_word_but_in_the_wrong_spot_wordle">" is in the word but in the wrong spot."</string>
     <string name="is_in_the_word_and_in_the_correct_spot_wordle">" is in the word and in the correct spot."</string>
+    <string name="results_screen">Results screen</string>
+    <string name="n_correct_questions">$1%s correct questions</string>
 </resources>

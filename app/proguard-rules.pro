@@ -24,3 +24,17 @@
 
 # @Serializable and @Polymorphic are used at runtime for polymorphic serialization.
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
+
+# Firebase
+-keep class com.firebase.** { *; }
+-keep class org.apache.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepnames class javax.servlet.** { *; }
+-keepnames class org.ietf.jgss.** { *; }
+-dontwarn org.w3c.dom.**
+-dontwarn org.joda.time.**
+-dontwarn org.shaded.apache.**
+-dontwarn org.ietf.jgss.**
+
+# Only necessary if you downloaded the SDK jar directly instead of from maven.
+-keep class com.shaded.fasterxml.jackson.** { *; }
