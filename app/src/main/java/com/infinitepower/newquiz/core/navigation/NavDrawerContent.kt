@@ -92,7 +92,7 @@ private fun NavigationDrawerContentImpl(
 ) {
     val scope = rememberCoroutineScope()
 
-    Surface(modifier = modifier) {
+    ModalDrawerSheet(modifier = modifier) {
         LazyColumn(
             contentPadding = NavigationDrawerItemDefaults.ItemPadding
         ) {
