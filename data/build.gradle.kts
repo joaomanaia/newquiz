@@ -36,6 +36,10 @@ android {
         freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
         jvmTarget = "11"
     }
+
+    lint {
+        abortOnError = false
+    }
 }
 
 dependencies {
