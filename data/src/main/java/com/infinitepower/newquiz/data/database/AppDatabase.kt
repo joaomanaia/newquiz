@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.data.database
 
+import android.annotation.SuppressLint
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -10,6 +11,7 @@ import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleDao
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
 
+@SuppressLint("all")
 @TypeConverters(
     ListConverter::class,
     LocalDateConverter::class
