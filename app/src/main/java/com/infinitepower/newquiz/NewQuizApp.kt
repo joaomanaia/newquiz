@@ -3,6 +3,8 @@ package com.infinitepower.newquiz
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorkerFactory
@@ -55,6 +57,7 @@ class NewQuizApp : Application(), Configuration.Provider {
         .setWorkerFactory(workerFactory)
         .build()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannels() {
         val channels = listOf(
             createNotificationChannel(
@@ -68,6 +71,7 @@ class NewQuizApp : Application(), Configuration.Provider {
         NotificationManagerCompat.from(this).createNotificationChannels(channels)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(
         id: String,
         name: String,

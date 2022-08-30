@@ -1,10 +1,13 @@
 package com.infinitepower.newquiz.core.notification.wordle
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.annotation.WorkerThread
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.infinitepower.newquiz.core.R
@@ -38,6 +41,12 @@ class DailyWordleNotificationServiceImpl @Inject constructor(
             .setContentText("New daily word is here for you to discover!")
             .setContentIntent(pendingIntent)
             .build()
+
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) return
 
         notificationManager.notify(0, notification)
     }

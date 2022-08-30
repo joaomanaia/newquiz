@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.core.ui.ads.admob
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -52,6 +53,7 @@ fun BannerAd(
 }
 
 @Composable
+@SuppressLint("VisibleForTests")
 private fun BannerAdImpl(
     modifier: Modifier = Modifier,
     adId: String,
@@ -83,6 +85,7 @@ private fun BannerAdImpl(
 
 @Composable
 @ReadOnlyComposable
+@SuppressLint("VisibleForTests")
 fun BoxWithConstraintsScope.getAdaptiveAdSize(): AdSize {
     val context = LocalContext.current
     return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, maxWidth.value.roundToInt())

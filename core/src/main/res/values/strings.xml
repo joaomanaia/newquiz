@@ -37,7 +37,6 @@
     <string name="any_revealed_hints_must_be_used_in_subsequest_guesses">Any revealed hints must be used in subsequent guesses</string>
     <string name="rows_limited">Rows limited</string>
     <string name="wordle_infinite_row_limited">Wordle infinite row limited.</string>
-    <string name="row_limit">Row limit</string>
     <string name="wordle_infinite_row_limit_value">Wordle infinite row limit value.</string>
     <string name="clean_calendar_data">Clean calendar data</string>
     <string name="clean_saved_calendar_wins_losses">Cleans all saved calendar wins/losses.</string>
@@ -77,4 +76,7 @@
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
     <string name="difficulty">Difficulty</string>
+    <string name="is_not_in_the_target_word_wordle">" is not in the target word."</string>
+    <string name="is_in_the_word_but_in_the_wrong_spot_wordle">" is in the word but in the wrong spot."</string>
+    <string name="is_in_the_word_and_in_the_correct_spot_wordle">" is in the word and in the correct spot."</string>
 </resources>

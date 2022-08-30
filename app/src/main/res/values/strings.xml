@@ -1,6 +1,3 @@
 <resources>
-    <string name="app_name">NewQuiz</string>
-    <string name="title_dynamicfeaturetest">DynamicFeatureTest</string>
-
-    <!-- Facebook -->
+    <string name="app_name" translatable="false">NewQuiz</string>
 </resources>
