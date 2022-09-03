@@ -87,9 +87,9 @@ dependencies {
 
     implementation("com.airbnb.android:lottie-compose:_")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation(KotlinX.datetime)
 
-    implementation("com.google.android.gms:play-services-ads:21.1.0")
+    implementation("com.google.android.gms:play-services-ads:_")
 
     implementation("io.github.raamcosta.compose-destinations:core:_")
     ksp("io.github.raamcosta.compose-destinations:ksp:_")

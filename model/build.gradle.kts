@@ -45,7 +45,7 @@ dependencies {
 
     implementation(KotlinX.serialization.json)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation(KotlinX.datetime)
 
     implementation(AndroidX.room.runtime)
     ksp(AndroidX.room.compiler)

@@ -52,15 +52,15 @@ dependencies {
     androidTestImplementation(Google.dagger.hilt.android.testing)
     kaptAndroidTest(Google.dagger.hilt.android.compiler)
 
-    implementation(project(":core"))
-    implementation(project(":model"))
+    implementation(project(Modules.core))
+    implementation(project(Modules.model))
 
     implementation(AndroidX.room.runtime)
     annotationProcessor(AndroidX.room.compiler)
     ksp(AndroidX.room.compiler)
     implementation(AndroidX.room.ktx)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation(KotlinX.datetime)
 
     implementation(AndroidX.paging.runtime)
 }

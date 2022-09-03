@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.settings_presentation.components
 
-import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -17,12 +16,17 @@ import com.infinitepower.newquiz.core.common.dataStore.settingsDataStore
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
+import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun PreferencesScreen(
     page: SettingsScreenPageData,
     dailyWordleRepository: DailyWordleRepository,
+    translationModelState: TranslatorUtil.TranslatorModelState,
+    downloadTranslationModel: () -> Unit,
+    deleteTranslationModel: () -> Unit,
     onBackClick: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -45,7 +49,7 @@ fun PreferencesScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(id = CoreR.string.back)
                         )
                     }
                 },
@@ -58,7 +62,11 @@ fun PreferencesScreen(
             items = when(page) {
                 is SettingsScreenPageData.MainPage -> emptyList()
                 is SettingsScreenPageData.General -> page.items(scope, dataStoreManager)
-                is SettingsScreenPageData.Quiz -> page.items()
+                is SettingsScreenPageData.MultiChoiceQuiz -> page.items(
+                    translationModelState = translationModelState,
+                    downloadTranslationModel = downloadTranslationModel,
+                    deleteTranslationModel = deleteTranslationModel
+                )
                 is SettingsScreenPageData.Wordle -> page.items(
                     scope,
                     dataStoreManager,

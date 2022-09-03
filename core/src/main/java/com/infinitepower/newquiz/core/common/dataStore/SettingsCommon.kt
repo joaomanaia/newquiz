@@ -19,23 +19,35 @@ val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(na
 object SettingsCommon {
     object ShowLoginCard : PreferenceRequest<Boolean>(booleanPreferencesKey("showLoginCard"), true)
 
-    object QuickQuizQuestionsSize :
+    object MultiChoiceQuizQuestionsSize :
         PreferenceRequest<Int>(intPreferencesKey("quickQuizQuestionsSize"), 5)
+
+    object MultiChoiceQuiz {
+        object TranslationEnabled : PreferenceRequest<Boolean>(
+            booleanPreferencesKey("multiChoiceQuizTranslationEnabled"),
+            false
+        )
+    }
 
     object InfiniteWordleQuizLanguage : PreferenceRequest<String>(
         stringPreferencesKey("infiniteWordleQuizLanguage"),
         getInfiniteWordleDefaultLang()
     )
 
-    object WordleInfiniteRowsLimited : PreferenceRequest<Boolean>(booleanPreferencesKey("wordleInfiniteRowsLimited"), false)
+    object WordleInfiniteRowsLimited :
+        PreferenceRequest<Boolean>(booleanPreferencesKey("wordleInfiniteRowsLimited"), false)
 
-    object WordleInfiniteRowsLimit : PreferenceRequest<Int>(intPreferencesKey("wordleInfiniteRowsLimit"), 6)
+    object WordleInfiniteRowsLimit :
+        PreferenceRequest<Int>(intPreferencesKey("wordleInfiniteRowsLimit"), 6)
 
-    object WordleHardMode : PreferenceRequest<Boolean>(booleanPreferencesKey("wordleHardMode"), false)
+    object WordleHardMode :
+        PreferenceRequest<Boolean>(booleanPreferencesKey("wordleHardMode"), false)
 
-    object WordleColorBlindMode : PreferenceRequest<Boolean>(booleanPreferencesKey("wordleColorBlindMode"), false)
+    object WordleColorBlindMode :
+        PreferenceRequest<Boolean>(booleanPreferencesKey("wordleColorBlindMode"), false)
 
-    object WordleLetterHints : PreferenceRequest<Boolean>(booleanPreferencesKey("wordleLetterHints"), false)
+    object WordleLetterHints :
+        PreferenceRequest<Boolean>(booleanPreferencesKey("wordleLetterHints"), false)
 }
 
 @Keep
