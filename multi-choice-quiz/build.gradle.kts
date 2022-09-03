@@ -93,14 +93,15 @@ dependencies {
 
     implementation("com.airbnb.android:lottie-compose:_")
 
-    implementation("io.coil-kt:coil-compose:2.2.0")
+    implementation(COIL.compose)
 
-    implementation("com.google.android.gms:play-services-ads:21.1.0")
+    implementation("com.google.android.gms:play-services-ads:_")
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.domain))
     implementation(project(Modules.data))
+    implementation(project(Modules.translationDynamicFeature))
 }
 
 tasks.withType<Test> {

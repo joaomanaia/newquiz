@@ -138,10 +138,10 @@ dependencies {
     implementation(Google.firebase.crashlyticsKtx.withVersionPlaceholder())
     implementation(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation(KotlinX.datetime)
 
-    implementation("com.google.android.gms:play-services-ads:21.1.0")
-    implementation("com.google.android.ump:user-messaging-platform:2.0.0")
+    implementation("com.google.android.gms:play-services-ads:_")
+    implementation("com.google.android.ump:user-messaging-platform:_")
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))

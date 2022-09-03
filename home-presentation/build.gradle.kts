@@ -79,7 +79,7 @@ dependencies {
     implementation("com.airbnb.android:lottie-compose:_")
     implementation(AndroidX.dataStore.preferences)
 
-    implementation("com.firebaseui:firebase-ui-auth:8.0.1")
+    implementation("com.firebaseui:firebase-ui-auth:_")
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))
