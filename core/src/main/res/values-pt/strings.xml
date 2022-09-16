@@ -81,4 +81,10 @@
     <string name="is_in_the_word_and_in_the_correct_spot_wordle">" está na palavra e no lugar correto."</string>
     <string name="results_screen">Tela de resultados</string>
     <string name="n_correct_questions">$1%s perguntas corretas</string>
+    <string name="quiz_question_size">Quantidade de perguntas do quiz</string>
+    <string name="translation">Tradução</string>
+    <string name="translation_enabled">Tradução habilitada</string>
+    <string name="download_translation_model">Transferir o modelo da tradução</string>
+    <string name="delete_translation_model">Apagar o modelo da tradução</string>
+    <string name="download_translation_model_to_device_language">Transferir o modelo da tradução para com o idioma do seu dispositivo.</string>
 </resources>

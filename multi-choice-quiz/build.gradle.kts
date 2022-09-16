@@ -4,7 +4,7 @@ plugins {
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
     id("kotlinx-serialization")
-    id("com.google.devtools.ksp") version "1.6.21-1.0.5"
+    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
 }
 
 android {
@@ -53,10 +53,10 @@ android {
 
 dependencies {
     implementation(AndroidX.core.ktx)
-    implementation(AndroidX.lifecycle.runtimeKtx)
+    implementation(AndroidX.lifecycle.runtime.ktx)
 
     testImplementation(Testing.junit.jupiter)
-    testImplementation("com.google.truth:truth:_")
+    testImplementation(libs.truth)
     androidTestImplementation(Kotlin.test.junit)
 
     debugImplementation(AndroidX.compose.ui.testManifest)
@@ -79,8 +79,8 @@ dependencies {
     androidTestImplementation(Google.dagger.hilt.android.testing)
     kaptAndroidTest(Google.dagger.hilt.compiler)
 
-    implementation("io.github.raamcosta.compose-destinations:core:_")
-    ksp("io.github.raamcosta.compose-destinations:ksp:_")
+    implementation(libs.io.github.raamcosta.compose.destinations.core)
+    ksp(libs.ksp)
 
     implementation(KotlinX.serialization.json)
 
@@ -91,11 +91,11 @@ dependencies {
     testImplementation(AndroidX.room.testing)
     implementation(AndroidX.room.paging)
 
-    implementation("com.airbnb.android:lottie-compose:_")
+    implementation(libs.lottie.compose)
 
     implementation(COIL.compose)
 
-    implementation("com.google.android.gms:play-services-ads:_")
+    implementation(libs.play.services.ads)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))
