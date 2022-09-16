@@ -19,12 +19,19 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.7.10-1.
 [versions]
 
 kotlin = "1.7.10"
+##  ⬆ = "1.7.20-Beta"
+##  ⬆ = "1.7.20-RC"
 
 google-android-play-services-ads = "21.1.0"
+##                            ⬆ = "21.2.0"
 
 [libraries]
 
 ksp = "io.github.raamcosta.compose-destinations:ksp:1.7.17-beta"
+##                                              ⬆ :1.7.18-beta"
+##                                              ⬆ :1.7.19-beta"
+##                                              ⬆ :1.7.20-beta"
+##                                              ⬆ :1.7.21-beta"
 
 org-jacoco-ant = "org.jacoco:org.jacoco.ant:0.8.8"
 
@@ -35,6 +42,10 @@ kotlin-parcelize-runtime = { group = "org.jetbrains.kotlin", name = "kotlin-parc
 lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 
 io-github-raamcosta-compose-destinations-core = "io.github.raamcosta.compose-destinations:core:1.7.17-beta"
+##                                                                                         ⬆ :1.7.18-beta"
+##                                                                                         ⬆ :1.7.19-beta"
+##                                                                                         ⬆ :1.7.20-beta"
+##                                                                                         ⬆ :1.7.21-beta"
 
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "google-android-play-services-ads" }
 
