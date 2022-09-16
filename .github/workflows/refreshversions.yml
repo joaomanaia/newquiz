@@ -23,18 +23,21 @@ jobs:
           java-version: 11
           distribution: adopt
       - id: step-2
+        name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - id: step-3
         name: create-branch
         uses: peterjgrainger/action-create-branch@v2.2.0
         with:
           branch: dependency-update
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - id: step-3
+      - id: step-4
         name: gradle refreshVersions
         uses: gradle/gradle-build-action@v2
         with:
           arguments: refreshVersions
-      - id: step-4
+      - id: step-5
         name: Commit
         uses: EndBug/add-and-commit@v9
         with:
@@ -43,7 +46,7 @@ jobs:
           message: Refresh versions.properties
           new_branch: dependency-update
           push: --force --set-upstream origin dependency-update
-      - id: step-5
+      - id: step-6
         name: Pull Request
         uses: repo-sync/pull-request@v2
         with:
