@@ -3,7 +3,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("kotlinx-serialization")
-    id("com.google.devtools.ksp") version "1.6.21-1.0.6"
+    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
 }
 
 android {
@@ -39,7 +39,7 @@ android {
 
 dependencies {
     testImplementation(Testing.junit.jupiter)
-    testImplementation("com.google.truth:truth:_")
+    testImplementation(libs.truth)
 
     implementation(AndroidX.annotation)
 

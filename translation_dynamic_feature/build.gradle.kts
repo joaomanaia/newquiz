@@ -46,6 +46,9 @@ android {
             }
         }
     }
+    lint {
+        disable += "DialogFragmentCallbacksDetector"
+    }
 }
 
 dependencies {

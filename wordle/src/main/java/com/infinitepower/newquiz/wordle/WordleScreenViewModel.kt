@@ -110,9 +110,7 @@ class WordleScreenViewModel @Inject constructor(
             emptyRowItem(size = word.length)
         }
 
-        val rowLimit = wordleRepository.getWordleMaxRows(
-            savedStateHandle.get<Int>(WordleScreenNavArgs::rowLimit.name) ?: Int.MAX_VALUE
-        )
+        val rowLimit = wordleRepository.getWordleMaxRows(savedStateHandle[WordleScreenNavArgs::rowLimit.name])
 
         wordleLoggingAnalytics.logGameStart(word.length, rowLimit, day)
 

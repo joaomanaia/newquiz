@@ -90,32 +90,32 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         ) = listOf(
             Preference.PreferenceItem.SeekBarPreference(
                 request = SettingsCommon.MultiChoiceQuizQuestionsSize,
-                title = "Quick quiz question size",
+                title = stringResource(id = CoreR.string.quiz_question_size),
                 singleLineTitle = true,
                 icon = {
                     Icon(
                         imageVector = Icons.Rounded.QuestionMark,
-                        contentDescription = "Quick quiz question size",
+                        contentDescription = stringResource(id = CoreR.string.quiz_question_size),
                     )
                 },
                 valueRange = (5..20)
             ),
             Preference.PreferenceGroup(
-                title = "Translation",
+                title = stringResource(id = CoreR.string.translation),
                 preferenceItems = listOf(
                     Preference.PreferenceItem.SwitchPreference(
                         request = SettingsCommon.MultiChoiceQuiz.TranslationEnabled,
-                        title = "Translation enabled"
+                        title = stringResource(id = CoreR.string.translation_enabled)
                     ),
                     Preference.PreferenceItem.TextPreference(
-                        title = "Download translation model",
-                        summary = "Download translation model to your device language.",
+                        title = stringResource(id = CoreR.string.download_translation_model),
+                        summary = stringResource(id = CoreR.string.download_translation_model_to_device_language),
                         dependency = listOf(SettingsCommon.MultiChoiceQuiz.TranslationEnabled),
                         enabled = translationModelState == TranslatorModelState.None,
                         onClick = downloadTranslationModel
                     ),
                     Preference.PreferenceItem.TextPreference(
-                        title = "Delete translation model",
+                        title = stringResource(id = CoreR.string.delete_translation_model),
                         dependency = listOf(SettingsCommon.MultiChoiceQuiz.TranslationEnabled),
                         enabled = translationModelState == TranslatorModelState.Downloaded,
                         onClick = deleteTranslationModel
