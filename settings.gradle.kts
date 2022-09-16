@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("de.fayard.refreshVersions") version "0.40.2"
+    id("de.fayard.refreshVersions") version "0.50.0"
 }
 
 rootProject.name = "NewQuiz"
@@ -32,3 +32,4 @@ include(":home-presentation")
 include(":multi-choice-quiz")
 include(":settings-presentation")
 include(":wordle")
+include(":translation_dynamic_feature")

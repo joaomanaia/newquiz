@@ -9,6 +9,7 @@
               <option name="preferredColumnWidths">
                 <map>
                   <entry key="192.168.1.65:5555" value="120" />
+                  <entry key="21bf96207d29" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi" value="120" />
@@ -69,6 +70,7 @@
                 <map>
                   <entry key="192.168.1.65:5555" value="120" />
                   <entry key="192.168.1.70:5555" value="120" />
+                  <entry key="21bf96207d29" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="HUAWEI&#10; DRA-L21" value="120" />
                   <entry key="Status" value="80" />
@@ -129,6 +131,7 @@
               <option name="preferredColumnWidths">
                 <map>
                   <entry key="192.168.1.65:5555" value="120" />
+                  <entry key="21bf96207d29" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi&#10; Redmi 6A" value="120" />
@@ -146,6 +149,7 @@
                   <entry key="21bf96207d29" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
+                  <entry key="Xiaomi" value="120" />
                   <entry key="Xiaomi&#10; Redmi 6A" value="120" />
                   <entry key="xiaomi&#10; Redmi 6A" value="120" />
                 </map>

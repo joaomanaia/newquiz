@@ -98,10 +98,14 @@ class WordleRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getWordleMaxRows(defaultMaxRow: Int): Int {
-        // If is row limited return row limit value else return int max value
-        val isRowLimited = settingsDataStoreManager.getPreference(SettingsCommon.WordleInfiniteRowsLimited)
-        if (isRowLimited) return settingsDataStoreManager.getPreference(SettingsCommon.WordleInfiniteRowsLimit)
+    override suspend fun getWordleMaxRows(defaultMaxRow: Int?): Int {
+        if (defaultMaxRow == null) {
+            // If is row limited return row limit value else return int max value
+            val isRowLimited = settingsDataStoreManager.getPreference(SettingsCommon.WordleInfiniteRowsLimited)
+            if (isRowLimited) return settingsDataStoreManager.getPreference(SettingsCommon.WordleInfiniteRowsLimit)
+
+            return Int.MAX_VALUE
+        }
 
         return defaultMaxRow
     }

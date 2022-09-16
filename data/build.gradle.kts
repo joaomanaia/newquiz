@@ -4,7 +4,7 @@ plugins {
     kotlin("kapt")
     id("kotlinx-serialization")
     id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp") version "1.6.21-1.0.5"
+    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
 }
 
 android {
@@ -51,8 +51,8 @@ dependencies {
     androidTestImplementation(AndroidX.test.espresso.core)
 
     implementation(platform(Firebase.bom))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation(Firebase.authenticationKtx)
+    implementation(Firebase.cloudFirestoreKtx)
 
     implementation(KotlinX.coroutines.android)
     implementation(KotlinX.coroutines.playServices)
@@ -80,9 +80,9 @@ dependencies {
 
     implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation(KotlinX.datetime)
 
-    implementation(project(":core"))
-    implementation(project(":domain"))
-    implementation(project(":model"))
+    implementation(project(Modules.core))
+    implementation(project(Modules.domain))
+    implementation(project(Modules.model))
 }

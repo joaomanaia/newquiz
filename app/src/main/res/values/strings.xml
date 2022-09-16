@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name" translatable="false">NewQuiz</string>
+    <string name="title_translation_dynamic_feature">Translation Feature</string>
 </resources>
