@@ -18,11 +18,10 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
+import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -36,12 +35,13 @@ class QuizScreenViewModel @Inject constructor(
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
     private val multiChoiceQuestionsRepository: MultiChoiceQuestionRepository,
     private val savedStateHandle: SavedStateHandle,
-    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics
+    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
+    private val translationUtil: TranslatorUtil
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val timer = object: CountDownTimer(QUIZ_COUNTDOWN_IN_MILLIS, 250) {
+    private val timer = object : CountDownTimer(QUIZ_COUNTDOWN_IN_MILLIS, 250) {
         override fun onTick(millisUntilFinished: Long) {
             _uiState.update { currentState ->
                 currentState.copy(remainingTime = RemainingTime.fromValue(millisUntilFinished))
@@ -82,14 +82,17 @@ class QuizScreenViewModel @Inject constructor(
     }
 
     private suspend fun loadByCloudQuestions() {
-        val questionSize = settingsDataStoreManager.getPreference(SettingsCommon.QuickQuizQuestionsSize)
+        val questionSize =
+            settingsDataStoreManager.getPreference(SettingsCommon.MultiChoiceQuizQuestionsSize)
 
         val categoryState = savedStateHandle.get<Int>(MultiChoiceQuizScreenNavArg::category.name)
         val category = if (categoryState == -1) null else categoryState
 
         val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
 
-        if (category != null && category != -1) multiChoiceQuestionsRepository.addCategoryToRecent(category)
+        if (category != null && category != -1) multiChoiceQuestionsRepository.addCategoryToRecent(
+            category
+        )
 
         getRandomQuestionUseCase(questionSize, category, difficulty).collect { res ->
             if (res is Resource.Success) {
@@ -98,12 +101,36 @@ class QuizScreenViewModel @Inject constructor(
         }
     }
 
-    private fun createQuestionSteps(
+    private suspend fun List<MultiChoiceQuestion>.getOrTranslateQuestions(): List<MultiChoiceQuestion> {
+        val translationEnabled =
+            settingsDataStoreManager.getPreference(SettingsCommon.MultiChoiceQuiz.TranslationEnabled)
+        val translationModelDownloaded = translationUtil.isModelDownloaded()
+        val translateQuestions = translationEnabled && translationModelDownloaded
+
+        if (!translateQuestions) return this
+
+        return map { question ->
+            question translateQuestionWith translationUtil
+        }
+    }
+
+    private suspend infix fun MultiChoiceQuestion.translateQuestionWith(translationUtil: TranslatorUtil): MultiChoiceQuestion {
+        return copy(
+            description = translationUtil.translate(description),
+            answers = answers.map { answer ->
+                translationUtil.translate(answer)
+            }
+        )
+    }
+
+    private suspend fun createQuestionSteps(
         questions: List<MultiChoiceQuestion>,
         category: Int? = null,
         difficulty: String? = null
     ) {
-        val questionSteps = questions.map { question -> question.toQuestionStep() }
+        val questionSteps = questions
+            .getOrTranslateQuestions()
+            .map { question -> question.toQuestionStep() }
 
         _uiState.update { currentState ->
             currentState.copy(questionSteps = questionSteps)
@@ -167,9 +194,13 @@ class QuizScreenViewModel @Inject constructor(
                     val currentQuestionStep = currentState.currentQuestionStep
 
                     if (currentQuestionStep != null) {
-                        val questionCorrect = currentState.selectedAnswer isCorrect currentQuestionStep.question
+                        val questionCorrect =
+                            currentState.selectedAnswer isCorrect currentQuestionStep.question
 
-                        val completedQuestionStep = currentQuestionStep.changeToCompleted(questionCorrect, currentState.selectedAnswer)
+                        val completedQuestionStep = currentQuestionStep.changeToCompleted(
+                            questionCorrect,
+                            currentState.selectedAnswer
+                        )
                         set(currentQuestionIndex, completedQuestionStep)
                     }
                 }
@@ -202,7 +233,14 @@ class QuizScreenViewModel @Inject constructor(
 
             delay(1000)
 
-            sendNavEventAsync(NavEvent.Navigate(MultiChoiceQuizResultsScreenDestination(questionStepsStr, category)))
+            sendNavEventAsync(
+                NavEvent.Navigate(
+                    MultiChoiceQuizResultsScreenDestination(
+                        questionStepsStr,
+                        category
+                    )
+                )
+            )
         }
     }
 }

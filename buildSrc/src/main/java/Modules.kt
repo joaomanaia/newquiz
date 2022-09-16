@@ -7,4 +7,5 @@ object Modules {
     const val multiChoicequiz = ":multi-choice-quiz"
     const val settingsPresentation = ":settings-presentation"
     const val wordle = ":wordle"
+    const val translationDynamicFeature = ":translation_dynamic_feature"
 }

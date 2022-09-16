@@ -4,7 +4,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.QuestionMark
-import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -14,6 +13,7 @@ import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepos
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
+import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil.TranslatorModelState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         fun getPage(key: ScreenKey) = when (key) {
             MainPage.key -> MainPage
             General.key -> General
-            Quiz.key -> Quiz
+            MultiChoiceQuiz.key -> MultiChoiceQuiz
             Wordle.key -> Wordle
             else -> MainPage
         }
@@ -78,23 +78,49 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         )
     }
 
-    object Quiz : SettingsScreenPageData(key = ScreenKey("quiz")) {
+    object MultiChoiceQuiz : SettingsScreenPageData(key = ScreenKey("multi_choice_quiz")) {
         override val stringRes: Int
-            get() = CoreR.string.quiz
+            get() = CoreR.string.multi_choice_quiz
 
         @Composable
-        fun items() = listOf(
+        fun items(
+            translationModelState: TranslatorModelState,
+            downloadTranslationModel: () -> Unit,
+            deleteTranslationModel: () -> Unit
+        ) = listOf(
             Preference.PreferenceItem.SeekBarPreference(
-                request = SettingsCommon.QuickQuizQuestionsSize,
-                title = "Quick quiz question size",
+                request = SettingsCommon.MultiChoiceQuizQuestionsSize,
+                title = stringResource(id = CoreR.string.quiz_question_size),
                 singleLineTitle = true,
                 icon = {
                     Icon(
                         imageVector = Icons.Rounded.QuestionMark,
-                        contentDescription = "Quick quiz question size",
+                        contentDescription = stringResource(id = CoreR.string.quiz_question_size),
                     )
                 },
                 valueRange = (5..20)
+            ),
+            Preference.PreferenceGroup(
+                title = stringResource(id = CoreR.string.translation),
+                preferenceItems = listOf(
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.MultiChoiceQuiz.TranslationEnabled,
+                        title = stringResource(id = CoreR.string.translation_enabled)
+                    ),
+                    Preference.PreferenceItem.TextPreference(
+                        title = stringResource(id = CoreR.string.download_translation_model),
+                        summary = stringResource(id = CoreR.string.download_translation_model_to_device_language),
+                        dependency = listOf(SettingsCommon.MultiChoiceQuiz.TranslationEnabled),
+                        enabled = translationModelState == TranslatorModelState.None,
+                        onClick = downloadTranslationModel
+                    ),
+                    Preference.PreferenceItem.TextPreference(
+                        title = stringResource(id = CoreR.string.delete_translation_model),
+                        dependency = listOf(SettingsCommon.MultiChoiceQuiz.TranslationEnabled),
+                        enabled = translationModelState == TranslatorModelState.Downloaded,
+                        onClick = deleteTranslationModel
+                    ),
+                )
             )
         )
     }

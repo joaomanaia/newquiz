@@ -14,7 +14,7 @@ interface WordleRepository {
     fun isHardModeEnabled(): FlowResource<Boolean>
 
     suspend fun getWordleMaxRows(
-        defaultMaxRow: Int = Int.MAX_VALUE
+        defaultMaxRow: Int? = null
     ): Int
 
     fun getAdRewardRowsToAdd(): Int

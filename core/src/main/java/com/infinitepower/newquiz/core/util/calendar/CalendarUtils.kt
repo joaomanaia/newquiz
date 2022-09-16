@@ -4,14 +4,17 @@ import android.os.Build
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.toLocalDate
+import java.time.Year
 
 fun Int.toDoubleDigit(): String = String.format("%02d", this)
 
 fun LocalDate.getMonthAllDays(): List<LocalDate> {
     val numDays = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        month.length(false)
+        val leapYear = Year.isLeap(year.toLong())
+        month.length(leapYear)
     } else {
-        month.lengthLowVersionCode(false)
+        val leapYear = isLeapLowVersionCode(year.toLong())
+        month.lengthLowVersionCode(leapYear)
     }
     return List(numDays) { index ->
         val day = index + 1
@@ -19,7 +22,7 @@ fun LocalDate.getMonthAllDays(): List<LocalDate> {
     }
 }
 
-private fun Month.lengthLowVersionCode(leapYear: Boolean): Int {
+internal fun Month.lengthLowVersionCode(leapYear: Boolean): Int {
     return when (ordinal + 1) {
         2 -> if (leapYear) 29 else 28
         4,
@@ -28,4 +31,8 @@ private fun Month.lengthLowVersionCode(leapYear: Boolean): Int {
         11 -> 30
         else -> 31
     }
+}
+
+internal fun isLeapLowVersionCode(year: Long): Boolean {
+    return year and 3L == 0L && (year % 100 != 0L || year % 400 == 0L)
 }

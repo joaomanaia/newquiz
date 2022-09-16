@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.settings_presentation
 
 import androidx.annotation.Keep
-import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -24,9 +23,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.infinitepower.newquiz.core.navigation.MainNavGraph
-import com.infinitepower.newquiz.core.theme.CustomColor
-import com.infinitepower.newquiz.core.theme.extendedColors
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
@@ -34,6 +30,7 @@ import com.infinitepower.newquiz.settings_presentation.components.PreferencesScr
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
+import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -55,7 +52,8 @@ fun SettingsScreen(
         uiState = uiState,
         dailyWordleRepository = settingsViewModel.dailyWordleRepository,
         onBackClick = navigator::popBackStack,
-        onNavigateClickClick = navigator::navigate
+        onNavigateClickClick = navigator::navigate,
+        onEvent = settingsViewModel::onEvent
     )
 }
 
@@ -64,7 +62,8 @@ private fun SettingsScreenImpl(
     uiState: SettingsUiState,
     dailyWordleRepository: DailyWordleRepository,
     onBackClick: () -> Unit,
-    onNavigateClickClick: (direction: Direction) -> Unit
+    onNavigateClickClick: (direction: Direction) -> Unit,
+    onEvent: (event: SettingsScreenUiEvent) -> Unit
 ) {
     when (uiState.screenKey) {
         SettingsScreenPageData.MainPage.key -> MainSettingsScreen(
@@ -74,7 +73,34 @@ private fun SettingsScreenImpl(
         else -> PreferencesScreen(
             page = SettingsScreenPageData.getPage(uiState.screenKey),
             onBackClick = onBackClick,
-            dailyWordleRepository = dailyWordleRepository
+            dailyWordleRepository = dailyWordleRepository,
+            translationModelState = uiState.translationModelState,
+            downloadTranslationModel = { onEvent(SettingsScreenUiEvent.DownloadTranslationModel) },
+            deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) }
+        )
+    }
+
+    if (uiState.translationModelState == TranslatorUtil.TranslatorModelState.Downloading) {
+        AlertDialog(
+            onDismissRequest = {},
+            title = {
+                Text(text = "Downloading translation model")
+            },
+            text = {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Please wait until translation model is downloaded!")
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+                    CircularProgressIndicator()
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {},
+                    enabled = false
+                ) {
+                    Text(text = "Close")
+                }
+            }
         )
     }
 }
@@ -98,9 +124,9 @@ fun MainSettingsScreen(
             name = stringResource(id = SettingsScreenPageData.General.stringRes)
         ),
         SettingsBaseItemData(
-            key = SettingsScreenPageData.Quiz.key,
+            key = SettingsScreenPageData.MultiChoiceQuiz.key,
             icon = Icons.Rounded.Quiz,
-            name = stringResource(id = SettingsScreenPageData.Quiz.stringRes)
+            name = stringResource(id = SettingsScreenPageData.MultiChoiceQuiz.stringRes)
         ),
         SettingsBaseItemData(
             key = SettingsScreenPageData.Wordle.key,
@@ -224,7 +250,7 @@ private fun SettingsSearchComponent(
                 modifier = Modifier.fillMaxWidth(),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                 textStyle = TextStyle(
-                    color =  LocalContentColor.current,
+                    color = LocalContentColor.current,
                 ),
                 maxLines = 1
             ) {

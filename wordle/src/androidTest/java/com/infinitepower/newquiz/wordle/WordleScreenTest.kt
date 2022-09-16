@@ -1,29 +1,29 @@
 package com.infinitepower.newquiz.wordle
 
+import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.analytics.logging.wordle.LocalWordleLoggingAnalyticsImpl
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
-import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
-import com.infinitepower.newquiz.wordle.data.repository.wordle.daily.FakeDailyWordleRepository
-import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
-import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
-import com.ramcosta.composedestinations.navigation.dependency
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 import javax.inject.Inject
 
 @HiltAndroidTest
@@ -38,25 +38,55 @@ class WordleScreenTest {
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var viewModel: WordleScreenViewModel
 
-    @Inject lateinit var wordleRepository: WordleRepository
-    @Inject lateinit var workManager: WorkManager
+    @Inject
+    lateinit var wordleRepository: WordleRepository
+
+    @Inject
+    lateinit var workManager: WorkManager
 
     @Before
     fun setup() {
         hiltRule.inject()
 
         composeRule.setContent {
+            val configuration = LocalConfiguration.current
+            val resources = LocalContext.current.resources
+
+            setEnglishLocale(configuration, resources)
+
             NewQuizTheme {
                 Surface {
-                    savedStateHandle = SavedStateHandle(mapOf(WordleScreenNavArgs::rowLimit.name to 3))
+                    savedStateHandle = SavedStateHandle(
+                        mapOf(
+                            WordleScreenNavArgs::rowLimit.name to 3,
+                            WordleScreenNavArgs::word.name to "TEST"
+                        )
+                    )
 
                     val localAnalytics: WordleLoggingAnalytics = LocalWordleLoggingAnalyticsImpl()
-                    viewModel = WordleScreenViewModel(wordleRepository, savedStateHandle, localAnalytics, workManager)
+                    viewModel = WordleScreenViewModel(
+                        wordleRepository,
+                        savedStateHandle,
+                        localAnalytics,
+                        workManager
+                    )
 
-                    WordleScreen(wordleScreenViewModel = viewModel, navigator = EmptyDestinationsNavigator)
+                    CompositionLocalProvider(LocalInspectionMode provides true) {
+                        WordleScreen(
+                            wordleScreenViewModel = viewModel,
+                            navigator = EmptyDestinationsNavigator
+                        )
+                    }
                 }
             }
         }
+    }
+
+    private fun setEnglishLocale(configuration: Configuration, resources: Resources) {
+        val locale = Locale("en")
+
+        configuration.setLocale(locale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
     }
 
     @Test
