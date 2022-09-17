@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("de.fayard.refreshVersions") version "0.50.0"
+    id("de.fayard.refreshVersions") version "0.50.1"
 }
 
 rootProject.name = "NewQuiz"
