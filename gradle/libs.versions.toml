@@ -2,25 +2,23 @@
 
 [plugins]
 
-gradle = { id = "gradle", version = "7.4.0-alpha10" }
+gradle = { id = "gradle", version = "8.0.0-alpha02" }
 
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.7.10" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.7.20" }
 
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.7.10" }
 
-com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version = "2.43.2" }
+com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version = "2.44" }
 
 com-google-gms-google-services = { id = "com.google.gms.google-services", version = "4.3.13" }
 
-org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.7.10" }
+org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.7.20" }
 
-com-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.7.10-1.0.6" }
+com-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.7.20-1.0.6" }
 
 [versions]
 
-kotlin = "1.7.10"
-##  ⬆ = "1.7.20-Beta"
-##  ⬆ = "1.7.20-RC"
+kotlin = "1.7.20"
 
 google-android-play-services-ads = "21.2.0"
 
@@ -48,6 +46,6 @@ kotlin-parcelize-compiler = { group = "org.jetbrains.kotlin", name = "kotlin-par
 
 kotlin-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serialization", version.ref = "kotlin" }
 
-symbol-processing = "com.google.devtools.ksp:symbol-processing:1.6.21-1.0.6"
+symbol-processing = "com.google.devtools.ksp:symbol-processing:1.7.20-1.0.6"
 
-firebase-ui-auth = "com.firebaseui:firebase-ui-auth:8.0.1"
+firebase-ui-auth = "com.firebaseui:firebase-ui-auth:8.0.2"

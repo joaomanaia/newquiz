@@ -1,10 +1,12 @@
+import de.fayard.refreshVersions.core.versionFor
+
 plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
     id("kotlinx-serialization")
     id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
+    id("com.google.devtools.ksp") version "1.7.20-1.0.6"
 }
 
 android {
@@ -40,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Compose.composeCompilerVersion
+        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
     }
     libraryVariants.all {
         kotlin.sourceSets {
