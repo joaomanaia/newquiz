@@ -1,7 +1,5 @@
 # New Quiz
 
-> Warning: This app is still in development.
-
 Do you like to challenge your knowledge? So NewQuiz is the ideal game for you.
 
 ## Multi choice quiz:
@@ -27,16 +25,8 @@ Guess the country with the image of the flag. With 4 answers to choose.
 
 New quiz is optimized to material you, the theme of new quiz will adapt to your background.
 
-<div class="vscroll-plot">
+<div>
 <img src="pictures/wordle1.png" alt="Wordle game photo 1" width="200"/>
 <img src="pictures/wordle2.png" alt="Wordle game photo 2" width="200"/>
 <img src="pictures/wordle3.png" alt="Wordle calendar" width="200"/>
 </div>
-
-<style>
-.vscroll-plot {
-    width: 700px;
-    overflow-y: scroll;
-    overflow-x: scroll;
-}
-</style>
