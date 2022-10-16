@@ -5,6 +5,8 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 interface HomeScreenNavigator {
     fun navigateToQuickQuiz(initialQuestions: ArrayList<MultiChoiceQuestion> = arrayListOf())
 
+    fun navigateToFlagQuiz()
+
     fun navigateToSettings()
 
     fun navigateToSavedQuestions()
@@ -15,6 +17,10 @@ interface HomeScreenNavigator {
 internal class HomeNavigatorPreviewImpl : HomeScreenNavigator {
     override fun navigateToQuickQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {
         println("Navigating to Quick Quiz")
+    }
+
+    override fun navigateToFlagQuiz() {
+        println("Navigating to Flag Quiz")
     }
 
     override fun navigateToSettings() {

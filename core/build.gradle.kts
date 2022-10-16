@@ -93,6 +93,8 @@ dependencies {
 
     implementation(libs.play.services.ads)
 
+    implementation(KotlinX.serialization.json)
+
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.ksp)
 }

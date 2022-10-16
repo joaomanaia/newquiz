@@ -83,6 +83,7 @@ dependencies {
     implementation(AndroidX.lifecycle.runtime.ktx)
     implementation(AndroidX.constraintLayout.compose)
     implementation(AndroidX.core.splashscreen)
+    implementation("androidx.core:core-ktx:+")
 
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)
@@ -153,6 +154,7 @@ dependencies {
     implementation(project(Modules.wordle))
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
+    implementation(project(Modules.onlineServices))
 }
 
 tasks.withType<Test> {

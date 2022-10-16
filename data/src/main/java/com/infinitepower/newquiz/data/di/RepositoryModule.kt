@@ -1,9 +1,11 @@
 package com.infinitepower.newquiz.data.di
 
+import com.infinitepower.newquiz.data.repository.multi_choice_quiz.FlagQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.MultiChoiceQuestionRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.WordleRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.daily.DailyWordleRepositoryImpl
+import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
@@ -27,4 +29,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindDailyWordleRepository(dailyWordleRepositoryImpl: DailyWordleRepositoryImpl): DailyWordleRepository
+
+    @Binds
+    abstract fun bindFlagQuizRepository(flagQuizRepositoryImpl: FlagQuizRepositoryImpl): FlagQuizRepository
 }

@@ -1,0 +1,3 @@
+package com.infinitepower.newquiz.domain.repository.multi_choice_quiz
+
+interface FlagQuizRepository : MultiChoiceQuestionBaseRepository
