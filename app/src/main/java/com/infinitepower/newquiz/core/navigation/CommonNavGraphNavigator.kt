@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.core.navigation
 
 import androidx.navigation.NavController
+import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -15,6 +16,10 @@ class CommonNavGraphNavigator(
 ) : HomeScreenNavigator, SavedQuestionsScreenNavigator {
     override fun navigateToQuickQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {
         navController.navigate(MultiChoiceQuizScreenDestination(initialQuestions = initialQuestions))
+    }
+
+    override fun navigateToFlagQuiz() {
+        navController.navigate(MultiChoiceQuizScreenDestination(type = MultiChoiceQuizType.FLAG))
     }
 
     override fun navigateToSettings() {

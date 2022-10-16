@@ -1,7 +1,6 @@
-package com.infinitepower.newquiz.model.user
+package com.infinitepower.newquiz.online_services.model.user
 
 import androidx.annotation.Keep
-import java.util.*
 
 @Keep
 data class User(
@@ -11,38 +10,31 @@ data class User(
 ) {
     @Keep
     data class UserInfo(
-        val fullname: String? = null,
-        val imageUrl: String? = null,
-        val location: String? = Locale.getDefault().country
+        val fullName: String? = null,
+        val imageUrl: String? = null
     )
 
     @Keep
     data class UserData(
         val userXp: UserXp? = UserXp(),
         val level: Int? = 0,
-        val money: UserMoney? = UserMoney(),
-        val gameData: UserGameData? = UserGameData(),
+        val diamonds: Int? = 0,
+        val multiChoiceQuizData: MultiChoiceQuizData? = MultiChoiceQuizData(),
     ) {
         @Keep
-        data class UserMoney(
-            val coins: Int? = 0,
-            val diamonds: Int? = 0,
-        )
-
-        @Keep
         data class UserXp(
-            val xp: Long? = 0,
+            val currentXp: Long? = 0,
             val totalXp: Long? = 0,
         )
 
         @Keep
-        data class UserGameData(
-            val totalGameData: UserTotalGameData? = UserTotalGameData(),
+        data class MultiChoiceQuizData(
+            val totalGameData: TotalGameData? = TotalGameData(),
             val averageQuizTime: Double? = 0.0,
             val lastQuizTimes: List<Double>? = emptyList()
         ) {
             @Keep
-            data class UserTotalGameData(
+            data class TotalGameData(
                 val totalGamesPlayed: Int? = 0,
                 val totalCorrectAnswers: Int? = 0,
             )
