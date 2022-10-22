@@ -160,6 +160,10 @@ private fun ColumnScope.QuizContentWidthCompact(
                             )
                             // Question image, if exists
                             currentQuestion.imageUrl?.let { imageUrl ->
+                                val imageScale = if (currentQuestion.category == "Logo Quiz") {
+                                    ContentScale.FillHeight
+                                } else ContentScale.Crop
+
                                 Spacer(modifier = Modifier.height(spaceMedium))
                                 AsyncImage(
                                     model = imageUrl,
@@ -167,7 +171,7 @@ private fun ColumnScope.QuizContentWidthCompact(
                                     modifier = Modifier
                                         .aspectRatio(16/9f)
                                         .clip(MaterialTheme.shapes.medium),
-                                    contentScale = ContentScale.Crop
+                                    contentScale = imageScale
                                 )
                             }
                         }
@@ -242,6 +246,10 @@ private fun ColumnScope.QuizContentWidthMedium(
                     }
                     // Question image, if exists
                     currentQuestion.imageUrl?.let { imageUrl ->
+                        val imageScale = if (currentQuestion.category == "Flag Quiz") {
+                            ContentScale.FillHeight
+                        } else ContentScale.Crop
+
                         item {
                             Spacer(modifier = Modifier.height(spaceMedium))
                             AsyncImage(
@@ -250,7 +258,7 @@ private fun ColumnScope.QuizContentWidthMedium(
                                 modifier = Modifier
                                     .aspectRatio(16/9f)
                                     .clip(MaterialTheme.shapes.medium),
-                                contentScale = ContentScale.Crop
+                                contentScale = imageScale
                             )
                         }
                     }

@@ -4,6 +4,7 @@ import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
+import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import kotlinx.coroutines.flow.flow
@@ -13,7 +14,8 @@ import javax.inject.Singleton
 @Singleton
 class GetRandomMultiChoiceQuestionUseCase @Inject constructor(
     private val normalQuestionRepository: MultiChoiceQuestionRepository,
-    private val flagQuestionRepository: FlagQuizRepository
+    private val flagQuizRepository: FlagQuizRepository,
+    private val logoQuizRepository: LogoQuizRepository
 ) {
     operator fun invoke(
         amount: Int = 10,
@@ -24,10 +26,11 @@ class GetRandomMultiChoiceQuestionUseCase @Inject constructor(
         try {
             emit(Resource.Loading())
 
-            val questions = if (type == MultiChoiceQuizType.NORMAL) {
-                normalQuestionRepository.getRandomQuestions(amount, category, difficulty)
-            } else {
-                flagQuestionRepository.getRandomQuestions(amount, category, difficulty)
+            val questions = when (type) {
+                MultiChoiceQuizType.NORMAL -> normalQuestionRepository.getRandomQuestions(amount, category, difficulty)
+                MultiChoiceQuizType.FLAG -> flagQuizRepository.getRandomQuestions(amount, category, difficulty)
+                MultiChoiceQuizType.LOGO -> logoQuizRepository.getRandomQuestions(amount, category, difficulty)
+                else -> throw IllegalArgumentException("Quiz type does not exist")
             }
 
             emit(Resource.Success(questions))

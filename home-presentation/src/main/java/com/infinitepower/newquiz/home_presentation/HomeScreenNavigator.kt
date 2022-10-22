@@ -7,6 +7,8 @@ interface HomeScreenNavigator {
 
     fun navigateToFlagQuiz()
 
+    fun navigateToLogoQuiz()
+
     fun navigateToSettings()
 
     fun navigateToSavedQuestions()
@@ -21,6 +23,10 @@ internal class HomeNavigatorPreviewImpl : HomeScreenNavigator {
 
     override fun navigateToFlagQuiz() {
         println("Navigating to Flag Quiz")
+    }
+
+    override fun navigateToLogoQuiz() {
+        println("Navigating to Logo Quiz")
     }
 
     override fun navigateToSettings() {
