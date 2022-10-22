@@ -10,6 +10,7 @@ import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
@@ -90,11 +91,13 @@ class QuizScreenViewModel @Inject constructor(
 
         val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
 
-        if (category != null && category != -1) multiChoiceQuestionsRepository.addCategoryToRecent(
-            category
-        )
+        if (category != null && category != -1) {
+            multiChoiceQuestionsRepository.addCategoryToRecent(category)
+        }
 
-        getRandomQuestionUseCase(questionSize, category, difficulty).collect { res ->
+        val type = savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
+
+        getRandomQuestionUseCase(questionSize, category, difficulty, type).collect { res ->
             if (res is Resource.Success) {
                 createQuestionSteps(res.data.orEmpty(), category, difficulty)
             }
@@ -226,6 +229,14 @@ class QuizScreenViewModel @Inject constructor(
             val questionStepsStr = Json.encodeToString(questionSteps)
             val category = savedStateHandle.get<Int?>(MultiChoiceQuizScreenNavArg::category.name)
 
+            val initialQuestions = savedStateHandle
+                .get<ArrayList<MultiChoiceQuestion>>(MultiChoiceQuizScreenNavArg::initialQuestions.name)
+                .orEmpty()
+
+            val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
+
+            val type = savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
+
             multiChoiceQuizLoggingAnalytics.logGameEnd(
                 questionsSize = questionSteps.size,
                 correctAnswers = questionSteps.count { it.correct }
@@ -235,9 +246,13 @@ class QuizScreenViewModel @Inject constructor(
 
             sendNavEventAsync(
                 NavEvent.Navigate(
+
                     MultiChoiceQuizResultsScreenDestination(
-                        questionStepsStr,
-                        category
+                        questionStepsStr = questionStepsStr,
+                        byInitialQuestions = initialQuestions.isNotEmpty(),
+                        category = category,
+                        difficulty = difficulty,
+                        type = type ?: MultiChoiceQuizType.NORMAL
                     )
                 )
             )

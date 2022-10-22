@@ -1,6 +1,9 @@
 package com.infinitepower.newquiz.home_presentation.data
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Android
+import androidx.compose.material.icons.rounded.Flag
+import androidx.compose.material.icons.rounded.LogoDev
 import androidx.compose.material.icons.rounded.QuestionMark
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
@@ -26,5 +29,21 @@ fun getHomeCardItemData(
         title = CoreR.string.wordle_infinite,
         icon = CardIcon.Icon(Icons.Rounded.QuestionMark),
         onClick = homeNavigator::navigateToWordle
+    ),
+    HomeCardItem.GroupTitle(
+        title = CoreR.string.flag_quiz,
+    ),
+    HomeCardItem.LargeCard(
+        title = CoreR.string.flag_quiz,
+        icon = CardIcon.Icon(Icons.Rounded.Flag),
+        onClick = homeNavigator::navigateToFlagQuiz
+    ),
+    HomeCardItem.GroupTitle(
+        title = CoreR.string.logo_quiz,
+    ),
+    HomeCardItem.LargeCard(
+        title = CoreR.string.logo_quiz,
+        icon = CardIcon.Icon(Icons.Rounded.Android),
+        onClick = homeNavigator::navigateToLogoQuiz
     ),
 )

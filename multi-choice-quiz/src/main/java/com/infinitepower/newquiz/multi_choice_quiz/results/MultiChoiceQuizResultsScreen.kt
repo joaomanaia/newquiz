@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.multi_choice_quiz.results
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -9,20 +10,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
-import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
-import com.infinitepower.newquiz.model.multi_choice_quiz.countCorrectQuestions
-import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.*
 import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswers
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
@@ -36,15 +38,33 @@ import kotlinx.serialization.json.Json
 @Destination
 fun MultiChoiceQuizResultsScreen(
     questionStepsStr: String,
+    byInitialQuestions: Boolean = false,
     category: Int? = null,
+    difficulty: String? = null,
+    type: MultiChoiceQuizType,
     navigator: DestinationsNavigator
 ) {
-    val questionSteps: List<MultiChoiceQuestionStep.Completed> = Json.decodeFromString(questionStepsStr)
+    val questionSteps: List<MultiChoiceQuestionStep.Completed> = remember {
+        Json.decodeFromString(questionStepsStr)
+    }
+
+    val initialQuestions = remember(questionSteps) {
+        ArrayList(questionSteps.map(MultiChoiceQuestionStep::question))
+    }
 
     MultiChoiceQuizResultsScreenImpl(
         questionSteps = questionSteps,
         onBackClick = navigator::popBackStack,
-        onPlayAgainClick = { navigator.navigate(MultiChoiceQuizScreenDestination(category = category ?: -1)) }
+        onPlayAgainClick = {
+            navigator.navigate(
+                MultiChoiceQuizScreenDestination(
+                    initialQuestions = if (byInitialQuestions) initialQuestions else ArrayList(),
+                    category = category ?: -1,
+                    difficulty = difficulty,
+                    type = type
+                )
+            )
+        }
     )
 }
 
@@ -96,7 +116,10 @@ private fun MultiChoiceQuizResultsScreenImpl(
             }
             Spacer(modifier = Modifier.height(spaceLarge))
             Text(
-                text = stringResource(id = CoreR.string.results_screen, "${questionSteps.countCorrectQuestions()}/${questionSteps.size}"),
+                text = stringResource(
+                    id = CoreR.string.results_screen,
+                    "${questionSteps.countCorrectQuestions()}/${questionSteps.size}"
+                ),
                 style = MaterialTheme.typography.headlineMedium
             )
             Spacer(modifier = Modifier.height(spaceLarge))
@@ -129,7 +152,7 @@ private fun MultiChoiceQuizResultsScreenImpl(
             }
         }
     }
-    
+
     if (questionDialog != null) {
         val questionStep = questionSteps[questionDialog]
         val question = questionStep.question
@@ -138,12 +161,32 @@ private fun MultiChoiceQuizResultsScreenImpl(
             onDismissRequest = { setQuestionDialog(null) },
             title = { Text(text = question.description) },
             text = {
-                CardQuestionAnswers(
-                    answers = question.answers,
-                    selectedAnswer = questionStep.selectedAnswer,
-                    resultsSelectedAnswer = SelectedAnswer.fromIndex(question.correctAns),
-                    isResultsScreen = true
-                )
+                LazyColumn {
+                    // Question image, if exists
+                    question.imageUrl?.let { imageUrl ->
+                        item {
+                            Spacer(modifier = Modifier.height(spaceMedium))
+                            AsyncImage(
+                                model = imageUrl,
+                                contentDescription = "Flag Image",
+                                modifier = Modifier
+                                    .aspectRatio(16 / 9f)
+                                    .clip(MaterialTheme.shapes.medium),
+                                contentScale = ContentScale.Crop
+                            )
+                            Spacer(modifier = Modifier.height(spaceMedium))
+                        }
+                    }
+
+                    item {
+                        CardQuestionAnswers(
+                            answers = question.answers,
+                            selectedAnswer = questionStep.selectedAnswer,
+                            resultsSelectedAnswer = SelectedAnswer.fromIndex(question.correctAns),
+                            isResultsScreen = true
+                        )
+                    }
+                }
             },
             confirmButton = {
                 TextButton(onClick = { setQuestionDialog(null) }) {

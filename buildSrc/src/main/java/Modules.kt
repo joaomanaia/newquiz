@@ -8,4 +8,5 @@ object Modules {
     const val settingsPresentation = ":settings-presentation"
     const val wordle = ":wordle"
     const val translationDynamicFeature = ":translation_dynamic_feature"
+    const val onlineServices = ":online_services"
 }
