@@ -22,6 +22,10 @@ class CommonNavGraphNavigator(
         navController.navigate(MultiChoiceQuizScreenDestination(type = MultiChoiceQuizType.FLAG))
     }
 
+    override fun navigateToLogoQuiz() {
+        navController.navigate(MultiChoiceQuizScreenDestination(type = MultiChoiceQuizType.LOGO))
+    }
+
     override fun navigateToSettings() {
         navController.navigate(SettingsScreenDestination())
     }

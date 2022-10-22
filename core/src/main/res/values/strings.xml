@@ -45,6 +45,7 @@
     <string name="home">Home</string>
     <string name="multi_choice_quiz">Multi choice quiz</string>
     <string name="flag_quiz">Flag quiz</string>
+    <string name="logo_quiz">Logo quiz</string>
     <string name="other">Other</string>
     <string name="general_knowledge">General knowledge</string>
     <string name="entertainment_books">Books</string>
