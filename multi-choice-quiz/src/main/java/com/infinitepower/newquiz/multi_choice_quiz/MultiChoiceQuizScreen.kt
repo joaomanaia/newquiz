@@ -12,11 +12,15 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
+import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.ads.admob.BannerAd
@@ -36,7 +40,8 @@ import com.ramcosta.composedestinations.navigation.navigate
 data class MultiChoiceQuizScreenNavArg(
     val initialQuestions: ArrayList<MultiChoiceQuestion> = arrayListOf(),
     val category: Int = -1,
-    val difficulty: String? = null
+    val difficulty: String? = null,
+    val type: MultiChoiceQuizType = MultiChoiceQuizType.NORMAL
 )
 
 @Composable
@@ -153,6 +158,22 @@ private fun ColumnScope.QuizContentWidthCompact(
                                 text = currentQuestion.description,
                                 style = MaterialTheme.typography.bodyLarge
                             )
+                            // Question image, if exists
+                            currentQuestion.imageUrl?.let { imageUrl ->
+                                val imageScale = if (currentQuestion.category == "Logo Quiz") {
+                                    ContentScale.FillHeight
+                                } else ContentScale.Crop
+
+                                Spacer(modifier = Modifier.height(spaceMedium))
+                                AsyncImage(
+                                    model = imageUrl,
+                                    contentDescription = "Flag Image",
+                                    modifier = Modifier
+                                        .aspectRatio(16/9f)
+                                        .clip(MaterialTheme.shapes.medium),
+                                    contentScale = imageScale
+                                )
+                            }
                         }
                     }
                 }
@@ -196,36 +217,64 @@ private fun ColumnScope.QuizContentWidthMedium(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize()
         ) {
-            Column(
+            LazyColumn(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = spaceMedium),
             ) {
-                QuizStepViewRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    questionSteps = uiState.questionSteps
-                )
-                Spacer(modifier = Modifier.height(spaceMedium))
-                if (currentQuestion!= null) {
-                    Text(
-                        text = uiState.getQuestionPositionFormatted(),
-                        style = MaterialTheme.typography.headlineSmall
+                item {
+                    QuizStepViewRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        questionSteps = uiState.questionSteps
                     )
                     Spacer(modifier = Modifier.height(spaceMedium))
-                    Text(
-                        text = currentQuestion.description,
-                        style = MaterialTheme.typography.bodyLarge
+                }
+                if (currentQuestion != null) {
+                    item {
+                        Text(
+                            text = uiState.getQuestionPositionFormatted(),
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Spacer(modifier = Modifier.height(spaceMedium))
+                    }
+                    item {
+                        Text(
+                            text = currentQuestion.description,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                    // Question image, if exists
+                    currentQuestion.imageUrl?.let { imageUrl ->
+                        val imageScale = if (currentQuestion.category == "Flag Quiz") {
+                            ContentScale.FillHeight
+                        } else ContentScale.Crop
+
+                        item {
+                            Spacer(modifier = Modifier.height(spaceMedium))
+                            AsyncImage(
+                                model = imageUrl,
+                                contentDescription = "Flag Image",
+                                modifier = Modifier
+                                    .aspectRatio(16/9f)
+                                    .clip(MaterialTheme.shapes.medium),
+                                contentScale = imageScale
+                            )
+                        }
+                    }
+                }
+                item {
+                    Spacer(modifier = Modifier.height(spaceMedium))
+                    RowActionButtons(
+                        answerSelected = uiState.selectedAnswer.isSelected,
+                        onVerifyQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.VerifyAnswer) },
+                        onSaveQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) }
                     )
                 }
-                Spacer(modifier = Modifier.height(spaceMedium))
-                RowActionButtons(
-                    answerSelected = uiState.selectedAnswer.isSelected,
-                    onVerifyQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.VerifyAnswer) },
-                    onSaveQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) }
-                )
-                Spacer(modifier = Modifier.height(spaceMedium))
-                BannerAd(adId = "ca-app-pub-1923025671607389/9840723939")
+                item {
+                    Spacer(modifier = Modifier.height(spaceMedium))
+                    BannerAd(adId = "ca-app-pub-1923025671607389/9840723939")
+                }
             }
             CardQuestionAnswers(
                 answers = currentQuestion?.answers.orEmpty(),

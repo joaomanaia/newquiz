@@ -31,7 +31,7 @@ class WordleScreenViewModel @Inject constructor(
     private val wordleLoggingAnalytics: WordleLoggingAnalytics,
     private val workManager: WorkManager
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(WordleScreenUiState())
+    private var _uiState = MutableStateFlow(WordleScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     init {

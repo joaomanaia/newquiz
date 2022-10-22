@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
+import com.infinitepower.newquiz.online_services.ui.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.infinitepower.newquiz.core.R as CoreR
@@ -43,6 +44,12 @@ private val navDrawerItems = listOf(
         text = CoreR.string.wordle,
         icon = Icons.Rounded.Quiz,
         direction = WordleListScreenDestination
+    ),
+    NavDrawerItem.Label(text = CoreR.string.online),
+    NavDrawerItem.Item(
+        text = CoreR.string.profile,
+        icon = Icons.Rounded.Person,
+        direction = ProfileScreenDestination
     ),
     NavDrawerItem.Label(text = CoreR.string.other),
     NavDrawerItem.Item(

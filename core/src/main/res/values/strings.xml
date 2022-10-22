@@ -44,6 +44,8 @@
     <string name="remove_all_saved_settings">Remove all saved settings</string>
     <string name="home">Home</string>
     <string name="multi_choice_quiz">Multi choice quiz</string>
+    <string name="flag_quiz">Flag quiz</string>
+    <string name="logo_quiz">Logo quiz</string>
     <string name="other">Other</string>
     <string name="general_knowledge">General knowledge</string>
     <string name="entertainment_books">Books</string>
@@ -87,4 +89,6 @@
     <string name="download_translation_model">Download translation model</string>
     <string name="delete_translation_model">Delete translation model</string>
     <string name="download_translation_model_to_device_language">Download translation model to your device language.</string>
+    <string name="online">Online</string>
+    <string name="profile">Profile</string>
 </resources>

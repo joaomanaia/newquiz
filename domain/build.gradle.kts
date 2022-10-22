@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.core:core-ktx:+")
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)
