@@ -1,11 +1,12 @@
 package com.infinitepower.newquiz.online_services.model.user
 
 import androidx.annotation.Keep
+import kotlin.math.*
 
 @Keep
 data class User(
     val uid: String? = null,
-    val info: UserInfo? = null,
+    val info: UserInfo? = UserInfo(),
     val data: UserData? = UserData()
 ) {
     @Keep
@@ -16,28 +17,37 @@ data class User(
 
     @Keep
     data class UserData(
-        val userXp: UserXp? = UserXp(),
-        val level: Int? = 0,
+        val totalXp: Long? = 0,
         val diamonds: Int? = 0,
         val multiChoiceQuizData: MultiChoiceQuizData? = MultiChoiceQuizData(),
     ) {
         @Keep
-        data class UserXp(
-            val currentXp: Long? = 0,
-            val totalXp: Long? = 0,
-        )
-
-        @Keep
         data class MultiChoiceQuizData(
-            val totalGameData: TotalGameData? = TotalGameData(),
+            val totalQuestionsPlayed: Long? = 0,
+            val totalCorrectAnswers: Long? = 0,
             val averageQuizTime: Double? = 0.0,
             val lastQuizTimes: List<Double>? = emptyList()
-        ) {
-            @Keep
-            data class TotalGameData(
-                val totalGamesPlayed: Int? = 0,
-                val totalCorrectAnswers: Int? = 0,
-            )
-        }
+        )
     }
+
+    val totalXp: Long
+        get() = data?.totalXp ?: 0
+
+    val level: Int
+        get() = floor(sqrt(totalXp / 100.0)).roundToInt()
+
+    fun getNextLevelXp(): Long {
+        val nextLevel = level + 1
+        val nextLevelXP = nextLevel.pow(2) * 100
+
+        return nextLevelXP.roundToLong()
+    }
+
+    fun getLevelProgress(): Float {
+        return totalXp.toFloat() / getNextLevelXp()
+    }
+
+    fun getRequiredXP(): Long = getNextLevelXp() - totalXp
+
+    private infix fun Int.pow(n: Int): Double = toDouble().pow(n)
 }

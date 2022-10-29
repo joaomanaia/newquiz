@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.online_services.core.di
+package com.infinitepower.newquiz.online_services.di
 
 import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
 import com.infinitepower.newquiz.online_services.core.OnlineServicesCoreImpl
