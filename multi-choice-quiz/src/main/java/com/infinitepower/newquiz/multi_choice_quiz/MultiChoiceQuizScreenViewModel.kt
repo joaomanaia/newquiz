@@ -237,16 +237,10 @@ class QuizScreenViewModel @Inject constructor(
 
             val type = savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
 
-            multiChoiceQuizLoggingAnalytics.logGameEnd(
-                questionsSize = questionSteps.size,
-                correctAnswers = questionSteps.count { it.correct }
-            )
-
             delay(1000)
 
             sendNavEventAsync(
                 NavEvent.Navigate(
-
                     MultiChoiceQuizResultsScreenDestination(
                         questionStepsStr = questionStepsStr,
                         byInitialQuestions = initialQuestions.isNotEmpty(),

@@ -34,9 +34,9 @@ fun getBasicMultiChoiceQuestion() = MultiChoiceQuestion(
         "Yes",
         "The Worst",
     ),
-    QuestionLanguage.EN.name,
+    lang = QuestionLanguage.EN.name,
     category = "",
     correctAns = (0..3).random(),
     type = "multiple",
-    difficulty = QuestionDifficulty.Easy.keyName
+    difficulty = "easy"
 )

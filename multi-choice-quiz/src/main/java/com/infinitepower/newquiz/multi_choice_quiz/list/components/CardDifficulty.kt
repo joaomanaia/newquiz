@@ -14,27 +14,27 @@ import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.extendedColors
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuizDifficulty
+import com.infinitepower.newquiz.data.local.question.QuestionDifficulty
 
 @Composable
 @ExperimentalMaterial3Api
 internal fun CardDifficulty(
     modifier: Modifier = Modifier,
-    multiChoiceQuizDifficulty: MultiChoiceQuizDifficulty,
+    multiChoiceQuizDifficulty: QuestionDifficulty,
     onClick: () -> Unit
 ) {
     val backgroundColor = when (multiChoiceQuizDifficulty) {
-        is MultiChoiceQuizDifficulty.Easy -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Green)
-        is MultiChoiceQuizDifficulty.Medium -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Yellow)
-        is MultiChoiceQuizDifficulty.Hard -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Red)
+        is QuestionDifficulty.Easy -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Green)
+        is QuestionDifficulty.Medium -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Yellow)
+        is QuestionDifficulty.Hard -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Red)
     }
 
     val textColor = when (multiChoiceQuizDifficulty) {
-        is MultiChoiceQuizDifficulty.Easy -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Green)
-        is MultiChoiceQuizDifficulty.Medium -> MaterialTheme.extendedColors.getColorOnAccentByKey(
+        is QuestionDifficulty.Easy -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Green)
+        is QuestionDifficulty.Medium -> MaterialTheme.extendedColors.getColorOnAccentByKey(
             key = CustomColor.Keys.Yellow
         )
-        is MultiChoiceQuizDifficulty.Hard -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Red)
+        is QuestionDifficulty.Hard -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Red)
     }
 
     CardDifficultyImpl(
@@ -93,15 +93,15 @@ private fun CardDifficultyPreview() {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 CardDifficulty(
-                    multiChoiceQuizDifficulty = MultiChoiceQuizDifficulty.Easy,
+                    multiChoiceQuizDifficulty = QuestionDifficulty.Easy,
                     onClick = {}
                 )
                 CardDifficulty(
-                    multiChoiceQuizDifficulty = MultiChoiceQuizDifficulty.Medium,
+                    multiChoiceQuizDifficulty = QuestionDifficulty.Medium,
                     onClick = {}
                 )
                 CardDifficulty(
-                    multiChoiceQuizDifficulty = MultiChoiceQuizDifficulty.Hard,
+                    multiChoiceQuizDifficulty = QuestionDifficulty.Hard,
                     onClick = {}
                 )
             }

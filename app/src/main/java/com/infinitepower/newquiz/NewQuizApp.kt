@@ -14,6 +14,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.infinitepower.newquiz.core.notification.wordle.DailyWordleNotificationServiceImpl
 import com.infinitepower.newquiz.data.worker.wordle.DailyWordleNotificationWorker
+import com.infinitepower.newquiz.online_services.core.worker.CheckUserDBWorker
 import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -26,6 +27,10 @@ class NewQuizApp : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
+    private val workManager by lazy {
+        WorkManager.getInstance(this)
+    }
+
     override fun onCreate() {
         super.onCreate()
 
@@ -33,6 +38,7 @@ class NewQuizApp : Application(), Configuration.Provider {
         initializeRemoteConfig()
         //createNotificationChannels()
         //createDailyWordleWork()
+        checkUserDBWork()
     }
 
     private fun initializeMobileAds() {
@@ -95,12 +101,16 @@ class NewQuizApp : Application(), Configuration.Provider {
             TimeUnit.MILLISECONDS
         ).setInitialDelay(24, TimeUnit.HOURS).build()
 
-        WorkManager
-            .getInstance(this)
-            .enqueueUniquePeriodicWork(
-                "daily_wordle",
-                ExistingPeriodicWorkPolicy.KEEP,
-                request
-            )
+        workManager.enqueueUniquePeriodicWork(
+            "daily_wordle",
+            ExistingPeriodicWorkPolicy.KEEP,
+            request
+        )
+    }
+
+    private fun checkUserDBWork() {
+        val request = OneTimeWorkRequestBuilder<CheckUserDBWorker>().build()
+
+        workManager.enqueue(request)
     }
 }

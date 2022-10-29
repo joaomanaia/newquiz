@@ -1,11 +1,319 @@
 package com.infinitepower.newquiz.online_services.ui.profile
 
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import android.net.Uri
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.online_services.model.user.User
+import com.infinitepower.newquiz.online_services.ui.profile.components.GoodDayText
+import com.infinitepower.newquiz.online_services.ui.profile.components.marker
+import com.patrykandpatryk.vico.compose.axis.horizontal.bottomAxis
+import com.patrykandpatryk.vico.compose.axis.horizontal.topAxis
+import com.patrykandpatryk.vico.compose.axis.vertical.startAxis
+import com.patrykandpatryk.vico.compose.chart.Chart
+import com.patrykandpatryk.vico.compose.chart.line.lineChart
+import com.patrykandpatryk.vico.compose.component.shape.textComponent
+import com.patrykandpatryk.vico.compose.m3.style.m3ChartStyle
+import com.patrykandpatryk.vico.compose.style.ProvideChartStyle
+import com.patrykandpatryk.vico.core.entry.entryModelOf
+import com.patrykandpatryk.vico.core.formatter.DefaultValueFormatter
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 @Destination
-fun ProfileScreen() {
-    Text(text = "Ola")
+@OptIn(ExperimentalMaterial3Api::class)
+fun ProfileScreen(
+    profileViewModel: ProfileViewModel = hiltViewModel()
+) {
+    val uiState by profileViewModel.uiState.collectAsState()
+
+    uiState.user?.let { user ->
+        ProfileScreenImpl(
+            user = user
+        )
+    }
+}
+
+@Composable
+@ExperimentalMaterial3Api
+private fun ProfileScreenImpl(
+    user: User
+) {
+    val spaceMedium = MaterialTheme.spacing.medium
+    val spaceLarge = MaterialTheme.spacing.large
+
+    val multiChoiceGameData = user.data?.multiChoiceQuizData
+
+    Scaffold { innerPadding ->
+        LazyColumn(
+            modifier = Modifier.padding(innerPadding),
+            contentPadding = PaddingValues(spaceMedium),
+            verticalArrangement = Arrangement.spacedBy(spaceLarge)
+        ) {
+            item {
+                UserInfoContent(
+                    modifier = Modifier
+                        .padding(spaceMedium)
+                        .fillMaxWidth(),
+                    name = user.info?.fullName.orEmpty(),
+                    photoUri = user.info?.imageUrl?.toUri() ?: Uri.EMPTY,
+                    levelProgress = user.getLevelProgress()
+                )
+            }
+
+            item {
+                UserXpRow(
+                    level = user.level,
+                    totalXp = user.totalXp,
+                    requiredXP = user.getRequiredXP()
+                )
+            }
+
+            if (multiChoiceGameData != null) {
+                item {
+                    UserMultiChoiceQuizData(
+                        totalQuestionsPlayed = multiChoiceGameData.totalQuestionsPlayed ?: 0,
+                        totalCorrectAnswers = multiChoiceGameData.totalCorrectAnswers ?: 0
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ProfileCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    description: String
+) {
+    Card(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(MaterialTheme.spacing.large),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.headlineMedium
+            )
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+            Text(
+                text = description,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun UserMultiChoiceQuizData(
+    totalQuestionsPlayed: Long,
+    totalCorrectAnswers: Long,
+    lastQuizTimes: List<Float> = listOf(5f, 15f, 10f, 20f, 10f)
+) {
+    val spaceMedium = MaterialTheme.spacing.medium
+
+    val entryModel = remember {
+        entryModelOf(*lastQuizTimes.toTypedArray())
+    }
+
+    Column {
+        Text(
+            text = "Multi choice quiz",
+            style = MaterialTheme.typography.labelLarge
+        )
+        Spacer(modifier = Modifier.height(spaceMedium))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(spaceMedium)
+        ) {
+            ProfileCard(
+                title = totalCorrectAnswers.toString(),
+                description = "Correct answers",
+                modifier = Modifier.weight(1f)
+            )
+            ProfileCard(
+                title = totalQuestionsPlayed.toString(),
+                description = "Total questions",
+                modifier = Modifier.weight(1f)
+            )
+        }
+        Spacer(modifier = Modifier.height(spaceMedium))
+        Text(
+            text = "Last quiz times",
+            style = MaterialTheme.typography.labelMedium
+        )
+        Spacer(modifier = Modifier.height(spaceMedium))
+        ProvideChartStyle(chartStyle = m3ChartStyle()) {
+            Chart(
+                chart = lineChart(),
+                model = entryModel,
+                startAxis = startAxis(
+                    guideline = null,
+                    titleComponent = textComponent(),
+                    title = "Time"
+                ),
+                bottomAxis = bottomAxis(
+                    guideline = null,
+                    titleComponent = textComponent(),
+                    title = "Last questions"
+                ),
+                marker = marker(),
+            )
+        }
+    }
+}
+
+@Composable
+fun UserXpRow(
+    level: Int,
+    totalXp: Long,
+    requiredXP: Long
+) {
+    val spaceMedium = MaterialTheme.spacing.medium
+
+    Column {
+        Text(
+            text = "User XP",
+            style = MaterialTheme.typography.labelLarge
+        )
+        Spacer(modifier = Modifier.height(spaceMedium))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(spaceMedium)
+        ) {
+            ProfileCard(
+                title = level.toString(),
+                description = "Level",
+                modifier = Modifier.weight(1f)
+            )
+            ProfileCard(
+                title = totalXp.toString(),
+                description = "Current XP",
+                modifier = Modifier.weight(1f)
+            )
+        }
+        Spacer(modifier = Modifier.height(spaceMedium))
+        ProfileCard(
+            title = requiredXP.toString(),
+            description = "Required XP to next Level",
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun UserInfoContent(
+    modifier: Modifier = Modifier,
+    name: String,
+    photoUri: Uri,
+    levelProgress: Float
+) {
+    val spaceMedium = MaterialTheme.spacing.medium
+
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(
+                progress = levelProgress,
+                modifier = Modifier.size(75.dp)
+            )
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .crossfade(true)
+                    .data(photoUri)
+                    .build(),
+                contentDescription = "Photo of $name",
+                placeholder = rememberVectorPainter(Icons.Rounded.Person),
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+        }
+        Spacer(modifier = Modifier.width(spaceMedium))
+        GoodDayText(name = name)
+    }
+}
+
+@Composable
+@PreviewNightLight
+@OptIn(ExperimentalMaterial3Api::class)
+private fun ProfileScreenPreview() {
+    val uiState by remember {
+        val user = User(
+            info = User.UserInfo(fullName = "NewQuiz"),
+            data = User.UserData(
+                totalXp = 2361,
+                multiChoiceQuizData = User.UserData.MultiChoiceQuizData(
+                    totalQuestionsPlayed = 23,
+                    totalCorrectAnswers = 14
+                )
+            )
+        )
+
+        mutableStateOf(ProfileScreenUiState(user = user))
+    }
+
+    NewQuizTheme {
+        uiState.user?.let { user ->
+            ProfileScreenImpl(
+                user = user
+            )
+        }
+    }
+}
+
+@Composable
+@PreviewNightLight
+private fun UserInfoContentPreview() {
+    NewQuizTheme {
+        Surface {
+            UserInfoContent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                name = "NewQuiz",
+                photoUri = Uri.EMPTY,
+                levelProgress = 0.8f
+            )
+        }
+    }
+}
+
+@Composable
+@PreviewNightLight
+private fun ProfileCardPreview() {
+    NewQuizTheme {
+        Surface {
+            ProfileCard(
+                modifier = Modifier.padding(16.dp),
+                title = "348",
+                description = "XP"
+            )
+        }
+    }
 }

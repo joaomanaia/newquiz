@@ -37,8 +37,6 @@ class WordleEndGameWorker @AssistedInject constructor(
         val isLastRowCorrect = inputData.getBoolean(INPUT_IS_LAST_ROW_CORRECT, false)
         val day = inputData.getString(INPUT_DAY)
 
-        Log.d("AAAAAaaaaaaaa", "End game worker start")
-
         wordleLoggingAnalytics.logGameEnd(
             wordLength = word.length,
             maxRows = rowLimit,
@@ -54,8 +52,6 @@ class WordleEndGameWorker @AssistedInject constructor(
                 wordLength = word.length
             )
         }
-
-        Log.d("AAAAAaaaaaaaa", "End game worker end")
 
         return Result.success()
     }
