@@ -6,4 +6,17 @@ interface UserRepository {
     suspend fun getUserByUid(uid: String): User?
 
     suspend fun createUserDB(user: User)
+
+    suspend fun updateLocalUserNewXPWordle(
+        newXp: Long,
+        wordsPlayed: Long,
+        wordsCorrect: Long
+    )
+
+    suspend fun updateLocalUserNewXP(
+        newXp: Long,
+        averageQuizTime: Double,
+        totalQuestionsPlayed: Long,
+        totalCorrectAnswers: Long
+    )
 }

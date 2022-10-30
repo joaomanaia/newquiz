@@ -1,5 +1,7 @@
 package com.infinitepower.newquiz.model.multi_choice_quiz
 
+import java.util.concurrent.TimeUnit
+
 @JvmInline
 value class RemainingTime private constructor(val value: Long) {
     companion object {
@@ -21,4 +23,8 @@ value class RemainingTime private constructor(val value: Long) {
         val seconds = (value / 1000) % 60
         return if (minutes == 0L) seconds.toString() else "$minutes:$seconds"
     }
+
+    fun getQuestionTime(): Long = MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS - value
+
+    fun getQuestionTimeInSeconds(): Long = TimeUnit.MILLISECONDS.toSeconds(getQuestionTime())
 }

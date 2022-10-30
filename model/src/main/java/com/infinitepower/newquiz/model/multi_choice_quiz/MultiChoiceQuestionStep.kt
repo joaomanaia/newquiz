@@ -23,8 +23,9 @@ sealed class MultiChoiceQuestionStep {
     ) : MultiChoiceQuestionStep() {
         fun changeToCompleted(
             correct: Boolean,
-            selectedAnswer: SelectedAnswer
-        ) = Completed(question, correct, selectedAnswer)
+            selectedAnswer: SelectedAnswer,
+            questionTime: Long
+        ) = Completed(question, correct, selectedAnswer, questionTime)
     }
 
     @Keep
@@ -32,7 +33,8 @@ sealed class MultiChoiceQuestionStep {
     data class Completed(
         override val question: MultiChoiceQuestion,
         val correct: Boolean,
-        val selectedAnswer: SelectedAnswer = SelectedAnswer.NONE
+        val selectedAnswer: SelectedAnswer = SelectedAnswer.NONE,
+        val questionTime: Long = 0
     ) : MultiChoiceQuestionStep()
 
     fun asCurrent() = Current(question)

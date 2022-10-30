@@ -62,6 +62,7 @@ private fun ProfileScreenImpl(
     val spaceLarge = MaterialTheme.spacing.large
 
     val multiChoiceGameData = user.data?.multiChoiceQuizData
+    val wordleData = user.data?.wordleData
 
     Scaffold { innerPadding ->
         LazyColumn(
@@ -89,10 +90,22 @@ private fun ProfileScreenImpl(
             }
 
             if (multiChoiceGameData != null) {
+                val lastQuizTimes = user.data.multiChoiceQuizData.lastQuizTimes
+
                 item {
                     UserMultiChoiceQuizData(
                         totalQuestionsPlayed = multiChoiceGameData.totalQuestionsPlayed ?: 0,
-                        totalCorrectAnswers = multiChoiceGameData.totalCorrectAnswers ?: 0
+                        totalCorrectAnswers = multiChoiceGameData.totalCorrectAnswers ?: 0,
+                        lastQuizTimes = lastQuizTimes.orEmpty()
+                    )
+                }
+            }
+
+            if (wordleData != null) {
+                item {
+                    UserWordleData(
+                        totalWordsPlayed = wordleData.wordsPlayed ?: 0,
+                        totalCorrectWords = wordleData.wordsCorrect ?: 0,
                     )
                 }
             }
@@ -131,7 +144,7 @@ fun ProfileCard(
 fun UserMultiChoiceQuizData(
     totalQuestionsPlayed: Long,
     totalCorrectAnswers: Long,
-    lastQuizTimes: List<Float> = listOf(5f, 15f, 10f, 20f, 10f)
+    lastQuizTimes: List<Double> = listOf(5.0, 15.0, 10.0, 20.0, 10.0)
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -180,6 +193,36 @@ fun UserMultiChoiceQuizData(
                     title = "Last questions"
                 ),
                 marker = marker(),
+            )
+        }
+    }
+}
+
+@Composable
+fun UserWordleData(
+    totalWordsPlayed: Long,
+    totalCorrectWords: Long
+) {
+    val spaceMedium = MaterialTheme.spacing.medium
+
+    Column {
+        Text(
+            text = "Wordle",
+            style = MaterialTheme.typography.labelLarge
+        )
+        Spacer(modifier = Modifier.height(spaceMedium))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(spaceMedium)
+        ) {
+            ProfileCard(
+                title = totalCorrectWords.toString(),
+                description = "Correct words",
+                modifier = Modifier.weight(1f)
+            )
+            ProfileCard(
+                title = totalWordsPlayed.toString(),
+                description = "Total words",
+                modifier = Modifier.weight(1f)
             )
         }
     }
