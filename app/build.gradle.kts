@@ -83,7 +83,6 @@ dependencies {
     implementation(AndroidX.lifecycle.runtime.ktx)
     implementation(AndroidX.constraintLayout.compose)
     implementation(AndroidX.core.splashscreen)
-    implementation("androidx.core:core-ktx:+")
 
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)

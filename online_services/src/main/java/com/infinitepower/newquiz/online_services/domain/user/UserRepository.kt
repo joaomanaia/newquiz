@@ -5,6 +5,8 @@ import com.infinitepower.newquiz.online_services.model.user.User
 interface UserRepository {
     suspend fun getUserByUid(uid: String): User?
 
+    suspend fun getLocalUser(): User?
+
     suspend fun createUserDB(user: User)
 
     suspend fun updateLocalUserNewXPWordle(
@@ -19,4 +21,6 @@ interface UserRepository {
         totalQuestionsPlayed: Long,
         totalCorrectAnswers: Long
     )
+
+    suspend fun updateLocalUserDiamonds(n: Int)
 }

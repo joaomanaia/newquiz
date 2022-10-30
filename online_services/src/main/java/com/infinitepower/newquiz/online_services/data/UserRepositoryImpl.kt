@@ -28,6 +28,11 @@ class UserRepositoryImpl @Inject constructor(
         return userDoc.toObject()
     }
 
+    override suspend fun getLocalUser(): User? {
+        val localUid = authUserRepository.uid ?: throw NullPointerException("User is not logged in")
+        return getUserByUid(localUid)
+    }
+
     override suspend fun createUserDB(user: User) {
         val uid = user.uid ?: throw NullPointerException("User id is null")
 
@@ -118,5 +123,16 @@ class UserRepositoryImpl @Inject constructor(
         val newUser = user.copy(data = User.UserData(totalXp = newTotalXP))
 
         return newUser.level > user.level
+    }
+
+    override suspend fun updateLocalUserDiamonds(n: Int) {
+        val localUid = authUserRepository.uid ?: throw NullPointerException("User is not logged in")
+
+        usersCol
+            .document(localUid)
+            .update(
+                UserCollection.FIELD_DIAMONDS,
+                FieldValue.increment(n.toLong())
+            ).await()
     }
 }
