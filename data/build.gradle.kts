@@ -56,7 +56,6 @@ dependencies {
 
     implementation(KotlinX.coroutines.android)
     implementation(KotlinX.coroutines.playServices)
-    implementation(KotlinX.reflect.lite)
 
     implementation(Ktor.client.core)
     implementation(Ktor.client.okHttp)

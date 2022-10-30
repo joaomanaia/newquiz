@@ -20,13 +20,19 @@ data class User(
         val totalXp: Long? = 0,
         val diamonds: Int? = 0,
         val multiChoiceQuizData: MultiChoiceQuizData? = MultiChoiceQuizData(),
+        val wordleData: WordleData? = WordleData()
     ) {
         @Keep
         data class MultiChoiceQuizData(
             val totalQuestionsPlayed: Long? = 0,
             val totalCorrectAnswers: Long? = 0,
-            val averageQuizTime: Double? = 0.0,
             val lastQuizTimes: List<Double>? = emptyList()
+        )
+
+        @Keep
+        data class WordleData(
+            val wordsPlayed: Long? = 0,
+            val wordsCorrect: Long? = 0
         )
     }
 
@@ -35,6 +41,9 @@ data class User(
 
     val level: Int
         get() = floor(sqrt(totalXp / 100.0)).roundToInt()
+
+    val averageQuizTime: Double
+        get() = data?.multiChoiceQuizData?.lastQuizTimes?.average() ?: 0.0
 
     fun getNextLevelXp(): Long {
         val nextLevel = level + 1

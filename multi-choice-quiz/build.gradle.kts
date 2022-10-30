@@ -100,11 +100,14 @@ dependencies {
 
     implementation(libs.play.services.ads)
 
+    implementation(AndroidX.work.runtimeKtx)
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.domain))
     implementation(project(Modules.data))
     implementation(project(Modules.translationDynamicFeature))
+    implementation(project(Modules.onlineServices))
 }
 
 tasks.withType<Test> {
