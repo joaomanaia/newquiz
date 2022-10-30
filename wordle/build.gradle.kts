@@ -55,7 +55,6 @@ android {
 dependencies {
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.lifecycle.runtime.ktx)
-    implementation("androidx.core:core-ktx:+")
 
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)

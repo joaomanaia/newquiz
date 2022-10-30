@@ -87,7 +87,7 @@ private fun MultiChoiceQuizResultsScreenImpl(
 
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = {
                     Text(text = stringResource(id = CoreR.string.results_screen))
                 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -27,7 +28,6 @@ import com.infinitepower.newquiz.online_services.model.user.User
 import com.infinitepower.newquiz.online_services.ui.profile.components.GoodDayText
 import com.infinitepower.newquiz.online_services.ui.profile.components.marker
 import com.patrykandpatryk.vico.compose.axis.horizontal.bottomAxis
-import com.patrykandpatryk.vico.compose.axis.horizontal.topAxis
 import com.patrykandpatryk.vico.compose.axis.vertical.startAxis
 import com.patrykandpatryk.vico.compose.chart.Chart
 import com.patrykandpatryk.vico.compose.chart.line.lineChart
@@ -35,7 +35,7 @@ import com.patrykandpatryk.vico.compose.component.shape.textComponent
 import com.patrykandpatryk.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatryk.vico.compose.style.ProvideChartStyle
 import com.patrykandpatryk.vico.core.entry.entryModelOf
-import com.patrykandpatryk.vico.core.formatter.DefaultValueFormatter
+import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
@@ -154,7 +154,7 @@ fun UserMultiChoiceQuizData(
 
     Column {
         Text(
-            text = "Multi choice quiz",
+            text = stringResource(id = CoreR.string.multi_choice_quiz),
             style = MaterialTheme.typography.labelLarge
         )
         Spacer(modifier = Modifier.height(spaceMedium))
@@ -163,18 +163,18 @@ fun UserMultiChoiceQuizData(
         ) {
             ProfileCard(
                 title = totalCorrectAnswers.toString(),
-                description = "Correct answers",
+                description = stringResource(id = CoreR.string.correct_answers),
                 modifier = Modifier.weight(1f)
             )
             ProfileCard(
                 title = totalQuestionsPlayed.toString(),
-                description = "Total questions",
+                description = stringResource(id = CoreR.string.total_questions),
                 modifier = Modifier.weight(1f)
             )
         }
         Spacer(modifier = Modifier.height(spaceMedium))
         Text(
-            text = "Last quiz times",
+            text = stringResource(id = CoreR.string.last_quiz_times),
             style = MaterialTheme.typography.labelMedium
         )
         Spacer(modifier = Modifier.height(spaceMedium))
@@ -185,12 +185,12 @@ fun UserMultiChoiceQuizData(
                 startAxis = startAxis(
                     guideline = null,
                     titleComponent = textComponent(),
-                    title = "Time"
+                    title = stringResource(id = CoreR.string.time)
                 ),
                 bottomAxis = bottomAxis(
                     guideline = null,
                     titleComponent = textComponent(),
-                    title = "Last questions"
+                    title = stringResource(id = CoreR.string.last_questions)
                 ),
                 marker = marker(),
             )
@@ -207,7 +207,7 @@ fun UserWordleData(
 
     Column {
         Text(
-            text = "Wordle",
+            text = stringResource(id = CoreR.string.wordle),
             style = MaterialTheme.typography.labelLarge
         )
         Spacer(modifier = Modifier.height(spaceMedium))
@@ -216,12 +216,12 @@ fun UserWordleData(
         ) {
             ProfileCard(
                 title = totalCorrectWords.toString(),
-                description = "Correct words",
+                description = stringResource(id = CoreR.string.correct_words),
                 modifier = Modifier.weight(1f)
             )
             ProfileCard(
                 title = totalWordsPlayed.toString(),
-                description = "Total words",
+                description = stringResource(id = CoreR.string.total_words),
                 modifier = Modifier.weight(1f)
             )
         }
@@ -238,7 +238,7 @@ fun UserXpRow(
 
     Column {
         Text(
-            text = "User XP",
+            text = stringResource(id = CoreR.string.user_xp),
             style = MaterialTheme.typography.labelLarge
         )
         Spacer(modifier = Modifier.height(spaceMedium))
@@ -247,19 +247,19 @@ fun UserXpRow(
         ) {
             ProfileCard(
                 title = level.toString(),
-                description = "Level",
+                description = stringResource(id = CoreR.string.level),
                 modifier = Modifier.weight(1f)
             )
             ProfileCard(
                 title = totalXp.toString(),
-                description = "Current XP",
+                description = stringResource(id = CoreR.string.current_xp),
                 modifier = Modifier.weight(1f)
             )
         }
         Spacer(modifier = Modifier.height(spaceMedium))
         ProfileCard(
             title = requiredXP.toString(),
-            description = "Required XP to next Level",
+            description = stringResource(id = CoreR.string.required_xp_to_next_level),
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -289,7 +289,7 @@ private fun UserInfoContent(
                     .crossfade(true)
                     .data(photoUri)
                     .build(),
-                contentDescription = "Photo of $name",
+                contentDescription = stringResource(id = CoreR.string.photo_of_s, name),
                 placeholder = rememberVectorPainter(Icons.Rounded.Person),
                 modifier = Modifier
                     .size(60.dp)

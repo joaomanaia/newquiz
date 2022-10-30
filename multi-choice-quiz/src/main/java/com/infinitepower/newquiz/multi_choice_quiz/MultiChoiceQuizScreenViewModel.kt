@@ -24,6 +24,7 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
 import com.infinitepower.newquiz.online_services.core.worker.multichoicequiz.MultiChoiceQuizEndGameWorker
+import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -43,7 +44,8 @@ class QuizScreenViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
     private val translationUtil: TranslatorUtil,
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val userRepository: UserRepository
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -70,6 +72,13 @@ class QuizScreenViewModel @Inject constructor(
             is MultiChoiceQuizScreenUiEvent.SelectAnswer -> selectAnswer(event.answer)
             is MultiChoiceQuizScreenUiEvent.VerifyAnswer -> verifyQuestion()
             is MultiChoiceQuizScreenUiEvent.SaveQuestion -> saveQuestion()
+            is MultiChoiceQuizScreenUiEvent.GetUserSkipQuestionDiamonds -> getUserDiamonds()
+            is MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds -> {
+                _uiState.update { currentState ->
+                    currentState.copy(userDiamonds = -1)
+                }
+            }
+            is MultiChoiceQuizScreenUiEvent.SkipQuestion -> skipQuestion()
         }
     }
 
@@ -86,6 +95,24 @@ class QuizScreenViewModel @Inject constructor(
                 createQuestionSteps(initialQuestions)
             }
         }
+    }
+
+    private fun skipQuestion() = viewModelScope.launch(Dispatchers.IO) {
+        val state = uiState.first()
+
+        if (state.userDiamonds < 1) return@launch
+
+        val currentQuestionStep = state.currentQuestionStep
+        val correctAnswer = currentQuestionStep?.question?.correctAns ?: return@launch
+
+        selectAnswer(SelectedAnswer.fromIndex(correctAnswer))
+        verifyQuestion()
+
+        _uiState.update { currentState ->
+            currentState.copy(userDiamonds = -1)
+        }
+
+        userRepository.updateLocalUserDiamonds(-1)
     }
 
     private suspend fun loadByCloudQuestions() {
@@ -273,5 +300,15 @@ class QuizScreenViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    private fun getUserDiamonds() = viewModelScope.launch(Dispatchers.IO) {
+        userRepository
+            .getLocalUser()
+            ?.also { user ->
+                _uiState.update { currentState ->
+                    currentState.copy(userDiamonds = user.data?.diamonds ?: -1)
+                }
+            }
     }
 }

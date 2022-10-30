@@ -8,4 +8,10 @@ sealed class MultiChoiceQuizScreenUiEvent {
     object VerifyAnswer : MultiChoiceQuizScreenUiEvent()
 
     object SaveQuestion : MultiChoiceQuizScreenUiEvent()
+
+    object GetUserSkipQuestionDiamonds : MultiChoiceQuizScreenUiEvent()
+
+    object CleanUserSkipQuestionDiamonds : MultiChoiceQuizScreenUiEvent()
+
+    object SkipQuestion : MultiChoiceQuizScreenUiEvent()
 }

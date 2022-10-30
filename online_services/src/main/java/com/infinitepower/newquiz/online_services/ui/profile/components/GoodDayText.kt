@@ -1,29 +1,32 @@
 package com.infinitepower.newquiz.online_services.ui.profile.components
 
+import androidx.annotation.StringRes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.R as CoreR
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-private sealed class DayState(val text: String) {
-    object Morning : DayState(text = "Morning")
+private sealed class DayState(@StringRes val text: Int) {
+    object Morning : DayState(text = CoreR.string.morning)
 
-    object Afternoon : DayState(text = "Afternoon")
+    object Afternoon : DayState(text = CoreR.string.afternoon)
 
-    object Evening : DayState(text = "Evening")
+    object Evening : DayState(text = CoreR.string.evening)
 
-    object Night : DayState(text = "Night")
+    object Night : DayState(text = CoreR.string.night)
 }
 
 @Composable
@@ -49,7 +52,7 @@ internal fun GoodDayText(
 
     GoodDayText(
         modifier = modifier,
-        dayText = dayText.text,
+        dayText = stringResource(id = dayText.text),
         name = name
     )
 }
@@ -62,7 +65,7 @@ private fun GoodDayText(
 ) {
     Text(
         text = buildAnnotatedString {
-            append("Good $dayText,\n")
+            append(stringResource(id = CoreR.string.good_day_text, dayText))
             withStyle(
                 style = SpanStyle(fontWeight = FontWeight.Bold)
             ) {

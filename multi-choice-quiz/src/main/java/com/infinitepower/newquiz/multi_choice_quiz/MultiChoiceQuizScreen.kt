@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -24,7 +25,6 @@ import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.ads.admob.BannerAd
-import com.infinitepower.newquiz.core.ui.ads.admob.getAdaptiveAdSize
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
@@ -32,6 +32,7 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQues
 import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswers
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizTopBar
+import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
@@ -86,6 +87,56 @@ fun MultiChoiceQuizScreen(
         uiState = uiState,
         onEvent = viewModel::onEvent
     )
+
+    if (uiState.userDiamonds == 0) {
+        AlertDialog(
+            onDismissRequest = {
+                viewModel.onEvent(MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds)
+            },
+            title = {
+                Text(text = stringResource(id = CoreR.string.no_diamonds))
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.onEvent(MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds)
+                    }
+                ) {
+                    Text(text = stringResource(id = CoreR.string.close))
+                }
+            }
+        )
+    } else if (uiState.userDiamonds > 0) {
+        AlertDialog(
+            onDismissRequest = {
+                viewModel.onEvent(MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds)
+            },
+            title = {
+                Text(text = stringResource(id = CoreR.string.skip_question_q))
+            },
+            text = {
+                Text(text = stringResource(id = CoreR.string.you_have_n_diamonds_skip_question_q, uiState.userDiamonds))
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.onEvent(MultiChoiceQuizScreenUiEvent.SkipQuestion)
+                    }
+                ) {
+                    Text(text = stringResource(id = CoreR.string.skip))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.onEvent(MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds)
+                    }
+                ) {
+                    Text(text = stringResource(id = CoreR.string.close))
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -108,7 +159,9 @@ private fun MultiChoiceQuizScreenImpl(
                 windowHeightSizeClass = windowHeightSizeClass,
                 progressIndicatorValue = animatedProgress,
                 onBackClick = onBackClick,
-                modifier = Modifier.fillMaxWidth()
+                onSkipClick = { onEvent(MultiChoiceQuizScreenUiEvent.GetUserSkipQuestionDiamonds) },
+                modifier = Modifier.fillMaxWidth(),
+                currentQuestionNull = uiState.currentQuestionStep == null
             )
 
             if (windowWidthSizeClass == WindowWidthSizeClass.Compact) {
@@ -167,9 +220,9 @@ private fun ColumnScope.QuizContentWidthCompact(
                                 Spacer(modifier = Modifier.height(spaceMedium))
                                 AsyncImage(
                                     model = imageUrl,
-                                    contentDescription = "Flag Image",
+                                    contentDescription = "Image",
                                     modifier = Modifier
-                                        .aspectRatio(16/9f)
+                                        .aspectRatio(16 / 9f)
                                         .clip(MaterialTheme.shapes.medium),
                                     contentScale = imageScale
                                 )
@@ -254,9 +307,9 @@ private fun ColumnScope.QuizContentWidthMedium(
                             Spacer(modifier = Modifier.height(spaceMedium))
                             AsyncImage(
                                 model = imageUrl,
-                                contentDescription = "Flag Image",
+                                contentDescription = "Image",
                                 modifier = Modifier
-                                    .aspectRatio(16/9f)
+                                    .aspectRatio(16 / 9f)
                                     .clip(MaterialTheme.shapes.medium),
                                 contentScale = imageScale
                             )
@@ -306,14 +359,14 @@ private fun RowActionButtons(
             onClick = onSaveQuestionClick,
             modifier = Modifier.weight(1f)
         ) {
-            Text(text = "Save")
+            Text(text = stringResource(id = CoreR.string.save))
         }
         Button(
             onClick = onVerifyQuestionClick,
             enabled = answerSelected,
             modifier = Modifier.weight(1f)
         ) {
-            Text(text = "Verify")
+            Text(text = stringResource(id = CoreR.string.verify))
         }
     }
 }

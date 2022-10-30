@@ -82,6 +82,7 @@ dependencies {
 
     implementation(platform(Firebase.bom))
     implementation(Firebase.cloudFirestoreKtx)
+    implementation(Firebase.remoteConfigKtx)
 
     implementation(COIL.compose)
 

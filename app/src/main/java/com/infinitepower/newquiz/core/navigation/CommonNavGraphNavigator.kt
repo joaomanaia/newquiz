@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.core.navigation
 
 import androidx.navigation.NavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
@@ -14,8 +16,19 @@ import com.ramcosta.composedestinations.navigation.navigate
 class CommonNavGraphNavigator(
     private val navController: NavController
 ) : HomeScreenNavigator, SavedQuestionsScreenNavigator {
+    private val remoteConfig by lazy { Firebase.remoteConfig }
+
     override fun navigateToQuickQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {
-        navController.navigate(MultiChoiceQuizScreenDestination(initialQuestions = initialQuestions))
+        val remoteConfigDifficulty = remoteConfig.getString("multichoice_quickquiz_difficulty").run {
+            if (this == "random") null else this
+        }
+
+        navController.navigate(
+            MultiChoiceQuizScreenDestination(
+                initialQuestions = initialQuestions,
+                difficulty = remoteConfigDifficulty
+            )
+        )
     }
 
     override fun navigateToFlagQuiz() {
