@@ -1,7 +1,10 @@
 package com.infinitepower.newquiz.home_presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
@@ -36,6 +39,21 @@ class HomeScreenViewModel @Inject constructor(
                     currentState.copy(isLoggedIn = isLoggedIn)
                 }
             }.launchIn(viewModelScope)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Firebase
+                .remoteConfig
+                .getString("recommended_home_game")
+                .also { gameStr ->
+                    if (gameStr.isBlank()) return@launch
+
+                    val game = RecommendedHomeGame.valueOf(gameStr.uppercase())
+
+                    _uiState.update { currentState ->
+                        currentState.copy(recommendedHomeGame = game)
+                    }
+                }
+        }
     }
 
     fun onEvent(event: HomeScreenUiEvent) {

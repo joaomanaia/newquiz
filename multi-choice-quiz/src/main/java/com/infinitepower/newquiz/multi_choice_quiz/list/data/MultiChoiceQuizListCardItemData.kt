@@ -7,7 +7,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuizDifficulty
+import com.infinitepower.newquiz.data.local.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceCategoriesScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
@@ -33,7 +33,7 @@ internal fun getMultiChoiceQuizListCardItemData(
     ),
     HomeCardItem.GroupTitle(title = CoreR.string.difficulty),
     HomeCardItem.HorizontalItems(
-        items = MultiChoiceQuizDifficulty.items(),
+        items = QuestionDifficulty.items(),
         itemContent = { difficulty ->
             CardDifficulty(
                 multiChoiceQuizDifficulty = difficulty,

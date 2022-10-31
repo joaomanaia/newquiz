@@ -9,17 +9,24 @@ sealed class NavDrawerItem {
     @get:StringRes
     abstract val text: Int
 
+    abstract val group: NavDrawerItemGroup?
+
     data class Label(
-        @StringRes override val text: Int
+        @StringRes override val text: Int,
+        override val group: NavDrawerItemGroup? = null
     ) : NavDrawerItem()
 
     data class Item(
         @StringRes override val text: Int,
+        override val group: NavDrawerItemGroup? = null,
         val icon: ImageVector,
         val badge: NavDrawerBadgeItem? = null,
         val direction: Direction
     ) : NavDrawerItem()
 }
+
+@JvmInline
+value class NavDrawerItemGroup(val key: String)
 
 @Keep
 data class NavDrawerBadgeItem(

@@ -73,7 +73,8 @@ internal fun AppNavigation(
     navController: NavHostController,
     windowWidthSizeClass: WindowWidthSizeClass,
     windowHeightSizeClass: WindowHeightSizeClass,
-    consentInformation: ConsentInformation
+    consentInformation: ConsentInformation,
+    signedIn: Boolean
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -87,6 +88,7 @@ internal fun AppNavigation(
                 modifier = Modifier.fillMaxHeight(),
                 navController = navController,
                 drawerState = drawerState,
+                signedIn = signedIn,
                 onItemClick = { item ->
                     navDrawerUtil.close()
                     navController.navigate(item.direction)

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
+import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,11 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemContent
+import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 import com.infinitepower.newquiz.core.util.ui.nav_drawer.NavDrawerUtil
 import com.infinitepower.newquiz.home_presentation.data.getHomeCardItemData
@@ -35,8 +39,16 @@ fun HomeScreen(
 ) {
     val uiState by homeViewModel.uiState.collectAsState()
 
-    val homeCardItemData = remember {
-        getHomeCardItemData(homeNavigator = homeScreenNavigator)
+    val homeCardItemData = remember(uiState.recommendedHomeGame) {
+        val defaultData = getHomeCardItemData(homeNavigator = homeScreenNavigator)
+
+        val noRecommendedHomeGame = uiState.recommendedHomeGame == RecommendedHomeGame.NO_GAME
+
+        val dataWithRecommendedGame = if (!noRecommendedHomeGame) {
+            getRecommendedHomeData(uiState.recommendedHomeGame, homeScreenNavigator)
+        } else emptyList()
+
+        dataWithRecommendedGame + defaultData
     }
 
     HomeScreenImpl(
@@ -45,6 +57,33 @@ fun HomeScreen(
         onEvent = homeViewModel::onEvent,
         navigateToLoginScreen = { navigator.navigate(LoginScreenDestination) },
         openDrawer = navDrawerUtil::open
+    )
+}
+
+private fun getRecommendedHomeData(
+    recommendedHomeGame: RecommendedHomeGame,
+    homeScreenNavigator: HomeScreenNavigator
+): List<HomeCardItem> {
+    val navigateAction = {
+        when (recommendedHomeGame) {
+            RecommendedHomeGame.QUICK_MULTICHOICEQUIZ -> homeScreenNavigator.navigateToQuickQuiz()
+            RecommendedHomeGame.WORDLE_INFINITE -> homeScreenNavigator.navigateToWordle()
+            RecommendedHomeGame.FLAG -> homeScreenNavigator.navigateToFlagQuiz()
+            RecommendedHomeGame.LOGO -> homeScreenNavigator.navigateToLogoQuiz()
+            else -> throw IllegalArgumentException()
+        }
+    }
+
+    return listOf(
+        HomeCardItem.GroupTitle(
+            title = CoreR.string.today_game,
+        ),
+        HomeCardItem.LargeCard(
+            title = CoreR.string.today_random_game,
+            icon = CardIcon.Icon(Icons.Rounded.QuestionMark),
+            onClick = navigateAction,
+            backgroundPrimary = true
+        )
     )
 }
 
@@ -128,7 +167,7 @@ private fun SignInCard(
             modifier = Modifier.padding(spaceMedium),
         ) {
             Text(
-                text = "Save your progress, buy skips and see leaderboard by signing in!",
+                text = stringResource(id = CoreR.string.save_you_progress_description),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -139,10 +178,10 @@ private fun SignInCard(
                 horizontalArrangement = Arrangement.spacedBy(spaceMedium)
             ) {
                 TextButton(onClick = onDismissClick) {
-                    Text(text = "Dismiss")
+                    Text(text = stringResource(id = CoreR.string.dismiss))
                 }
                 FilledTonalButton(onClick = onSignInClick) {
-                    Text(text = "Sign In")
+                    Text(text = stringResource(id = CoreR.string.sign_in))
                 }
             }
         }

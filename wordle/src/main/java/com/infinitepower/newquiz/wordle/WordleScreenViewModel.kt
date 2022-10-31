@@ -10,7 +10,7 @@ import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
-import com.infinitepower.newquiz.data.worker.wordle.WordleEndGameWorker
+import com.infinitepower.newquiz.wordle.util.worker.WordleEndGameWorker
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
