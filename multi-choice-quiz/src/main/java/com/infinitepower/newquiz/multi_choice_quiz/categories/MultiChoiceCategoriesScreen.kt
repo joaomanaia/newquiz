@@ -6,10 +6,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
@@ -22,9 +25,13 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 @Destination
 fun MultiChoiceCategoriesScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    viewModel: MultiChoiceCategoriesScreenViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     MultiChoiceCategoriesScreenImpl(
+        uiState = uiState,
         onBackClick = navigator::popBackStack,
         navigateToQuizScreen = { categoryId ->
             navigator.navigate(MultiChoiceQuizScreenDestination(category = categoryId))
@@ -35,6 +42,7 @@ fun MultiChoiceCategoriesScreen(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MultiChoiceCategoriesScreenImpl(
+    uiState: MultiChoiceCategoriesUiState,
     onBackClick: () -> Unit,
     navigateToQuizScreen: (category: Int) -> Unit
 ) {
@@ -62,7 +70,7 @@ private fun MultiChoiceCategoriesScreenImpl(
             contentPadding = PaddingValues(horizontal = spaceMedium)
         ) {
             items(
-                items = multiChoiceQuestionCategories,
+                items = uiState.categories,
                 key = { it.id }
             ) { category ->
                 CategoryComponent(

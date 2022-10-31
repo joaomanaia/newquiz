@@ -56,7 +56,6 @@ android {
 dependencies {
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.lifecycle.runtime.ktx)
-    implementation("androidx.core:core-ktx:+")
 
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
@@ -100,11 +99,17 @@ dependencies {
 
     implementation(libs.play.services.ads)
 
+    implementation(AndroidX.work.runtimeKtx)
+
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.remoteConfigKtx)
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.domain))
     implementation(project(Modules.data))
     implementation(project(Modules.translationDynamicFeature))
+    implementation(project(Modules.onlineServices))
 }
 
 tasks.withType<Test> {

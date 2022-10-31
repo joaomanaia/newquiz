@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.QuestionMark
+import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -45,22 +46,18 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             scope: CoroutineScope,
             dataStoreManager: DataStoreManager
         ) = listOf(
-            // TODO: Add login
-            /*
             Preference.PreferenceItem.SwitchPreference(
                 request = SettingsCommon.ShowLoginCard,
-                title = "Show login card",
-                summary = "Show login card at home screen",
+                title = stringResource(id = CoreR.string.show_login_card),
+                summary = stringResource(id = CoreR.string.show_login_card_at_home_screen),
                 singleLineTitle = true,
                 icon = {
                     Icon(
                         imageVector = Icons.Rounded.Visibility,
-                        contentDescription = "Show login card",
+                        contentDescription = stringResource(id = CoreR.string.show_login_card)
                     )
                 }
             ),
-
-             */
             Preference.PreferenceItem.TextPreference(
                 title = stringResource(id = CoreR.string.clear_settings),
                 summary = stringResource(id = CoreR.string.remove_all_saved_settings),

@@ -55,7 +55,6 @@ android {
 dependencies {
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.lifecycle.runtime.ktx)
-    implementation("androidx.core:core-ktx:+")
 
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
@@ -83,6 +82,9 @@ dependencies {
     implementation(AndroidX.dataStore.preferences)
 
     implementation(libs.firebase.ui.auth)
+
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.remoteConfigKtx)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))

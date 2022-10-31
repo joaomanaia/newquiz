@@ -3,6 +3,9 @@ package com.infinitepower.newquiz.multi_choice_quiz
 import android.os.CountDownTimer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
@@ -19,6 +22,9 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
+import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
+import com.infinitepower.newquiz.online_services.core.worker.multichoicequiz.MultiChoiceQuizEndGameWorker
+import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -37,7 +43,9 @@ class QuizScreenViewModel @Inject constructor(
     private val multiChoiceQuestionsRepository: MultiChoiceQuestionRepository,
     private val savedStateHandle: SavedStateHandle,
     private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
-    private val translationUtil: TranslatorUtil
+    private val translationUtil: TranslatorUtil,
+    private val workManager: WorkManager,
+    private val userRepository: UserRepository
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -64,6 +72,13 @@ class QuizScreenViewModel @Inject constructor(
             is MultiChoiceQuizScreenUiEvent.SelectAnswer -> selectAnswer(event.answer)
             is MultiChoiceQuizScreenUiEvent.VerifyAnswer -> verifyQuestion()
             is MultiChoiceQuizScreenUiEvent.SaveQuestion -> saveQuestion()
+            is MultiChoiceQuizScreenUiEvent.GetUserSkipQuestionDiamonds -> getUserDiamonds()
+            is MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds -> {
+                _uiState.update { currentState ->
+                    currentState.copy(userDiamonds = -1)
+                }
+            }
+            is MultiChoiceQuizScreenUiEvent.SkipQuestion -> skipQuestion()
         }
     }
 
@@ -80,6 +95,24 @@ class QuizScreenViewModel @Inject constructor(
                 createQuestionSteps(initialQuestions)
             }
         }
+    }
+
+    private fun skipQuestion() = viewModelScope.launch(Dispatchers.IO) {
+        val state = uiState.first()
+
+        if (state.userDiamonds < 1) return@launch
+
+        val currentQuestionStep = state.currentQuestionStep
+        val correctAnswer = currentQuestionStep?.question?.correctAns ?: return@launch
+
+        selectAnswer(SelectedAnswer.fromIndex(correctAnswer))
+        verifyQuestion()
+
+        _uiState.update { currentState ->
+            currentState.copy(userDiamonds = -1)
+        }
+
+        userRepository.updateLocalUserDiamonds(-1)
     }
 
     private suspend fun loadByCloudQuestions() {
@@ -196,13 +229,16 @@ class QuizScreenViewModel @Inject constructor(
                     val currentQuestionIndex = currentState.currentQuestionIndex
                     val currentQuestionStep = currentState.currentQuestionStep
 
+                    val questionTime = currentState.remainingTime.getQuestionTimeInSeconds()
+
                     if (currentQuestionStep != null) {
                         val questionCorrect =
                             currentState.selectedAnswer isCorrect currentQuestionStep.question
 
                         val completedQuestionStep = currentQuestionStep.changeToCompleted(
                             questionCorrect,
-                            currentState.selectedAnswer
+                            currentState.selectedAnswer,
+                            questionTime
                         )
                         set(currentQuestionIndex, completedQuestionStep)
                     }
@@ -233,20 +269,27 @@ class QuizScreenViewModel @Inject constructor(
                 .get<ArrayList<MultiChoiceQuestion>>(MultiChoiceQuizScreenNavArg::initialQuestions.name)
                 .orEmpty()
 
-            val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
+            val difficulty =
+                savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
 
-            val type = savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
+            val type =
+                savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
 
-            multiChoiceQuizLoggingAnalytics.logGameEnd(
-                questionsSize = questionSteps.size,
-                correctAnswers = questionSteps.count { it.correct }
-            )
+            val endGameWorkRequest = OneTimeWorkRequestBuilder<MultiChoiceQuizEndGameWorker>()
+                .setInputData(
+                    workDataOf(
+                        MultiChoiceQuizEndGameWorker.INPUT_QUESTION_STEPS to questionStepsStr,
+                        MultiChoiceQuizEndGameWorker.INPUT_SAVE_NEW_XP to initialQuestions.isEmpty(),
+                    )
+                )
+                .build()
+
+            workManager.enqueue(endGameWorkRequest)
 
             delay(1000)
 
             sendNavEventAsync(
                 NavEvent.Navigate(
-
                     MultiChoiceQuizResultsScreenDestination(
                         questionStepsStr = questionStepsStr,
                         byInitialQuestions = initialQuestions.isNotEmpty(),
@@ -257,5 +300,15 @@ class QuizScreenViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    private fun getUserDiamonds() = viewModelScope.launch(Dispatchers.IO) {
+        userRepository
+            .getLocalUser()
+            ?.also { user ->
+                _uiState.update { currentState ->
+                    currentState.copy(userDiamonds = user.data?.diamonds ?: -1)
+                }
+            }
     }
 }

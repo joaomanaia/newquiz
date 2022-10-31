@@ -52,14 +52,21 @@ android {
 dependencies {
     implementation(AndroidX.core.ktx)
 
+    testImplementation(Testing.junit.jupiter)
+    testImplementation(Testing.mockK)
+    testImplementation(libs.truth)
+
+    implementation(KotlinX.datetime)
+    implementation(KotlinX.coroutines.playServices)
+
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material)
     implementation(AndroidX.compose.material3)
+    implementation(AndroidX.compose.material.icons.extended)
 
     implementation(Google.dagger.hilt.android)
-    implementation("androidx.core:core-ktx:+")
     kapt(Google.dagger.hilt.compiler)
     kapt(AndroidX.hilt.compiler)
     implementation(AndroidX.hilt.navigationCompose)
@@ -67,11 +74,34 @@ dependencies {
     kaptAndroidTest(Google.dagger.hilt.compiler)
     implementation(AndroidX.hilt.work)
 
+    implementation(AndroidX.work.runtimeKtx)
+    androidTestImplementation(AndroidX.work.testing)
+
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.ksp)
+
+    implementation(platform(Firebase.bom))
+    implementation(Firebase.cloudFirestoreKtx)
+    implementation(Firebase.remoteConfigKtx)
+
+    implementation(COIL.compose)
+
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m3)
+
+    implementation(KotlinX.serialization.json)
+
+    implementation(project(Modules.core))
+    implementation(project(Modules.domain))
+    implementation(project(Modules.data))
+    implementation(project(Modules.model))
 }
 
 ksp {
     arg("compose-destinations.mode", "destinations")
     arg("compose-destinations.moduleName", "online-services")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

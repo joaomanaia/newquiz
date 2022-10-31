@@ -57,7 +57,6 @@ dependencies {
     implementation(project(Modules.core))
 
     implementation(AndroidX.core.ktx)
-    implementation("androidx.core:core-ktx:+")
     testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)

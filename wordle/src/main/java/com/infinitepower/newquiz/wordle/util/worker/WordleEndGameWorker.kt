@@ -1,14 +1,17 @@
-package com.infinitepower.newquiz.data.worker.wordle
+package com.infinitepower.newquiz.wordle.util.worker
 
 import android.content.Context
-import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
+import com.infinitepower.newquiz.core.util.kotlin.toLong
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.model.wordle.daily.CalendarItemState
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
+import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
+import com.infinitepower.newquiz.online_services.domain.game.xp.WordleXpRepository
+import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.datetime.LocalDate
@@ -19,7 +22,10 @@ class WordleEndGameWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val wordleLoggingAnalytics: WordleLoggingAnalytics,
-    private val dailyWordleRepository: DailyWordleRepository
+    private val dailyWordleRepository: DailyWordleRepository,
+    private val onlineServicesCore: OnlineServicesCore,
+    private val userRepository: UserRepository,
+    private val wordleXpRepository: WordleXpRepository
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -37,8 +43,6 @@ class WordleEndGameWorker @AssistedInject constructor(
         val isLastRowCorrect = inputData.getBoolean(INPUT_IS_LAST_ROW_CORRECT, false)
         val day = inputData.getString(INPUT_DAY)
 
-        Log.d("AAAAAaaaaaaaa", "End game worker start")
-
         wordleLoggingAnalytics.logGameEnd(
             wordLength = word.length,
             maxRows = rowLimit,
@@ -55,7 +59,17 @@ class WordleEndGameWorker @AssistedInject constructor(
             )
         }
 
-        Log.d("AAAAAaaaaaaaa", "End game worker end")
+        if (onlineServicesCore.connectionAvailable()) {
+            val newXp = if (isLastRowCorrect) {
+                wordleXpRepository.generateRandomXP(currentRowPosition)
+            } else 0
+
+            userRepository.updateLocalUserNewXPWordle(
+                newXp = newXp.toLong(),
+                wordsPlayed = 1,
+                wordsCorrect = isLastRowCorrect.toLong()
+            )
+        }
 
         return Result.success()
     }

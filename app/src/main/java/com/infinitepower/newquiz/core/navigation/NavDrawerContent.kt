@@ -45,11 +45,15 @@ private val navDrawerItems = listOf(
         icon = Icons.Rounded.Quiz,
         direction = WordleListScreenDestination
     ),
-    NavDrawerItem.Label(text = CoreR.string.online),
+    NavDrawerItem.Label(
+        text = CoreR.string.online,
+        group = NavDrawerItemGroup("online")
+    ),
     NavDrawerItem.Item(
         text = CoreR.string.profile,
         icon = Icons.Rounded.Person,
-        direction = ProfileScreenDestination
+        direction = ProfileScreenDestination,
+        group = NavDrawerItemGroup("online")
     ),
     NavDrawerItem.Label(text = CoreR.string.other),
     NavDrawerItem.Item(
@@ -71,13 +75,18 @@ fun NavigationDrawerContent(
     modifier: Modifier = Modifier,
     navController: NavController,
     drawerState: DrawerState,
+    signedIn: Boolean,
     onItemClick: (item: NavDrawerItem.Item) -> Unit
 ) {
     val destination by navController.currentDestinationAsState()
 
     val selectedItem = getDrawerItemBy(destination)
 
-    val items = remember { navDrawerItems }
+    val items = remember {
+        if (signedIn) {
+            navDrawerItems.filter { it.group == NavDrawerItemGroup("online") }
+        } else navDrawerItems
+    }
 
     NavigationDrawerContentImpl(
         modifier = modifier,

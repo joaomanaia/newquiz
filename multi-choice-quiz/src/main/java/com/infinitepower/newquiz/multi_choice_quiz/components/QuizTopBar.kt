@@ -26,7 +26,9 @@ internal fun QuizTopBar(
     windowHeightSizeClass: WindowHeightSizeClass,
     progressText: String,
     progressIndicatorValue: Float,
+    currentQuestionNull: Boolean = true,
     onBackClick: () -> Unit,
+    onSkipClick: () -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -63,23 +65,21 @@ internal fun QuizTopBar(
             )
         }
 
-        // TODO: Add skip to multi choice quiz
-        /*
-        FilledTonalIconButton(
-            onClick = {},
-            modifier = Modifier.constrainAs(btnSkipRef) {
-                top.linkTo(progressRef.top)
-                bottom.linkTo(progressRef.bottom)
-                end.linkTo(parent.end, spaceMedium)
+        if (!currentQuestionNull) {
+            FilledTonalIconButton(
+                onClick = onSkipClick,
+                modifier = Modifier.constrainAs(btnSkipRef) {
+                    top.linkTo(progressRef.top)
+                    bottom.linkTo(progressRef.bottom)
+                    end.linkTo(parent.end, spaceMedium)
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.SkipNext,
+                    contentDescription = "Skip question",
+                )
             }
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.SkipNext,
-                contentDescription = "Skip question",
-            )
         }
-
-         */
     }
 }
 
@@ -93,6 +93,7 @@ private fun QuizTopBarPreview() {
                 progressText = "0:00",
                 progressIndicatorValue = 0f,
                 onBackClick = {},
+                onSkipClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)

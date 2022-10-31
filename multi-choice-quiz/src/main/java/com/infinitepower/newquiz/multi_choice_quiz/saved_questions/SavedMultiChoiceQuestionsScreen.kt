@@ -63,7 +63,7 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = {
                     Text(text = stringResource(id = CoreR.string.saved_questions))
                 },

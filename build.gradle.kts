@@ -9,7 +9,7 @@ buildscript {
     dependencies {
         classpath(Firebase.crashlyticsGradlePlugin)
         classpath(Firebase.performanceMonitoringGradlePlugin)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath(libs.kotlin.gradle.plugin)
     }
 }
 

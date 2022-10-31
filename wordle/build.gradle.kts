@@ -55,7 +55,6 @@ android {
 dependencies {
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.lifecycle.runtime.ktx)
-    implementation("androidx.core:core-ktx:+")
 
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
@@ -81,6 +80,7 @@ dependencies {
     implementation(AndroidX.hilt.navigationCompose)
     androidTestImplementation(Google.dagger.hilt.android.testing)
     kaptAndroidTest(Google.dagger.hilt.compiler)
+    implementation(AndroidX.hilt.work)
 
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.ksp)
@@ -97,6 +97,7 @@ dependencies {
     implementation(project(Modules.model))
     implementation(project(Modules.domain))
     implementation(project(Modules.data))
+    implementation(project(Modules.onlineServices))
 }
 
 tasks.withType<Test> {
