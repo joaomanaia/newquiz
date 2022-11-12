@@ -49,7 +49,7 @@ fun ProfileScreen(
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
     LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("HomeScreen")
+        coreLoggingAnalytics.logScreenView("ProfileScreen")
     }
 
     uiState.user?.let { user ->
