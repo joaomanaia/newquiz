@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -40,7 +41,9 @@ fun MultiChoiceCategoriesScreen(
     )
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    coreLoggingAnalytics.logScreenView("HomeScreen")
+    LaunchedEffect(key1 = true) {
+        coreLoggingAnalytics.logScreenView("HomeScreen")
+    }
 }
 
 @Composable

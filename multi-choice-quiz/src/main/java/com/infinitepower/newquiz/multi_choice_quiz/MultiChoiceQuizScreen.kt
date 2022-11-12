@@ -82,7 +82,9 @@ fun MultiChoiceQuizScreen(
     }
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    coreLoggingAnalytics.logScreenView("HomeScreen")
+    LaunchedEffect(key1 = true) {
+        coreLoggingAnalytics.logScreenView("HomeScreen")
+    }
 
     MultiChoiceQuizScreenImpl(
         onBackClick = navigator::popBackStack,

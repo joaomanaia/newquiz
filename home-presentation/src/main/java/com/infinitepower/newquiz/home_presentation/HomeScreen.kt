@@ -7,10 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -53,7 +50,9 @@ fun HomeScreen(
     }
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    coreLoggingAnalytics.logScreenView("HomeScreen")
+    LaunchedEffect(key1 = true) {
+        coreLoggingAnalytics.logScreenView("HomeScreen")
+    }
 
     HomeScreenImpl(
         uiState = uiState,

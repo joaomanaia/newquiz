@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.home_presentation.login
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import com.firebase.ui.auth.AuthUI
@@ -21,7 +22,9 @@ fun LoginScreen(
     )
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    coreLoggingAnalytics.logScreenView("HomeScreen")
+    LaunchedEffect(key1 = true) {
+        coreLoggingAnalytics.logScreenView("HomeScreen")
+    }
 }
 
 @Composable
