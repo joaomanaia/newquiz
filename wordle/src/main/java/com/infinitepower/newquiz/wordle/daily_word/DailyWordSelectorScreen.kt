@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.wordle.daily_word.components.WordleCalendarView
@@ -35,6 +36,9 @@ fun DailyWordSelectorScreen(
         navigate = navigator::navigate,
         onEvent = dailyWordleSelectorViewModel::onEvent
     )
+
+    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
+    coreLoggingAnalytics.logScreenView("HomeScreen")
 }
 
 @Composable

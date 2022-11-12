@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemContent
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
@@ -34,6 +35,9 @@ fun WordleListScreen(
         cardItemData = cardItemData,
         openDrawer = navDrawerUtil::open
     )
+
+    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
+    coreLoggingAnalytics.logScreenView("HomeScreen")
 }
 
 @Composable

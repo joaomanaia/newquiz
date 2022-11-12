@@ -30,7 +30,10 @@ internal fun PreferenceItem(
                 preference = item,
                 value = prefs?.get(item.request.key) ?: item.request.defaultValue,
                 onValueChange = { newValue ->
-                    scope.launch(Dispatchers.IO) { dataStoreManager.editPreference(item.request.key, newValue) }
+                    scope.launch(Dispatchers.IO) {
+                        item.onCheckChange(newValue)
+                        dataStoreManager.editPreference(item.request.key, newValue)
+                    }
                 }
             )
         }

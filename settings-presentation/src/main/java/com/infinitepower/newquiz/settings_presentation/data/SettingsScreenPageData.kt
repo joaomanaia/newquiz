@@ -8,6 +8,8 @@ import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
@@ -71,6 +73,19 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 onClick = {
                     scope.launch(Dispatchers.IO) { dataStoreManager.clearPreferences() }
                 }
+            ),
+            Preference.PreferenceGroup(
+                title = "Analytics",
+                preferenceItems = listOf(
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.AnalyticsCollection,
+                        title = "Analytics collection enabled",
+                        onCheckChange = { collectionEnabled ->
+                            val firebaseAnalytics = Firebase.analytics
+                            firebaseAnalytics.setAnalyticsCollectionEnabled(collectionEnabled)
+                        }
+                    )
+                )
             )
         )
     }
