@@ -39,7 +39,7 @@ fun DailyWordSelectorScreen(
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
     LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("HomeScreen")
+        coreLoggingAnalytics.logScreenView("WordleCalendarScreen")
     }
 }
 
