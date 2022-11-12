@@ -82,7 +82,9 @@ fun WordleScreen(
     )
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    coreLoggingAnalytics.logScreenView("HomeScreen")
+    LaunchedEffect(key1 = true) {
+        coreLoggingAnalytics.logScreenView("HomeScreen")
+    }
 }
 
 @Composable

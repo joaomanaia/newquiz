@@ -48,7 +48,9 @@ fun ProfileScreen(
     val uiState by profileViewModel.uiState.collectAsState()
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    coreLoggingAnalytics.logScreenView("HomeScreen")
+    LaunchedEffect(key1 = true) {
+        coreLoggingAnalytics.logScreenView("HomeScreen")
+    }
 
     uiState.user?.let { user ->
         ProfileScreenImpl(
