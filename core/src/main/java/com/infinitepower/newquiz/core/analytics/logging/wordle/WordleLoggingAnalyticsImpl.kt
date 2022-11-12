@@ -23,7 +23,7 @@ class WordleLoggingAnalyticsImpl @Inject constructor(
         firebaseAnalytics.logEvent(EVENT_WORDLE_GAME_START) {
             param(PARAM_WORD_LENGTH, wordLength)
             param(PARAM_MAX_ROWS, maxRows)
-            if (day != null) param(PARAM_DAY, day)
+            param(PARAM_DAY, day.toString())
         }
     }
 
@@ -39,7 +39,7 @@ class WordleLoggingAnalyticsImpl @Inject constructor(
             param(PARAM_MAX_ROWS, maxRows)
             param(PARAM_LAST_ROW, lastRow)
             param(PARAM_LAST_ROW_CORRECT, lastRowCorrect)
-            if (day != null) param(PARAM_DAY, day)
+            param(PARAM_DAY, day.toString())
         }
     }
 }

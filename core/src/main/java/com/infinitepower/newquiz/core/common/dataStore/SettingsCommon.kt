@@ -19,6 +19,9 @@ val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(na
 object SettingsCommon {
     object ShowLoginCard : PreferenceRequest<Boolean>(booleanPreferencesKey("showLoginCard"), true)
 
+    object AnalyticsCollection :
+        PreferenceRequest<Boolean>(booleanPreferencesKey("analyticsCollection"), true)
+
     object MultiChoiceQuizQuestionsSize :
         PreferenceRequest<Int>(intPreferencesKey("quickQuizQuestionsSize"), 5)
 

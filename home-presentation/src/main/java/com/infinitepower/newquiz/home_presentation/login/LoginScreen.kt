@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.infinitepower.newquiz.core.R
+import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -18,6 +19,9 @@ fun LoginScreen(
     LoginScreenImpl(
         onBack = navigator::popBackStack
     )
+
+    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
+    coreLoggingAnalytics.logScreenView("HomeScreen")
 }
 
 @Composable

@@ -15,11 +15,11 @@ import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 @Composable
 @ExperimentalMaterial3Api
 internal fun <T : Any> HomeHorizontalItems(
+    modifier: Modifier = Modifier,
     item: HomeCardItem.HorizontalItems<T>,
     itemContent: @Composable (item: T) -> Unit
 ) {
     LazyRow(
-        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
     ) {

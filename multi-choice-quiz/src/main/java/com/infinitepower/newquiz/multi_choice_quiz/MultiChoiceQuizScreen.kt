@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
@@ -79,6 +80,9 @@ fun MultiChoiceQuizScreen(
                 }
             }
     }
+
+    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
+    coreLoggingAnalytics.logScreenView("HomeScreen")
 
     MultiChoiceQuizScreenImpl(
         onBackClick = navigator::popBackStack,

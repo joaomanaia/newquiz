@@ -50,6 +50,7 @@ sealed class Preference {
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
+            val onCheckChange: (newValue: Boolean) -> Unit = {}
         ) : PreferenceItem<Boolean>()
 
         /**
