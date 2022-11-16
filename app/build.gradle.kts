@@ -10,7 +10,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
-    id("com.google.devtools.ksp") version "1.7.20-1.0.6"
+    id("com.google.devtools.ksp") version "1.7.21-1.0.8"
 }
 
 android {
@@ -133,7 +133,7 @@ dependencies {
     androidTestImplementation(libs.truth)
 
     implementation(libs.io.github.raamcosta.compose.destinations.core)
-    ksp(libs.ksp)
+    ksp(libs.io.github.raamcosta.compose.destinations.ksp)
 
     implementation(Google.firebase.analyticsKtx.withVersionPlaceholder())
     implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())

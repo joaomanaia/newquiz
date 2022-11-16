@@ -82,10 +82,12 @@ fun NavigationDrawerContent(
 
     val selectedItem = getDrawerItemBy(destination)
 
-    val items = remember {
+    val items = remember(signedIn) {
         if (signedIn) {
-            navDrawerItems.filter { it.group == NavDrawerItemGroup("online") }
-        } else navDrawerItems
+            navDrawerItems
+        } else {
+            navDrawerItems.filterNot { it.group == NavDrawerItemGroup("online") }
+        }
     }
 
     NavigationDrawerContentImpl(

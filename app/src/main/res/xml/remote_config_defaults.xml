@@ -5,7 +5,7 @@
         <value>1</value>
     </entry>
     <entry>
-        <key>wordle_daily_words</key>
-        <value>[{"date":"2022-08-01","words":{"4":"QUIZ","5":"LEARN","6":"FRIEND"}}]</value>
+        <key>user_initial_diamonds</key>
+        <value>10</value>
     </entry>
 </defaultsMap>

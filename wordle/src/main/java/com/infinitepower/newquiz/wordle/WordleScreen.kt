@@ -111,7 +111,7 @@ private fun WordleScreenImpl(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = {
                     Text(text = stringResource(id = CoreR.string.wordle))
                 },
