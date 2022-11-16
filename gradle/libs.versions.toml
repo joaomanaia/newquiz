@@ -2,7 +2,7 @@
 
 [plugins]
 
-gradle = { id = "gradle", version = "7.4.0-beta02" }
+gradle = { id = "gradle", version = "8.0.0-alpha08" }
 
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.7.20" }
 
@@ -19,12 +19,13 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.7.20-1.
 [versions]
 
 kotlin = "1.7.21"
+##  ⬆ = "1.8.0-Beta"
 
 google-android-play-services-ads = "21.3.0"
 
 [libraries]
 
-ksp = "io.github.raamcosta.compose-destinations:ksp:1.7.25-beta"
+io-github-raamcosta-compose-destinations-ksp = "io.github.raamcosta.compose-destinations:ksp:1.7.26-beta"
 
 org-jacoco-ant = "org.jacoco:org.jacoco.ant:0.8.8"
 
@@ -34,7 +35,7 @@ kotlin-parcelize-runtime = { group = "org.jetbrains.kotlin", name = "kotlin-parc
 
 lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 
-io-github-raamcosta-compose-destinations-core = "io.github.raamcosta.compose-destinations:core:1.7.25-beta"
+io-github-raamcosta-compose-destinations-core = "io.github.raamcosta.compose-destinations:core:1.7.26-beta"
 
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "google-android-play-services-ads" }
 

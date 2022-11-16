@@ -27,6 +27,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.online_services.model.user.User
 import com.infinitepower.newquiz.online_services.ui.profile.components.GoodDayText
+import com.infinitepower.newquiz.online_services.ui.profile.components.ProfileCard
 import com.infinitepower.newquiz.online_services.ui.profile.components.marker
 import com.patrykandpatryk.vico.compose.axis.horizontal.bottomAxis
 import com.patrykandpatryk.vico.compose.axis.vertical.startAxis
@@ -120,33 +121,6 @@ private fun ProfileScreenImpl(
 }
 
 @Composable
-fun ProfileCard(
-    modifier: Modifier = Modifier,
-    title: String,
-    description: String
-) {
-    Card(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(MaterialTheme.spacing.large),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineMedium
-            )
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-            Text(
-                text = description,
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
-@Composable
 fun UserMultiChoiceQuizData(
     totalQuestionsPlayed: Long,
     totalCorrectAnswers: Long,
@@ -168,12 +142,12 @@ fun UserMultiChoiceQuizData(
             horizontalArrangement = Arrangement.spacedBy(spaceMedium)
         ) {
             ProfileCard(
-                title = totalCorrectAnswers.toString(),
+                title = totalCorrectAnswers,
                 description = stringResource(id = CoreR.string.correct_answers),
                 modifier = Modifier.weight(1f)
             )
             ProfileCard(
-                title = totalQuestionsPlayed.toString(),
+                title = totalQuestionsPlayed,
                 description = stringResource(id = CoreR.string.total_questions),
                 modifier = Modifier.weight(1f)
             )
@@ -221,12 +195,12 @@ fun UserWordleData(
             horizontalArrangement = Arrangement.spacedBy(spaceMedium)
         ) {
             ProfileCard(
-                title = totalCorrectWords.toString(),
+                title = totalCorrectWords,
                 description = stringResource(id = CoreR.string.correct_words),
                 modifier = Modifier.weight(1f)
             )
             ProfileCard(
-                title = totalWordsPlayed.toString(),
+                title = totalWordsPlayed,
                 description = stringResource(id = CoreR.string.total_words),
                 modifier = Modifier.weight(1f)
             )
@@ -252,19 +226,19 @@ fun UserXpRow(
             horizontalArrangement = Arrangement.spacedBy(spaceMedium)
         ) {
             ProfileCard(
-                title = level.toString(),
+                title = level,
                 description = stringResource(id = CoreR.string.level),
                 modifier = Modifier.weight(1f)
             )
             ProfileCard(
-                title = totalXp.toString(),
+                title = totalXp,
                 description = stringResource(id = CoreR.string.current_xp),
                 modifier = Modifier.weight(1f)
             )
         }
         Spacer(modifier = Modifier.height(spaceMedium))
         ProfileCard(
-            title = requiredXP.toString(),
+            title = requiredXP,
             description = stringResource(id = CoreR.string.required_xp_to_next_level),
             modifier = Modifier.fillMaxWidth()
         )

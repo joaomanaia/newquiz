@@ -85,7 +85,7 @@ private fun DailyWordSelectorScreenImpl(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             Column {
-                SmallTopAppBar(
+                TopAppBar(
                     title = {
                         Text(text = stringResource(id = CoreR.string.wordle))
                     },

@@ -5,7 +5,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp") version "1.7.20-1.0.6"
+    id("com.google.devtools.ksp") version "1.7.21-1.0.8"
 }
 
 android {
@@ -82,7 +82,7 @@ dependencies {
     implementation(AndroidX.dataStore.preferences)
 
     implementation(libs.io.github.raamcosta.compose.destinations.core)
-    ksp(libs.ksp)
+    ksp(libs.io.github.raamcosta.compose.destinations.ksp)
 
     implementation(project(Modules.core))
     implementation(project(Modules.data))
