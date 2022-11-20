@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("de.fayard.refreshVersions") version "0.50.2"
+    id("de.fayard.refreshVersions") version "0.51.0"
 ////                            # available:"0.51.0"
 }
 
@@ -35,3 +35,4 @@ include(":settings-presentation")
 include(":wordle")
 include(":translation_dynamic_feature")
 include(":online_services")
+include(":math-quiz")

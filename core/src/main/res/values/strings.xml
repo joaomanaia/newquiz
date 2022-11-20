@@ -76,9 +76,6 @@
     <string name="categories">Categories</string>
     <string name="n_questions_available">%1$s questions available</string>
     <string name="see_all">See all</string>
-    <string name="easy">Easy</string>
-    <string name="medium">Medium</string>
-    <string name="hard">Hard</string>
     <string name="difficulty">Difficulty</string>
     <string name="is_not_in_the_target_word_wordle">" is not in the target word."</string>
     <string name="is_in_the_word_but_in_the_wrong_spot_wordle">" is in the word but in the wrong spot."</string>
