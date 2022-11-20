@@ -1,7 +1,7 @@
-package com.infinitepower.newquiz.data.local.question
+package com.infinitepower.newquiz.model.question
 
 import androidx.annotation.StringRes
-import com.infinitepower.newquiz.core.R as CoreR
+import com.infinitepower.newquiz.model.R
 
 sealed class QuestionDifficulty(
     val id: String,
@@ -20,16 +20,16 @@ sealed class QuestionDifficulty(
 
     object Easy : QuestionDifficulty(
         id = "easy",
-        nameRes = CoreR.string.easy
+        nameRes = R.string.easy
     )
 
     object Medium : QuestionDifficulty(
         id = "medium",
-        nameRes = CoreR.string.medium
+        nameRes = R.string.medium
     )
 
     object Hard : QuestionDifficulty(
         id = "hard",
-        nameRes = CoreR.string.hard
+        nameRes = R.string.hard
     )
 }

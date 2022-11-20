@@ -1,6 +1,6 @@
 package com.infinitepower.newquiz.online_services.data.game.xp
 
-import com.infinitepower.newquiz.data.local.question.QuestionDifficulty
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.online_services.domain.game.xp.MultiChoiceQuizXPRepository
 import javax.inject.Inject

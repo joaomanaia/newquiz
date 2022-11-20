@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.online_services.data.game.xp
 
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.util.kotlin.sum
-import com.infinitepower.newquiz.data.local.question.QuestionDifficulty
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.multi_choice_quiz.*
 import com.infinitepower.newquiz.online_services.domain.game.xp.MultiChoiceQuizXPRepository
 import org.junit.jupiter.api.BeforeEach

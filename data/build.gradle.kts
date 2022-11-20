@@ -46,9 +46,13 @@ dependencies {
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)
     implementation(Google.android.material)
-    testImplementation(Testing.junit4)
+
+
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)
+    testImplementation(Testing.junit4)
+    testImplementation(Testing.junit.jupiter)
+    testImplementation(libs.truth)
 
     implementation(platform(Firebase.bom))
     implementation(Firebase.authenticationKtx)
@@ -85,4 +89,8 @@ dependencies {
     implementation(project(Modules.core))
     implementation(project(Modules.domain))
     implementation(project(Modules.model))
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
