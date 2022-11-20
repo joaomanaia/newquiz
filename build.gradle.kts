@@ -1,5 +1,4 @@
 buildscript {
-    val kotlin_version by extra("1.7.20")
     repositories {
         gradlePluginPortal()
         google()
