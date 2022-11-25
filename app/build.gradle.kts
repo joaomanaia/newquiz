@@ -145,6 +145,8 @@ dependencies {
     implementation(libs.play.services.ads)
     implementation(libs.user.messaging.platform)
 
+    implementation("org.slf4j:slf4j-simple:2.0.4")
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.homePresentation))
