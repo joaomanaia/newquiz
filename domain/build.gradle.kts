@@ -63,4 +63,6 @@ dependencies {
     implementation(KotlinX.datetime)
 
     implementation(AndroidX.paging.runtime)
+
+    implementation(project(Modules.core))
 }

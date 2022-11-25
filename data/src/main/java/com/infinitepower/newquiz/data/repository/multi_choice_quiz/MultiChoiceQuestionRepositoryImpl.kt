@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
+import com.infinitepower.newquiz.core.util.performance.trace
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -38,15 +39,17 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
         category: Int?,
         difficulty: String?
     ): List<MultiChoiceQuestion> = withContext(Dispatchers.IO) {
-        val openTDBResults = getOpenTDBResponse(amount, category, difficulty).results
+        trace(name = "GetOpenTDBQuestions") {
+            val openTDBResults = getOpenTDBResponse(amount, category, difficulty).results
 
-        val questions = openTDBResults.map { result ->
-            async(Dispatchers.IO) {
-                result.decodeResultToQuestion(id = random.nextInt())
+            val questions = openTDBResults.map { result ->
+                async(Dispatchers.IO) {
+                    result.decodeResultToQuestion(id = random.nextInt())
+                }
             }
-        }
 
-        questions.awaitAll()
+            questions.awaitAll()
+        }
     }
 
     private suspend fun getOpenTDBResponse(

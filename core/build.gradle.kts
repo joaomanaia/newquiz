@@ -86,6 +86,7 @@ dependencies {
     implementation(AndroidX.dataStore.preferences)
 
     api(Google.firebase.analyticsKtx.withVersionPlaceholder())
+    api(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
 
     implementation(libs.lottie.compose)
 
