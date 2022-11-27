@@ -145,7 +145,7 @@ dependencies {
     implementation(libs.play.services.ads)
     implementation(libs.user.messaging.platform)
 
-    implementation("org.slf4j:slf4j-simple:2.0.4")
+    implementation(libs.slf4j.simple)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))
@@ -156,6 +156,7 @@ dependencies {
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
     implementation(project(Modules.onlineServices))
+    implementation(project(Modules.mathQuiz))
 }
 
 tasks.withType<Test> {

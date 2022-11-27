@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.util.kotlin.toLong
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.daily.CalendarItemState
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
 import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
@@ -33,6 +34,7 @@ class WordleEndGameWorker @AssistedInject constructor(
         const val INPUT_ROW_LIMIT = "row_limit"
         const val INPUT_CURRENT_ROW_POSITION = "current_row_position"
         const val INPUT_IS_LAST_ROW_CORRECT = "is_last_row_correct"
+        const val INPUT_QUIZ_TYPE = "quiz_type"
         const val INPUT_DAY = "day"
     }
 
@@ -41,6 +43,7 @@ class WordleEndGameWorker @AssistedInject constructor(
         val rowLimit = inputData.getInt(INPUT_ROW_LIMIT, 0)
         val currentRowPosition = inputData.getInt(INPUT_CURRENT_ROW_POSITION, 0)
         val isLastRowCorrect = inputData.getBoolean(INPUT_IS_LAST_ROW_CORRECT, false)
+        val quizType = inputData.getString(INPUT_QUIZ_TYPE) ?: WordleQuizType.TEXT.name
         val day = inputData.getString(INPUT_DAY)
 
         wordleLoggingAnalytics.logGameEnd(
@@ -48,6 +51,7 @@ class WordleEndGameWorker @AssistedInject constructor(
             maxRows = rowLimit,
             lastRow = currentRowPosition,
             lastRowCorrect = isLastRowCorrect,
+            quizType = quizType,
             day = day
         )
 

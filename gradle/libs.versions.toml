@@ -19,11 +19,8 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.7.21-1.
 [versions]
 
 kotlin = "1.7.21"
-##  ⬆ = "1.8.0-Beta"
 
 google-android-play-services-ads = "21.3.0"
-##                            ⬆ = "21.2.0"
-##                            ⬆ = "21.3.0"
 
 [libraries]
 
@@ -52,7 +49,6 @@ kotlin-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serializ
 symbol-processing = "com.google.devtools.ksp:symbol-processing:1.6.21-1.0.6"
 
 firebase-ui-auth = "com.firebaseui:firebase-ui-auth:8.0.2"
-##                                              ⬆ :8.0.2"
 
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
@@ -67,3 +63,5 @@ ksp = "io.github.raamcosta.compose-destinations:ksp:1.7.27-beta"
 compose = "com.patrykandpatryk.vico:compose:1.5.2"
 
 compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.5.2"
+
+slf4j-simple = "org.slf4j:slf4j-simple:2.0.4"

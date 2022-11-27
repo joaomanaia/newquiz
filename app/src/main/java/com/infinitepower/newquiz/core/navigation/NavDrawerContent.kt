@@ -24,6 +24,7 @@ import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizL
 import com.infinitepower.newquiz.online_services.ui.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
+import com.infinitepower.newquiz.math_quiz.list.destinations.MathQuizListScreenDestination
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
@@ -44,6 +45,11 @@ private val navDrawerItems = listOf(
         text = CoreR.string.wordle,
         icon = Icons.Rounded.Quiz,
         direction = WordleListScreenDestination
+    ),
+    NavDrawerItem.Item(
+        text = CoreR.string.math_quiz,
+        icon = Icons.Rounded.Numbers,
+        direction = MathQuizListScreenDestination
     ),
     NavDrawerItem.Label(
         text = CoreR.string.online,

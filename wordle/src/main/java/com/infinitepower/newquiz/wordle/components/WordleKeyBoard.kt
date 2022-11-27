@@ -80,3 +80,19 @@ private fun WordKeyBoardPreview() {
         }
     }
 }
+
+@Composable
+@PreviewNightLight
+private fun WordKeyBoardNumbersPreview() {
+    val allNumbers = '0'..'9'
+
+    NewQuizTheme {
+        Surface {
+            WordleKeyBoard(
+                keys = allNumbers.toList().toCharArray(),
+                keysDisabled = "136".toList(),
+                onKeyClick = {}
+            )
+        }
+    }
+}
