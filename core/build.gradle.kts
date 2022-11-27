@@ -58,6 +58,7 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":model")))
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
 
@@ -98,6 +99,8 @@ dependencies {
 
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.io.github.raamcosta.compose.destinations.ksp)
+
+    implementation(project(Modules.model))
 }
 
 tasks.withType<Test> {

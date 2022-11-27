@@ -10,3 +10,9 @@ fun Iterable<IntRange>.sum(): IntRange {
         (acc.first + intRange.first)..(acc.last + intRange.last)
     }
 }
+
+infix fun ClosedFloatingPointRange<Float>.increaseEndBy(
+    other: Float
+): ClosedFloatingPointRange<Float> {
+    return endInclusive..(endInclusive + other)
+}

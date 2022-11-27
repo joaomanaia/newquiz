@@ -13,8 +13,10 @@ import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
 import com.infinitepower.newquiz.wordle.util.worker.WordleEndGameWorker
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.wordle.WordleItem
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
 import com.infinitepower.newquiz.model.wordle.emptyRowItem
+import com.infinitepower.newquiz.model.wordle.itemsToString
 import com.infinitepower.newquiz.wordle.util.word.containsAllLastRevealedHints
 import com.infinitepower.newquiz.wordle.util.word.getKeysDisabled
 import com.infinitepower.newquiz.wordle.util.word.verifyFromWord
@@ -23,6 +25,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "WordleScreenViewModel"
 
 @HiltViewModel
 class WordleScreenViewModel @Inject constructor(
@@ -81,15 +85,21 @@ class WordleScreenViewModel @Inject constructor(
         val initialWord = savedStateHandle.get<String?>(WordleScreenNavArgs::word.name)
         val date = savedStateHandle.get<String?>(WordleScreenNavArgs::date.name)
 
+        val quizType = savedStateHandle
+            .get<WordleQuizType>(WordleScreenNavArgs::quizType.name)
+            ?: WordleQuizType.TEXT
+
+        // Checks if saved state has an initial word.
+        // If has, generate the rows with the word, if not create a new word.
         if (initialWord != null) {
-            generateRows(initialWord, date)
+            generateRows(initialWord, date, quizType)
             return@launch
         }
 
         wordleRepository
-            .generateRandomWord()
+            .generateRandomWord(quizType)
             .collect { res ->
-                Log.d("WordleScreenViewModel", "Word: ${res.data}")
+                Log.d(TAG, "Word: ${res.data}")
 
                 if (res is Resource.Loading) {
                     _uiState.update { currentState ->
@@ -99,20 +109,25 @@ class WordleScreenViewModel @Inject constructor(
 
                 if (res is Resource.Success) {
                     res.data?.let { word ->
-                        generateRows(word)
+                        generateRows(word = word, quizType = quizType)
                     }
                 }
             }
     }
 
-    private suspend fun generateRows(word: String, day: String? = null) {
+    private suspend fun generateRows(
+        word: String,
+        day: String? = null,
+        quizType: WordleQuizType
+    ) {
         val rows = List(1) {
             emptyRowItem(size = word.length)
         }
 
-        val rowLimit = wordleRepository.getWordleMaxRows(savedStateHandle[WordleScreenNavArgs::rowLimit.name])
+        val rowLimit =
+            wordleRepository.getWordleMaxRows(savedStateHandle[WordleScreenNavArgs::rowLimit.name])
 
-        wordleLoggingAnalytics.logGameStart(word.length, rowLimit, day)
+        wordleLoggingAnalytics.logGameStart(word.length, rowLimit, quizType.name, day)
 
         _uiState.update { currentState ->
             currentState.copy(
@@ -123,7 +138,8 @@ class WordleScreenViewModel @Inject constructor(
                 currentRowPosition = 0,
                 day = day,
                 keysDisabled = emptyList(),
-                errorMessage = null
+                errorMessage = null,
+                wordleQuizType = quizType
             )
         }
     }
@@ -172,13 +188,24 @@ class WordleScreenViewModel @Inject constructor(
 
     private fun verifyRow() {
         _uiState.update { currentState ->
-            // Stops the verification if the word is null or current row is not completed.
             if (currentState.word == null) return
+            if (currentState.wordleQuizType == null) return
             if (!currentState.currentRowCompleted) return
 
             // Get current row items, if the current row is null stop the verification.
             // Current row is the last row of the list.
             val currentItems = currentState.rows.lastOrNull()?.items ?: return
+
+            val wordValid = wordleRepository.validateWord(
+                currentItems.itemsToString(),
+                currentState.wordleQuizType
+            )
+
+            if (!wordValid) {
+                return@update currentState.copy(
+                    errorMessage = "Left formula is not equal to right solution"
+                )
+            }
 
             // Verifies items with the word and verifies if the word is correct
             val verifiedItems = currentItems verifyFromWord currentState.word
@@ -242,7 +269,8 @@ class WordleScreenViewModel @Inject constructor(
                     WordleEndGameWorker.INPUT_ROW_LIMIT to currentState.rowLimit,
                     WordleEndGameWorker.INPUT_CURRENT_ROW_POSITION to currentState.currentRowPosition,
                     WordleEndGameWorker.INPUT_IS_LAST_ROW_CORRECT to isLastRowCorrect,
-                    WordleEndGameWorker.INPUT_DAY to currentState.day,
+                    WordleEndGameWorker.INPUT_QUIZ_TYPE to currentState.wordleQuizType?.name,
+                    WordleEndGameWorker.INPUT_DAY to currentState.day
                 )
             ).build()
 

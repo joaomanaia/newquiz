@@ -16,3 +16,4 @@
 | wordle_day              | Wordle day mode: word date | String |
 | wordle_last_row         | Quiz last row position     | Number |
 | wordle_last_row_correct | is quiz last row correct   | String |
+| wordleQuizType          | Type of wordle quiz        | String |

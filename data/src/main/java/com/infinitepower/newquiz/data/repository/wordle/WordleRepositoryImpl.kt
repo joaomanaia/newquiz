@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.data.repository.wordle
 
 import android.content.Context
-import android.util.Log
+import androidx.core.text.isDigitsOnly
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.common.FlowResource
@@ -10,19 +10,25 @@ import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.common.dataStore.infiniteWordleSupportedLang
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class WordleRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager
+    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
+    private val mathQuizCoreRepository: MathQuizCoreRepository
 ) : WordleRepository {
+    private val baseNumbers by lazy { 0..9 }
+
     override suspend fun getAllWords(): Set<String> = withContext(Dispatchers.IO) {
         val quizLanguage = settingsDataStoreManager.getPreference(SettingsCommon.InfiniteWordleQuizLanguage)
 
@@ -48,18 +54,43 @@ class WordleRepositoryImpl @Inject constructor(
         }
     }
 
-    override  fun generateRandomWord(): FlowResource<String> = flow {
+    override  fun generateRandomWord(
+        quizType: WordleQuizType,
+        random: Random
+    ): FlowResource<String> = flow {
         try {
             emit(Resource.Loading())
 
-            val allWords = getAllWords()
-            val randomWord = allWords.random()
+            val randomWord = when (quizType) {
+                WordleQuizType.TEXT -> generateRandomTextWord(random = random)
+                WordleQuizType.NUMBER -> generateRandomNumberWord(random = random)
+                WordleQuizType.MATH_FORMULA -> {
+                    val formula = mathQuizCoreRepository.generateMathFormula()
+                    formula.fullFormulaWithoutSpaces
+                }
+            }
 
             emit(Resource.Success(randomWord))
         } catch (e: Exception) {
             e.printStackTrace()
             emit(Resource.Error(e.localizedMessage ?: "A error occurred while getting word."))
         }
+    }
+
+    override suspend fun generateRandomTextWord(random: Random): String {
+        val allWords = getAllWords()
+        return allWords.random(random)
+    }
+
+    override suspend fun generateRandomNumberWord(
+        wordSize: Int,
+        random: Random
+    ): String {
+        val randomNumbers = List(wordSize) {
+            baseNumbers.random(random)
+        }
+
+        return randomNumbers.joinToString("")
     }
 
     override fun isColorBlindEnabled(): FlowResource<Boolean> = flow {
@@ -114,5 +145,13 @@ class WordleRepositoryImpl @Inject constructor(
         val remoteConfig = Firebase.remoteConfig
 
         return remoteConfig.getLong("wordle_ad_row_reward_amount").toInt()
+    }
+
+    override fun validateWord(word: String, quizType: WordleQuizType): Boolean {
+        return when (quizType) {
+            WordleQuizType.TEXT -> word.isNotBlank()
+            WordleQuizType.NUMBER -> word.isDigitsOnly()
+            WordleQuizType.MATH_FORMULA -> mathQuizCoreRepository.validateFormula(word)
+        }
     }
 }
