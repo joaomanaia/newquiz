@@ -49,13 +49,17 @@ android {
                 kotlin.srcDir("build/generated/ksp/$name/kotlin")
             }
         }
+
+        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
     }
 }
 
 dependencies {
     implementation(AndroidX.core.ktx)
+
     implementation(AndroidX.lifecycle.runtime.ktx)
     implementation(AndroidX.lifecycle.runtime.compose)
+    implementation(AndroidX.lifecycle.liveDataKtx)
 
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
@@ -81,12 +85,16 @@ dependencies {
     kaptAndroidTest(Google.dagger.hilt.compiler)
     implementation(AndroidX.hilt.work)
 
+    implementation(AndroidX.work.runtimeKtx)
+
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.io.github.raamcosta.compose.destinations.ksp)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.wordle))
+    implementation(project(Modules.data))
+    implementation(project(Modules.domain))
 }
 
 tasks.withType<Test> {

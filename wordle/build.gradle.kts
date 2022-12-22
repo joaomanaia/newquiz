@@ -49,6 +49,8 @@ android {
                 kotlin.srcDir("build/generated/ksp/$name/kotlin")
             }
         }
+
+        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
     }
 }
 

@@ -54,7 +54,8 @@ data class WordleScreenNavArgs(
     val rowLimit: Int = Int.MAX_VALUE,
     val word: String? = null,
     val date: String? = null,
-    val quizType: WordleQuizType = WordleQuizType.TEXT
+    val quizType: WordleQuizType = WordleQuizType.TEXT,
+    val mazeItemId: Int? = null
 )
 
 @Composable

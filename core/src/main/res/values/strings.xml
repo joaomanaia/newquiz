@@ -120,4 +120,5 @@
     <string name="guess_number">Guess number</string>
     <string name="guess_math_formula">Guess math formula</string>
     <string name="math_quiz">Math quiz</string>
+    <string name="math_maze">Math maze</string>
 </resources>

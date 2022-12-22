@@ -5,6 +5,7 @@ import androidx.compose.material.icons.rounded.Numbers
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
+import com.infinitepower.newquiz.math_quiz.destinations.MathMazeScreenDestination
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -30,6 +31,16 @@ fun getMathQuizListCardItemData(
         icon = CardIcon.Icon(Icons.Rounded.Numbers),
         onClick = {
             navigator.navigate(WordleScreenDestination(quizType = WordleQuizType.MATH_FORMULA))
+        }
+    ),
+    HomeCardItem.GroupTitle(
+        title = R.string.math_maze,
+    ),
+    HomeCardItem.LargeCard(
+        title = R.string.math_maze,
+        icon = CardIcon.Icon(Icons.Rounded.Numbers),
+        onClick = {
+            navigator.navigate(MathMazeScreenDestination)
         }
     )
 )

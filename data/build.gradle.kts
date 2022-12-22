@@ -15,7 +15,7 @@ android {
         minSdk = ProjectConfig.minSdk
         targetSdk = ProjectConfig.targetSdk
 
-        testInstrumentationRunner = ProjectConfig.testInstrumentationRunner
+        testInstrumentationRunner = "com.infinitepower.newquiz.data.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -47,12 +47,14 @@ dependencies {
     implementation(AndroidX.appCompat)
     implementation(Google.android.material)
 
-
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)
+    androidTestImplementation(libs.truth)
+
     testImplementation(Testing.junit4)
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
+    testImplementation(Testing.mockK.android)
 
     implementation(platform(Firebase.bom))
     implementation(Firebase.authenticationKtx)
@@ -60,22 +62,25 @@ dependencies {
 
     implementation(KotlinX.coroutines.android)
     implementation(KotlinX.coroutines.playServices)
+    testImplementation(KotlinX.coroutines.test)
+    androidTestImplementation(KotlinX.coroutines.test)
 
     implementation(Ktor.client.core)
     implementation(Ktor.client.okHttp)
     implementation(Ktor.client.serialization)
 
     implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.android.compiler)
+    kapt(Google.dagger.hilt.compiler)
     kapt(AndroidX.hilt.compiler)
     implementation(AndroidX.hilt.navigationCompose)
     androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.android.compiler)
+    kaptAndroidTest(Google.dagger.hilt.compiler)
     implementation(AndroidX.hilt.work)
 
     implementation(AndroidX.dataStore.preferences)
 
     implementation(AndroidX.work.runtimeKtx)
+    androidTestImplementation(AndroidX.work.testing)
 
     implementation(AndroidX.room.runtime)
     annotationProcessor(AndroidX.room.compiler)

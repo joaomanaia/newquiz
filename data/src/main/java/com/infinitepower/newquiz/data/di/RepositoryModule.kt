@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.data.di
 
-import com.infinitepower.newquiz.data.local.math_quiz.MathQuizCoreRepositoryImpl
-import com.infinitepower.newquiz.data.local.math_quiz.MathQuizItemLocatorRepositoryImpl
+import com.infinitepower.newquiz.data.repository.math_quiz.maze.MathQuizCoreRepositoryImpl
+import com.infinitepower.newquiz.data.repository.math_quiz.maze.MazeMathQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.FlagQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.LogoQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.MultiChoiceQuestionRepositoryImpl
@@ -9,7 +9,7 @@ import com.infinitepower.newquiz.data.repository.multi_choice_quiz.saved_questio
 import com.infinitepower.newquiz.data.repository.wordle.WordleRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.daily.DailyWordleRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
-import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizItemLocatorRepository
+import com.infinitepower.newquiz.domain.repository.math_quiz.maze.MazeMathQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
@@ -46,5 +46,5 @@ abstract class RepositoryModule {
     abstract fun bindMathQuizCoreRepository(mathQuizCoreRepositoryImpl: MathQuizCoreRepositoryImpl): MathQuizCoreRepository
 
     @Binds
-    abstract fun bindMathQuizItemLocatorRepository(mathQuizItemLocatorRepositoryImpl: MathQuizItemLocatorRepositoryImpl): MathQuizItemLocatorRepository
+    abstract fun bindMazeMathQuizRepository(mazeMathQuizRepository: MazeMathQuizRepositoryImpl): MazeMathQuizRepository
 }

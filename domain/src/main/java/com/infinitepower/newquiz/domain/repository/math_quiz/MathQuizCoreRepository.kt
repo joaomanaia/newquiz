@@ -5,9 +5,8 @@ import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlin.random.Random
 
 interface MathQuizCoreRepository {
-    suspend fun generateMathFormula(
+    fun generateMathFormula(
         operatorSize: Int = 1,
-        answerRange: IntRange = 0..9,
         difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
         random: Random = Random
     ): MathFormula
