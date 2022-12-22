@@ -1,9 +1,9 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
+import com.google.firebase.perf.ktx.trace
 import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
-import com.infinitepower.newquiz.core.util.performance.trace
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -18,7 +18,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

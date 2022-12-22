@@ -10,6 +10,7 @@ import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
+import com.infinitepower.newquiz.data.worker.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.wordle.util.worker.WordleEndGameWorker
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.wordle.WordleItem
@@ -262,7 +263,7 @@ class WordleScreenViewModel @Inject constructor(
 
         val isLastRowCorrect = currentState.rows.lastOrNull()?.isRowCorrect == true
 
-        val workRequest = OneTimeWorkRequestBuilder<WordleEndGameWorker>()
+        val wordleEndGameWorkRequest = OneTimeWorkRequestBuilder<WordleEndGameWorker>()
             .setInputData(
                 workDataOf(
                     WordleEndGameWorker.INPUT_WORD to currentState.word,
@@ -274,7 +275,24 @@ class WordleScreenViewModel @Inject constructor(
                 )
             ).build()
 
-        workManager.enqueue(workRequest)
+        val mazeItemId = savedStateHandle.get<Int?>(WordleScreenNavArgs::mazeItemId.name)
+
+        if (mazeItemId != null) {
+            val endGameMazeQuizWorkerRequest = OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
+                .setInputData(
+                    workDataOf(
+                        EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId,
+                        EndGameMazeQuizWorker.INPUT_IS_CORRECT to isLastRowCorrect
+                    )
+                ).build()
+
+            workManager
+                .beginWith(endGameMazeQuizWorkerRequest)
+                .then(wordleEndGameWorkRequest)
+                .enqueue()
+        } else {
+            workManager.enqueue(wordleEndGameWorkRequest)
+        }
     }
 
     private fun addNewAdRewardedRow() {

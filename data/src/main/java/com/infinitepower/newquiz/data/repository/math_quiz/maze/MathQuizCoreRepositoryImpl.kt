@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.local.math_quiz
+package com.infinitepower.newquiz.data.repository.math_quiz.maze
 
 import com.infinitepower.newquiz.core.math.MathOperator
 import com.infinitepower.newquiz.core.math.evaluator.Expressions
@@ -15,20 +15,21 @@ import kotlin.random.Random
 class MathQuizCoreRepositoryImpl @Inject constructor(
     private val expressions: Expressions
 ) : MathQuizCoreRepository {
-    override suspend fun generateMathFormula(
+    private val allNumbers by lazy { 0..9 }
+
+    override fun generateMathFormula(
         operatorSize: Int,
-        answerRange: IntRange,
         difficulty: QuestionDifficulty,
         random: Random
     ): MathFormula {
         val formula = mutableListOf<Char>()
 
-        formula.addAll(randomNumbers(answerRange, difficulty, random))
+        formula.addAll(randomNumbers(difficulty, random))
 
         repeat(operatorSize) {
             formula.add(MathOperator.randomOperatorByDifficulty(difficulty, random).value)
 
-            formula.addAll(randomNumbers(answerRange, difficulty, random))
+            formula.addAll(randomNumbers(difficulty, random))
         }
 
         val leftFormula = formula.joinToString("") { c ->
@@ -43,7 +44,6 @@ class MathQuizCoreRepositoryImpl @Inject constructor(
         } catch (e: ArithmeticException) {
             return generateMathFormula(
                 operatorSize,
-                answerRange,
                 difficulty,
                 random
             )
@@ -52,7 +52,6 @@ class MathQuizCoreRepositoryImpl @Inject constructor(
         if (solution !in -1000..1000)
             return generateMathFormula(
                 operatorSize,
-                answerRange,
                 difficulty,
                 random
             )
@@ -65,17 +64,20 @@ class MathQuizCoreRepositoryImpl @Inject constructor(
         if (formula.count { it == '=' } != 1) return false
 
         val leftExpression = formula.takeWhile { it != '=' }
-        val rightSolution = formula.takeLastWhile { it != '=' }.toDouble()
+        val rightSolution = formula
+            .takeLastWhile { it != '=' }
+            .toDoubleOrNull() ?: return false
 
-        val solution = expressions
-            .eval(leftExpression)
-            .toDouble()
-
-        return solution == rightSolution
+        // Evaluate left-hand side expression and compare it with right-hand side solution
+        return try {
+            val solution = expressions.eval(leftExpression).toDouble()
+            solution == rightSolution
+        } catch (e: Exception) {
+            false
+        }
     }
 
-    private fun randomNumbers(
-        answerRange: IntRange,
+    internal fun randomNumbers(
         difficulty: QuestionDifficulty,
         random: Random = Random
     ): List<Char> {
@@ -83,7 +85,7 @@ class MathQuizCoreRepositoryImpl @Inject constructor(
         val digitLength = if (twoDigits) 2 else 1
 
         return List(digitLength) {
-            answerRange.random(random).digitToChar()
+            allNumbers.random(random).digitToChar()
         }
     }
 

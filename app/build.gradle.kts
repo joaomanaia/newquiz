@@ -63,16 +63,15 @@ android {
         baseline = file("lint-baseline.xml")
     }
     namespace = "com.infinitepower.newquiz"
-}
 
-kotlin {
-    sourceSets {
-        debug {
-            kotlin.srcDir("build/generated/ksp/debug/kotlin")
+    applicationVariants.all {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
         }
-        release {
-            kotlin.srcDir("build/generated/ksp/release/kotlin")
-        }
+
+        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
     }
 }
 

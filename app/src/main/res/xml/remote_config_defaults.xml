@@ -8,4 +8,12 @@
         <key>user_initial_diamonds</key>
         <value>10</value>
     </entry>
+    <entry>
+        <key>math_quiz_difficulty</key>
+        <value>easy</value>
+    </entry>
+    <entry>
+        <key>math_quiz_operator_size</key>
+        <value>1</value>
+    </entry>
 </defaultsMap>
