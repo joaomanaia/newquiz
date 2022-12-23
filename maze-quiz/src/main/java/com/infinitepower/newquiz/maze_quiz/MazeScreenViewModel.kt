@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.math_quiz.maze
+package com.infinitepower.newquiz.maze_quiz
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
@@ -9,9 +9,9 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.data.worker.math_quiz.maze.CleanMathQuizMazeWorker
-import com.infinitepower.newquiz.data.worker.math_quiz.maze.GenerateMathQuizWorker
-import com.infinitepower.newquiz.domain.repository.math_quiz.maze.MazeMathQuizRepository
-import com.infinitepower.newquiz.model.math_quiz.maze.emptyMathMaze
+import com.infinitepower.newquiz.data.worker.math_quiz.maze.GenerateMazeQuizWorker
+import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
+import com.infinitepower.newquiz.model.maze.emptyMaze
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,11 +21,11 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class MathMazeScreenViewModel @Inject constructor(
-    private val mazeMathQuizRepository: MazeMathQuizRepository,
+class MazeScreenViewModel @Inject constructor(
+    private val mazeMathQuizRepository: MazeQuizRepository,
     private val workManager: WorkManager
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(MathMazeScreenUiState())
+    private val _uiState = MutableStateFlow(MazeScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -34,26 +34,32 @@ class MathMazeScreenViewModel @Inject constructor(
             .onEach { res ->
                 _uiState.update { currentState ->
                     currentState.copy(
-                        mathMaze = res.data ?: emptyMathMaze(),
+                        mathMaze = res.data ?: emptyMaze(),
                         loading = res is Resource.Loading
                     )
                 }
             }.launchIn(viewModelScope)
     }
 
-    fun onEvent(event: MathMazeScreenUiEvent) {
+    fun onEvent(event: MazeScreenUiEvent) {
         when (event) {
-            is MathMazeScreenUiEvent.GenerateMaze -> generateMaze(seed = event.seed)
-            is MathMazeScreenUiEvent.RestartMaze -> cleanSavedMaze()
+            is MazeScreenUiEvent.GenerateMaze -> generateMaze(seed = event.seed)
+            is MazeScreenUiEvent.RestartMaze -> cleanSavedMaze()
         }
     }
 
     private fun generateMaze(seed: Int?) {
         val cleanSavedMazeRequest = OneTimeWorkRequestBuilder<CleanMathQuizMazeWorker>().build()
 
-        val generateMazeRequest = OneTimeWorkRequestBuilder<GenerateMathQuizWorker>()
+        // Null if is all game modes enabled
+        val gameModes: IntArray? = null
+
+        val generateMazeRequest = OneTimeWorkRequestBuilder<GenerateMazeQuizWorker>()
             .setInputData(
-                workDataOf(GenerateMathQuizWorker.SEED_INPUT to seed)
+                workDataOf(
+                    GenerateMazeQuizWorker.INPUT_SEED to seed,
+                    GenerateMazeQuizWorker.INPUT_GAME_MODES to gameModes
+                )
             ).build()
 
         workManager

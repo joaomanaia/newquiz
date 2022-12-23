@@ -63,6 +63,7 @@ dependencies {
     implementation(project(mapOf("path" to ":model")))
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
+    testImplementation(Testing.mockK.android)
 
     implementation(AndroidX.core.ktx)
 
@@ -98,6 +99,8 @@ dependencies {
     implementation(libs.play.services.ads)
 
     implementation(KotlinX.serialization.json)
+
+    testImplementation(KotlinX.coroutines.test)
 
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.io.github.raamcosta.compose.destinations.ksp)

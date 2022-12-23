@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.model.math_quiz.maze
+package com.infinitepower.newquiz.model.maze
 
 import androidx.compose.ui.geometry.Offset
 import kotlin.math.pow

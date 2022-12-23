@@ -12,9 +12,9 @@ interface WordleRepository {
         random: Random = Random
     ): FlowResource<String>
 
-    suspend fun  generateRandomTextWord(random: Random = Random): String
+    suspend fun generateRandomTextWord(random: Random = Random): String
 
-    suspend fun  generateRandomNumberWord(
+    suspend fun generateRandomNumberWord(
         wordSize: Int = 5,
         random: Random = Random
     ): String

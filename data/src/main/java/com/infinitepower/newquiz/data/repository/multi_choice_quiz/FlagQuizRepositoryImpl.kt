@@ -10,6 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import java.security.SecureRandom
+import kotlin.random.Random
 
 @Singleton
 class FlagQuizRepositoryImpl @Inject constructor(
@@ -20,7 +21,8 @@ class FlagQuizRepositoryImpl @Inject constructor(
     override suspend fun getRandomQuestions(
         amount: Int,
         category: Int?,
-        difficulty: String?
+        difficulty: String?,
+        random: Random
     ): List<MultiChoiceQuestion> {
         val allCountries = context
             .resources
@@ -29,7 +31,7 @@ class FlagQuizRepositoryImpl @Inject constructor(
         val allCountriesName = allCountries.map(CountryFlagQuizBaseItem::name)
 
         return allCountries
-            .shuffled()
+            .shuffled(random)
             .take(amount)
             .map { country ->
                 country.toQuestion(allCountriesName)

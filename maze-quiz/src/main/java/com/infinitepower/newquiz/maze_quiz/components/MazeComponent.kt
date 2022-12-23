@@ -1,6 +1,5 @@
-package com.infinitepower.newquiz.math_quiz.maze.components
+package com.infinitepower.newquiz.maze_quiz.components
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -15,7 +14,6 @@ import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,21 +32,24 @@ import androidx.compose.ui.zIndex
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
 import com.infinitepower.newquiz.model.math_quiz.MathFormula
-import com.infinitepower.newquiz.model.math_quiz.maze.MathQuizMaze
-import com.infinitepower.newquiz.model.math_quiz.maze.MazePoint
-import com.infinitepower.newquiz.model.math_quiz.maze.generateMazePointsBottomToTop
-import com.infinitepower.newquiz.model.math_quiz.maze.isInsideCircle
-import com.infinitepower.newquiz.model.math_quiz.maze.toMazePoint
+import com.infinitepower.newquiz.model.maze.MazeQuiz
+import com.infinitepower.newquiz.model.maze.MazePoint
+import com.infinitepower.newquiz.model.maze.generateMazePointsBottomToTop
+import com.infinitepower.newquiz.model.maze.isInsideCircle
+import com.infinitepower.newquiz.model.maze.isItemPlayed
+import com.infinitepower.newquiz.model.maze.isPlayableItem
+import com.infinitepower.newquiz.model.maze.toMazePoint
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import kotlin.math.abs
-import kotlin.math.pow
 
 @Composable
 internal fun MazeComponent(
     modifier: Modifier = Modifier,
-    items: List<MathQuizMaze.MazeItem>,
-    onItemClick: (item: MathQuizMaze.MazeItem) -> Unit
+    items: List<MazeQuiz.MazeItem>,
+    onItemClick: (item: MazeQuiz.MazeItem) -> Unit
 ) {
     val localDensity = LocalDensity.current
     val spaceLarge = MaterialTheme.spacing.large
@@ -72,37 +73,10 @@ internal fun MazeComponent(
     }
 }
 
-private fun getContentColor(
-    items: List<MathQuizMaze.MazeItem>,
-    index: Int,
-    colorPrimary: Color,
-    colorSurfaceVariant: Color
-): Color {
-    val itemPlayed = items.getOrNull(index)?.played == true
-    val isPlayItem = isPlayItem(items, index)
-
-    return if (itemPlayed || isPlayItem) colorPrimary else colorSurfaceVariant
-}
-
-private fun isPlayItem(
-    items: List<MathQuizMaze.MazeItem>,
-    index: Int
-): Boolean {
-    val itemPlayed = items.getOrNull(index)?.played == true
-    val prevItem = items.getOrNull(index - 1)
-    val prevItemPlayed = prevItem?.played == true
-
-    val nextItemPlayed = items.getOrNull(index + 1)?.played == true
-
-    val firstItemPlay = prevItem == null
-
-    return (firstItemPlay || prevItemPlayed) && !itemPlayed && !nextItemPlayed
-}
-
 @Composable
 private fun MazeComponentImpl(
     modifier: Modifier = Modifier,
-    items: List<MathQuizMaze.MazeItem>,
+    items: List<MazeQuiz.MazeItem>,
     startPoint: MazePoint,
     onClick: (index: Int) -> Unit
 ) {
@@ -126,7 +100,7 @@ private fun MazeComponentImpl(
         ).take(items.size).toList()
     }
 
-    val height = remember(mazePoints) {
+    val height = remember(mazePoints.size) {
         if (mazePoints.isEmpty()) return@remember 0.dp
 
         val heightPx = abs(mazePoints.first().y) + abs(mazePoints.last().y)
@@ -186,24 +160,18 @@ private fun MazeComponentImpl(
                 detectTapGestures(
                     onTap = { tapOffset ->
                         val tapPoint = tapOffset.toMazePoint()
-                        Log.d("MazeComponent", "Clicked in position: $tapOffset")
 
-                        mazePoints.forEachIndexed { index, mazePoint ->
+                        val tapIndex = mazePoints.indexOfFirstOrNull { mazePoint ->
                             val realMazePoint = mazePoint.copy(y = mazePoint.y + topScroll)
+                            tapPoint.isInsideCircle(realMazePoint, circleRadius)
+                        }
 
-                            if (tapPoint.isInsideCircle(realMazePoint, circleRadius)) {
-                                val isPlayItem = isPlayItem(items, index)
-
-                                if (isPlayItem) {
-                                    Log.d("MazeComponent", "Clicked in button: $index")
-                                    onClick(index)
-                                }
-                            }
+                        if (tapIndex != null) {
+                            if (items.isPlayableItem(tapIndex)) onClick(tapIndex)
                         }
                     }
                 )
-            }
-            .pointerInput(Unit) {
+            }.pointerInput(Unit) {
                 detectVerticalDragGestures { _, dragAmount ->
                     if (topScroll + dragAmount > 0 && topScroll + dragAmount < topY) {
                         topScroll += dragAmount
@@ -215,8 +183,8 @@ private fun MazeComponentImpl(
             mazePoints.forEachIndexed { index, point ->
                 val pointOffset = Offset(point.x, point.y)
 
-                val itemPlayed = items.getOrNull(index)?.played == true
-                val isPlayItem = isPlayItem(items, index)
+                val itemPlayed = items.isItemPlayed(index)
+                val isPlayItem = items.isPlayableItem(index)
 
                 val circleColor = if (itemPlayed || isPlayItem) colorPrimary else colorSurfaceVariant
 
@@ -271,23 +239,35 @@ private fun MazeComponentImpl(
     }
 }
 
+private fun getContentColor(
+    items: List<MazeQuiz.MazeItem>,
+    index: Int,
+    colorPrimary: Color,
+    colorSurfaceVariant: Color
+): Color {
+    val itemPlayed = items.isItemPlayed(index)
+    val isPlayItem = items.isPlayableItem(index)
+
+    return if (itemPlayed || isPlayItem) colorPrimary else colorSurfaceVariant
+}
+
 @Composable
 @PreviewNightLight
 private fun MazeComponentPreview() {
     val completedItems = List(9) {
-        MathQuizMaze.MazeItem(
-            id = it,
-            formula = MathFormula.fromStringFullFormula("1+1=2"),
+        MazeQuiz.MazeItem.Wordle(
+            word = "1+1=2",
             difficulty = QuestionDifficulty.Easy,
-            played = true
+            played = true,
+            wordleQuizType = WordleQuizType.MATH_FORMULA
         )
     }
 
     val otherItems = List(20) {
-        MathQuizMaze.MazeItem(
-            id = it,
-            formula = MathFormula.fromStringFullFormula("1+1=2"),
-            difficulty = QuestionDifficulty.Easy
+        MazeQuiz.MazeItem.Wordle(
+            word = "1+1=2",
+            difficulty = QuestionDifficulty.Easy,
+            wordleQuizType = WordleQuizType.MATH_FORMULA
         )
     }
 

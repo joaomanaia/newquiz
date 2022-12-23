@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.infinitepower.newquiz.domain.repository.math_quiz.maze.MazeQuizDao
+import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers

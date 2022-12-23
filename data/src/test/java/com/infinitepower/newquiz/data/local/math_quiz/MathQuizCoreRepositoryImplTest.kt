@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.data.local.math_quiz
 
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.math.evaluator.Expressions
-import com.infinitepower.newquiz.data.repository.math_quiz.maze.MathQuizCoreRepositoryImpl
+import com.infinitepower.newquiz.data.repository.math_quiz.MathQuizCoreRepositoryImpl
 import com.infinitepower.newquiz.model.math_quiz.MathFormula
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import org.junit.jupiter.api.BeforeEach

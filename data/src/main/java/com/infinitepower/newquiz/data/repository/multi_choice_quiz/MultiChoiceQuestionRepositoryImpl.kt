@@ -25,18 +25,18 @@ import kotlinx.serialization.json.Json
 import java.security.SecureRandom
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class MultiChoiceQuestionRepositoryImpl @Inject constructor(
     private val client: HttpClient,
     @MultiChoiceQuestionDataStoreManager private val settingsDataStoreManager: DataStoreManager
 ) : MultiChoiceQuestionRepository {
-    private val random = SecureRandom()
-
     override suspend fun getRandomQuestions(
         amount: Int,
         category: Int?,
-        difficulty: String?
+        difficulty: String?,
+        random: Random
     ): List<MultiChoiceQuestion> = withContext(Dispatchers.IO) {
         trace(name = "GetOpenTDBQuestions") {
             val openTDBResults = getOpenTDBResponse(amount, category, difficulty).results
