@@ -14,6 +14,7 @@ import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
+import com.infinitepower.newquiz.data.worker.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
@@ -21,6 +22,7 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.RemainingTime
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
+import com.infinitepower.newquiz.model.multi_choice_quiz.isAllCorrect
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
 import com.infinitepower.newquiz.online_services.core.worker.multichoicequiz.MultiChoiceQuizEndGameWorker
@@ -269,11 +271,8 @@ class QuizScreenViewModel @Inject constructor(
                 .get<ArrayList<MultiChoiceQuestion>>(MultiChoiceQuizScreenNavArg::initialQuestions.name)
                 .orEmpty()
 
-            val difficulty =
-                savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
-
-            val type =
-                savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
+            val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
+            val type = savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
 
             val endGameWorkRequest = OneTimeWorkRequestBuilder<MultiChoiceQuizEndGameWorker>()
                 .setInputData(
@@ -281,10 +280,25 @@ class QuizScreenViewModel @Inject constructor(
                         MultiChoiceQuizEndGameWorker.INPUT_QUESTION_STEPS to questionStepsStr,
                         MultiChoiceQuizEndGameWorker.INPUT_SAVE_NEW_XP to initialQuestions.isEmpty(),
                     )
-                )
-                .build()
+                ).build()
 
-            workManager.enqueue(endGameWorkRequest)
+
+            val allCorrect = questionSteps.isAllCorrect()
+            val mazeItemId = savedStateHandle.get<Int?>(MultiChoiceQuizScreenNavArg::mazeItemId.name)
+
+            if (mazeItemId != null && allCorrect) {
+                // Runs the end game maze worker if is maze game mode and the question is correct
+                val endGameMazeQuizWorkerRequest = OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
+                    .setInputData(workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId))
+                    .build()
+
+                workManager
+                    .beginWith(endGameMazeQuizWorkerRequest)
+                    .then(endGameWorkRequest)
+                    .enqueue()
+            } else {
+                workManager.enqueue(endGameWorkRequest)
+            }
 
             delay(1000)
 

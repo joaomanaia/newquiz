@@ -8,10 +8,10 @@ import com.infinitepower.newquiz.data.database.util.converters.ListConverter
 import com.infinitepower.newquiz.data.database.util.converters.LocalDateConverter
 import com.infinitepower.newquiz.data.database.util.converters.MathFormulaConverter
 import com.infinitepower.newquiz.data.database.util.converters.QuestionDifficultyConverter
-import com.infinitepower.newquiz.domain.repository.math_quiz.maze.MazeQuizDao
+import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsDao
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleDao
-import com.infinitepower.newquiz.model.math_quiz.maze.MathQuizMaze
+import com.infinitepower.newquiz.model.maze.MazeQuizItemEntity
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
 
@@ -26,7 +26,7 @@ import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
     entities = [
         MultiChoiceQuestion::class,
         WordleDailyCalendarItem::class,
-        MathQuizMaze.MazeItem::class
+        MazeQuizItemEntity::class
     ],
     version = 1
 )

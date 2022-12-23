@@ -1,6 +1,10 @@
 package com.infinitepower.newquiz.model.math_quiz.maze
 
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.model.maze.MazePoint
+import com.infinitepower.newquiz.model.maze.generateMazePointsBottomToTop
+import com.infinitepower.newquiz.model.maze.generateMazePointsTopToBottom
+import com.infinitepower.newquiz.model.maze.isInsideCircle
 import org.junit.jupiter.api.Test
 
 internal class MazePointTest {

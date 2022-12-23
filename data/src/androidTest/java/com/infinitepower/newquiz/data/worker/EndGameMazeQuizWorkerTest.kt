@@ -2,18 +2,16 @@ package com.infinitepower.newquiz.data.worker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorkerFactory
-import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.work.ListenableWorker
-import androidx.work.WorkerFactory
 import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.workDataOf
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.data.database.AppDatabase
-import com.infinitepower.newquiz.domain.repository.math_quiz.maze.MazeMathQuizRepository
-import com.infinitepower.newquiz.domain.repository.math_quiz.maze.MazeQuizDao
+import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
+import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -40,7 +38,7 @@ internal class EndGameMazeQuizWorkerTest {
 
     @Inject lateinit var mazeQuizDao: MazeQuizDao
 
-    @Inject lateinit var mazeMathQuizRepository: MazeMathQuizRepository
+    @Inject lateinit var mazeMathQuizRepository: MazeQuizRepository
 
     @Before
     fun setup() {
@@ -58,18 +56,14 @@ internal class EndGameMazeQuizWorkerTest {
     fun testDoWork_success() = runTest {
         mazeQuizDao.deleteAll()
         val randomMazeItems = mazeMathQuizRepository.generateMaze()
-        mazeQuizDao.insertItems(randomMazeItems.formulas)
+        mazeQuizDao.insertItems(randomMazeItems.items)
 
         val firstSavedItem = mazeQuizDao.getAllMazeItems().first()
 
         // Arrange
         val mazeItemId = firstSavedItem.id
-        val isQuestionCorrect = true
 
-        val inputData = workDataOf(
-            EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId,
-            EndGameMazeQuizWorker.INPUT_IS_CORRECT to isQuestionCorrect
-        )
+        val inputData = workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId)
 
         val worker = TestListenableWorkerBuilder<EndGameMazeQuizWorker>(context)
             .setWorkerFactory(workerFactory)
@@ -86,7 +80,6 @@ internal class EndGameMazeQuizWorkerTest {
 
         assertThat(updatedMazeItem1).isNotNull()
         assertThat(updatedMazeItem1?.played).isTrue()
-        assertThat(updatedMazeItem1?.correct).isTrue()
 
         val secondItem = mazeQuizDao.getAllMazeItems()[1]
         assertThat(secondItem.played).isFalse()

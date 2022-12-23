@@ -5,6 +5,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.security.SecureRandom
 
 @Keep
@@ -22,6 +25,12 @@ data class MultiChoiceQuestion(
     val difficulty: String
 ) : java.io.Serializable {
     fun toQuestionStep() = MultiChoiceQuestionStep.NotCurrent(this)
+
+    override fun toString(): String = Json.encodeToString(this)
+
+    companion object {
+        fun fromString(value: String): MultiChoiceQuestion = Json.decodeFromString(value)
+    }
 }
 
 fun getBasicMultiChoiceQuestion() = MultiChoiceQuestion(

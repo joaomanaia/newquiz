@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.repository.math_quiz.maze
+package com.infinitepower.newquiz.data.repository.math_quiz
 
 import com.infinitepower.newquiz.core.math.MathOperator
 import com.infinitepower.newquiz.core.math.evaluator.Expressions

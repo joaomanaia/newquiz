@@ -156,6 +156,7 @@ dependencies {
     implementation(project(Modules.domain))
     implementation(project(Modules.onlineServices))
     implementation(project(Modules.mathQuiz))
+    implementation(project(Modules.mazeQuiz))
 }
 
 tasks.withType<Test> {

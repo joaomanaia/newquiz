@@ -16,7 +16,7 @@ android {
         minSdk = ProjectConfig.minSdk
         targetSdk = ProjectConfig.targetSdk
 
-        testInstrumentationRunner = "com.infinitepower.newquiz.wordle.HiltTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 

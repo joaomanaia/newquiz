@@ -10,6 +10,7 @@ import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 import java.security.SecureRandom
+import kotlin.random.Random
 
 @Singleton
 class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
@@ -20,7 +21,8 @@ class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
         category: Int?,
-        difficulty: String?
+        difficulty: String?,
+        random: Random
     ): List<MultiChoiceQuestion> {
         val allLogos = getRemoteConfigAllLogos()
 
@@ -29,7 +31,7 @@ class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
         } else allLogos
 
         return filteredByDifficulty
-            .shuffled()
+            .shuffled(random)
             .take(amount)
             .map { item -> item.toQuestion() }
     }

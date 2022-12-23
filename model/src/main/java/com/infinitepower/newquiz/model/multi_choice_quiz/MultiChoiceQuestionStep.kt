@@ -42,4 +42,6 @@ sealed class MultiChoiceQuestionStep {
 
 fun List<MultiChoiceQuestionStep>.isAllCompleted(): Boolean = all { it is MultiChoiceQuestionStep.Completed }
 
+fun List<MultiChoiceQuestionStep.Completed>.isAllCorrect(): Boolean = all { it.correct }
+
 fun List<MultiChoiceQuestionStep.Completed>.countCorrectQuestions(): Int = count { it.correct }

@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.math_quiz.maze
+package com.infinitepower.newquiz.maze_quiz
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,13 +24,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.math_quiz.maze.components.GenerateMazeComponent
-import com.infinitepower.newquiz.math_quiz.maze.components.MazeComponent
+import com.infinitepower.newquiz.maze_quiz.components.GenerateMazeComponent
+import com.infinitepower.newquiz.maze_quiz.components.MazeComponent
 import com.infinitepower.newquiz.model.math_quiz.MathFormula
-import com.infinitepower.newquiz.model.math_quiz.maze.MathQuizMaze
+import com.infinitepower.newquiz.model.maze.MazeQuiz
+import com.infinitepower.newquiz.model.maze.MazeQuiz.MazeItem
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
-import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -38,45 +38,38 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 @Destination
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
-fun MathMazeScreen(
+fun MazeScreen(
     navigator: DestinationsNavigator,
-    viewModel: MathMazeScreenViewModel = hiltViewModel()
+    mazeScreenNavigator: MazeScreenNavigator,
+    viewModel: MazeScreenViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    MathMazeScreenImpl(
+    MazeScreenImpl(
         uiState = uiState,
         navigateBack = navigator::popBackStack,
         uiEvent = viewModel::onEvent,
-        onItemClick = { item ->
-            navigator.navigate(
-                WordleScreenDestination(
-                    word = item.formula.fullFormulaWithoutSpaces,
-                    quizType = WordleQuizType.MATH_FORMULA,
-                    mazeItemId = item.id
-                )
-            )
-        }
+        onItemClick = mazeScreenNavigator::navigateToGame
     )
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun MathMazeScreenImpl(
-    uiState: MathMazeScreenUiState,
+private fun MazeScreenImpl(
+    uiState: MazeScreenUiState,
     navigateBack: () -> Unit,
-    uiEvent: (event: MathMazeScreenUiEvent) -> Unit,
-    onItemClick: (item: MathQuizMaze.MazeItem) -> Unit
+    uiEvent: (event: MazeScreenUiEvent) -> Unit,
+    onItemClick: (item: MazeItem) -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
-    val formulas = uiState.mathMaze.formulas
+    val formulas = uiState.mathMaze.items
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = CoreR.string.math_maze))
+                    Text(text = stringResource(id = CoreR.string.maze))
                 },
                 navigationIcon = {
                     IconButton(onClick = navigateBack) {
@@ -88,7 +81,7 @@ private fun MathMazeScreenImpl(
                 },
                 actions = {
                     if (!uiState.isMazeEmpty) {
-                        IconButton(onClick = { uiEvent(MathMazeScreenUiEvent.RestartMaze) }) {
+                        IconButton(onClick = { uiEvent(MazeScreenUiEvent.RestartMaze) }) {
                             Icon(
                                 imageVector = Icons.Rounded.RestartAlt,
                                 contentDescription = "Restart"
@@ -112,7 +105,7 @@ private fun MathMazeScreenImpl(
                 GenerateMazeComponent(
                     modifier = Modifier.fillMaxSize(),
                     onGenerateClick = { seed ->
-                        uiEvent(MathMazeScreenUiEvent.GenerateMaze(seed))
+                        uiEvent(MazeScreenUiEvent.GenerateMaze(seed))
                     }
                 )
             }
@@ -131,31 +124,31 @@ private fun MathMazeScreenImpl(
 @Composable
 @PreviewNightLight
 @OptIn(ExperimentalMaterial3Api::class)
-fun MathMazeScreenPreview() {
+fun MazeScreenPreview() {
     val completedItems = List(9) {
-        MathQuizMaze.MazeItem(
-            id = it,
-            formula = MathFormula.fromStringFullFormula("1+1=2"),
+        MazeItem.Wordle(
+            word = "1+1=2",
             difficulty = QuestionDifficulty.Easy,
-            played = true
+            played = true,
+            wordleQuizType = WordleQuizType.MATH_FORMULA
         )
     }
 
     val otherItems = List(20) {
-        MathQuizMaze.MazeItem(
-            id = it,
-            formula = MathFormula.fromStringFullFormula("1+1=2"),
-            difficulty = QuestionDifficulty.Easy
+        MazeItem.Wordle(
+            word = "1+1=2",
+            difficulty = QuestionDifficulty.Easy,
+            wordleQuizType = WordleQuizType.MATH_FORMULA
         )
     }
 
     val mazeItems = completedItems + otherItems
 
     NewQuizTheme {
-        MathMazeScreenImpl(
-            uiState = MathMazeScreenUiState(
+        MazeScreenImpl(
+            uiState = MazeScreenUiState(
                 loading = false,
-                mathMaze = MathQuizMaze(formulas = mazeItems)
+                mathMaze = MazeQuiz(items = mazeItems)
             ),
             navigateBack = {},
             uiEvent = {},

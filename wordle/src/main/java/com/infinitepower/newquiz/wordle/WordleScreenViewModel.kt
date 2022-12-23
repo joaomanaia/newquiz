@@ -277,14 +277,11 @@ class WordleScreenViewModel @Inject constructor(
 
         val mazeItemId = savedStateHandle.get<Int?>(WordleScreenNavArgs::mazeItemId.name)
 
-        if (mazeItemId != null) {
+        if (mazeItemId != null && isLastRowCorrect) {
+            // Runs the end game maze worker if is maze game mode and the question is correct
             val endGameMazeQuizWorkerRequest = OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
-                .setInputData(
-                    workDataOf(
-                        EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId,
-                        EndGameMazeQuizWorker.INPUT_IS_CORRECT to isLastRowCorrect
-                    )
-                ).build()
+                .setInputData(workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId))
+                .build()
 
             workManager
                 .beginWith(endGameMazeQuizWorkerRequest)

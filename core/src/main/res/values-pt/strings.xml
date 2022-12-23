@@ -76,6 +76,10 @@
     <string name="categories">Categorias</string>
     <string name="n_questions_available">%1$s questões disponíveis</string>
     <string name="see_all">Ver tudo</string>
+    <string name="guess_number">Adivinha o número</string>
+    <string name="guess_math_formula">Adivinha a fórmula matematica</string>
+    <string name="math_quiz">Jogo de matemática</string>
+    <string name="maze">Labirinto</string>
     <string name="easy">Fácil</string>
     <string name="medium">Médio</string>
     <string name="hard">Difícil</string>
@@ -119,5 +123,5 @@
     <string name="dismiss">Dispensar</string>
     <string name="sign_in">Login</string>
     <string name="show_login_card">Mostrar o cartão de login</string>
-    <string name="show_login_card_at_home_screen">Mostrar o cartão de login na pagina inicial</string>
+    <string name="show_login_card_at_home_screen">Mostrar o cartão de login na página inicial</string>
 </resources>

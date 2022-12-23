@@ -1,10 +1,14 @@
 package com.infinitepower.newquiz.core.util.kotlin
 
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import kotlin.random.Random
 
-class SumOfIntRangeTest {
+@OptIn(ExperimentalCoroutinesApi::class)
+class CollectionUtilsTest {
     @Test
     @DisplayName("Should return the sum of two ranges")
     fun sumOfTwoRanges() {
@@ -29,4 +33,65 @@ class SumOfIntRangeTest {
 
         assertThat(result).isEqualTo(33..60)
     }
+
+    @Test
+    fun testGenerateRandomUniqueItems_correctSize() = runTest  {
+        val questionSize = 5
+        val generator: () -> Int = { Random.nextInt() }
+
+        val items = generateRandomUniqueItems(questionSize, generator)
+
+        assertThat(items).hasSize(questionSize)
+        assertThat(items).containsNoDuplicates()
+    }
+
+    @Test
+    fun testGenerateRandomUniqueItems_generatedItems() = runTest  {
+        val questionSize = 5
+        val expectedItems = listOf(1, 2, 3, 4, 5)
+        var index = 0
+        val generator: () -> Int = {
+            val item = expectedItems[index]
+            index++
+            item
+        }
+
+        val items = generateRandomUniqueItems(questionSize, generator)
+
+        assertThat(items).containsExactlyElementsIn(expectedItems)
+    }
+
+    @Test
+    fun testGenerateRandomUniqueItems_sameGenerated_returnsOneSize() = runTest {
+        val questionSize = 5
+        val generator: () -> Int = { 0 }
+
+        val items = generateRandomUniqueItems(questionSize, generator, 1000)
+
+        assertThat(items).hasSize(1)
+        assertThat(items).containsNoDuplicates()
+    }
+
+    /*
+    @Test
+    fun `test generateRandomUniqueItems returns expected number of items`() {
+        val generator = mockk<() -> Int>()
+        every { generator() } returns 0
+
+        val result = generateRandomUniqueItems(5, generator)
+
+        assertThat(result).hasSize(5)
+    }
+
+    @Test
+    fun `test generateRandomUniqueItems returns unique items`() {
+        val generator = mockk<() -> Int>()
+        every { generator() } returnsMany listOf(0, 1, 2, 3, 4)
+
+        val result = generateRandomUniqueItems(5, generator)
+
+        assertThat(result).containsNoDuplicates()
+    }
+
+     */
 }

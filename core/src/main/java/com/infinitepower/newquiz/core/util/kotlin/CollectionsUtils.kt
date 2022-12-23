@@ -16,3 +16,20 @@ infix fun ClosedFloatingPointRange<Float>.increaseEndBy(
 ): ClosedFloatingPointRange<Float> {
     return endInclusive..(endInclusive + other)
 }
+
+suspend fun <T> generateRandomUniqueItems(
+    questionSize: Int,
+    generator: suspend () -> T,
+    maxIterations: Int = Int.MAX_VALUE
+): Iterable<T> {
+    val items = HashSet<T>()
+    var iterations = 0
+
+    while (items.size < questionSize && iterations < maxIterations) {
+        val generatedItem = generator()
+        items.add(generatedItem)
+        iterations++
+    }
+
+    return items
+}
