@@ -15,12 +15,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -31,12 +33,17 @@ import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.MazeQuiz.MazeItem
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.ramcosta.composedestinations.annotation.DeepLink
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
-@Destination
+@Destination(
+    deepLinks = [
+        DeepLink(uriPattern = "newquiz://maze")
+    ]
+)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 fun MazeScreen(
     navigator: DestinationsNavigator,
@@ -51,6 +58,11 @@ fun MazeScreen(
         uiEvent = viewModel::onEvent,
         onItemClick = mazeScreenNavigator::navigateToGame
     )
+
+    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
+    LaunchedEffect(key1 = true) {
+        coreLoggingAnalytics.logScreenView("MazeScreen")
+    }
 }
 
 @Composable
@@ -104,8 +116,8 @@ private fun MazeScreenImpl(
             if (!uiState.loading && uiState.isMazeEmpty) {
                 GenerateMazeComponent(
                     modifier = Modifier.fillMaxSize(),
-                    onGenerateClick = { seed ->
-                        uiEvent(MazeScreenUiEvent.GenerateMaze(seed))
+                    onGenerateClick = { seed, gamesModeSelected ->
+                        uiEvent(MazeScreenUiEvent.GenerateMaze(seed, gamesModeSelected))
                     }
                 )
             }

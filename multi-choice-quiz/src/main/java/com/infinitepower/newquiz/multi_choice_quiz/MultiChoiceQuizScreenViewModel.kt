@@ -284,7 +284,9 @@ class QuizScreenViewModel @Inject constructor(
 
 
             val allCorrect = questionSteps.isAllCorrect()
-            val mazeItemId = savedStateHandle.get<Int?>(MultiChoiceQuizScreenNavArg::mazeItemId.name)
+            val mazeItemId = savedStateHandle
+                .get<String?>(MultiChoiceQuizScreenNavArg::mazeItemId.name)
+                ?.toIntOrNull()
 
             if (mazeItemId != null && allCorrect) {
                 // Runs the end game maze worker if is maze game mode and the question is correct

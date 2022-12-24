@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.worker.math_quiz.maze
+package com.infinitepower.newquiz.data.worker.maze
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @HiltWorker
-class CleanMathQuizMazeWorker @AssistedInject constructor(
+class CleanMazeQuizWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val mazeQuizDao: MazeQuizDao

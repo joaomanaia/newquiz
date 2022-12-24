@@ -18,15 +18,17 @@ infix fun ClosedFloatingPointRange<Float>.increaseEndBy(
 }
 
 suspend fun <T> generateRandomUniqueItems(
-    questionSize: Int,
+    itemCount: Int,
+    exclusions: List<T> = emptyList(),
     generator: suspend () -> T,
     maxIterations: Int = Int.MAX_VALUE
 ): Iterable<T> {
     val items = HashSet<T>()
     var iterations = 0
 
-    while (items.size < questionSize && iterations < maxIterations) {
+    while (items.size < itemCount && iterations < maxIterations) {
         val generatedItem = generator()
+        if (generatedItem in exclusions) continue
         items.add(generatedItem)
         iterations++
     }

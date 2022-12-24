@@ -55,7 +55,7 @@ data class WordleScreenNavArgs(
     val word: String? = null,
     val date: String? = null,
     val quizType: WordleQuizType = WordleQuizType.TEXT,
-    val mazeItemId: Int? = null
+    val mazeItemId: String? = null
 )
 
 @Composable
@@ -114,12 +114,18 @@ private fun WordleScreenImpl(
         mutableStateOf(false)
     }
 
+    val screenTitle = when (uiState.wordleQuizType) {
+        WordleQuizType.NUMBER -> stringResource(id = CoreR.string.guess_number)
+        WordleQuizType.MATH_FORMULA -> stringResource(id = CoreR.string.guess_math_formula)
+        else -> stringResource(id = CoreR.string.wordle)
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = CoreR.string.wordle))
+                    Text(text = screenTitle)
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {

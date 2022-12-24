@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.data.di
 import com.infinitepower.newquiz.data.repository.math_quiz.MathQuizCoreRepositoryImpl
 import com.infinitepower.newquiz.data.repository.maze_quiz.MazeQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.FlagQuizRepositoryImpl
+import com.infinitepower.newquiz.data.repository.multi_choice_quiz.GuessMathSolutionRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.LogoQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.MultiChoiceQuestionRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepositoryImpl
@@ -11,6 +12,7 @@ import com.infinitepower.newquiz.data.repository.wordle.daily.DailyWordleReposit
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
+import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSolutionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
@@ -47,4 +49,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindMazeMathQuizRepository(mazeMathQuizRepository: MazeQuizRepositoryImpl): MazeQuizRepository
+
+    @Binds
+    abstract fun bindGuessMathSolutionRepository(GuessMathSolutionRepository: GuessMathSolutionRepositoryImpl): GuessMathSolutionRepository
 }
