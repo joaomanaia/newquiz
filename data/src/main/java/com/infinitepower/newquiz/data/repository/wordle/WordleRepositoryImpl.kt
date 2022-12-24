@@ -54,7 +54,7 @@ class WordleRepositoryImpl @Inject constructor(
         }
     }
 
-    override  fun generateRandomWord(
+    override fun generateRandomWord(
         quizType: WordleQuizType,
         random: Random
     ): FlowResource<String> = flow {
@@ -65,7 +65,7 @@ class WordleRepositoryImpl @Inject constructor(
                 WordleQuizType.TEXT -> generateRandomTextWord(random = random)
                 WordleQuizType.NUMBER -> generateRandomNumberWord(random = random)
                 WordleQuizType.MATH_FORMULA -> {
-                    val formula = mathQuizCoreRepository.generateMathFormula()
+                    val formula = mathQuizCoreRepository.generateMathFormula(random = random)
                     formula.fullFormulaWithoutSpaces
                 }
             }

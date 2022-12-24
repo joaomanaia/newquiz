@@ -16,8 +16,6 @@ import kotlin.random.Random
 class FlagQuizRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : FlagQuizRepository {
-    private val random = SecureRandom()
-
     override suspend fun getRandomQuestions(
         amount: Int,
         category: Int?,
@@ -31,18 +29,20 @@ class FlagQuizRepositoryImpl @Inject constructor(
         val allCountriesName = allCountries.map(CountryFlagQuizBaseItem::name)
 
         return allCountries
+            .sortedBy { it.name }
             .shuffled(random)
             .take(amount)
             .map { country ->
-                country.toQuestion(allCountriesName)
+                country.toQuestion(allCountriesName, random)
             }
     }
 
     private fun CountryFlagQuizBaseItem.toQuestion(
-        allCountriesName: List<String>
+        allCountriesName: List<String>,
+        random: Random = Random
     ): MultiChoiceQuestion {
-        val answerCountries = allCountriesName.shuffled().take(3) + name
-        val answers = answerCountries.shuffled()
+        val answerCountries = allCountriesName.shuffled(random).take(3) + name
+        val answers = answerCountries.shuffled(random)
 
         return MultiChoiceQuestion(
             id = random.nextInt(),
@@ -50,7 +50,7 @@ class FlagQuizRepositoryImpl @Inject constructor(
             imageUrl = flagUrl,
             answers = answers,
             correctAns = answers.indexOf(name),
-            category = "Country Quiz",
+            category = "Flag Quiz",
             difficulty = "medium",
             lang = "en",
             type = "multiple"

@@ -275,7 +275,9 @@ class WordleScreenViewModel @Inject constructor(
                 )
             ).build()
 
-        val mazeItemId = savedStateHandle.get<Int?>(WordleScreenNavArgs::mazeItemId.name)
+        val mazeItemId = savedStateHandle
+            .get<String?>(WordleScreenNavArgs::mazeItemId.name)
+            ?.toIntOrNull()
 
         if (mazeItemId != null && isLastRowCorrect) {
             // Runs the end game maze worker if is maze game mode and the question is correct

@@ -10,7 +10,6 @@ import com.infinitepower.newquiz.maze_quiz.MazeScreenNavigator
 import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
-import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.SavedMultiChoiceQuestionsScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.saved_questions.SavedQuestionsScreenNavigator
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
@@ -65,13 +64,13 @@ class CommonNavGraphNavigator(
                 WordleScreenDestination(
                     word = item.word,
                     quizType = item.wordleQuizType,
-                    mazeItemId = item.id
+                    mazeItemId = item.id.toString()
                 )
             }
             is MazeQuiz.MazeItem.MultiChoice -> {
                 MultiChoiceQuizScreenDestination(
                     initialQuestions = arrayListOf(item.question),
-                    mazeItemId = item.id
+                    mazeItemId = item.id.toString()
                 )
             }
         }

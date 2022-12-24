@@ -93,6 +93,7 @@ dependencies {
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.wordle))
+    implementation(project(Modules.multiChoicequiz))
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
 }

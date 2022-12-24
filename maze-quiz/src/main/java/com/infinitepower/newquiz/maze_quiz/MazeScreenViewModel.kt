@@ -8,8 +8,8 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.common.Resource
-import com.infinitepower.newquiz.data.worker.math_quiz.maze.CleanMathQuizMazeWorker
-import com.infinitepower.newquiz.data.worker.math_quiz.maze.GenerateMazeQuizWorker
+import com.infinitepower.newquiz.data.worker.maze.CleanMazeQuizWorker
+import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.model.maze.emptyMaze
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,16 +43,16 @@ class MazeScreenViewModel @Inject constructor(
 
     fun onEvent(event: MazeScreenUiEvent) {
         when (event) {
-            is MazeScreenUiEvent.GenerateMaze -> generateMaze(seed = event.seed)
+            is MazeScreenUiEvent.GenerateMaze -> generateMaze(event.seed, event.gamesModeSelected)
             is MazeScreenUiEvent.RestartMaze -> cleanSavedMaze()
         }
     }
 
-    private fun generateMaze(seed: Int?) {
-        val cleanSavedMazeRequest = OneTimeWorkRequestBuilder<CleanMathQuizMazeWorker>().build()
+    private fun generateMaze(seed: Int?, gameModesSelected: List<Int>?) {
+        val cleanSavedMazeRequest = OneTimeWorkRequestBuilder<CleanMazeQuizWorker>().build()
 
         // Null if is all game modes enabled
-        val gameModes: IntArray? = null
+        val gameModes: IntArray? = gameModesSelected?.ifEmpty { null }?.toIntArray()
 
         val generateMazeRequest = OneTimeWorkRequestBuilder<GenerateMazeQuizWorker>()
             .setInputData(
@@ -81,7 +81,7 @@ class MazeScreenViewModel @Inject constructor(
     }
 
     private fun cleanSavedMaze() {
-        val cleanSavedMazeRequest = OneTimeWorkRequestBuilder<CleanMathQuizMazeWorker>().build()
+        val cleanSavedMazeRequest = OneTimeWorkRequestBuilder<CleanMazeQuizWorker>().build()
 
         workManager.enqueue(cleanSavedMazeRequest)
     }
