@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
@@ -32,7 +33,8 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val logoQuizRepository: LogoQuizRepository,
     private val wordleRepository: WordleRepository,
     private val multiChoiceQuestionRepository: MultiChoiceQuestionRepository,
-    private val guessMathSolutionRepository: GuessMathSolutionRepository
+    private val guessMathSolutionRepository: GuessMathSolutionRepository,
+    private val coreLoggingAnalytics: CoreLoggingAnalytics
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         const val INPUT_SEED = "INPUT_SEED"
@@ -53,7 +55,9 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val seed = inputData.getInt(INPUT_SEED, Random.nextInt())
         val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, 50)
-        val gameModes = inputData.getIntArray(INPUT_GAME_MODES).toGameModes()
+
+        val inputGameModes = inputData.getIntArray(INPUT_GAME_MODES)
+        val gameModes = inputGameModes.toGameModes()
 
         // Random to use in all of the generators
         val random = Random(seed)
@@ -111,6 +115,8 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
 
         if (questionsCount != allMazeItems.count())
             throw RuntimeException("Maze saved questions: $questionsCount is not equal to generated questions: ${allMazeItems.count()}")
+
+        coreLoggingAnalytics.logCreateMaze(seed, questionsCount, inputGameModes?.toList().orEmpty())
 
         Result.success()
     }

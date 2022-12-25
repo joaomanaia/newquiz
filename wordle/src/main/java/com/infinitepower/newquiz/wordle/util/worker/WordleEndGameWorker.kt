@@ -36,6 +36,7 @@ class WordleEndGameWorker @AssistedInject constructor(
         const val INPUT_IS_LAST_ROW_CORRECT = "is_last_row_correct"
         const val INPUT_QUIZ_TYPE = "quiz_type"
         const val INPUT_DAY = "day"
+        const val INPUT_MAZE_TEM_ID = "maze_item_id"
     }
 
     override suspend fun doWork(): Result {
@@ -45,6 +46,7 @@ class WordleEndGameWorker @AssistedInject constructor(
         val isLastRowCorrect = inputData.getBoolean(INPUT_IS_LAST_ROW_CORRECT, false)
         val quizType = inputData.getString(INPUT_QUIZ_TYPE) ?: WordleQuizType.TEXT.name
         val day = inputData.getString(INPUT_DAY)
+        val mazeItemId = inputData.getString(INPUT_MAZE_TEM_ID)
 
         wordleLoggingAnalytics.logGameEnd(
             wordLength = word.length,
@@ -52,7 +54,8 @@ class WordleEndGameWorker @AssistedInject constructor(
             lastRow = currentRowPosition,
             lastRowCorrect = isLastRowCorrect,
             quizType = quizType,
-            day = day
+            day = day,
+            mazeItemId = mazeItemId?.toIntOrNull()
         )
 
         if (day != null) {

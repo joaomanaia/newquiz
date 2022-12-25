@@ -1,8 +1,10 @@
 package com.infinitepower.newquiz.model.maze
 
+import androidx.annotation.Keep
 import androidx.compose.ui.geometry.Offset
 import kotlin.math.pow
 
+@Keep
 data class MazePoint(
     val x: Float,
     val y: Float

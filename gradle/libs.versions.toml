@@ -19,12 +19,10 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.7.21-1.
 [versions]
 
 kotlin = "1.7.21"
-##  ⬆ = "1.7.22"
-##  ⬆ = "1.8.0-Beta"
-##  ⬆ = "1.8.0-RC"
-##  ⬆ = "1.8.0-RC2"
 
 google-android-play-services-ads = "21.4.0"
+
+firebase-appcheck-safetynet = "16.1.0"
 
 [libraries]
 
@@ -69,3 +67,5 @@ compose = "com.patrykandpatryk.vico:compose:1.6.1"
 compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.6.1"
 
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.6"
+
+firebase-appcheck-safetynet = { group = "com.google.firebase", name = "firebase-appcheck-safetynet", version.ref = "firebase-appcheck-safetynet" }

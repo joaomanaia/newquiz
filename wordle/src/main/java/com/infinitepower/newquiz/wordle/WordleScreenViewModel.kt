@@ -128,7 +128,9 @@ class WordleScreenViewModel @Inject constructor(
         val rowLimit =
             wordleRepository.getWordleMaxRows(savedStateHandle[WordleScreenNavArgs::rowLimit.name])
 
-        wordleLoggingAnalytics.logGameStart(word.length, rowLimit, quizType.name, day)
+        val mazeItemId = savedStateHandle.get<String?>(WordleScreenNavArgs::mazeItemId.name)
+
+        wordleLoggingAnalytics.logGameStart(word.length, rowLimit, quizType.name, day, mazeItemId?.toIntOrNull())
 
         _uiState.update { currentState ->
             currentState.copy(
@@ -263,6 +265,8 @@ class WordleScreenViewModel @Inject constructor(
 
         val isLastRowCorrect = currentState.rows.lastOrNull()?.isRowCorrect == true
 
+        val mazeItemId = savedStateHandle.get<String?>(WordleScreenNavArgs::mazeItemId.name)
+
         val wordleEndGameWorkRequest = OneTimeWorkRequestBuilder<WordleEndGameWorker>()
             .setInputData(
                 workDataOf(
@@ -271,18 +275,15 @@ class WordleScreenViewModel @Inject constructor(
                     WordleEndGameWorker.INPUT_CURRENT_ROW_POSITION to currentState.currentRowPosition,
                     WordleEndGameWorker.INPUT_IS_LAST_ROW_CORRECT to isLastRowCorrect,
                     WordleEndGameWorker.INPUT_QUIZ_TYPE to currentState.wordleQuizType?.name,
-                    WordleEndGameWorker.INPUT_DAY to currentState.day
+                    WordleEndGameWorker.INPUT_DAY to currentState.day,
+                    WordleEndGameWorker.INPUT_MAZE_TEM_ID to mazeItemId
                 )
             ).build()
-
-        val mazeItemId = savedStateHandle
-            .get<String?>(WordleScreenNavArgs::mazeItemId.name)
-            ?.toIntOrNull()
 
         if (mazeItemId != null && isLastRowCorrect) {
             // Runs the end game maze worker if is maze game mode and the question is correct
             val endGameMazeQuizWorkerRequest = OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
-                .setInputData(workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId))
+                .setInputData(workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId.toIntOrNull()))
                 .build()
 
             workManager

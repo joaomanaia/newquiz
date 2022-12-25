@@ -9,7 +9,7 @@ object ProjectConfig {
 
     const val targetSdk = 33
 
-    const val versionCode = 4
+    const val versionCode = 5
 
-    const val versionName = "1.2.1"
+    const val versionName = "1.3.0"
 }
