@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.maze_quiz.components
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -14,7 +15,9 @@ import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -87,6 +90,10 @@ private fun MazeComponentImpl(
     val colorSurface = MaterialTheme.colorScheme.surface
     val colorSurfaceVariant = MaterialTheme.colorScheme.surfaceVariant
 
+    val currentPlayItemIndex = remember(items) {
+        items.indexOfFirstOrNull { !it.played }
+    }
+
     val incrementPoint = with(localDensity) {
         MazePoint(x = 100.dp.toPx(), y = 100.dp.toPx())
     }
@@ -156,22 +163,31 @@ private fun MazeComponentImpl(
         modifier = modifier
             .height(height)
             .zIndex(2f)
-            .pointerInput(Unit) {
+            .pointerInput(currentPlayItemIndex) {
                 detectTapGestures(
                     onTap = { tapOffset ->
                         val tapPoint = tapOffset.toMazePoint()
+                        Log.d("MazeComponent", "Items: $items")
+                        Log.d("MazeComponent", "Tap point: $tapPoint")
 
                         val tapIndex = mazePoints.indexOfFirstOrNull { mazePoint ->
                             val realMazePoint = mazePoint.copy(y = mazePoint.y + topScroll)
                             tapPoint.isInsideCircle(realMazePoint, circleRadius)
                         }
 
+                        Log.d("MazeComponent", "Tap index: $tapIndex")
+
                         if (tapIndex != null) {
+                            Log.d(
+                                "MazeComponent",
+                                "Tap Is Playable: ${items.isPlayableItem(tapIndex)}"
+                            )
                             if (items.isPlayableItem(tapIndex)) onClick(tapIndex)
                         }
                     }
                 )
-            }.pointerInput(Unit) {
+            }
+            .pointerInput(Unit) {
                 detectVerticalDragGestures { _, dragAmount ->
                     if (topScroll + dragAmount > 0 && topScroll + dragAmount < topY) {
                         topScroll += dragAmount

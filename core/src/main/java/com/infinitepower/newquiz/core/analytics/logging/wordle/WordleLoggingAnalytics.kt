@@ -5,7 +5,8 @@ interface WordleLoggingAnalytics {
         wordLength: Int,
         maxRows: Int,
         quizType: String,
-        day: String? = null
+        day: String? = null,
+        mazeItemId: Int? = null
     )
 
     fun logGameEnd(
@@ -14,6 +15,7 @@ interface WordleLoggingAnalytics {
         lastRow: Int,
         lastRowCorrect: Boolean,
         quizType: String,
-        day: String? = null
+        day: String? = null,
+        mazeItemId: Int? = null
     )
 }
