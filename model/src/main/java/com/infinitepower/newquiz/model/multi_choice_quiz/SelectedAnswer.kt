@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @JvmInline
 @Serializable
-value class SelectedAnswer private constructor(val index: Int) {
+value class SelectedAnswer private constructor(val index: Int) : java.io.Serializable {
     companion object {
         val NONE = SelectedAnswer(-1)
 
