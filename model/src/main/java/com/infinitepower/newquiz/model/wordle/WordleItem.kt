@@ -49,3 +49,7 @@ sealed class WordleItem {
 }
 
 inline fun <reified T> List<WordleItem>.countByItem(): Int = filterIsInstance<T>().count()
+
+fun List<WordleItem>.itemsToString(): String = joinToString("") { item ->
+    item.char.toString()
+}

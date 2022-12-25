@@ -11,9 +11,10 @@ import androidx.navigation.NavHostController
 import com.google.android.ump.ConsentInformation
 import com.infinitepower.newquiz.core.util.ui.nav_drawer.NavDrawerUtil
 import com.infinitepower.newquiz.core.util.ui.nav_drawer.NavDrawerUtilImpl
-import com.infinitepower.newquiz.home_presentation.HomeScreen
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
+import com.infinitepower.newquiz.math_quiz.list.destinations.MathQuizListScreenDestination
+import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.*
 import com.infinitepower.newquiz.online_services.ui.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
@@ -21,14 +22,12 @@ import com.infinitepower.newquiz.wordle.destinations.DailyWordSelectorScreenDest
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.navigation.dependency
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.scope.DestinationScope
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.spec.NavGraphSpec
 import com.ramcosta.composedestinations.spec.Route
-import kotlinx.coroutines.launch
 
 internal data class NavGraph(
     override val route: String,
@@ -52,12 +51,13 @@ internal object AppNavGraphs {
             WordleScreenDestination,
             WordleListScreenDestination,
             DailyWordSelectorScreenDestination,
-            MultiChoiceQuizScreenDestination,
             LoginScreenDestination,
             MultiChoiceQuizResultsScreenDestination,
             MultiChoiceQuizListScreenDestination,
             MultiChoiceCategoriesScreenDestination,
-            ProfileScreenDestination
+            ProfileScreenDestination,
+            MathQuizListScreenDestination,
+            MazeScreenDestination
         )
     )
 }

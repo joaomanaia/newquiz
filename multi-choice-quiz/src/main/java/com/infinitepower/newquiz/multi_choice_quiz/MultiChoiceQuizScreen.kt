@@ -43,7 +43,8 @@ data class MultiChoiceQuizScreenNavArg(
     val initialQuestions: ArrayList<MultiChoiceQuestion> = arrayListOf(),
     val category: Int = -1,
     val difficulty: String? = null,
-    val type: MultiChoiceQuizType = MultiChoiceQuizType.NORMAL
+    val type: MultiChoiceQuizType = MultiChoiceQuizType.NORMAL,
+    val mazeItemId: String? = null
 )
 
 @Composable

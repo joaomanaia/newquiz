@@ -20,6 +20,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.navigation.NavController
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
+import com.infinitepower.newquiz.math_quiz.list.destinations.MathQuizListScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
 import com.infinitepower.newquiz.online_services.ui.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
@@ -37,13 +38,18 @@ private val navDrawerItems = listOf(
     ),
     NavDrawerItem.Item(
         text = CoreR.string.multi_choice_quiz,
-        icon = Icons.Rounded.Quiz,
+        icon = Icons.Rounded.ListAlt,
         direction = MultiChoiceQuizListScreenDestination
     ),
     NavDrawerItem.Item(
         text = CoreR.string.wordle,
-        icon = Icons.Rounded.Quiz,
+        icon = Icons.Rounded.Password,
         direction = WordleListScreenDestination
+    ),
+    NavDrawerItem.Item(
+        text = CoreR.string.math_quiz,
+        icon = Icons.Rounded.Numbers,
+        direction = MathQuizListScreenDestination
     ),
     NavDrawerItem.Label(
         text = CoreR.string.online,

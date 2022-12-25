@@ -22,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -32,6 +34,7 @@ import com.infinitepower.newquiz.core.util.ads.admob.rewarded.RewardedAdUtilImpl
 import com.infinitepower.newquiz.core.util.compose.activity.getActivity
 import com.infinitepower.newquiz.model.wordle.WordleChar
 import com.infinitepower.newquiz.model.wordle.WordleItem
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
 import com.infinitepower.newquiz.wordle.components.WordleKeyBoard
 import com.infinitepower.newquiz.wordle.components.WordleRowComponent
@@ -50,7 +53,9 @@ private const val WORDLE_REWARDED_AD_ID = "ca-app-pub-1923025671607389/965285023
 data class WordleScreenNavArgs(
     val rowLimit: Int = Int.MAX_VALUE,
     val word: String? = null,
-    val date: String? = null
+    val date: String? = null,
+    val quizType: WordleQuizType = WordleQuizType.TEXT,
+    val mazeItemId: String? = null
 )
 
 @Composable
@@ -60,11 +65,12 @@ data class WordleScreenNavArgs(
         DeepLink(uriPattern = "newquiz://wordleinfinite")
     ]
 )
+@OptIn(ExperimentalLifecycleComposeApi::class)
 fun WordleScreen(
     navigator: DestinationsNavigator,
     wordleScreenViewModel: WordleScreenViewModel = hiltViewModel()
 ) {
-    val uiState by wordleScreenViewModel.uiState.collectAsState()
+    val uiState by wordleScreenViewModel.uiState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
 
@@ -108,12 +114,18 @@ private fun WordleScreenImpl(
         mutableStateOf(false)
     }
 
+    val screenTitle = when (uiState.wordleQuizType) {
+        WordleQuizType.NUMBER -> stringResource(id = CoreR.string.guess_number)
+        WordleQuizType.MATH_FORMULA -> stringResource(id = CoreR.string.guess_math_formula)
+        else -> stringResource(id = CoreR.string.wordle)
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = CoreR.string.wordle))
+                    Text(text = screenTitle)
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
@@ -211,7 +223,7 @@ private fun WordleScreenImpl(
                         .padding(horizontal = MaterialTheme.spacing.small)
                         .padding(bottom = MaterialTheme.spacing.extraLarge)
                         .testTag(WordleScreenTestTags.KEYBOARD),
-                    keys = WordleScreenUiState.ALL_LETTERS.toCharArray(),
+                    keys = uiState.wordleKeys,
                     keysDisabled = uiState.keysDisabled,
                     onKeyClick = { key ->
                         onEvent(WordleScreenUiEvent.OnKeyClick(key))

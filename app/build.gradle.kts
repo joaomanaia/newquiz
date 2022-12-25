@@ -63,16 +63,15 @@ android {
         baseline = file("lint-baseline.xml")
     }
     namespace = "com.infinitepower.newquiz"
-}
 
-kotlin {
-    sourceSets {
-        debug {
-            kotlin.srcDir("build/generated/ksp/debug/kotlin")
+    applicationVariants.all {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
         }
-        release {
-            kotlin.srcDir("build/generated/ksp/release/kotlin")
-        }
+
+        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
     }
 }
 
@@ -139,13 +138,14 @@ dependencies {
     implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
     implementation(Google.firebase.crashlyticsKtx.withVersionPlaceholder())
     implementation(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
+    implementation(libs.firebase.appcheck.safetynet)
 
     implementation(KotlinX.datetime)
 
     implementation(libs.play.services.ads)
     implementation(libs.user.messaging.platform)
 
-    implementation("org.slf4j:slf4j-simple:2.0.4")
+    implementation(libs.slf4j.simple)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))
@@ -156,6 +156,8 @@ dependencies {
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
     implementation(project(Modules.onlineServices))
+    implementation(project(Modules.mathQuiz))
+    implementation(project(Modules.mazeQuiz))
 }
 
 tasks.withType<Test> {

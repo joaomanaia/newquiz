@@ -49,12 +49,15 @@ android {
                 kotlin.srcDir("build/generated/ksp/$name/kotlin")
             }
         }
+
+        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
     }
 }
 
 dependencies {
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.lifecycle.runtime.ktx)
+    implementation(AndroidX.lifecycle.runtime.compose)
 
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)

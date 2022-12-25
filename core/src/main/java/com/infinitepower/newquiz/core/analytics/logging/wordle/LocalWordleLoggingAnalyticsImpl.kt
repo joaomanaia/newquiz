@@ -7,8 +7,17 @@ class LocalWordleLoggingAnalyticsImpl : WordleLoggingAnalytics {
         const val TAG = "WordleAnalytics"
     }
 
-    override fun logGameStart(wordLength: Int, maxRows: Int, day: String?) {
-        Log.d(TAG, "Game Start: Word length: $wordLength, Quiz max rows: $maxRows, Word day: $day")
+    override fun logGameStart(
+        wordLength: Int,
+        maxRows: Int,
+        quizType: String,
+        day: String?,
+        mazeItemId: Int?
+    ) {
+        Log.d(
+            TAG,
+            "Game Start: Word length: $wordLength, Quiz max rows: $maxRows, Quiz type: $quizType, Word day: $day, Maze item id: $mazeItemId"
+        )
     }
 
     override fun logGameEnd(
@@ -16,11 +25,13 @@ class LocalWordleLoggingAnalyticsImpl : WordleLoggingAnalytics {
         maxRows: Int,
         lastRow: Int,
         lastRowCorrect: Boolean,
-        day: String?
+        quizType: String,
+        day: String?,
+        mazeItemId: Int?
     ) {
         Log.d(
             TAG,
-            "Game end: Word length: $wordLength, Quiz max rows: $maxRows, Last row position: $lastRow, Is last round correct: $lastRowCorrect, Word day: $day"
+            "Game end: Word length: $wordLength, Quiz max rows: $maxRows, Last row position: $lastRow, Is last round correct: $lastRowCorrect, Quiz type: $quizType, Word day: $day, Maze item id: $mazeItemId"
         )
     }
 }

@@ -50,6 +50,8 @@ android {
                 kotlin.srcDir("build/generated/ksp/$name/kotlin")
             }
         }
+
+        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
     }
     lint {
         disable += "DialogFragmentCallbacksDetector"
@@ -58,8 +60,10 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":model")))
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
+    testImplementation(Testing.mockK.android)
 
     implementation(AndroidX.core.ktx)
 
@@ -86,6 +90,7 @@ dependencies {
     implementation(AndroidX.dataStore.preferences)
 
     api(Google.firebase.analyticsKtx.withVersionPlaceholder())
+    api(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
 
     implementation(libs.lottie.compose)
 
@@ -95,8 +100,12 @@ dependencies {
 
     implementation(KotlinX.serialization.json)
 
+    testImplementation(KotlinX.coroutines.test)
+
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.io.github.raamcosta.compose.destinations.ksp)
+
+    implementation(project(Modules.model))
 }
 
 tasks.withType<Test> {

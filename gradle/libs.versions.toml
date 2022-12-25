@@ -2,7 +2,7 @@
 
 [plugins]
 
-gradle = { id = "gradle", version = "8.0.0-alpha08" }
+gradle = { id = "gradle", version = "8.0.0-alpha10" }
 
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.7.21" }
 
@@ -19,16 +19,14 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.7.21-1.
 [versions]
 
 kotlin = "1.7.21"
-##  ⬆ = "1.8.0-Beta"
 
-google-android-play-services-ads = "21.3.0"
-##                            ⬆ = "21.2.0"
-##                            ⬆ = "21.3.0"
+google-android-play-services-ads = "21.4.0"
+
+firebase-appcheck-safetynet = "16.1.0"
 
 [libraries]
 
 io-github-raamcosta-compose-destinations-ksp = "io.github.raamcosta.compose-destinations:ksp:1.7.27-beta"
-##                                                                                       ⬆ :1.7.27-beta"
 
 org-jacoco-ant = "org.jacoco:org.jacoco.ant:0.8.8"
 
@@ -39,15 +37,6 @@ kotlin-parcelize-runtime = { group = "org.jetbrains.kotlin", name = "kotlin-parc
 lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 
 io-github-raamcosta-compose-destinations-core = "io.github.raamcosta.compose-destinations:core:1.7.27-beta"
-##                                                                                         ⬆ :1.7.18-beta"
-##                                                                                         ⬆ :1.7.19-beta"
-##                                                                                         ⬆ :1.7.20-beta"
-##                                                                                         ⬆ :1.7.21-beta"
-##                                                                                         ⬆ :1.7.22-beta"
-##                                                                                         ⬆ :1.7.23-beta"
-##                                                                                         ⬆ :1.7.25-beta"
-##                                                                                         ⬆ :1.7.26-beta"
-##                                                                                         ⬆ :1.7.27-beta"
 
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "google-android-play-services-ads" }
 
@@ -62,29 +51,21 @@ kotlin-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serializ
 symbol-processing = "com.google.devtools.ksp:symbol-processing:1.6.21-1.0.6"
 
 firebase-ui-auth = "com.firebaseui:firebase-ui-auth:8.0.2"
-##                                              ⬆ :8.0.2"
 
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 symbol-processing-api = "com.google.devtools.ksp:symbol-processing-api:1.7.20-1.0.7"
 
-vico-compose = "com.patrykandpatryk.vico:compose:1.5.2"
+vico-compose = "com.patrykandpatryk.vico:compose:1.6.1"
 
-vico-compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.5.2"
+vico-compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.6.1"
 
 ksp = "io.github.raamcosta.compose-destinations:ksp:1.7.27-beta"
-##                                              ⬆ :1.7.18-beta"
-##                                              ⬆ :1.7.19-beta"
-##                                              ⬆ :1.7.20-beta"
-##                                              ⬆ :1.7.21-beta"
-##                                              ⬆ :1.7.22-beta"
-##                                              ⬆ :1.7.23-beta"
-##                                              ⬆ :1.7.25-beta"
-##                                              ⬆ :1.7.26-beta"
-##                                              ⬆ :1.7.27-beta"
 
-slf4j-simple = "org.slf4j:slf4j-simple:2.0.4"
+compose = "com.patrykandpatryk.vico:compose:1.6.1"
 
-compose = "com.patrykandpatryk.vico:compose:1.5.2"
+compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.6.1"
 
-compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.5.2"
+slf4j-simple = "org.slf4j:slf4j-simple:2.0.6"
+
+firebase-appcheck-safetynet = { group = "com.google.firebase", name = "firebase-appcheck-safetynet", version.ref = "firebase-appcheck-safetynet" }
