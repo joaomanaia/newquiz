@@ -11,6 +11,7 @@ data class MazeQuiz(
 ) {
     sealed interface MazeItem {
         val id: Int
+        val mazeSeed: Int
         val difficulty: QuestionDifficulty
         val played: Boolean
 
@@ -19,6 +20,7 @@ data class MazeQuiz(
             val word: String,
             val wordleQuizType: WordleQuizType,
             override val id: Int = 0,
+            override val mazeSeed: Int,
             override val difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
             override val played: Boolean = false
         ) : MazeItem
@@ -27,6 +29,7 @@ data class MazeQuiz(
         data class MultiChoice(
             val question: MultiChoiceQuestion,
             override val id: Int = 0,
+            override val mazeSeed: Int,
             override val difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
             override val played: Boolean = false
         ) : MazeItem

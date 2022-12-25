@@ -18,6 +18,7 @@ data class MazeQuizItemEntity(
     val difficulty: QuestionDifficulty,
     val played: Boolean,
     val type: Type,
+    val mazeSeed: Int,
 
     // Multi choice quiz
     @Embedded("maze_question_")
@@ -39,17 +40,18 @@ data class MazeQuizItemEntity(
 fun MazeQuizItemEntity.toMazeQuizItem(): MazeQuiz.MazeItem = when (type) {
     MazeQuizItemEntity.Type.WORDLE -> {
         val wordleItem = this.wordleItem ?: throw NullPointerException("Wordle word is null")
-        MazeQuiz.MazeItem.Wordle(wordleItem.wordleWord, wordleItem.wordleQuizType, id, difficulty, played)
+        MazeQuiz.MazeItem.Wordle(wordleItem.wordleWord, wordleItem.wordleQuizType, id, mazeSeed, difficulty, played)
     }
     MazeQuizItemEntity.Type.MULTI_CHOICE -> {
         val question = this.multiChoiceQuestion ?: throw NullPointerException("Question is null")
-        MazeQuiz.MazeItem.MultiChoice(question, id, difficulty, played)
+        MazeQuiz.MazeItem.MultiChoice(question, id, mazeSeed, difficulty, played)
     }
 }
 
 fun MazeQuiz.MazeItem.toEntity(): MazeQuizItemEntity = when (this) {
     is MazeQuiz.MazeItem.Wordle -> MazeQuizItemEntity(
         id = id,
+        mazeSeed = mazeSeed,
         difficulty = difficulty,
         played = played,
         type = MazeQuizItemEntity.Type.WORDLE,
@@ -60,6 +62,7 @@ fun MazeQuiz.MazeItem.toEntity(): MazeQuizItemEntity = when (this) {
     )
     is MazeQuiz.MazeItem.MultiChoice -> MazeQuizItemEntity(
         id = id,
+        mazeSeed = mazeSeed,
         difficulty = difficulty,
         played = played,
         type = MazeQuizItemEntity.Type.MULTI_CHOICE,
