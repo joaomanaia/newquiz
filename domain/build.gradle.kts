@@ -41,16 +41,20 @@ android {
 }
 
 dependencies {
-    testImplementation(Testing.junit4)
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)
 
+    testImplementation(Testing.junit.jupiter)
+    testImplementation(libs.truth)
+    testImplementation(Testing.mockK.android)
+    testImplementation(KotlinX.coroutines.test)
+
     implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.android.compiler)
+    kapt(Google.dagger.hilt.compiler)
     kapt(AndroidX.hilt.compiler)
     implementation(AndroidX.hilt.navigationCompose)
     androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.android.compiler)
+    kaptAndroidTest(Google.dagger.hilt.compiler)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))
@@ -63,4 +67,10 @@ dependencies {
     implementation(KotlinX.datetime)
 
     implementation(AndroidX.paging.runtime)
+
+    implementation(project(Modules.core))
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

@@ -6,6 +6,9 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
+import com.infinitepower.newquiz.maze_quiz.MazeScreenNavigator
+import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
+import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.SavedMultiChoiceQuestionsScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.saved_questions.SavedQuestionsScreenNavigator
@@ -15,7 +18,7 @@ import com.ramcosta.composedestinations.navigation.navigate
 
 class CommonNavGraphNavigator(
     private val navController: NavController
-) : HomeScreenNavigator, SavedQuestionsScreenNavigator {
+) : HomeScreenNavigator, SavedQuestionsScreenNavigator, MazeScreenNavigator {
     private val remoteConfig by lazy { Firebase.remoteConfig }
 
     override fun navigateToQuickQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {
@@ -49,5 +52,29 @@ class CommonNavGraphNavigator(
 
     override fun navigateToWordle() {
         navController.navigate(WordleScreenDestination())
+    }
+
+    override fun navigateToMaze() {
+        navController.navigate(MazeScreenDestination)
+    }
+
+    override fun navigateToGame(item: MazeQuiz.MazeItem) {
+        val destination = when (item) {
+            is MazeQuiz.MazeItem.Wordle -> {
+                WordleScreenDestination(
+                    word = item.word,
+                    quizType = item.wordleQuizType,
+                    mazeItemId = item.id.toString()
+                )
+            }
+            is MazeQuiz.MazeItem.MultiChoice -> {
+                MultiChoiceQuizScreenDestination(
+                    initialQuestions = arrayListOf(item.question),
+                    mazeItemId = item.id.toString()
+                )
+            }
+        }
+
+        navController.navigate(destination)
     }
 }

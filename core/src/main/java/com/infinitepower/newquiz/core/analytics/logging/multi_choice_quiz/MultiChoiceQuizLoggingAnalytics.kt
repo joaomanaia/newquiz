@@ -4,11 +4,13 @@ interface MultiChoiceQuizLoggingAnalytics {
     fun logGameStart(
         questionsSize: Int,
         category: Int? = null,
-        difficulty: String? = null
+        difficulty: String? = null,
+        mazeItemId: Int? = null
     )
 
     fun logGameEnd(
         questionsSize: Int,
-        correctAnswers: Int
+        correctAnswers: Int,
+        mazeItemId: Int? = null
     )
 }

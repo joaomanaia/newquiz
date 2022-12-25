@@ -3,6 +3,19 @@
     <shortcut
         android:shortcutId="quick_quiz"
         android:enabled="true"
+        android:icon="@drawable/round_play_circle_24"
+        android:shortcutShortLabel="@string/maze"
+        android:shortcutLongLabel="@string/maze">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.infinitepower.newquiz"
+            android:targetClass="com.infinitepower.newquiz.MainActivity"
+            android:data="newquiz://maze"/>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="quick_quiz"
+        android:enabled="true"
         android:icon="@drawable/round_quiz_24"
         android:shortcutShortLabel="@string/quick_quiz"
         android:shortcutLongLabel="@string/quick_quiz">

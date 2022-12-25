@@ -14,7 +14,7 @@ import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.extendedColors
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.data.local.question.QuestionDifficulty
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
 
 @Composable
 @ExperimentalMaterial3Api

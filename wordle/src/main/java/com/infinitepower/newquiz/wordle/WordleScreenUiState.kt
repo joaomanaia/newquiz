@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.wordle
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
 
 @Keep
@@ -15,10 +16,15 @@ data class WordleScreenUiState(
     val isColorBlindEnabled: Boolean = false,
     val isLetterHintEnabled: Boolean = false,
     val isHardModeEnabled: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val wordleQuizType: WordleQuizType? = null
 ) {
     companion object {
         const val ALL_LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
+
+        val allNumbers = '0'..'9'
+
+        const val mathFormulaKeys = "0123456789+-*/="
     }
 
     val currentRowCompleted: Boolean
@@ -36,4 +42,12 @@ data class WordleScreenUiState(
 
     val isGameOver: Boolean
         get() = isGamedEnded && !currentRowCorrect
+
+    val wordleKeys: CharArray
+        get() = when (wordleQuizType) {
+            WordleQuizType.TEXT -> ALL_LETTERS.toCharArray()
+            WordleQuizType.NUMBER -> allNumbers.toList().toCharArray()
+            WordleQuizType.MATH_FORMULA -> mathFormulaKeys.toCharArray()
+            else -> charArrayOf()
+        }
 }

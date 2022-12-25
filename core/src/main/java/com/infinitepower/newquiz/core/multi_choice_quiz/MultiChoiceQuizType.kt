@@ -3,5 +3,6 @@ package com.infinitepower.newquiz.core.multi_choice_quiz
 enum class MultiChoiceQuizType {
     NORMAL,
     FLAG,
-    LOGO
+    LOGO,
+    GUESS_MATH_SOLUTION
 }

@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
+import com.google.firebase.perf.ktx.trace
 import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
@@ -17,7 +18,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -25,28 +25,30 @@ import kotlinx.serialization.json.Json
 import java.security.SecureRandom
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class MultiChoiceQuestionRepositoryImpl @Inject constructor(
     private val client: HttpClient,
     @MultiChoiceQuestionDataStoreManager private val settingsDataStoreManager: DataStoreManager
 ) : MultiChoiceQuestionRepository {
-    private val random = SecureRandom()
-
     override suspend fun getRandomQuestions(
         amount: Int,
         category: Int?,
-        difficulty: String?
+        difficulty: String?,
+        random: Random
     ): List<MultiChoiceQuestion> = withContext(Dispatchers.IO) {
-        val openTDBResults = getOpenTDBResponse(amount, category, difficulty).results
+        trace(name = "GetOpenTDBQuestions") {
+            val openTDBResults = getOpenTDBResponse(amount, category, difficulty).results
 
-        val questions = openTDBResults.map { result ->
-            async(Dispatchers.IO) {
-                result.decodeResultToQuestion(id = random.nextInt())
+            val questions = openTDBResults.map { result ->
+                async(Dispatchers.IO) {
+                    result.decodeResultToQuestion(id = random.nextInt())
+                }
             }
-        }
 
-        questions.awaitAll()
+            questions.awaitAll()
+        }
     }
 
     private suspend fun getOpenTDBResponse(

@@ -76,6 +76,11 @@
     <string name="categories">Categorias</string>
     <string name="n_questions_available">%1$s questões disponíveis</string>
     <string name="see_all">Ver tudo</string>
+    <string name="guess_number">Adivinha o número</string>
+    <string name="guess_math_formula">Adivinha a fórmula matematica</string>
+    <string name="guess_solution">Adinha a solução</string>
+    <string name="math_quiz">Jogo de matemática</string>
+    <string name="maze">Labirinto</string>
     <string name="easy">Fácil</string>
     <string name="medium">Médio</string>
     <string name="hard">Difícil</string>
@@ -119,5 +124,18 @@
     <string name="dismiss">Dispensar</string>
     <string name="sign_in">Login</string>
     <string name="show_login_card">Mostrar o cartão de login</string>
-    <string name="show_login_card_at_home_screen">Mostrar o cartão de login na pagina inicial</string>
+    <string name="show_login_card_at_home_screen">Mostrar o cartão de login na página inicial</string>
+    <string name="more_options">More options</string>
+    <string name="open_drawer">Abrir navegação</string>
+    <string name="copy_maze_seed">Copiar seed labirinto</string>
+    <string name="restart_maze">Recomeçar labirinto</string>
+    <string name="generate_maze">Gerar labirinto</string>
+    <string name="random_maze">Labirinto aleatório</string>
+    <string name="generate_maze_with_random_items">Gerar labirinto com perguntas aleatórias, todos os modos de jogo serão incluidos.</string>
+    <string name="custom_maze">Labirinto customizado</string>
+    <string name="generate_maze_with_custom_options">Gerar labirinto com opções personalizadas</string>
+    <string name="expand_custom_options">Expandir opções de personalização</string>
+    <string name="custom_maze_multi_choice_warning">"Quando usa uma seed personalizada, as perguntas de múltipla escolha não serão geradas aleatoriamente por essa seed.  "</string>
+    <string name="generate">Gerar</string>
+    <string name="seed">Seed</string>
 </resources>

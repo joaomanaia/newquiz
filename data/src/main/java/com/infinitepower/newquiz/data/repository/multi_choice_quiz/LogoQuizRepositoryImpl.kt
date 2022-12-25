@@ -10,17 +10,17 @@ import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 import java.security.SecureRandom
+import kotlin.random.Random
 
 @Singleton
 class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
-    private val random = SecureRandom()
-
     private val remoteConfig = Firebase.remoteConfig
 
     override suspend fun getRandomQuestions(
         amount: Int,
         category: Int?,
-        difficulty: String?
+        difficulty: String?,
+        random: Random
     ): List<MultiChoiceQuestion> {
         val allLogos = getRemoteConfigAllLogos()
 
@@ -29,7 +29,8 @@ class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
         } else allLogos
 
         return filteredByDifficulty
-            .shuffled()
+            .sortedBy { it.name }
+            .shuffled(random)
             .take(amount)
             .map { item -> item.toQuestion() }
     }
@@ -39,9 +40,12 @@ class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
         return Json.decodeFromString(allLogosQuizStr)
     }
 
-    private fun LogoQuizBaseItem.toQuestion(): MultiChoiceQuestion {
-        val answerCountries = incorrectAnswers.shuffled() + name
-        val answers = answerCountries.shuffled()
+    private fun LogoQuizBaseItem.toQuestion(
+        random: Random = Random
+    ): MultiChoiceQuestion {
+
+        val answerCountries = incorrectAnswers.shuffled(random) + name
+        val answers = answerCountries.shuffled(random)
 
         return MultiChoiceQuestion(
             id = random.nextInt(),
