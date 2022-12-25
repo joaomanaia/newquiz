@@ -67,36 +67,43 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         val allMazeItemsAsync = gameModes.map { mode ->
             when (mode) {
                 GameModes.MULTI_CHOICE -> generateMultiChoiceMazeItems(
+                    mazeSeed = seed,
                     questionSize = questionSizePerMode,
                     multiChoiceQuizType = MultiChoiceQuizType.NORMAL,
                     random = random
                 )
                 GameModes.LOGO -> generateMultiChoiceMazeItems(
+                    mazeSeed = seed,
                     questionSize = questionSizePerMode,
                     multiChoiceQuizType = MultiChoiceQuizType.LOGO,
                     random = random
                 )
                 GameModes.FLAG -> generateMultiChoiceMazeItems(
+                    mazeSeed = seed,
                     questionSize = questionSizePerMode,
                     multiChoiceQuizType = MultiChoiceQuizType.FLAG,
                     random = random
                 )
                 GameModes.WORDLE -> generateWordleMazeItems(
+                    mazeSeed = seed,
                     questionSize = questionSizePerMode,
                     wordleQuizType = WordleQuizType.TEXT,
                     random = random
                 )
                 GameModes.GUESS_NUMBER -> generateWordleMazeItems(
+                    mazeSeed = seed,
                     questionSize = questionSizePerMode,
                     wordleQuizType = WordleQuizType.NUMBER,
                     random = random
                 )
                 GameModes.GUESS_MATH_FORMULA -> generateWordleMazeItems(
+                    mazeSeed = seed,
                     questionSize = questionSizePerMode,
                     wordleQuizType = WordleQuizType.MATH_FORMULA,
                     random = random
                 )
                 GameModes.GUESS_MATH_SOLUTION -> generateMultiChoiceMazeItems(
+                    mazeSeed = seed,
                     questionSize = questionSizePerMode,
                     multiChoiceQuizType = MultiChoiceQuizType.GUESS_MATH_SOLUTION,
                     random = random
@@ -132,10 +139,11 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     }
 
     private suspend fun generateMultiChoiceMazeItems(
+        mazeSeed: Int,
         questionSize: Int,
         multiChoiceQuizType: MultiChoiceQuizType,
         difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
-        random: Random = Random,
+        random: Random = Random
     ): List<MazeQuiz.MazeItem> {
         val questions = when (multiChoiceQuizType) {
             MultiChoiceQuizType.NORMAL -> multiChoiceQuestionRepository.getRandomQuestions(
@@ -158,6 +166,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
 
         return questions.map { question ->
             MazeQuiz.MazeItem.MultiChoice(
+                mazeSeed = mazeSeed,
                 question = question,
                 difficulty = difficulty
             )
@@ -165,6 +174,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     }
 
     private suspend fun generateWordleMazeItems(
+        mazeSeed: Int,
         questionSize: Int,
         wordleQuizType: WordleQuizType,
         difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
@@ -187,6 +197,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         }
     ).map { word ->
         MazeQuiz.MazeItem.Wordle(
+            mazeSeed = mazeSeed,
             word = word,
             wordleQuizType = wordleQuizType,
             difficulty = difficulty

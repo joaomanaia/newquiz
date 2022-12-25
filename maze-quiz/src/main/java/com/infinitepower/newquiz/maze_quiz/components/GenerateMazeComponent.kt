@@ -14,7 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -38,7 +40,7 @@ internal fun GenerateMazeComponent(
     ) {
         item {
             Text(
-                text = "Generate Maze",
+                text = stringResource(id = CoreR.string.generate_maze),
                 style = MaterialTheme.typography.displaySmall
             )
         }
@@ -47,7 +49,7 @@ internal fun GenerateMazeComponent(
             Spacer(modifier = Modifier.height(spaceExtraLarge))
             GenerateMazeCard(
                 onClick = {
-                    onGenerateClick(null, null) // empty list means all game modes selected
+                    onGenerateClick(null, null) // null list means all game modes selected
                 }
             )
             Spacer(modifier = Modifier.height(spaceMedium))
@@ -80,12 +82,12 @@ private fun GenerateMazeCard(
                 .padding(spaceMedium)
         ) {
             Text(
-                text = "Random Maze",
+                text = stringResource(id = CoreR.string.random_maze),
                 style = MaterialTheme.typography.headlineMedium
             )
             Spacer(modifier = Modifier.height(spaceSmall))
             Text(
-                text = "Generate maze with random questions, all game modes will be included.",
+                text = stringResource(id = CoreR.string.generate_maze_with_random_items),
                 style = MaterialTheme.typography.titleMedium
             )
         }

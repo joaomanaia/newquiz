@@ -167,21 +167,13 @@ private fun MazeComponentImpl(
                 detectTapGestures(
                     onTap = { tapOffset ->
                         val tapPoint = tapOffset.toMazePoint()
-                        Log.d("MazeComponent", "Items: $items")
-                        Log.d("MazeComponent", "Tap point: $tapPoint")
 
                         val tapIndex = mazePoints.indexOfFirstOrNull { mazePoint ->
                             val realMazePoint = mazePoint.copy(y = mazePoint.y + topScroll)
                             tapPoint.isInsideCircle(realMazePoint, circleRadius)
                         }
 
-                        Log.d("MazeComponent", "Tap index: $tapIndex")
-
                         if (tapIndex != null) {
-                            Log.d(
-                                "MazeComponent",
-                                "Tap Is Playable: ${items.isPlayableItem(tapIndex)}"
-                            )
                             if (items.isPlayableItem(tapIndex)) onClick(tapIndex)
                         }
                     }
@@ -275,7 +267,8 @@ private fun MazeComponentPreview() {
             word = "1+1=2",
             difficulty = QuestionDifficulty.Easy,
             played = true,
-            wordleQuizType = WordleQuizType.MATH_FORMULA
+            wordleQuizType = WordleQuizType.MATH_FORMULA,
+            mazeSeed = 0
         )
     }
 
@@ -283,7 +276,8 @@ private fun MazeComponentPreview() {
         MazeQuiz.MazeItem.Wordle(
             word = "1+1=2",
             difficulty = QuestionDifficulty.Easy,
-            wordleQuizType = WordleQuizType.MATH_FORMULA
+            wordleQuizType = WordleQuizType.MATH_FORMULA,
+            mazeSeed = 0
         )
     }
 

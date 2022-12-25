@@ -20,7 +20,6 @@ import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemConten
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 import com.infinitepower.newquiz.core.util.ui.nav_drawer.NavDrawerUtil
 import com.infinitepower.newquiz.math_quiz.list.data.getMathQuizListCardItemData
-import com.ramcosta.composedestinations.annotation.DeepLink
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -68,7 +67,7 @@ private fun MathQuizListScreenImpl(
                     IconButton(onClick = openDrawer) {
                         Icon(
                             imageVector = Icons.Rounded.Menu,
-                            contentDescription = "Open drawer"
+                            contentDescription = stringResource(id = CoreR.string.open_drawer)
                         )
                     }
                 }

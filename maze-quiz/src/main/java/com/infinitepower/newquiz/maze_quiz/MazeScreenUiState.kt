@@ -11,4 +11,7 @@ data class MazeScreenUiState(
 ) {
     val isMazeEmpty: Boolean
         get() = mathMaze.items.isEmpty()
+
+    val mazeSeed: Int?
+        get() = mathMaze.items.firstOrNull()?.mazeSeed
 }
