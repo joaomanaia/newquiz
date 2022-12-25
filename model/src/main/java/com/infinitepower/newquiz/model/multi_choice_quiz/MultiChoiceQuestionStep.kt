@@ -5,14 +5,14 @@ import kotlinx.serialization.Serializable
 
 @Keep
 @Serializable
-sealed class MultiChoiceQuestionStep {
+sealed class MultiChoiceQuestionStep : java.io.Serializable {
     abstract val question: MultiChoiceQuestion
 
     @Keep
     @Serializable
     data class NotCurrent(
         override val question: MultiChoiceQuestion
-    ) : MultiChoiceQuestionStep() {
+    ) : MultiChoiceQuestionStep(), java.io.Serializable {
         fun changeToCurrent() = Current(question)
     }
 
@@ -20,7 +20,7 @@ sealed class MultiChoiceQuestionStep {
     @Serializable
     data class Current(
         override val question: MultiChoiceQuestion
-    ) : MultiChoiceQuestionStep() {
+    ) : MultiChoiceQuestionStep(), java.io.Serializable {
         fun changeToCompleted(
             correct: Boolean,
             selectedAnswer: SelectedAnswer,
@@ -35,7 +35,7 @@ sealed class MultiChoiceQuestionStep {
         val correct: Boolean,
         val selectedAnswer: SelectedAnswer = SelectedAnswer.NONE,
         val questionTime: Long = 0
-    ) : MultiChoiceQuestionStep()
+    ) : MultiChoiceQuestionStep(), java.io.Serializable
 
     fun asCurrent() = Current(question)
 }

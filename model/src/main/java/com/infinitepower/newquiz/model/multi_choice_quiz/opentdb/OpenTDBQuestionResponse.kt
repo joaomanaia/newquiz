@@ -11,7 +11,7 @@ import java.security.SecureRandom
 data class OpenTDBQuestionResponse(
     val response_code: Int,
     val results: List<OpenTDBResult>
-) {
+) : java.io.Serializable {
     @Keep
     @Serializable
     data class OpenTDBResult(
@@ -21,7 +21,7 @@ data class OpenTDBQuestionResponse(
         val question: String,
         val correct_answer: String,
         val incorrect_answers: List<String>
-    ) {
+    ) : java.io.Serializable {
         private fun decodeBase64OpenTDBResult(): OpenTDBResult = copy(
             category = category.base64Decoded,
             type = type.base64Decoded,
