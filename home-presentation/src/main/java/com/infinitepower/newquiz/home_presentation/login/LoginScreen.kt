@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.home_presentation.login
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,6 +33,7 @@ private fun LoginScreenImpl(
     onBack: () -> Unit
 ) {
     val firebaseLogin = rememberLauncherForActivityResult(contract = FirebaseAuthUIActivityResultContract()) {
+        Log.d("LoginScreen", it.toString())
         onBack()
     }
 

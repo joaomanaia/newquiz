@@ -8,4 +8,4 @@ import kotlinx.serialization.Serializable
 data class WordleDailyItem(
     val date: String,
     val words: Map<String, String>
-)
+)  : java.io.Serializable

@@ -22,7 +22,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -87,6 +87,8 @@ dependencies {
 
     implementation(platform(Firebase.bom))
     implementation(Firebase.remoteConfigKtx)
+    implementation(Firebase.authenticationKtx)
+    implementation("com.google.android.gms:play-services-auth:20.4.0")
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))
