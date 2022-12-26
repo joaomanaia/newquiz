@@ -54,6 +54,8 @@ android {
 dependencies {
     implementation(AndroidX.core.ktx)
 
+    implementation(AndroidX.lifecycle.runtime.compose)
+
     testImplementation(Testing.junit.jupiter)
     testImplementation(Testing.mockK)
     testImplementation(libs.truth)
