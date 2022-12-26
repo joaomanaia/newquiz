@@ -138,4 +138,6 @@
     <string name="custom_maze_multi_choice_warning">"Quando usa uma seed personalizada, as perguntas de múltipla escolha não serão geradas aleatoriamente por essa seed.  "</string>
     <string name="generate">Gerar</string>
     <string name="seed">Seed</string>
+    <string name="generate_offline_maze">Gerar labirinto offline</string>
+    <string name="generate_offline_maze_description">Gerar labirinto com todos os modos que não requerem conecção com a internet.</string>
 </resources>

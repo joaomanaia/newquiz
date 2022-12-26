@@ -48,7 +48,15 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
             WORDLE,
             GUESS_NUMBER,
             GUESS_MATH_FORMULA,
-            GUESS_MATH_SOLUTION
+            GUESS_MATH_SOLUTION;
+
+            companion object {
+                private fun offlineGameModes(): List<GameModes> = listOf(WORDLE, GUESS_NUMBER, GUESS_MATH_FORMULA, GUESS_MATH_SOLUTION)
+
+                fun offlineGameModesKeys(): List<Int> = offlineGameModes().map { gameMode ->
+                    GameModes.values().indexOf(gameMode)
+                }
+            }
         }
     }
 
