@@ -90,10 +90,13 @@ dependencies {
     implementation(Firebase.authenticationKtx)
     implementation("com.google.android.gms:play-services-auth:20.4.0")
 
+    implementation(AndroidX.work.runtimeKtx)
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
+    implementation(project(Modules.onlineServices))
 }
 
 ksp {

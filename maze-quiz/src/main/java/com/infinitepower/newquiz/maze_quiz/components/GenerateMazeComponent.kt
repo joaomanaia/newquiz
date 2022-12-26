@@ -20,6 +20,7 @@ import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker.Companion.GameModes
 
 @Composable
 @ExperimentalMaterial3Api
@@ -36,23 +37,32 @@ internal fun GenerateMazeComponent(
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(spaceMedium)
     ) {
         item {
             Text(
                 text = stringResource(id = CoreR.string.generate_maze),
-                style = MaterialTheme.typography.displaySmall
+                style = MaterialTheme.typography.displaySmall,
+                modifier = Modifier.padding(vertical = spaceExtraLarge)
             )
         }
 
         item {
-            Spacer(modifier = Modifier.height(spaceExtraLarge))
             GenerateMazeCard(
                 onClick = {
                     onGenerateClick(null, null) // null list means all game modes selected
                 }
             )
-            Spacer(modifier = Modifier.height(spaceMedium))
+        }
+
+        item {
+            GenerateOfflineMazeCard(
+                onClick = {
+                    val offlineGameModesKeys = GameModes.offlineGameModesKeys()
+
+                    onGenerateClick(null, offlineGameModesKeys)
+                }
+            )
         }
 
         item {

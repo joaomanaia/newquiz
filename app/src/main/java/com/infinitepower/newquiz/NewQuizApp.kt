@@ -17,6 +17,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.infinitepower.newquiz.core.notification.wordle.DailyWordleNotificationServiceImpl
 import com.infinitepower.newquiz.data.worker.wordle.DailyWordleNotificationWorker
+import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.core.worker.CheckUserDBWorker
 import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
