@@ -15,10 +15,11 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
@@ -33,7 +34,7 @@ import com.patrykandpatryk.vico.compose.axis.horizontal.bottomAxis
 import com.patrykandpatryk.vico.compose.axis.vertical.startAxis
 import com.patrykandpatryk.vico.compose.chart.Chart
 import com.patrykandpatryk.vico.compose.chart.line.lineChart
-import com.patrykandpatryk.vico.compose.component.shape.textComponent
+import com.patrykandpatryk.vico.compose.component.textComponent
 import com.patrykandpatryk.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatryk.vico.compose.style.ProvideChartStyle
 import com.patrykandpatryk.vico.core.entry.entryModelOf
@@ -42,15 +43,24 @@ import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 @Destination
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 fun ProfileScreen(
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val uiState by profileViewModel.uiState.collectAsState()
+    val uiState by profileViewModel.uiState.collectAsStateWithLifecycle()
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
     LaunchedEffect(key1 = true) {
         coreLoggingAnalytics.logScreenView("ProfileScreen")
+    }
+
+    if (uiState.loading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
     }
 
     uiState.user?.let { user ->
@@ -68,8 +78,8 @@ private fun ProfileScreenImpl(
     val spaceMedium = MaterialTheme.spacing.medium
     val spaceLarge = MaterialTheme.spacing.large
 
-    val multiChoiceGameData = user.data?.multiChoiceQuizData
-    val wordleData = user.data?.wordleData
+    val multiChoiceGameData = user.data.multiChoiceQuizData
+    val wordleData = user.data.wordleData
 
     Scaffold { innerPadding ->
         LazyColumn(
@@ -82,8 +92,8 @@ private fun ProfileScreenImpl(
                     modifier = Modifier
                         .padding(spaceMedium)
                         .fillMaxWidth(),
-                    name = user.info?.fullName.orEmpty(),
-                    photoUri = user.info?.imageUrl?.toUri() ?: Uri.EMPTY,
+                    name = user.info.fullName,
+                    photoUri = user.info.imageUrl.toUri(),
                     levelProgress = user.getLevelProgress()
                 )
             }
@@ -101,8 +111,8 @@ private fun ProfileScreenImpl(
 
                 item {
                     UserMultiChoiceQuizData(
-                        totalQuestionsPlayed = multiChoiceGameData.totalQuestionsPlayed ?: 0,
-                        totalCorrectAnswers = multiChoiceGameData.totalCorrectAnswers ?: 0,
+                        totalQuestionsPlayed = multiChoiceGameData.totalQuestionsPlayed,
+                        totalCorrectAnswers = multiChoiceGameData.totalCorrectAnswers,
                         lastQuizTimes = lastQuizTimes.orEmpty()
                     )
                 }
@@ -111,8 +121,8 @@ private fun ProfileScreenImpl(
             if (wordleData != null) {
                 item {
                     UserWordleData(
-                        totalWordsPlayed = wordleData.wordsPlayed ?: 0,
-                        totalCorrectWords = wordleData.wordsCorrect ?: 0,
+                        totalWordsPlayed = wordleData.wordsPlayed ,
+                        totalCorrectWords = wordleData.wordsCorrect,
                     )
                 }
             }

@@ -48,7 +48,7 @@ class AuthUserRepositoryImpl @Inject constructor() : AuthUserRepository {
         get() = authUser?.photoUrl
 
     override suspend fun refreshAuthUser() {
-        val name = authUser?.displayName ?: "user${uid?.hashCode() ?: SecureRandom().nextInt()}"
+        val name = authUser?.displayName ?: "user${SecureRandom().nextInt()}"
         val photoUri = authUser?.photoUrl ?: DEFAULT_USER_PHOTO.toUri()
 
         val requestConfig = UserProfileChangeRequest.Builder()

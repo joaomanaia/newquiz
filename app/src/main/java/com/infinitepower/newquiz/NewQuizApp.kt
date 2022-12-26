@@ -102,21 +102,6 @@ class NewQuizApp : Application(), Configuration.Provider {
         return channel
     }
 
-    private fun createDailyWordleWork() {
-        val request = PeriodicWorkRequestBuilder<DailyWordleNotificationWorker>(
-            24,
-            TimeUnit.HOURS,
-            PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
-            TimeUnit.MILLISECONDS
-        ).setInitialDelay(24, TimeUnit.HOURS).build()
-
-        workManager.enqueueUniquePeriodicWork(
-            "daily_wordle",
-            ExistingPeriodicWorkPolicy.KEEP,
-            request
-        )
-    }
-
     private fun checkUserDBWork() {
         val request = OneTimeWorkRequestBuilder<CheckUserDBWorker>().build()
 
