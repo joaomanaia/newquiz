@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
@@ -36,6 +38,8 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
     private val coreLoggingAnalytics: CoreLoggingAnalytics
 ) : CoroutineWorker(appContext, workerParams) {
+    private val remoteConfig by lazy { Firebase.remoteConfig }
+
     companion object {
         const val INPUT_SEED = "INPUT_SEED"
         const val INPUT_QUESTION_SIZE = "INPUT_QUESTION_SIZE"
@@ -62,7 +66,12 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val seed = inputData.getInt(INPUT_SEED, Random.nextInt())
-        val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, 50)
+
+        val remoteConfigQuestionSize = remoteConfig
+            .getLong("maze_quiz_generated_questions")
+            .toInt()
+
+        val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, remoteConfigQuestionSize)
 
         val inputGameModes = inputData.getIntArray(INPUT_GAME_MODES)
         val gameModes = inputGameModes.toGameModes()

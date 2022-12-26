@@ -16,4 +16,8 @@
         <key>math_quiz_operator_size</key>
         <value>1</value>
     </entry>
+    <entry>
+        <key>maze_quiz_generated_questions</key>
+        <value>50</value>
+    </entry>
 </defaultsMap>
