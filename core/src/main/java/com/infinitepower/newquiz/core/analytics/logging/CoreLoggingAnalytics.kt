@@ -6,9 +6,10 @@ interface CoreLoggingAnalytics {
         screenClass: String? = null
     )
 
-    fun logCreateMaze(
-        seed: Int,
-        itemSize: Int,
-        gameModes: List<Int>
+    fun logNewLevel(
+        level: Int,
+        diamondsEarned: Int
     )
+
+    fun logSpendDiamonds(amount: Int, usedFor: String)
 }

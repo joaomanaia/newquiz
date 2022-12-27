@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.rememberMultiChoiceLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -37,11 +38,16 @@ fun SavedMultiChoiceQuestionsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    val multiChoiceQuizLoggingAnalytics = rememberMultiChoiceLoggingAnalytics()
+
     SavedMultiChoiceQuestionsScreenImpl(
         uiState = uiState,
         onBackClick = navigator::popBackStack,
         onEvent = viewModel::onEvent,
-        savedQuestionsScreenNavigator = savedQuestionsScreenNavigator
+        playWithQuestions = { questions ->
+            multiChoiceQuizLoggingAnalytics.logPlaySavedQuestions(questions.size)
+            savedQuestionsScreenNavigator.navigateToQuickQuiz(ArrayList(questions))
+        }
     )
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
@@ -55,7 +61,7 @@ fun SavedMultiChoiceQuestionsScreen(
 private fun SavedMultiChoiceQuestionsScreenImpl(
     uiState: SavedMultiChoiceQuestionsUiState,
     onBackClick: () -> Unit,
-    savedQuestionsScreenNavigator: SavedQuestionsScreenNavigator,
+    playWithQuestions: (questions: List<MultiChoiceQuestion>) -> Unit,
     onEvent: (event: SavedMultiChoiceQuestionsUiEvent) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
@@ -80,11 +86,7 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
                         TopBarActionButton(
                             imageVector = Icons.Rounded.Shuffle,
                             contentDescription = "Play quiz with random saved questions",
-                            onClick = {
-                                savedQuestionsScreenNavigator.navigateToQuickQuiz(
-                                    initialQuestions = uiState.randomQuestions()
-                                )
-                            }
+                            onClick = { playWithQuestions(uiState.randomQuestions()) }
                         )
                     }
                     TopBarActionButton(
@@ -124,11 +126,7 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
                             contentDescription = "Play quiz with selected questions"
                         )
                     },
-                    onClick = {
-                        savedQuestionsScreenNavigator.navigateToQuickQuiz(
-                            initialQuestions = uiState.arrayListSelectedQuestions
-                        )
-                    }
+                    onClick = { playWithQuestions(uiState.arrayListSelectedQuestions) }
                 )
             }
         },
@@ -270,7 +268,7 @@ private fun SavedMultiChoiceQuestionsScreenPreview() {
             ),
             onBackClick = {},
             onEvent = {},
-            savedQuestionsScreenNavigator = SavedQuestionsScreenNavigatorPreview
+            playWithQuestions = {}
         )
     }
 }

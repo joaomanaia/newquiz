@@ -34,4 +34,12 @@ class LocalWordleLoggingAnalyticsImpl : WordleLoggingAnalytics {
             "Game end: Word length: $wordLength, Quiz max rows: $maxRows, Last row position: $lastRow, Is last round correct: $lastRowCorrect, Quiz type: $quizType, Word day: $day, Maze item id: $mazeItemId"
         )
     }
+
+    override fun logDailyWordleItemClick(wordLength: Int, day: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun logDailyWordleItemComplete(wordLength: Int, day: String, correct: Boolean) {
+        TODO("Not yet implemented")
+    }
 }

@@ -67,6 +67,13 @@ data class User(
 
         return newUser.level > level
     }
+
+    fun getLevelAfter(newXp: Long): Int {
+        val newTotalXP = totalXp + newXp
+        val newUser = copy(data = UserData(totalXp = newTotalXP))
+
+        return newUser.level
+    }
 }
 
 internal fun User.toUserEntity(): UserEntity = UserEntity(

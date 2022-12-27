@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
+        <key>maze_quiz_generated_questions</key>
+        <value>50</value>
+    </entry>
+    <entry>
+        <key>recommended_home_game</key>
+        <value>no_game</value>
+    </entry>
+    <entry>
+        <key>wordle_daily_words</key>
+        <value>[{"date":"2022-12-01","words":{"4":"QUIZ","5":"FIEND","6":"LEAVES"}},{"date":"2022-12-02","words":{"4":"LIKE","5":"STAGY","6":"TENDER"}},{"date":"2022-12-03","words":{"4":"GAME","5":"KOPHS","6":"SEALER"}},{"date":"2022-12-04","words":{"4":"SHIP","5":"PLACK","6":"UPHASP"}},{"date":"2022-12-05","words":{"4":"CANT","5":"URBEX","6":"DOCTOR"}},{"date":"2022-12-06","words":{"4":"CANDY","5":"GUZZY","6":"MILDEW"}},{"date":"2022-12-07","words":{"4":"FLAG","5":"HAIXI","6":"SOONLY"}},{"date":"2022-12-08","words":{"4":"HYNE","5":"BODIS","6":"REMEDY"}},{"date":"2022-12-09","words":{"4":"HIGH","5":"COKES","6":"STREEK"}},{"date":"2022-12-10","words":{"4":"IRAN","5":"CATER","6":"RIMPLE"}},{"date":"2022-13-11","words":{"4":"BEAN","5":"SUIRE","6":"BRILLS"}},{"date":"2022-12-12","words":{"4":"ERIC","5":"DAINT","6":"MOHAIR"}},{"date":"2022-12-13","words":{"4":"CHAR","5":"WARRU","6":"CREASE"}},{"date":"2022-12-14","words":{"4":"SOFT","5":"LUBOK","6":"ECHOES"}},{"date":"2022-12-15","words":{"4":"YOGA","5":"DULCE","6":"STODGY"}},{"date":"2022-12-16","words":{"4":"SHUT","5":"GIANT","6":"ABATER"}},{"date":"2022-12-17","words":{"4":"SWIM","5":"CLOUD","6":"FUMIFY"}},{"date":"2022-12-18","words":{"4":"DATE","5":"COBLE","6":"TORRIL"}},{"date":"2022-12-19","words":{"4":"DEBT","5":"BEERY","6":"POLLAX"}},{"date":"2022-12-20","words":{"4":"CURE","5":"TRUBY","6":"ATTEST"}},{"date":"2022-12-21","words":{"4":"RING","5":"VIAND","6":"LIMING"}},{"date":"2022-12-22","words":{"4":"MISS","5":"LOIRE","6":"LAVISH"}},{"date":"2022-12-23","words":{"4":"TWIN","5":"PULES","6":"PATENA"}},{"date":"2022-12-24","words":{"4":"KIBE","5":"RESIN","6":"NEOGEN"}},{"date":"2022-12-25","words":{"4":"GIMP","5":"MILTS","6":"STRAIT"}},{"date":"2022-12-26","words":{"4":"CROP","5":"WIDER","6":"LEADED"}},{"date":"2022-12-27","words":{"4":"VELA","5":"LEVEL","6":"REASON"}},{"date":"2022-12-28","words":{"4":"SOIL","5":"LATEX","6":"PEBBLY"}},{"date":"2022-12-29","words":{"4":"LOAN","5":"CRIED","6":"PLURAL"}},{"date":"2022-12-30","words":{"4":"KICK","5":"SINES","6":"MONDAY"}},{"date":"2022-12-31","words":{"4":"HAVE","5":"JIMMY","6":"RIMPLE"}},{"date":"2023-01-01","words":{"4":"RACE","5":"PODIO","6":"SIGNAL"}},{"date":"2023-01-02","words":{"4":"BACK","5":"PLATE","6":"REPACE"}},{"date":"2023-01-03","words":{"4":"NEWS","5":"GAMES","6":"RANGER"}},{"date":"2023-01-04","words":{"4":"FLOW","5":"JULIE","6":"EXTRAS"}},{"date":"2023-01-05","words":{"4":"FINE","5":"RAIDS","6":"DETACH"}},{"date":"2023-01-06","words":{"4":"ROCK","5":"ROLES","6":"SUNDAY"}},{"date":"2023-01-07","words":{"4":"RITE","5":"ZEROS","6":"LIVING"}},{"date":"2023-01-08","words":{"4":"FLUE","5":"GIFTS","6":"ELEVAN"}},{"date":"2023-01-09","words":{"4":"FOFA","5":"PURES","6":"REGRET"}},{"date":"2023-01-10","words":{"4":"VISE","5":"HEAVE","6":"BETTER"}},{"date":"2023-01-11","words":{"4":"NINE","5":"COSTS","6":"STRING"}},{"date":"2023-01-12","words":{"4":"ZERO","5":"FULLY","6":"GENIUS"}},{"date":"2023-01-13","words":{"4":"PALE","5":"KEBAB","6":"SMALLY"}},{"date":"2023-01-14","words":{"4":"NOSE","5":"APRIL","6":"MANTIS"}},{"date":"2023-01-15","words":{"4":"PEACK","5":"STUSH","6":"PARCEL"}},{"date":"2023-01-16","words":{"4":"JULY","5":"WINGY","6":"LUSTRE"}},{"date":"2023-01-17","words":{"4":"PEAK","5":"STERN","6":"PUZZLE"}},{"date":"2023-01-18","words":{"4":"DUST","5":"MARCH","6":"GOVERN"}},{"date":"2023-01-19","words":{"4":"GRID","5":"SIREE","6":"REMOTE"}},{"date":"2023-01-20","words":{"4":"SEAM","5":"BLAST","6":"AUGUST"}},{"date":"2023-01-21","words":{"4":"SELL","5":"LEVIS","6":"SIRENE"}},{"date":"2023-01-22","words":{"4":"FISH","5":"LONAS","6":"POLICE"}},{"date":"2023-01-23","words":{"4":"GATE","5":"LOVOS","6":"PICKLE"}},{"date":"2023-01-24","words":{"4":"WEEK","5":"DOLAR","6":"KERNEL"}},{"date":"2023-01-25","words":{"4":"JUNE","5":"DEMOS","6":"PLACED"}},{"date":"2023-01-26","words":{"4":"LOSE","5":"APRIL","6":"PORTION"}},{"date":"2023-01-27","words":{"4":"PATH","5":"POSTS","6":"WEAKLY"}},{"date":"2023-01-28","words":{"4":"FLAT","5":"TODAY","6":"DEPEND"}},{"date":"2023-01-29","words":{"4":"SEAL","5":"COKER","6":"FORCED"}},{"date":"2023-01-30","words":{"4":"TRIM","5":"SUITS","6":"LETTER"}}]</value>
+    </entry>
+    <entry>
         <key>wordle_ad_row_reward_amount</key>
         <value>1</value>
     </entry>
@@ -9,15 +21,35 @@
         <value>10</value>
     </entry>
     <entry>
-        <key>math_quiz_difficulty</key>
-        <value>easy</value>
+        <key>show_logo_quiz_in_categories</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>show_flag_quiz_in_categories</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>all_logos_quiz</key>
+        <value>[{"description":"What is the name of this game?","name":"New Quiz","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoNewQuiz.png?alt=media&amp;token=239af120-55a6-480d-beea-279da9133e45","incorrect_answers":["New Social","Mega Quiz","My Quiz"],"difficulty":"easy"},{"description":"What is the name of this social app?","name":"Instagram","img_url":"https://play-lh.googleusercontent.com/LM9vBt64KdRxLFRPMpNM6OvnGTGoUFSXYV-w-cGVeUxhgFWkCsfsPSJ5GYh7x9qKqw=s300","incorrect_answers":["Facebook","Whats App","Snap Chat"],"difficulty":"easy"},{"description":"What is the name of this social app?","name":"Discord","img_url":"https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ=s300","incorrect_answers":["Facebook","Whats App","Instagram"],"difficulty":"easy"},{"description":"What is the name of this social app?","name":"Facebook","img_url":"https://play-lh.googleusercontent.com/ccWDU4A7fX1R24v-vvT480ySh26AYp97g1VrIB_FIdjRcuQB2JP2WdY7h_wVVAeSpg=s300","incorrect_answers":["Instagram","Whats App","Face Time"],"difficulty":"easy"},{"description":"What is the name of this company?","name":"Google","img_url":"https://kgo.googleusercontent.com/profile_vrt_raw_bytes_1587515358_10512.png","incorrect_answers":["Meta","Apple","Microsoft"],"difficulty":"easy"},{"description":"What is the name of this company?","name":"Starbucks","img_url":"https://static.dicionariodesimbolos.com.br/upload/d1/42/logo-da-starbucks-significado-historia-e-evolucao-4_xl.jpeg","incorrect_answers":["Starcoffee","McDonald's","Startasks"],"difficulty":"easy"},{"description":"What is the name of this fast food company?","name":"McDonald's","img_url":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/1200px-McDonald%27s_Golden_Arches.svg.png","incorrect_answers":["Burger King","MyDonald's","McBurger"],"difficulty":"easy"},{"description":"What is the name of this company?","name":"IKEA","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoQuiz%2Fikea_clear.png?alt=media&amp;token=74728d10-7e33-4e8c-8ab9-c79a6abbad8a","incorrect_answers":["IKEO","IREA","IKER"],"difficulty":"medium"},{"description":"What is the name of this company?","name":"LEGO","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoQuiz%2Flego_logo.png?alt=media&amp;token=d255065b-355b-4e66-9a06-3eaf691e3589","incorrect_answers":["FEGA","LEGA","LEMA"],"difficulty":"medium"},{"description":"What is the name of this social app?","name":"Tiktok","img_url":"https://www.edigitalagency.com.au/wp-content/uploads/TikTok-icon-glyph.png","incorrect_answers":["Toktik","Tiktik","Toktok"],"difficulty":"easy"},{"description":"What is the name of this company?","name":"Netflix","img_url":"https://1000logos.net/wp-content/uploads/2017/05/Netflix-Logo-2006.png","incorrect_answers":["Myflix","Newflix","Netflis"],"difficulty":"easy"},{"description":"What is the name of this payments company?","name":"Paypal","img_url":"https://www.paypalobjects.com/webstatic/icon/pp258.png","incorrect_answers":["Palpay","Payme","Wepay"],"difficulty":"easy"},{"description":"What is the name of this car company?","name":"Tesla","img_url":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Tesla_T_symbol.svg/800px-Tesla_T_symbol.svg.png","incorrect_answers":["Tata Motors","Volvo","Mercedes"],"difficulty":"medium"},{"description":"What is the name of this financial services company?","name":"Visa","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoQuiz%2FVISA-logo.png?alt=media&amp;token=557f36f2-2f46-4a33-bc0d-df44974611f1","incorrect_answers":["Vita","Vila","Vis"],"difficulty":"easy"},{"description":"What is the name of this car company?","name":"Ferrari","img_url":"https://www.escolacasa.com/wp-content/uploads/2021/03/Emblema_Ferrari.jpg","incorrect_answers":["Audi","Bugatti","Mercedes"],"difficulty":"medium"},{"description":"What is the name of this company?","name":"Amazon","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoQuiz%2Famazon.webp?alt=media&amp;token=24912534-9aff-4967-b685-cab95c33f1be","incorrect_answers":["Alazon","Amazob","Abazos"],"difficulty":"easy"},{"description":"What is the name of this company?","name":"Nike","img_url":"https://lh3.googleusercontent.com/FK8EcHV1SJGHeTUJCsUhCQl0hmQu-QbC4wG6bM59S0v-rLv-jQl16YC3LQ4x-ZpPwS1cUs_4Idap57kYgcTCOQFB","incorrect_answers":["Mike","Mile","Nile"],"difficulty":"easy"},{"description":"What is the name of this company?","name":"Adidas","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoQuiz%2Fadidas.png?alt=media&amp;token=6ab85092-f19f-43d7-b56b-49add8e74969","incorrect_answers":["Abibas","Ardidas","Amigas"],"difficulty":"easy"},{"description":"What is the name of this company?","name":"Dell","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoQuiz%2Fdell.png?alt=media&amp;token=e080737a-446c-42a8-8b7a-5c65cb0b0453","incorrect_answers":["Bell","Sell","Dele"],"difficulty":"hard"},{"description":"What is the name of this company?","name":"Levis","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoQuiz%2Flevis.png?alt=media&amp;token=6c878b7b-9096-47f2-aba9-1fe19896b4dd","incorrect_answers":["Legis","Lebis","Lives"],"difficulty":"hard"},{"description":"What is the name of this company?","name":"Levis","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoQuiz%2Flevis.png?alt=media&amp;token=6c878b7b-9096-47f2-aba9-1fe19896b4dd","incorrect_answers":["Legis","Lebis","Lives"],"difficulty":"hard"},{"description":"What is the name of this company?","name":"Coca-Cola","img_url":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/LogoQuiz%2FCoca-Cola-Logo.png?alt=media&amp;token=1fdec8d8-71c8-4fbb-b548-6a3916959040","incorrect_answers":["Cola-Coca","Cola-Cola","Coca-Coca"],"difficulty":"hard"}]</value>
+    </entry>
+    <entry>
+        <key>multichoice_quickquiz_difficulty</key>
+        <value>random</value>
     </entry>
     <entry>
         <key>math_quiz_operator_size</key>
         <value>1</value>
     </entry>
     <entry>
-        <key>maze_quiz_generated_questions</key>
-        <value>50</value>
+        <key>math_quiz_difficulty</key>
+        <value>easy</value>
+    </entry>
+    <entry>
+        <key>new_level_diamonds_reward</key>
+        <value>10</value>
+    </entry>
+    <entry>
+        <key>new_level_diamonds_multiplier_by_level</key>
+        <value>true</value>
     </entry>
 </defaultsMap>

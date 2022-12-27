@@ -9,12 +9,6 @@ import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 import javax.inject.Singleton
 
-const val EVENT_CREATE_MAZE = "create_maze"
-
-const val PARAM_SEED = "seed"
-const val PARAM_ITEM_SIZE = "item_size"
-const val PARAM_GAME_MODES = "game_modes"
-
 @Singleton
 class CoreLoggingAnalyticsImpl @Inject constructor(
     private val firebaseAnalytics: FirebaseAnalytics
@@ -27,11 +21,23 @@ class CoreLoggingAnalyticsImpl @Inject constructor(
         }
     }
 
-    override fun logCreateMaze(seed: Int, itemSize: Int, gameModes: List<Int>) {
-        firebaseAnalytics.logEvent(EVENT_CREATE_MAZE) {
-            param(PARAM_SEED, seed)
-            param(PARAM_ITEM_SIZE, itemSize)
-            param(PARAM_GAME_MODES, gameModes.toString())
+    override fun logNewLevel(level: Int, diamondsEarned: Int) {
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.EARN_VIRTUAL_CURRENCY) {
+            param(FirebaseAnalytics.Param.VIRTUAL_CURRENCY_NAME, "diamonds")
+            param(FirebaseAnalytics.Param.VALUE, diamondsEarned)
+        }
+
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LEVEL_UP) {
+            param(FirebaseAnalytics.Param.LEVEL, level)
+            param(FirebaseAnalytics.Param.CHARACTER, "global")
+        }
+    }
+
+    override fun logSpendDiamonds(amount: Int, usedFor: String) {
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SPEND_VIRTUAL_CURRENCY) {
+            param(FirebaseAnalytics.Param.VALUE, amount)
+            param(FirebaseAnalytics.Param.VIRTUAL_CURRENCY_NAME, "diamonds")
+            param(FirebaseAnalytics.Param.ITEM_NAME, usedFor)
         }
     }
 }

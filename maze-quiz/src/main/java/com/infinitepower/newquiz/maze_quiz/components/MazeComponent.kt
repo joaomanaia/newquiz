@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.maze_quiz.components
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -15,9 +14,7 @@ import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,11 +29,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.infinitepower.newquiz.core.analytics.logging.maze.rememberMazeLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
-import com.infinitepower.newquiz.model.math_quiz.MathFormula
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.MazePoint
 import com.infinitepower.newquiz.model.maze.generateMazePointsBottomToTop
@@ -57,6 +54,8 @@ internal fun MazeComponent(
     val localDensity = LocalDensity.current
     val spaceLarge = MaterialTheme.spacing.large
 
+    val mazeLoggingAnalytics = rememberMazeLoggingAnalytics()
+
     BoxWithConstraints(
         modifier = modifier.height(2000.dp)
     ) {
@@ -71,7 +70,10 @@ internal fun MazeComponent(
             modifier = Modifier.fillMaxWidth(),
             items = items,
             startPoint = startPoint,
-            onClick = { index -> onItemClick(items[index]) }
+            onClick = { index ->
+                mazeLoggingAnalytics.logMazeItemClick(index)
+                onItemClick(items[index])
+            }
         )
     }
 }

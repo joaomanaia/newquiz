@@ -1,9 +1,14 @@
 package com.infinitepower.newquiz.multi_choice_quiz.categories
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalyticsImpl
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory

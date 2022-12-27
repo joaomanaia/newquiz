@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
@@ -14,7 +16,7 @@ import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
-import com.infinitepower.newquiz.data.worker.EndGameMazeQuizWorker
+import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
@@ -24,7 +26,6 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import com.infinitepower.newquiz.model.multi_choice_quiz.isAllCorrect
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
-import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
 import com.infinitepower.newquiz.online_services.core.worker.multichoicequiz.MultiChoiceQuizEndGameWorker
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
@@ -47,7 +48,9 @@ class QuizScreenViewModel @Inject constructor(
     private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
     private val translationUtil: TranslatorUtil,
     private val workManager: WorkManager,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val coreLoggingAnalytics: CoreLoggingAnalytics,
+    private val mazeLoggingAnalytics: MazeLoggingAnalytics
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -115,6 +118,8 @@ class QuizScreenViewModel @Inject constructor(
         }
 
         userRepository.updateLocalUserDiamonds(-1)
+
+        coreLoggingAnalytics.logSpendDiamonds(1, "skip_multichoicequestion")
     }
 
     private suspend fun loadByCloudQuestions() {
@@ -287,6 +292,10 @@ class QuizScreenViewModel @Inject constructor(
             val mazeItemId = savedStateHandle
                 .get<String?>(MultiChoiceQuizScreenNavArg::mazeItemId.name)
                 ?.toIntOrNull()
+
+            if (mazeItemId != null) {
+                mazeLoggingAnalytics.logMazeItemPlayed(allCorrect)
+            }
 
             if (mazeItemId != null && allCorrect) {
                 // Runs the end game maze worker if is maze game mode and the question is correct

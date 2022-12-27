@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.wordle.daily_word
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
 class DailyWordleSelectorViewModel @Inject constructor(
-    private val dailyWordleRepository: DailyWordleRepository
+    private val dailyWordleRepository: DailyWordleRepository,
+    private val wordleLoggingAnalytics: WordleLoggingAnalytics
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(DailyWordleSelectorUiState())
     val uiState = _uiState.asStateFlow()
@@ -72,6 +74,9 @@ class DailyWordleSelectorViewModel @Inject constructor(
             .collect { res ->
                 if (res is Resource.Success && res.data != null) {
                     val wordleQuiz = WordleScreenDestination(rowLimit = 6, word = res.data, date = date.toString())
+
+                    wordleLoggingAnalytics.logDailyWordleItemClick(currentState.wordSize, date.toString())
+
                     sendNavEventAsync(NavEvent.Navigate(wordleQuiz))
                     return@collect
                 }
