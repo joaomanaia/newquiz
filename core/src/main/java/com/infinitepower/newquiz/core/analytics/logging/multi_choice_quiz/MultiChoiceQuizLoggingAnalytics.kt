@@ -13,4 +13,12 @@ interface MultiChoiceQuizLoggingAnalytics {
         correctAnswers: Int,
         mazeItemId: Int? = null
     )
+
+    fun logCategoryClicked(id: Int)
+
+    fun logSaveQuestion()
+
+    fun logDownloadQuestions()
+
+    fun logPlaySavedQuestions(questionsSize: Int)
 }

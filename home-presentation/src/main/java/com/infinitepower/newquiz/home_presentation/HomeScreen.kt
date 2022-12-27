@@ -14,6 +14,8 @@ import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
@@ -30,13 +32,14 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
+@OptIn(ExperimentalLifecycleComposeApi::class)
 fun HomeScreen(
     navigator: DestinationsNavigator,
     homeScreenNavigator: HomeScreenNavigator,
     navDrawerUtil: NavDrawerUtil,
     homeViewModel: HomeScreenViewModel = hiltViewModel()
 ) {
-    val uiState by homeViewModel.uiState.collectAsState()
+    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
 
     val homeCardItemData = remember(uiState.recommendedHomeGame) {
         val defaultData = getHomeCardItemData(homeNavigator = homeScreenNavigator)

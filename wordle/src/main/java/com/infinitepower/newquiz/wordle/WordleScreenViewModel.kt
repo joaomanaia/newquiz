@@ -7,10 +7,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
-import com.infinitepower.newquiz.data.worker.EndGameMazeQuizWorker
+import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.wordle.util.worker.WordleEndGameWorker
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.wordle.WordleItem
@@ -34,6 +35,7 @@ class WordleScreenViewModel @Inject constructor(
     private val wordleRepository: WordleRepository,
     private val savedStateHandle: SavedStateHandle,
     private val wordleLoggingAnalytics: WordleLoggingAnalytics,
+    private val mazeLoggingAnalytics: MazeLoggingAnalytics,
     private val workManager: WorkManager
 ) : ViewModel() {
     private var _uiState = MutableStateFlow(WordleScreenUiState())
@@ -279,6 +281,10 @@ class WordleScreenViewModel @Inject constructor(
                     WordleEndGameWorker.INPUT_MAZE_TEM_ID to mazeItemId
                 )
             ).build()
+
+        if (mazeItemId != null) {
+            mazeLoggingAnalytics.logMazeItemPlayed(isLastRowCorrect)
+        }
 
         if (mazeItemId != null && isLastRowCorrect) {
             // Runs the end game maze worker if is maze game mode and the question is correct

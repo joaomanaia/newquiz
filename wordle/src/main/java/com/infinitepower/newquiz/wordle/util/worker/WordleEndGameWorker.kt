@@ -64,6 +64,8 @@ class WordleEndGameWorker @AssistedInject constructor(
                 isCorrect = isLastRowCorrect,
                 wordLength = word.length
             )
+
+            wordleLoggingAnalytics.logDailyWordleItemComplete(word.length, day, isLastRowCorrect)
         }
 
         if (onlineServicesCore.connectionAvailable()) {

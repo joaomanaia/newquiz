@@ -10,6 +10,7 @@ import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.workDataOf
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.data.database.AppDatabase
+import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
 import dagger.hilt.android.testing.HiltAndroidRule

@@ -12,13 +12,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.infinitepower.newquiz.core.R
+import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.rememberMultiChoiceLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.multi_choice_quiz.categories.components.CategoryComponent
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
@@ -32,10 +31,13 @@ fun MultiChoiceCategoriesScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    val multiChoiceLoggingAnalytics = rememberMultiChoiceLoggingAnalytics()
+
     MultiChoiceCategoriesScreenImpl(
         uiState = uiState,
         onBackClick = navigator::popBackStack,
         navigateToQuizScreen = { categoryId ->
+            multiChoiceLoggingAnalytics.logCategoryClicked(categoryId)
             navigator.navigate(MultiChoiceQuizScreenDestination(category = categoryId))
         }
     )

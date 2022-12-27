@@ -2,6 +2,8 @@ package com.infinitepower.newquiz.core.di
 
 import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalyticsImpl
+import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalyticsImpl
 import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalyticsImpl
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
@@ -28,4 +30,9 @@ abstract class LoggingAnalyticsModule {
     abstract fun bindMultiChoiceLoggingAnalytics(
         multiChoiceQuizLoggingAnalyticsImpl: MultiChoiceQuizLoggingAnalyticsImpl
     ): MultiChoiceQuizLoggingAnalytics
+
+    @Binds
+    abstract fun bindMazeLoggingAnalytics(
+        mazeLoggingAnalyticsImpl: MazeLoggingAnalyticsImpl
+    ): MazeLoggingAnalytics
 }

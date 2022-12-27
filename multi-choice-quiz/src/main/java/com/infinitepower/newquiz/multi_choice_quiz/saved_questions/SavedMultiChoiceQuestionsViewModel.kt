@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.multi_choice_quiz.saved_questions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -14,23 +15,11 @@ import javax.inject.Inject
 @HiltViewModel
 class SavedMultiChoiceQuestionsViewModel @Inject constructor(
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
-    private val questionRepository: MultiChoiceQuestionRepository
+    private val questionRepository: MultiChoiceQuestionRepository,
+    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SavedMultiChoiceQuestionsUiState())
     val uiState = _uiState.asStateFlow()
-
-    /*
-    val questions = Pager(
-       config = PagingConfig(
-           pageSize = 15,
-           prefetchDistance = 30,
-           enablePlaceholders = false
-       )
-    ) {
-        savedQuestionsRepository.getPagingQuestions()
-    }.flow.cachedIn(viewModelScope)
-
-     */
 
     init {
         savedQuestionsRepository
@@ -74,6 +63,8 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
     }
 
     private fun downloadQuestions() = viewModelScope.launch(Dispatchers.IO) {
+        multiChoiceQuizLoggingAnalytics.logDownloadQuestions()
+
         val allSavedQuestions = savedQuestionsRepository.getQuestions()
         val questions = questionRepository
             .getRandomQuestions(amount = 50)

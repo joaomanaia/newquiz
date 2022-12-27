@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
@@ -36,7 +37,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val wordleRepository: WordleRepository,
     private val multiChoiceQuestionRepository: MultiChoiceQuestionRepository,
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
-    private val coreLoggingAnalytics: CoreLoggingAnalytics
+    private val mazeLoggingAnalytics: MazeLoggingAnalytics
 ) : CoroutineWorker(appContext, workerParams) {
     private val remoteConfig by lazy { Firebase.remoteConfig }
 
@@ -140,7 +141,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         if (questionsCount != allMazeItems.count())
             throw RuntimeException("Maze saved questions: $questionsCount is not equal to generated questions: ${allMazeItems.count()}")
 
-        coreLoggingAnalytics.logCreateMaze(seed, questionsCount, inputGameModes?.toList().orEmpty())
+        mazeLoggingAnalytics.logCreateMaze(seed, questionsCount, inputGameModes?.toList().orEmpty())
 
         Result.success()
     }

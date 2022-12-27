@@ -18,4 +18,12 @@ interface WordleLoggingAnalytics {
         day: String? = null,
         mazeItemId: Int? = null
     )
+
+    fun logDailyWordleItemClick(wordLength: Int, day: String)
+
+    fun logDailyWordleItemComplete(
+        wordLength: Int,
+        day: String,
+        correct: Boolean
+    )
 }
