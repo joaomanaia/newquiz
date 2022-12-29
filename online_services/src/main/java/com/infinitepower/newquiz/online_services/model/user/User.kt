@@ -4,6 +4,8 @@ import androidx.annotation.Keep
 import com.infinitepower.newquiz.core.common.DEFAULT_USER_PHOTO
 import kotlin.math.*
 
+class UserNotLoggedInException : NullPointerException("User is not logged in")
+
 @Keep
 data class User(
     val uid: String? = null,
