@@ -55,6 +55,7 @@ internal fun ListPreferenceWidget(
                 TextButton(
                     onClick = {
                         dismissDialog()
+                        preference.onItemClick(newValue)
                         onValueChange(newValue)
                     }
                 ) {

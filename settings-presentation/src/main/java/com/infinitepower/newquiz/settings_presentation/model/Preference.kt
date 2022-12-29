@@ -66,7 +66,8 @@ sealed class Preference {
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
 
-            val entries: Map<String, String>
+            val entries: Map<String, String>,
+            val onItemClick: (value: String) -> Unit = {}
         ) : PreferenceItem<String>()
 
         /**

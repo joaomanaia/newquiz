@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.dataStore.settingsDataStore
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
@@ -38,6 +39,8 @@ fun PreferencesScreen(
     }
 
     val scope = rememberCoroutineScope()
+
+    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
 
     Scaffold(
         topBar = {
@@ -68,7 +71,8 @@ fun PreferencesScreen(
                     deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) }
                 )
                 is SettingsScreenPageData.Wordle -> page.items(
-                    clearWordleCalendarItems = { onEvent(SettingsScreenUiEvent.ClearWordleCalendarItems) }
+                    clearWordleCalendarItems = { onEvent(SettingsScreenUiEvent.ClearWordleCalendarItems) },
+                    onChangeWordleLang = coreLoggingAnalytics::setWordleLangUserProperty
                 )
                 is SettingsScreenPageData.User -> page.items(
                     userIsSignedIn = uiState.userIsSignedIn,
