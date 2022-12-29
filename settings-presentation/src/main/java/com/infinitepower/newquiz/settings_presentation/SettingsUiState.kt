@@ -8,5 +8,6 @@ import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
 @Keep
 data class SettingsUiState(
     val screenKey: ScreenKey = SettingsScreenPageData.MainPage.key,
-    val translationModelState: TranslatorUtil.TranslatorModelState = TranslatorUtil.TranslatorModelState.None
+    val translationModelState: TranslatorUtil.TranslatorModelState = TranslatorUtil.TranslatorModelState.None,
+    val userIsSignedIn: Boolean = false
 )

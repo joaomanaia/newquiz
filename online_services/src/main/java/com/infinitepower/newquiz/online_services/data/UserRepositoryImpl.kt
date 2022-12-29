@@ -4,6 +4,7 @@ import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.infinitepower.newquiz.online_services.model.user.User
+import com.infinitepower.newquiz.online_services.model.user.UserNotLoggedInException
 import com.infinitepower.newquiz.online_services.model.user.toUser
 import com.infinitepower.newquiz.online_services.model.user.toUserEntity
 import javax.inject.Inject
@@ -19,9 +20,9 @@ class UserRepositoryImpl @Inject constructor(
         return userApi.getUserByUid(uid)?.toUser()
     }
 
-    @Throws(NullPointerException::class)
+    @Throws(UserNotLoggedInException::class)
     override suspend fun getLocalUser(): User? {
-        val localUid = authUserRepository.uid ?: throw NullPointerException("User is not logged in")
+        val localUid = authUserRepository.uid ?: throw UserNotLoggedInException()
         return getUserByUid(localUid)
     }
 

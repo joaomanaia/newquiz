@@ -40,7 +40,8 @@ internal class MazeMathQuizRepositoryImplTest {
                         wordleWord = "1+1=2",
                         wordleQuizType = WordleQuizType.MATH_FORMULA
                     ),
-                    played = false
+                    played = false,
+                    mazeSeed = 0
                 )
             )
         )
@@ -65,7 +66,8 @@ internal class MazeMathQuizRepositoryImplTest {
             MazeQuiz.MazeItem.Wordle(
                 difficulty = QuestionDifficulty.Easy,
                 word = "1+1=2",
-                wordleQuizType = WordleQuizType.MATH_FORMULA
+                wordleQuizType = WordleQuizType.MATH_FORMULA,
+                mazeSeed = 0
             )
         )
     }

@@ -16,11 +16,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.infinitepower.newquiz.core.notification.wordle.DailyWordleNotificationServiceImpl
-import com.infinitepower.newquiz.data.worker.wordle.DailyWordleNotificationWorker
-import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
+import com.infinitepower.newquiz.core.workers.AppStartLoggingAnalyticsWorker
 import com.infinitepower.newquiz.online_services.core.worker.CheckUserDBWorker
 import dagger.hilt.android.HiltAndroidApp
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val TWELVE_HOUR_IN_SECONDS = 3600L
@@ -40,9 +38,7 @@ class NewQuizApp : Application(), Configuration.Provider {
 
         initializeMobileAds()
         initializeRemoteConfig()
-        //createNotificationChannels()
-        //createDailyWordleWork()
-        checkUserDBWork()
+        createWorkers()
 
         FirebaseApp.initializeApp(this)
         val firebaseAppCheck = FirebaseAppCheck.getInstance()
@@ -103,9 +99,13 @@ class NewQuizApp : Application(), Configuration.Provider {
         return channel
     }
 
-    private fun checkUserDBWork() {
-        val request = OneTimeWorkRequestBuilder<CheckUserDBWorker>().build()
+    private fun createWorkers() {
+        val appStartLoggingAnalyticsWorker = OneTimeWorkRequestBuilder<AppStartLoggingAnalyticsWorker>().build()
+        val checkUserDBWorker = OneTimeWorkRequestBuilder<CheckUserDBWorker>().build()
 
-        workManager.enqueue(request)
+        workManager
+            .beginWith(appStartLoggingAnalyticsWorker)
+            .then(checkUserDBWorker)
+            .enqueue()
     }
 }

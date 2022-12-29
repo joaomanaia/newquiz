@@ -16,6 +16,7 @@ class MathQuizCoreRepositoryImpl @Inject constructor(
     private val expressions: Expressions
 ) : MathQuizCoreRepository {
     private val allNumbers by lazy { 0..9 }
+    private val allOperators by lazy { "+-*/=" }
 
     override fun generateMathFormula(
         operatorSize: Int,
@@ -60,6 +61,13 @@ class MathQuizCoreRepositoryImpl @Inject constructor(
     }
 
     override fun validateFormula(formula: String): Boolean {
+        val allNumbersStr = allNumbers.map(Int::digitToChar)
+        val allItemsNumberOrOperator = formula.all {
+            it in allNumbersStr || it in allOperators
+        }
+
+        if (!allItemsNumberOrOperator) return false
+
         // Checks if formula contains one equals
         if (formula.count { it == '=' } != 1) return false
 

@@ -1,7 +1,11 @@
 package com.infinitepower.newquiz.settings_presentation
 
-sealed class SettingsScreenUiEvent {
-    object DownloadTranslationModel : SettingsScreenUiEvent()
+sealed interface SettingsScreenUiEvent {
+    object DownloadTranslationModel : SettingsScreenUiEvent
 
-    object DeleteTranslationModel : SettingsScreenUiEvent()
+    object DeleteTranslationModel : SettingsScreenUiEvent
+
+    object SignOut : SettingsScreenUiEvent
+
+    object ClearWordleCalendarItems : SettingsScreenUiEvent
 }

@@ -140,4 +140,6 @@
     <string name="seed">Seed</string>
     <string name="generate_offline_maze">Gerar labirinto offline</string>
     <string name="generate_offline_maze_description">Gerar labirinto com todos os modos que não requerem conecção com a internet.</string>
+    <string name="user">Usuário</string>
+    <string name="sign_out">Terminar sessão</string>
 </resources>
