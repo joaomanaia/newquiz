@@ -9,6 +9,9 @@ import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 import javax.inject.Singleton
 
+private const val WORDLE_LANG_USER_PROPERTY = "wordle_lang"
+private const val TRANSLATOR_DOWNLOADED_USER_PROPERTY = "translator_downloaded"
+
 @Singleton
 class CoreLoggingAnalyticsImpl @Inject constructor(
     private val firebaseAnalytics: FirebaseAnalytics
@@ -39,6 +42,14 @@ class CoreLoggingAnalyticsImpl @Inject constructor(
             param(FirebaseAnalytics.Param.VIRTUAL_CURRENCY_NAME, "diamonds")
             param(FirebaseAnalytics.Param.ITEM_NAME, usedFor)
         }
+    }
+
+    override fun setWordleLangUserProperty(lang: String) {
+        firebaseAnalytics.setUserProperty(WORDLE_LANG_USER_PROPERTY, lang)
+    }
+
+    override fun setTranslatorModelDownloaded(downloaded: Boolean) {
+        firebaseAnalytics.setUserProperty(TRANSLATOR_DOWNLOADED_USER_PROPERTY, downloaded)
     }
 }
 

@@ -8,9 +8,11 @@ import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
@@ -46,6 +48,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             get() = CoreR.string.general
 
         @Composable
+        @ReadOnlyComposable
         fun items(
             scope: CoroutineScope,
             dataStoreManager: DataStoreManager
@@ -97,6 +100,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             get() = CoreR.string.multi_choice_quiz
 
         @Composable
+        @ReadOnlyComposable
         fun items(
             translationModelState: TranslatorModelState,
             downloadTranslationModel: () -> Unit,
@@ -144,8 +148,10 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             get() = CoreR.string.wordle
 
         @Composable
+        @ReadOnlyComposable
         fun items(
-            clearWordleCalendarItems: () -> Unit
+            clearWordleCalendarItems: () -> Unit,
+            onChangeWordleLang: (newLang: String) -> Unit
         ) = listOf(
             Preference.PreferenceItem.SwitchPreference(
                 request = SettingsCommon.WordleHardMode,
@@ -177,7 +183,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         entries = mapOf(
                             "en" to stringResource(id = CoreR.string.english),
                             "pt" to stringResource(id = CoreR.string.portuguese)
-                        )
+                        ),
+                        onItemClick = onChangeWordleLang
                     ),
                     Preference.PreferenceItem.SwitchPreference(
                         request = SettingsCommon.WordleInfiniteRowsLimited,
@@ -211,6 +218,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             get() = CoreR.string.user
 
         @Composable
+        @ReadOnlyComposable
         fun items(
             userIsSignedIn: Boolean,
             signOut: () -> Unit

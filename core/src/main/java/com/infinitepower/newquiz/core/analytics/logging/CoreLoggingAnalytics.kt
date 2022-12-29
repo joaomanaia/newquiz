@@ -12,4 +12,8 @@ interface CoreLoggingAnalytics {
     )
 
     fun logSpendDiamonds(amount: Int, usedFor: String)
+
+    fun setWordleLangUserProperty(lang: String)
+
+    fun setTranslatorModelDownloaded(downloaded: Boolean)
 }
