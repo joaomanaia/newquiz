@@ -15,6 +15,8 @@ import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.common.dataStore.settingsDataStore
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
+import com.infinitepower.newquiz.settings_presentation.SettingsScreenUiEvent
+import com.infinitepower.newquiz.settings_presentation.SettingsUiState
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
 import com.infinitepower.newquiz.core.R as CoreR
@@ -23,10 +25,8 @@ import com.infinitepower.newquiz.core.R as CoreR
 @OptIn(ExperimentalMaterial3Api::class)
 fun PreferencesScreen(
     page: SettingsScreenPageData,
-    dailyWordleRepository: DailyWordleRepository,
-    translationModelState: TranslatorUtil.TranslatorModelState,
-    downloadTranslationModel: () -> Unit,
-    deleteTranslationModel: () -> Unit,
+    uiState: SettingsUiState,
+    onEvent: (event: SettingsScreenUiEvent) -> Unit,
     onBackClick: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -63,14 +63,16 @@ fun PreferencesScreen(
                 is SettingsScreenPageData.MainPage -> emptyList()
                 is SettingsScreenPageData.General -> page.items(scope, dataStoreManager)
                 is SettingsScreenPageData.MultiChoiceQuiz -> page.items(
-                    translationModelState = translationModelState,
-                    downloadTranslationModel = downloadTranslationModel,
-                    deleteTranslationModel = deleteTranslationModel
+                    translationModelState = uiState.translationModelState,
+                    downloadTranslationModel = { onEvent(SettingsScreenUiEvent.DownloadTranslationModel) },
+                    deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) }
                 )
                 is SettingsScreenPageData.Wordle -> page.items(
-                    scope,
-                    dataStoreManager,
-                    dailyWordleRepository
+                    clearWordleCalendarItems = { onEvent(SettingsScreenUiEvent.ClearWordleCalendarItems) }
+                )
+                is SettingsScreenPageData.User -> page.items(
+                    userIsSignedIn = uiState.userIsSignedIn,
+                    signOut = { onEvent(SettingsScreenUiEvent.SignOut) }
                 )
             },
             dataStore = dataStore,
