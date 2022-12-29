@@ -158,6 +158,7 @@ dependencies {
     implementation(project(Modules.onlineServices))
     implementation(project(Modules.mathQuiz))
     implementation(project(Modules.mazeQuiz))
+    implementation(project(Modules.translationDynamicFeature))
 }
 
 tasks.withType<Test> {

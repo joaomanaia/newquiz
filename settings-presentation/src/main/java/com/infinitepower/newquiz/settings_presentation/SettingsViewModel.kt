@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.settings_presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
@@ -17,8 +18,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    val dailyWordleRepository: DailyWordleRepository,
-    private val translatorUtil: TranslatorUtil
+    private val dailyWordleRepository: DailyWordleRepository,
+    private val translatorUtil: TranslatorUtil,
+    private val authUserRepository: AuthUserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
@@ -42,8 +44,15 @@ class SettingsViewModel @Inject constructor(
 
                 currentState.copy(translationModelState = state)
             }
-
         }
+
+        authUserRepository
+            .isSignedInFlow
+            .onEach { isSignedIn ->
+                _uiState.update { currentState ->
+                    currentState.copy(userIsSignedIn = isSignedIn)
+                }
+            }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: SettingsScreenUiEvent) {
@@ -52,7 +61,13 @@ class SettingsViewModel @Inject constructor(
                 translatorUtil.deleteModel()
             }
             is SettingsScreenUiEvent.DownloadTranslationModel -> downloadTranslationModel()
+            is SettingsScreenUiEvent.ClearWordleCalendarItems -> clearWordleCalendarItems()
+            is SettingsScreenUiEvent.SignOut -> authUserRepository.signOut()
         }
+    }
+
+    private fun clearWordleCalendarItems() = viewModelScope.launch(Dispatchers.IO)  {
+        dailyWordleRepository.clearAllCalendarItems()
     }
 
     private fun downloadTranslationModel() = viewModelScope.launch(Dispatchers.IO)  {

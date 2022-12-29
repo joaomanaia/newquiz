@@ -165,6 +165,7 @@ private fun MultiChoiceQuizScreenImpl(
                 progressText = uiState.remainingTime.toMinuteSecond(),
                 windowHeightSizeClass = windowHeightSizeClass,
                 progressIndicatorValue = animatedProgress,
+                userSignedIn = uiState.userSignedIn,
                 onBackClick = onBackClick,
                 onSkipClick = { onEvent(MultiChoiceQuizScreenUiEvent.GetUserSkipQuestionDiamonds) },
                 modifier = Modifier.fillMaxWidth(),

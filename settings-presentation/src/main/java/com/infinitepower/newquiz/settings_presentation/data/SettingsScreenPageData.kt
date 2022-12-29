@@ -2,14 +2,17 @@ package com.infinitepower.newquiz.settings_presentation.data
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
@@ -30,6 +33,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             General.key -> General
             MultiChoiceQuiz.key -> MultiChoiceQuiz
             Wordle.key -> Wordle
+            User.key -> User
             else -> MainPage
         }
     }
@@ -44,6 +48,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             get() = CoreR.string.general
 
         @Composable
+        @ReadOnlyComposable
         fun items(
             scope: CoroutineScope,
             dataStoreManager: DataStoreManager
@@ -95,6 +100,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             get() = CoreR.string.multi_choice_quiz
 
         @Composable
+        @ReadOnlyComposable
         fun items(
             translationModelState: TranslatorModelState,
             downloadTranslationModel: () -> Unit,
@@ -142,10 +148,10 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             get() = CoreR.string.wordle
 
         @Composable
+        @ReadOnlyComposable
         fun items(
-            scope: CoroutineScope,
-            dataStoreManager: DataStoreManager,
-            dailyWordleRepository: DailyWordleRepository
+            clearWordleCalendarItems: () -> Unit,
+            onChangeWordleLang: (newLang: String) -> Unit
         ) = listOf(
             Preference.PreferenceItem.SwitchPreference(
                 request = SettingsCommon.WordleHardMode,
@@ -177,7 +183,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         entries = mapOf(
                             "en" to stringResource(id = CoreR.string.english),
                             "pt" to stringResource(id = CoreR.string.portuguese)
-                        )
+                        ),
+                        onItemClick = onChangeWordleLang
                     ),
                     Preference.PreferenceItem.SwitchPreference(
                         request = SettingsCommon.WordleInfiniteRowsLimited,
@@ -199,13 +206,33 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     Preference.PreferenceItem.TextPreference(
                         title = stringResource(id = CoreR.string.clean_calendar_data),
                         summary = stringResource(id = CoreR.string.clean_saved_calendar_wins_losses),
-                        onClick = {
-                            scope.launch(Dispatchers.IO) {
-                                dailyWordleRepository.clearAllCalendarItems()
-                            }
-                        }
+                        onClick = clearWordleCalendarItems
                     )
                 )
+            )
+        )
+    }
+
+    object User : SettingsScreenPageData(key = ScreenKey("user")) {
+        override val stringRes: Int
+            get() = CoreR.string.user
+
+        @Composable
+        @ReadOnlyComposable
+        fun items(
+            userIsSignedIn: Boolean,
+            signOut: () -> Unit
+        ) = listOf(
+            Preference.PreferenceItem.TextPreference(
+                title = stringResource(id = CoreR.string.sign_out),
+                onClick = signOut,
+                enabled = userIsSignedIn,
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.ExitToApp,
+                        contentDescription = stringResource(id = CoreR.string.sign_out),
+                    )
+                }
             )
         )
     }

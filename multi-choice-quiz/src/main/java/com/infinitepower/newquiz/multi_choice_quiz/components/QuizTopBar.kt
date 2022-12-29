@@ -26,6 +26,7 @@ internal fun QuizTopBar(
     windowHeightSizeClass: WindowHeightSizeClass,
     progressText: String,
     progressIndicatorValue: Float,
+    userSignedIn: Boolean,
     currentQuestionNull: Boolean = true,
     onBackClick: () -> Unit,
     onSkipClick: () -> Unit
@@ -65,7 +66,7 @@ internal fun QuizTopBar(
             )
         }
 
-        if (!currentQuestionNull) {
+        if (!currentQuestionNull && userSignedIn) {
             FilledTonalIconButton(
                 onClick = onSkipClick,
                 modifier = Modifier.constrainAs(btnSkipRef) {
@@ -92,6 +93,7 @@ private fun QuizTopBarPreview() {
                 windowHeightSizeClass = WindowHeightSizeClass.Medium,
                 progressText = "0:00",
                 progressIndicatorValue = 0f,
+                userSignedIn = true,
                 onBackClick = {},
                 onSkipClick = {},
                 modifier = Modifier

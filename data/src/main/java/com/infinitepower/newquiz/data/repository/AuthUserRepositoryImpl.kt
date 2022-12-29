@@ -58,4 +58,8 @@ class AuthUserRepositoryImpl @Inject constructor() : AuthUserRepository {
 
         authUser?.updateProfile(requestConfig)?.await()
     }
+
+    override fun signOut() {
+        Firebase.auth.signOut()
+    }
 }

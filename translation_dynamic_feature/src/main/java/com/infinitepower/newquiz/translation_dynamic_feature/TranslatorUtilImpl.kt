@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.translation_dynamic_feature
 
-import android.util.Log
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.common.model.RemoteModelManager
 import com.google.mlkit.nl.translate.TranslateLanguage
@@ -11,8 +10,6 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil.TranslatorModelState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import java.util.Locale
