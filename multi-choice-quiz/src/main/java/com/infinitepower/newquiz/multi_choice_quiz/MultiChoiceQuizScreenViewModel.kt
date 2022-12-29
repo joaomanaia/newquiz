@@ -19,6 +19,7 @@ import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
+import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
 import com.infinitepower.newquiz.model.multi_choice_quiz.RemainingTime
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -28,6 +29,7 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.isAllCorrect
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import com.infinitepower.newquiz.online_services.core.worker.multichoicequiz.MultiChoiceQuizEndGameWorker
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
+import com.infinitepower.newquiz.online_services.model.user.UserNotLoggedInException
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -50,7 +52,8 @@ class QuizScreenViewModel @Inject constructor(
     private val workManager: WorkManager,
     private val userRepository: UserRepository,
     private val coreLoggingAnalytics: CoreLoggingAnalytics,
-    private val mazeLoggingAnalytics: MazeLoggingAnalytics
+    private val mazeLoggingAnalytics: MazeLoggingAnalytics,
+    private val authUserRepository: AuthUserRepository
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -83,6 +86,7 @@ class QuizScreenViewModel @Inject constructor(
                     currentState.copy(userDiamonds = -1)
                 }
             }
+
             is MultiChoiceQuizScreenUiEvent.SkipQuestion -> skipQuestion()
         }
     }
@@ -99,6 +103,10 @@ class QuizScreenViewModel @Inject constructor(
             } else {
                 createQuestionSteps(initialQuestions)
             }
+        }
+
+        _uiState.update { currentState ->
+            currentState.copy(userSignedIn = authUserRepository.isSignedIn)
         }
     }
 
@@ -198,6 +206,7 @@ class QuizScreenViewModel @Inject constructor(
 
                     currentState.copy(currentQuestionIndex = -1)
                 }
+
                 nextIndex == -1 -> currentState.copy(currentQuestionIndex = nextIndex)
                 else -> {
                     timer.start()
@@ -276,8 +285,10 @@ class QuizScreenViewModel @Inject constructor(
                 .get<ArrayList<MultiChoiceQuestion>>(MultiChoiceQuizScreenNavArg::initialQuestions.name)
                 .orEmpty()
 
-            val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
-            val type = savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
+            val difficulty =
+                savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
+            val type =
+                savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
 
             val endGameWorkRequest = OneTimeWorkRequestBuilder<MultiChoiceQuizEndGameWorker>()
                 .setInputData(
@@ -299,9 +310,10 @@ class QuizScreenViewModel @Inject constructor(
 
             if (mazeItemId != null && allCorrect) {
                 // Runs the end game maze worker if is maze game mode and the question is correct
-                val endGameMazeQuizWorkerRequest = OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
-                    .setInputData(workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId))
-                    .build()
+                val endGameMazeQuizWorkerRequest =
+                    OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
+                        .setInputData(workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId))
+                        .build()
 
                 workManager
                     .beginWith(endGameMazeQuizWorkerRequest)
@@ -328,12 +340,15 @@ class QuizScreenViewModel @Inject constructor(
     }
 
     private fun getUserDiamonds() = viewModelScope.launch(Dispatchers.IO) {
-        userRepository
-            .getLocalUser()
-            ?.also { user ->
-                _uiState.update { currentState ->
-                    currentState.copy(userDiamonds = user.data?.diamonds ?: -1)
-                }
-            }
+        val user = try {
+            userRepository.getLocalUser() ?: throw NullPointerException()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return@launch
+        }
+
+        _uiState.update { currentState ->
+            currentState.copy(userDiamonds = user.data.diamonds)
+        }
     }
 }
