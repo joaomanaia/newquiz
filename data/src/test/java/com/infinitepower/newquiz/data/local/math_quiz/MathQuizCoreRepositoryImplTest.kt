@@ -56,6 +56,9 @@ internal class MathQuizCoreRepositoryImplTest {
     @OptIn(ExperimentalTime::class)
     @Test
     fun `validate correct formulas`() {
+        // Test formulas with not valid operators
+        assertThat(mathQuizCoreRepository.validateFormula("2+2s=4")).isFalse()
+
         // Test valid formulas
         assertThat(mathQuizCoreRepository.validateFormula("2+2=4")).isTrue()
         assertThat(mathQuizCoreRepository.validateFormula("2*3=6")).isTrue()
