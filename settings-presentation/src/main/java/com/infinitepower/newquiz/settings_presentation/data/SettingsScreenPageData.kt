@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.settings_presentation.data
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Visibility
@@ -30,6 +31,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             General.key -> General
             MultiChoiceQuiz.key -> MultiChoiceQuiz
             Wordle.key -> Wordle
+            User.key -> User
             else -> MainPage
         }
     }
@@ -143,9 +145,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
 
         @Composable
         fun items(
-            scope: CoroutineScope,
-            dataStoreManager: DataStoreManager,
-            dailyWordleRepository: DailyWordleRepository
+            clearWordleCalendarItems: () -> Unit
         ) = listOf(
             Preference.PreferenceItem.SwitchPreference(
                 request = SettingsCommon.WordleHardMode,
@@ -199,13 +199,32 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     Preference.PreferenceItem.TextPreference(
                         title = stringResource(id = CoreR.string.clean_calendar_data),
                         summary = stringResource(id = CoreR.string.clean_saved_calendar_wins_losses),
-                        onClick = {
-                            scope.launch(Dispatchers.IO) {
-                                dailyWordleRepository.clearAllCalendarItems()
-                            }
-                        }
+                        onClick = clearWordleCalendarItems
                     )
                 )
+            )
+        )
+    }
+
+    object User : SettingsScreenPageData(key = ScreenKey("user")) {
+        override val stringRes: Int
+            get() = CoreR.string.user
+
+        @Composable
+        fun items(
+            userIsSignedIn: Boolean,
+            signOut: () -> Unit
+        ) = listOf(
+            Preference.PreferenceItem.TextPreference(
+                title = stringResource(id = CoreR.string.sign_out),
+                onClick = signOut,
+                enabled = userIsSignedIn,
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.ExitToApp,
+                        contentDescription = stringResource(id = CoreR.string.sign_out),
+                    )
+                }
             )
         )
     }

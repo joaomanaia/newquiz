@@ -21,7 +21,8 @@ internal fun <T : Any> HomeHorizontalItems(
 ) {
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
+        modifier = modifier
     ) {
         items(items = item.items) { item ->
             itemContent(item)

@@ -15,4 +15,6 @@ interface AuthUserRepository {
     val photoUrl: Uri?
 
     suspend fun refreshAuthUser()
+
+    fun signOut()
 }

@@ -23,6 +23,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
@@ -42,16 +44,16 @@ data class SettingsScreenNavArgs(
 )
 
 @Composable
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Destination(navArgsDelegate = SettingsScreenNavArgs::class)
 fun SettingsScreen(
     navigator: DestinationsNavigator,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val uiState by settingsViewModel.uiState.collectAsState()
+    val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
 
     SettingsScreenImpl(
         uiState = uiState,
-        dailyWordleRepository = settingsViewModel.dailyWordleRepository,
         onBackClick = navigator::popBackStack,
         onNavigateClickClick = navigator::navigate,
         onEvent = settingsViewModel::onEvent
@@ -66,7 +68,6 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenImpl(
     uiState: SettingsUiState,
-    dailyWordleRepository: DailyWordleRepository,
     onBackClick: () -> Unit,
     onNavigateClickClick: (direction: Direction) -> Unit,
     onEvent: (event: SettingsScreenUiEvent) -> Unit
@@ -79,10 +80,8 @@ private fun SettingsScreenImpl(
         else -> PreferencesScreen(
             page = SettingsScreenPageData.getPage(uiState.screenKey),
             onBackClick = onBackClick,
-            dailyWordleRepository = dailyWordleRepository,
-            translationModelState = uiState.translationModelState,
-            downloadTranslationModel = { onEvent(SettingsScreenUiEvent.DownloadTranslationModel) },
-            deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) }
+            uiState = uiState,
+            onEvent = onEvent
         )
     }
 
@@ -139,6 +138,11 @@ fun MainSettingsScreen(
             icon = Icons.Rounded.Password,
             name = stringResource(id = SettingsScreenPageData.Wordle.stringRes)
         ),
+        SettingsBaseItemData(
+            key = SettingsScreenPageData.User.key,
+            icon = Icons.Rounded.Person,
+            name = stringResource(id = SettingsScreenPageData.User.stringRes)
+        )
     )
 
     val spaceMedium = MaterialTheme.spacing.medium
@@ -161,6 +165,7 @@ fun MainSettingsScreen(
                 .fillMaxSize(),
             contentPadding = PaddingValues(vertical = MaterialTheme.spacing.small)
         ) {
+            /* TODO: Add search functionality
             item {
                 SettingsSearchComponent(
                     value = searchQuery,
@@ -171,6 +176,8 @@ fun MainSettingsScreen(
                 )
                 Spacer(modifier = Modifier.height(spaceMedium))
             }
+
+             */
             items(settingsItems) { item ->
                 SettingsBaseItem(
                     modifier = Modifier.fillParentMaxWidth(),
