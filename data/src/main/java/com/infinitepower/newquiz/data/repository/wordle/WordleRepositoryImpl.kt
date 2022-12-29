@@ -29,7 +29,9 @@ class WordleRepositoryImpl @Inject constructor(
 ) : WordleRepository {
     private val baseNumbers by lazy { 0..9 }
 
-    override suspend fun getAllWords(): Set<String> = withContext(Dispatchers.IO) {
+    override suspend fun getAllWords(
+        random: Random
+    ): Set<String> = withContext(Dispatchers.IO) {
         val quizLanguage = settingsDataStoreManager.getPreference(SettingsCommon.InfiniteWordleQuizLanguage)
 
         val listRawId = infiniteWordleSupportedLang.find { lang ->
@@ -45,7 +47,7 @@ class WordleRepositoryImpl @Inject constructor(
                 .split("\r\n", "\n")
                 .filter { it.length == 5 }
                 .map { it.uppercase().trim() }
-                .shuffled()
+                .shuffled(random)
                 .toSet()
         } catch (e: Exception) {
             throw e
@@ -78,7 +80,7 @@ class WordleRepositoryImpl @Inject constructor(
     }
 
     override suspend fun generateRandomTextWord(random: Random): String {
-        val allWords = getAllWords()
+        val allWords = getAllWords(random)
         return allWords.random(random)
     }
 

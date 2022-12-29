@@ -182,7 +182,9 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         },
                         entries = mapOf(
                             "en" to stringResource(id = CoreR.string.english),
-                            "pt" to stringResource(id = CoreR.string.portuguese)
+                            "pt" to stringResource(id = CoreR.string.portuguese),
+                            "es" to stringResource(id = CoreR.string.spanish),
+                            "fr" to stringResource(id = CoreR.string.french)
                         ),
                         onItemClick = onChangeWordleLang
                     ),
