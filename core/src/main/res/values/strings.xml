@@ -29,6 +29,8 @@
     <string name="quiz_language">Quiz language</string>
     <string name="english">English</string>
     <string name="portuguese">Portuguese</string>
+    <string name="spanish">Spanish</string>
+    <string name="french">French</string>
     <string name="color_blind_mode">Color blind mode</string>
     <string name="high_contrast_colors" >High contrast colors</string>
     <string name="info">Info</string>

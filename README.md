@@ -2,7 +2,7 @@
 
 Do you like to challenge your knowledge? So NewQuiz is the ideal game for you.
 
-## Multi choice quiz:
+## Multi choice quiz
 
 - Several categories to choose from.
 - Several questions to play.
@@ -14,12 +14,25 @@ Do you like to challenge your knowledge? So NewQuiz is the ideal game for you.
 <img src="pictures/multichoice2.png" alt="Multi choice quiz" width="200"/>
 </div>
 
-### Flag Quiz
+## Flag Quiz
 
 Guess the country with the image of the flag. With 4 answers to choose.
-## Wordle quiz:
 
- Guess the word with several tries. You have daily words you have one new word per day and at most 6 tries or infinite words you have random words and infinite tries.
+## Logo Quiz
+
+Guess the logo with the image, with 4 answers to choose.
+
+## Wordle quiz
+
+Guess the word with several tries. You have daily words you have one new word per day and at most 6 tries or infinite words you have random words and infinite tries.
+
+Spanish and French words are from [Words](https://github.com/lorenbrichter/Words).
+
+## Maze
+
+Have you ever thought of having all the game modes in one quiz? Then play the maze and you'll have a completely randomized game with all NewQuiz game modes.
+
+<img src="pictures/maze.png" alt="Wordle game photo 1" width="200"/>
 
 ## Material you 
 

@@ -71,6 +71,16 @@ val infiniteWordleSupportedLang = listOf(
         languageId = R.string.portuguese,
         rawListId = R.raw.wordle_list_pt
     ),
+    SettingsWordleLang(
+        key = "es",
+        languageId = R.string.spanish,
+        rawListId = R.raw.wordle_list_es
+    ),
+    SettingsWordleLang(
+        key = "fr",
+        languageId = R.string.french,
+        rawListId = R.raw.wordle_list_fr
+    )
 )
 
 private fun getInfiniteWordleDefaultLang(): String {
