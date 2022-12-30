@@ -71,27 +71,4 @@ class CollectionUtilsTest {
         assertThat(items).hasSize(1)
         assertThat(items).containsNoDuplicates()
     }
-
-    /*
-    @Test
-    fun `test generateRandomUniqueItems returns expected number of items`() {
-        val generator = mockk<() -> Int>()
-        every { generator() } returns 0
-
-        val result = generateRandomUniqueItems(5, generator)
-
-        assertThat(result).hasSize(5)
-    }
-
-    @Test
-    fun `test generateRandomUniqueItems returns unique items`() {
-        val generator = mockk<() -> Int>()
-        every { generator() } returnsMany listOf(0, 1, 2, 3, 4)
-
-        val result = generateRandomUniqueItems(5, generator)
-
-        assertThat(result).containsNoDuplicates()
-    }
-
-     */
 }

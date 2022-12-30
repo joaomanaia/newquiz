@@ -19,9 +19,9 @@ infix fun ClosedFloatingPointRange<Float>.increaseEndBy(
 
 suspend fun <T> generateRandomUniqueItems(
     itemCount: Int,
-    exclusions: List<T> = emptyList(),
     generator: suspend () -> T,
-    maxIterations: Int = Int.MAX_VALUE
+    maxIterations: Int = Int.MAX_VALUE,
+    exclusions: List<T> = emptyList()
 ): Iterable<T> {
     val items = HashSet<T>()
     var iterations = 0
