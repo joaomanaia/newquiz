@@ -25,6 +25,17 @@ jobs:
         with:
           distribution: ${{ env.JAVA_DISTR }}
           java-version: ${{ env.JAVA_VERSION }}
+          
+      - name: Create google-services.json file
+        run: cat /home/runner/work/newquiz/newquiz/app/google-services.json | base64
+      
+      - name: Put google-services.json data
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
+        
+      - name: Workaround for Android Gradle Plugin issue
+        run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Run unit tests
         uses: gradle/gradle-build-action@v2.3.3
@@ -53,6 +64,9 @@ jobs:
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
+        
+      - name: Workaround for Android Gradle Plugin issue
+        run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Assemble debug APKs
         uses: gradle/gradle-build-action@v2.3.3
@@ -91,6 +105,9 @@ jobs:
 
       - name: Increase gradle daemon memory
         run: "echo \"org.gradle.jvmargs=-Xmx4096m\" >> gradle.properties"
+        
+      - name: Workaround for Android Gradle Plugin issue
+        run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Lint sources
         uses: gradle/gradle-build-action@v2.3.3
