@@ -19,12 +19,13 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ "main" ]
   schedule:
-    - cron: '0 0 * * 6'
+    - cron: '20 2 * * 4'
 
 jobs:
   analyze:
-    name: Analyze
+    name: Security analysis
     runs-on: ubuntu-latest
+    
     permissions:
       actions: read
       contents: read
@@ -36,8 +37,6 @@ jobs:
         language: [ 'java' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Use only 'java' to analyze code written in Java, Kotlin or both
-        # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
-        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
     - name: Checkout repository
@@ -72,8 +71,8 @@ jobs:
         DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
       run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
       
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Build debug with Gradle
+      run: ./gradlew assembleDebug
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
