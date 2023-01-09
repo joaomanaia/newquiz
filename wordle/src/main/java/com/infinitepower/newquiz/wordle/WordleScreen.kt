@@ -224,7 +224,7 @@ private fun WordleScreenImpl(
                         .padding(bottom = MaterialTheme.spacing.extraLarge)
                         .testTag(WordleScreenTestTags.KEYBOARD),
                     keys = uiState.wordleKeys,
-                    keysDisabled = uiState.keysDisabled,
+                    disabledKeys = uiState.keysDisabled,
                     onKeyClick = { key ->
                         onEvent(WordleScreenUiEvent.OnKeyClick(key))
                     }

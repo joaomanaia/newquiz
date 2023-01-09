@@ -12,6 +12,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.WorkManager
+import com.infinitepower.newquiz.core.analytics.logging.maze.LocalMazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.wordle.LocalWordleLoggingAnalyticsImpl
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -68,6 +69,7 @@ class WordleScreenTest {
                         wordleRepository,
                         savedStateHandle,
                         localAnalytics,
+                        mazeLoggingAnalytics = LocalMazeLoggingAnalytics(),
                         workManager
                     )
 

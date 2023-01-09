@@ -40,16 +40,17 @@ internal infix fun List<WordleItem>.verifyFromWord(originalWord: String): List<W
     return newList
 }
 
+/**
+ * Returns `true` if all elements in [lastRevealedHints] are present in this list.
+ *
+ * @param lastRevealedHints the list of elements to check against this list
+ * @return true if all elements in [lastRevealedHints] are present in this list
+ */
 internal infix fun List<WordleItem>.containsAllLastRevealedHints(
     lastRevealedHints: List<WordleItem>
-): Boolean {
-    val lastRevealedHintsChar = lastRevealedHints.map { item ->
-        item.char
-    }
-
-    return map { item ->
-        item.char
-    }.containsAll(lastRevealedHintsChar)
+): Boolean = lastRevealedHints.all { item -> // Check if all elements in lastRevealedHints are present in this list
+    // Check if there is at least one element in this list that has the same character as `item`
+    this.any { it.char == item.char }
 }
 
 /**

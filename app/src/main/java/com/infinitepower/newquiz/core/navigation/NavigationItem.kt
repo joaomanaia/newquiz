@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ramcosta.composedestinations.spec.Direction
 
-sealed class NavDrawerItem {
+sealed class NavigationItem {
     @get:StringRes
     abstract val text: Int
 
@@ -14,15 +14,28 @@ sealed class NavDrawerItem {
     data class Label(
         @StringRes override val text: Int,
         override val group: NavDrawerItemGroup? = null
-    ) : NavDrawerItem()
+    ) : NavigationItem()
 
+    /**
+     * @param primary items to navigation bar
+     */
     data class Item(
         @StringRes override val text: Int,
         override val group: NavDrawerItemGroup? = null,
         val icon: ImageVector,
         val badge: NavDrawerBadgeItem? = null,
-        val direction: Direction
-    ) : NavDrawerItem()
+        val direction: Direction,
+        val primary: Boolean = false,
+        val screenType: ScreenType = ScreenType.NORMAL
+    ) : NavigationItem()
+}
+
+enum class ScreenType {
+    /** When using this type navigation items will be visible and have a top bar */
+    NORMAL,
+
+    /** When using this type all navigation items will be invisible and have no top bar */
+    GAME
 }
 
 @JvmInline

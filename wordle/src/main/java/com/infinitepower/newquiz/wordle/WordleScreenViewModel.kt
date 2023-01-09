@@ -142,7 +142,7 @@ class WordleScreenViewModel @Inject constructor(
                 rows = rows,
                 currentRowPosition = 0,
                 day = day,
-                keysDisabled = emptyList(),
+                keysDisabled = emptySet(),
                 errorMessage = null,
                 wordleQuizType = quizType
             )

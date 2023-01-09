@@ -4,14 +4,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusTarget
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
@@ -24,7 +21,6 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemContent
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
-import com.infinitepower.newquiz.core.util.ui.nav_drawer.NavDrawerUtil
 import com.infinitepower.newquiz.home_presentation.data.getHomeCardItemData
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
@@ -36,7 +32,6 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun HomeScreen(
     navigator: DestinationsNavigator,
     homeScreenNavigator: HomeScreenNavigator,
-    navDrawerUtil: NavDrawerUtil,
     homeViewModel: HomeScreenViewModel = hiltViewModel()
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
@@ -62,8 +57,7 @@ fun HomeScreen(
         uiState = uiState,
         homeCardItemData = homeCardItemData,
         onEvent = homeViewModel::onEvent,
-        navigateToLoginScreen = { navigator.navigate(LoginScreenDestination) },
-        openDrawer = navDrawerUtil::open
+        navigateToLoginScreen = { navigator.navigate(LoginScreenDestination) }
     )
 }
 
@@ -100,60 +94,34 @@ private fun HomeScreenImpl(
     uiState: HomeScreenUiState,
     homeCardItemData: List<HomeCardItem>,
     onEvent: (event: HomeScreenUiEvent) -> Unit,
-    navigateToLoginScreen: () -> Unit,
-    openDrawer: () -> Unit,
+    navigateToLoginScreen: () -> Unit
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
-        rememberTopAppBarState()
-    )
-
     val spaceMedium = MaterialTheme.spacing.medium
 
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = "NewQuiz")
-                },
-                scrollBehavior = scrollBehavior,
-                navigationIcon = {
-                    IconButton(onClick = openDrawer) {
-                        Icon(
-                            imageVector = Icons.Rounded.Menu,
-                            contentDescription = "Open drawer"
-                        )
-                    }
-                }
-            )
-        }
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(innerPadding),
-            contentPadding = PaddingValues(spaceMedium),
-            verticalArrangement = Arrangement.spacedBy(spaceMedium)
-        ) {
-            if (!uiState.isLoggedIn && uiState.showLoginCard) {
-                item {
-                    SignInCard(
-                        modifier = Modifier.fillParentMaxWidth(),
-                        onSignInClick = navigateToLoginScreen,
-                        onDismissClick = {
-                            onEvent(HomeScreenUiEvent.DismissLoginCard)
-                        }
-                    )
-                }
-            }
-
-            items(
-                items = homeCardItemData,
-                key = { it.getId() },
-            ) { item ->
-                HomeCardItemContent(
+    LazyColumn(
+        contentPadding = PaddingValues(spaceMedium),
+        verticalArrangement = Arrangement.spacedBy(spaceMedium)
+    ) {
+        if (!uiState.isLoggedIn && uiState.showLoginCard) {
+            item {
+                SignInCard(
                     modifier = Modifier.fillParentMaxWidth(),
-                    item = item
+                    onSignInClick = navigateToLoginScreen,
+                    onDismissClick = {
+                        onEvent(HomeScreenUiEvent.DismissLoginCard)
+                    }
                 )
             }
+        }
+
+        items(
+            items = homeCardItemData,
+            key = { it.getId() },
+        ) { item ->
+            HomeCardItemContent(
+                modifier = Modifier.fillParentMaxWidth(),
+                item = item
+            )
         }
     }
 }
@@ -209,8 +177,7 @@ private fun HomeScreenPreview() {
             uiState = uiState,
             homeCardItemData = homeCardItemData,
             onEvent = {},
-            navigateToLoginScreen = {},
-            openDrawer = {}
+            navigateToLoginScreen = {}
         )
     }
 }
