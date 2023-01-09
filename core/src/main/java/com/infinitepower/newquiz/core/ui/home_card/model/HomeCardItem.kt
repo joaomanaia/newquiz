@@ -2,7 +2,6 @@ package com.infinitepower.newquiz.core.ui.home_card.model
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.airbnb.lottie.compose.LottieCompositionSpec
 

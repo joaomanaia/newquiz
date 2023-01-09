@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.multi_choice_quiz.list
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -16,10 +15,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemContent
-import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
+import com.infinitepower.newquiz.core.ui.home_card.HomeListContent
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
 import com.infinitepower.newquiz.multi_choice_quiz.categories.components.CategoryComponent
 import com.infinitepower.newquiz.multi_choice_quiz.list.data.getMultiChoiceQuizListCardItemData
@@ -29,12 +29,12 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 fun MultiChoiceQuizListScreen(
     navigator: DestinationsNavigator,
     viewModel: MultiChoiceQuizListScreenViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val questionsAvailableText = stringResource(
         id = CoreR.string.n_questions_available,
@@ -49,36 +49,11 @@ fun MultiChoiceQuizListScreen(
         )
     }
 
-    MultiChoiceQuizListScreenImpl(
-        cardItemData = cardItemData
-    )
+    HomeListContent(items = cardItemData)
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
     LaunchedEffect(key1 = true) {
         coreLoggingAnalytics.logScreenView("MultiChoiceListScreen")
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun MultiChoiceQuizListScreenImpl(
-    cardItemData: List<HomeCardItem>
-) {
-    val spaceMedium = MaterialTheme.spacing.medium
-
-    LazyColumn(
-        contentPadding = PaddingValues(spaceMedium),
-        verticalArrangement = Arrangement.spacedBy(spaceMedium)
-    ) {
-        items(
-            items = cardItemData,
-            key = { it.getId() },
-        ) { item ->
-            HomeCardItemContent(
-                modifier = Modifier.fillParentMaxWidth(),
-                item = item
-            )
-        }
     }
 }
 
