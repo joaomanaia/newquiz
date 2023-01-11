@@ -28,6 +28,16 @@ import com.infinitepower.newquiz.model.wordle.WordleChar
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
 
+/**
+ * This composable function creates a row of wordle items.
+ * Each item represents a character in the provided [wordleRowItem].
+ *
+ * @param modifier Modifier to modify the row component
+ * @param word wordle word
+ * @param wordleRowItem An object containing all the items in the row
+ * @param isPreview if true, row item click is disabled
+ * @param onItemClick called when an item in the row is clicked
+ */
 @Composable
 internal fun WordleRowComponent(
     modifier: Modifier = Modifier,

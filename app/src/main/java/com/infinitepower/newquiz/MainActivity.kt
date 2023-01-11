@@ -50,8 +50,7 @@ class MainActivity : ComponentActivity() {
                     AppNavigation(
                         navController = rememberNavController(),
                         modifier = Modifier.fillMaxSize(),
-                        windowWidthSizeClass = windowSize.widthSizeClass,
-                        windowHeightSizeClass = windowSize.heightSizeClass,
+                        windowSizeClass = windowSize,
                         consentInformation = consentInformation,
                         signedIn = signedIn
                     )

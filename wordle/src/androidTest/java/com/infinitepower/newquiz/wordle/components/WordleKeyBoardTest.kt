@@ -1,9 +1,11 @@
 package com.infinitepower.newquiz.wordle.components
 
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +25,9 @@ internal class WordleKeyBoardTest {
             WordleKeyBoard(
                 keys = keys,
                 disabledKeys = emptySet(),
-                onKeyClick = {}
+                onKeyClick = {},
+                windowWidthSizeClass = WindowWidthSizeClass.Compact,
+                wordleQuizType = WordleQuizType.TEXT
             )
         }
 

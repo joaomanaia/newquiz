@@ -4,15 +4,25 @@ import androidx.annotation.Keep
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -20,12 +30,15 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.ads.admob.BannerAd
@@ -68,6 +81,7 @@ data class WordleScreenNavArgs(
 @OptIn(ExperimentalLifecycleComposeApi::class)
 fun WordleScreen(
     navigator: DestinationsNavigator,
+    windowSizeClass: WindowSizeClass,
     wordleScreenViewModel: WordleScreenViewModel = hiltViewModel()
 ) {
     val uiState by wordleScreenViewModel.uiState.collectAsStateWithLifecycle()
@@ -84,7 +98,8 @@ fun WordleScreen(
         uiState = uiState,
         onEvent = wordleScreenViewModel::onEvent,
         onBackClick = navigator::popBackStack,
-        rewardedAdUtil = rewardedAdUtil
+        rewardedAdUtil = rewardedAdUtil,
+        windowSizeClass = windowSizeClass
     )
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
@@ -99,7 +114,8 @@ private fun WordleScreenImpl(
     uiState: WordleScreenUiState,
     onEvent: (event: WordleScreenUiEvent) -> Unit,
     onBackClick: () -> Unit,
-    rewardedAdUtil: RewardedAdUtil?
+    rewardedAdUtil: RewardedAdUtil?,
+    windowSizeClass: WindowSizeClass,
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -118,6 +134,23 @@ private fun WordleScreenImpl(
         WordleQuizType.NUMBER -> stringResource(id = CoreR.string.guess_number)
         WordleQuizType.MATH_FORMULA -> stringResource(id = CoreR.string.guess_math_formula)
         else -> stringResource(id = CoreR.string.wordle)
+    }
+
+    val rowLayout = remember(windowSizeClass) {
+        windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+                && windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact
+    }
+    
+    val keyboardBottomPadding = if (!rowLayout) {
+        MaterialTheme.spacing.extraLarge
+    } else 0.dp
+
+    val scrollState = rememberLazyListState()
+
+    LaunchedEffect(key1 = uiState.currentRowPosition) {
+        if (uiState.currentRowPosition > 0 && uiState.rows.isNotEmpty()) {
+            scrollState.animateScrollToItem(uiState.rows.lastIndex)
+        }
     }
 
     Scaffold(
@@ -168,19 +201,13 @@ private fun WordleScreenImpl(
             BannerAd(adId = WORDLE_BANNER_AD_ID)
         }
     ) { innerPadding ->
-        Column(
+        WordleContainer(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(spaceMedium),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = PaddingValues(bottom = spaceMedium)
-            ) {
+                .padding(innerPadding),
+            rowLayout = rowLayout,
+            wordsScrollState = scrollState,
+            wordleContent = {
                 if (uiState.loading) {
                     item {
                         CircularProgressIndicator(
@@ -202,7 +229,9 @@ private fun WordleScreenImpl(
                     }
                 }
 
-                items(items = uiState.rows) { rowItem ->
+                itemsIndexed(items = uiState.rows) { index, rowItem ->
+                    val isCurrentRow = uiState.currentRowPosition == index
+
                     WordleRowComponent(
                         wordleRowItem = rowItem,
                         word = uiState.word.orEmpty(),
@@ -211,50 +240,54 @@ private fun WordleScreenImpl(
                         },
                         isColorBlindEnabled = uiState.isColorBlindEnabled,
                         isLetterHintsEnabled = uiState.isLetterHintEnabled,
-                        modifier = Modifier.testTag(WordleScreenTestTags.WORDLE_ROW)
+                        modifier = Modifier.testTag(WordleScreenTestTags.WORDLE_ROW),
+                        isPreview = !isCurrentRow
                     )
                 }
-            }
+            },
+            keyboardContent = {
+                if (!uiState.loading && !uiState.isGamedEnded) {
+                    WordleKeyBoard(
+                        modifier = Modifier
+                            .padding(horizontal = MaterialTheme.spacing.small)
+                            .padding(bottom = keyboardBottomPadding)
+                            .testTag(WordleScreenTestTags.KEYBOARD),
+                        rowLayout = rowLayout,
+                        keys = uiState.wordleKeys,
+                        disabledKeys = uiState.keysDisabled,
+                        onKeyClick = { key ->
+                            onEvent(WordleScreenUiEvent.OnKeyClick(key))
+                        },
+                        wordleQuizType = uiState.wordleQuizType ?: WordleQuizType.TEXT,
+                        windowWidthSizeClass = windowSizeClass.widthSizeClass
+                    )
+                }
 
-            if (!uiState.loading && !uiState.isGamedEnded) {
-                WordleKeyBoard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = MaterialTheme.spacing.small)
-                        .padding(bottom = MaterialTheme.spacing.extraLarge)
-                        .testTag(WordleScreenTestTags.KEYBOARD),
-                    keys = uiState.wordleKeys,
-                    disabledKeys = uiState.keysDisabled,
-                    onKeyClick = { key ->
-                        onEvent(WordleScreenUiEvent.OnKeyClick(key))
-                    }
-                )
-            }
+                if (uiState.isGamedEnded) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(spaceMedium),
+                        modifier = Modifier.padding(spaceMedium)
+                    ) {
+                        if (uiState.day == null) {
+                            OutlinedButton(
+                                onClick = { onEvent(WordleScreenUiEvent.OnPlayAgainClick) },
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(text = stringResource(id = CoreR.string.play_again))
+                            }
+                        }
 
-            if (uiState.isGamedEnded) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(spaceMedium),
-                    modifier = Modifier.padding(spaceMedium)
-                ) {
-                    if (uiState.day == null) {
-                        OutlinedButton(
-                            onClick = { onEvent(WordleScreenUiEvent.OnPlayAgainClick) },
+                        Button(
+                            onClick = onBackClick,
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text(text = stringResource(id = CoreR.string.play_again))
+                            Text(text = stringResource(id = CoreR.string.back))
                         }
-                    }
-
-                    Button(
-                        onClick = onBackClick,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = stringResource(id = CoreR.string.back))
                     }
                 }
             }
-        }
+        )
     }
 
     if (gameOverPopupVisible) {
@@ -320,18 +353,24 @@ private fun InfoDialog(
             Text(text = stringResource(id = CoreR.string.info))
         },
         text = {
-            Column(
+            LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                WordleRowComponent(
-                    wordleRowItem = rowItem,
-                    word = "QUIZ",
-                    isPreview = true,
-                    isColorBlindEnabled = isColorBlindEnabled,
-                    onItemClick = {}
-                )
-                Spacer(modifier = Modifier.padding(MaterialTheme.spacing.medium))
-                InfoDialogCard(isColorBlindEnabled = isColorBlindEnabled)
+                item {
+                    WordleRowComponent(
+                        wordleRowItem = rowItem,
+                        word = "QUIZ",
+                        isPreview = true,
+                        isColorBlindEnabled = isColorBlindEnabled,
+                        onItemClick = {}
+                    )
+                }
+
+                item { Spacer(modifier = Modifier.padding(MaterialTheme.spacing.medium)) }
+               
+                item {
+                    InfoDialogCard(isColorBlindEnabled = isColorBlindEnabled)
+                }
             }
         },
         confirmButton = {
@@ -434,6 +473,64 @@ private fun InfoDialogCard(
     }
 }
 
+@Composable
+private fun WordleContainer(
+    modifier: Modifier = Modifier,
+    rowLayout: Boolean = false,
+    wordsScrollState: LazyListState = rememberLazyListState(),
+    wordleContent: LazyListScope.() -> Unit,
+    keyboardContent: @Composable BoxScope.() -> Unit
+) {
+    val spaceMedium = MaterialTheme.spacing.medium
+
+    if (rowLayout) {
+        Row(
+            modifier = modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(spaceMedium)
+        ) {
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(spaceMedium),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = PaddingValues(vertical = spaceMedium),
+                content = wordleContent,
+                state = wordsScrollState
+            )
+
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                keyboardContent()
+            }
+        }
+    } else {
+        Column(
+            modifier = modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .weight(2f)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(spaceMedium),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = PaddingValues(bottom = spaceMedium),
+                content = wordleContent,
+                state = wordsScrollState
+            )
+
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                keyboardContent()
+            }
+        }
+    }
+}
+
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal object WordleScreenTestTags {
     const val VERIFY_FAB = "VERIFY_FAB"
@@ -443,14 +540,14 @@ internal object WordleScreenTestTags {
 }
 
 @Composable
-@PreviewNightLight
+@AllPreviewsNightLight
+@Preview(
+    showBackground = true,
+    device = "spec:width=1280dp,height=800dp,dpi=480,orientation=portrait",
+    group = "Expanded"
+)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 private fun WordleScreenPreview() {
-    val emptyRow = WordleRowItem(
-        items = List(6) {
-            WordleItem.Empty
-        }
-    )
-
     val rowItems = listOf(
         WordleRowItem(
             items = listOf(
@@ -459,26 +556,28 @@ private fun WordleScreenPreview() {
                 WordleItem.None(char = WordleChar('A')),
                 WordleItem.None(char = WordleChar('A')),
                 WordleItem.Present(char = WordleChar('B')),
-                WordleItem.Correct(char = WordleChar('C'))
+                WordleItem.Empty
             )
-        ),
-        emptyRow,
-        emptyRow,
-        emptyRow,
-        emptyRow,
-        emptyRow
+        )
     )
+
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
+    val windowWidthClass = WindowSizeClass.calculateFromSize(DpSize(screenWidth, screenHeight))
 
     NewQuizTheme {
         WordleScreenImpl(
             uiState = WordleScreenUiState(
                 rows = rowItems,
                 currentRowPosition = 0,
-                loading = false
+                loading = false,
+                wordleQuizType = WordleQuizType.TEXT
             ),
             onEvent = {},
             onBackClick = {},
-            rewardedAdUtil = null
+            rewardedAdUtil = null,
+            windowSizeClass = windowWidthClass
         )
     }
 }

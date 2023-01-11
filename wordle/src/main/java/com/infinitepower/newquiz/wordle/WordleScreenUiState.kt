@@ -22,7 +22,7 @@ data class WordleScreenUiState(
     companion object {
         const val ALL_LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
 
-        val allNumbers = '0'..'9'
+        const val allNumbers = "1234567890"
 
         const val mathFormulaKeys = "0123456789+-*/="
     }

@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.core.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -68,14 +69,13 @@ internal fun DestinationScope<*>.currentNavigator(): CommonNavGraphNavigator {
 internal fun AppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    windowWidthSizeClass: WindowWidthSizeClass,
-    windowHeightSizeClass: WindowHeightSizeClass,
+    windowSizeClass: WindowSizeClass,
     consentInformation: ConsentInformation,
     signedIn: Boolean
 ) {
     NavigationContainer(
         navController = navController,
-        windowWidthSize = windowWidthSizeClass,
+        windowWidthSize = windowSizeClass.widthSizeClass,
         isSignedIn = signedIn
     ) { innerPadding ->
         DestinationsNavHost(
@@ -84,8 +84,9 @@ internal fun AppNavigation(
             modifier = modifier.padding(innerPadding),
             dependenciesContainerBuilder = {
                 dependency(currentNavigator())
-                dependency(windowWidthSizeClass)
-                dependency(windowHeightSizeClass)
+                dependency(windowSizeClass)
+                dependency(windowSizeClass.heightSizeClass)
+                dependency(windowSizeClass.widthSizeClass)
                 dependency(consentInformation)
             }
         )
