@@ -23,12 +23,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
-import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.settings_presentation.components.PreferencesScreen
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
@@ -44,7 +42,6 @@ data class SettingsScreenNavArgs(
 )
 
 @Composable
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Destination(navArgsDelegate = SettingsScreenNavArgs::class)
 fun SettingsScreen(
     navigator: DestinationsNavigator,

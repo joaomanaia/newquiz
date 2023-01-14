@@ -1,10 +1,8 @@
 package com.infinitepower.newquiz.core.navigation
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -17,7 +15,7 @@ import com.infinitepower.newquiz.multi_choice_quiz.destinations.*
 import com.infinitepower.newquiz.online_services.ui.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.ui.navigation.NavigationContainer
-import com.infinitepower.newquiz.wordle.destinations.DailyWordSelectorScreenDestination
+import com.infinitepower.newquiz.wordle.destinations.DailyWordleCalendarScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -48,7 +46,7 @@ internal object AppNavGraphs {
             SavedMultiChoiceQuestionsScreenDestination,
             WordleScreenDestination,
             WordleListScreenDestination,
-            DailyWordSelectorScreenDestination,
+            DailyWordleCalendarScreenDestination,
             LoginScreenDestination,
             MultiChoiceQuizResultsScreenDestination,
             MultiChoiceQuizListScreenDestination,
@@ -65,7 +63,7 @@ internal fun DestinationScope<*>.currentNavigator(): CommonNavGraphNavigator {
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun AppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,

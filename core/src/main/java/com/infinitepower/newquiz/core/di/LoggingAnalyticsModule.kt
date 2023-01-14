@@ -17,7 +17,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class LoggingAnalyticsModule {
     @Binds
-    abstract fun binCoreLoggingAnalytics(
+    abstract fun bindCoreLoggingAnalytics(
         coreLoggingAnalyticsImpl: CoreLoggingAnalyticsImpl
     ): CoreLoggingAnalytics
 

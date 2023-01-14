@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -21,7 +20,6 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -35,7 +33,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
@@ -78,7 +75,6 @@ data class WordleScreenNavArgs(
         DeepLink(uriPattern = "newquiz://wordleinfinite")
     ]
 )
-@OptIn(ExperimentalLifecycleComposeApi::class)
 fun WordleScreen(
     navigator: DestinationsNavigator,
     windowSizeClass: WindowSizeClass,
@@ -235,9 +231,7 @@ private fun WordleScreenImpl(
                     WordleRowComponent(
                         wordleRowItem = rowItem,
                         word = uiState.word.orEmpty(),
-                        onItemClick = { index ->
-                            onEvent(WordleScreenUiEvent.OnRemoveKeyClick(index))
-                        },
+                        onItemClick = { onEvent(WordleScreenUiEvent.OnRemoveKeyClick(index)) },
                         isColorBlindEnabled = uiState.isColorBlindEnabled,
                         isLetterHintsEnabled = uiState.isLetterHintEnabled,
                         modifier = Modifier.testTag(WordleScreenTestTags.WORDLE_ROW),
@@ -564,7 +558,7 @@ private fun WordleScreenPreview() {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
-    val windowWidthClass = WindowSizeClass.calculateFromSize(DpSize(screenWidth, screenHeight))
+    val windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(screenWidth, screenHeight))
 
     NewQuizTheme {
         WordleScreenImpl(
@@ -577,7 +571,7 @@ private fun WordleScreenPreview() {
             onEvent = {},
             onBackClick = {},
             rewardedAdUtil = null,
-            windowSizeClass = windowWidthClass
+            windowSizeClass = windowSizeClass
         )
     }
 }

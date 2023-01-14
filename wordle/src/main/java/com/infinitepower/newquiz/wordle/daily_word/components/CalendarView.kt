@@ -12,7 +12,6 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,13 +20,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.infinitepower.newquiz.core.calendar.CalendarMonthViewImpl
+import com.infinitepower.newquiz.core.calendar.MonthDay
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.extendedColors
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.compose.StatusWrapper
-import com.infinitepower.newquiz.core.util.calendar.getMonthAllDays
 import com.infinitepower.newquiz.model.wordle.daily.CalendarItemState
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
 import kotlinx.datetime.*
@@ -35,60 +35,35 @@ import kotlinx.datetime.TimeZone
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 internal fun WordleCalendarView(
     modifier: Modifier = Modifier,
-    instant: Instant,
-    onInstantChanged: (instant: Instant) -> Unit,
-    calendarItems: List<WordleDailyCalendarItem>,
+    days: List<MonthDay>,
+    firstDayDate: LocalDate?,
+    savedCalendarItems: List<WordleDailyCalendarItem>,
+    onNextMonthClick: () -> Unit,
+    onPreviousMonthClick: () -> Unit,
     onDateClick: (date: LocalDate) -> Unit
 ) {
     val tz = TimeZone.currentSystemDefault()
 
     val currentDay = Clock.System.now().toLocalDateTime(tz).date
 
-    val localDate = remember(instant) {
-        instant.toLocalDateTime(tz).date
-    }
+    val headerText = remember(firstDayDate) {
+        if (firstDayDate == null) return@remember ""
 
-    val headerText = remember(localDate) {
-        val month = localDate.month.name
-        "$month ${localDate.year}"
+        val month = firstDayDate.month.name
+        "$month ${firstDayDate.year}"
     }
-
-    val days = localDate.getMonthAllDays()
 
     WordleCalendarViewImpl(
         modifier = modifier,
         headerText = headerText,
         days = days,
+        savedCalendarItems = savedCalendarItems,
         currentDay = currentDay,
-        calendarItems = calendarItems,
-        backMonth = {
-            onInstantChanged(instant.minus(1, DateTimeUnit.MONTH, tz))
-        },
-        nextMonth = {
-            onInstantChanged(instant.plus(1, DateTimeUnit.MONTH, tz))
-        },
-        onDateClick = onDateClick
-    )
-}
-
-@Composable
-internal fun WordleCalendarView(
-    modifier: Modifier = Modifier,
-    calendarItems: List<WordleDailyCalendarItem>,
-    onDateClick: (date: LocalDate) -> Unit
-) {
-    val (instant, setInstant) = remember {
-        mutableStateOf(Clock.System.now())
-    }
-
-    WordleCalendarView(
-        modifier = modifier,
-        instant = instant,
-        onInstantChanged = setInstant,
-        calendarItems = calendarItems,
+        onNextMonthClick = onNextMonthClick,
+        onPreviousMonthClick = onPreviousMonthClick,
         onDateClick = onDateClick
     )
 }
@@ -98,30 +73,28 @@ internal fun WordleCalendarView(
 private fun WordleCalendarViewImpl(
     modifier: Modifier = Modifier,
     headerText: String,
-    days: List<LocalDate>,
+    days: List<MonthDay>,
+    savedCalendarItems: List<WordleDailyCalendarItem>,
     currentDay: LocalDate,
-    calendarItems: List<WordleDailyCalendarItem>,
-    backMonth: () -> Unit,
-    nextMonth: () -> Unit,
+    onNextMonthClick: () -> Unit,
+    onPreviousMonthClick: () -> Unit,
     onDateClick: (date: LocalDate) -> Unit
 ) {
     Column(modifier = modifier) {
         CalendarHeader(
             headerText = headerText,
             modifier = Modifier.fillMaxWidth(),
-            backMonth = backMonth,
-            nextMonth = nextMonth
+            nextMonth = onNextMonthClick,
+            backMonth = onPreviousMonthClick
         )
 
-        WeekNameRow(modifier = Modifier.fillMaxWidth())
-
-        CalendarDays(
+        CalendarWeekWithDays(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(MaterialTheme.spacing.medium),
             days = days,
+            savedCalendarItems = savedCalendarItems,
             currentDay = currentDay,
-            calendarItems = calendarItems,
             onDateClick = onDateClick
         )
     }
@@ -176,43 +149,49 @@ private fun HeaderNavigationButton(
     }
 }
 
-private sealed class WeekNameRowItem(
-    val text: String
-) {
-    companion object {
-        val allItems: List<WeekNameRowItem>
-            get() = listOf(Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)
-    }
-
-    object Sunday : WeekNameRowItem(text = "S")
-
-    object Monday : WeekNameRowItem(text = "M")
-
-    object Tuesday : WeekNameRowItem(text = "T")
-
-    object Wednesday : WeekNameRowItem(text = "W")
-
-    object Thursday : WeekNameRowItem(text = "T")
-
-    object Friday : WeekNameRowItem(text = "F")
-
-    object Saturday : WeekNameRowItem(text = "F")
-}
-
 @Composable
 @ExperimentalMaterial3Api
-private fun WeekNameRow(
-    modifier: Modifier = Modifier
+private fun CalendarWeekWithDays(
+    modifier: Modifier = Modifier,
+    days: List<MonthDay>,
+    savedCalendarItems: List<WordleDailyCalendarItem>,
+    currentDay: LocalDate,
+    onDateClick: (date: LocalDate) -> Unit
 ) {
-    val allItems = WeekNameRowItem.allItems
+    val weekItems = remember { WeekNameRowItem.allItems }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(7),
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
         horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = modifier
     ) {
-        allItems.forEach { item ->
-            WeekNameText(text = item.text)
+        items(items = weekItems) { week ->
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                WeekNameText(text = week.text)
+            }
+        }
+
+        items(items = days) { day ->
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                if (day is MonthDay.Day) {
+                    val savedItem = savedCalendarItems.find { it.date == day.date }
+
+                    CalendarItem(
+                        day = day.toString(),
+                        isCurrentDay = day.date == currentDay,
+                        onClick = { onDateClick(day.date) },
+                        state = savedItem?.state ?: CalendarItemState.NONE,
+                        enabled = day.date <= currentDay
+                    )
+                }
+            }
         }
     }
 }
@@ -234,7 +213,7 @@ private fun WeekNameText(
 @ExperimentalMaterial3Api
 private fun CalendarItem(
     modifier: Modifier = Modifier,
-    day: LocalDate,
+    day: String,
     isCurrentDay: Boolean,
     state: CalendarItemState = CalendarItemState.NONE,
     enabled: Boolean = true,
@@ -246,14 +225,15 @@ private fun CalendarItem(
         CalendarItemState.LOSS -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Red)
     }
 
-    val textColor = when (state) {
-        CalendarItemState.NONE -> MaterialTheme.colorScheme.onSurface
-        CalendarItemState.WON -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Green)
-        CalendarItemState.LOSS -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Red)
+    val textColor = when {
+        state == CalendarItemState.WON -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Green)
+        state == CalendarItemState.LOSS -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Red)
+        state == CalendarItemState.NONE && isCurrentDay -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.onSurface
     }
 
     val border = if (isCurrentDay) {
-        BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+        BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
     } else null
 
     StatusWrapper(enabled = enabled) {
@@ -270,7 +250,7 @@ private fun CalendarItem(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Text(
-                    text = day.dayOfMonth.toString(),
+                    text = day,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                     color = textColor
@@ -280,79 +260,51 @@ private fun CalendarItem(
     }
 }
 
-@Composable
-@ExperimentalMaterial3Api
-private fun CalendarDays(
-    modifier: Modifier = Modifier,
-    days: List<LocalDate>,
-    currentDay: LocalDate,
-    calendarItems: List<WordleDailyCalendarItem>,
-    onDateClick: (date: LocalDate) -> Unit
+private sealed class WeekNameRowItem(
+    val text: String // TODO: add locale
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(7),
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-    ) {
-        items(items = days) { day ->
-            val item = calendarItems.find { it.date == day }
-
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CalendarItem(
-                    day = day,
-                    isCurrentDay = currentDay == day,
-                    onClick = { onDateClick(day) },
-                    state = item?.state ?: CalendarItemState.NONE,
-                    enabled = day <= currentDay
-                )
-            }
-        }
+    companion object {
+        val allItems: List<WeekNameRowItem>
+            get() = listOf(Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday)
     }
+
+    object Sunday : WeekNameRowItem(text = "S")
+
+    object Monday : WeekNameRowItem(text = "M")
+
+    object Tuesday : WeekNameRowItem(text = "T")
+
+    object Wednesday : WeekNameRowItem(text = "W")
+
+    object Thursday : WeekNameRowItem(text = "T")
+
+    object Friday : WeekNameRowItem(text = "F")
+
+    object Saturday : WeekNameRowItem(text = "S")
 }
 
 @Composable
 @PreviewNightLight
+@OptIn(ExperimentalMaterial3Api::class)
 private fun CalendarViewPreview() {
-    val calendarItems = listOf(
-        WordleDailyCalendarItem(
-            date = "2022-08-04".toLocalDate(),
-            state = CalendarItemState.LOSS,
-            wordSize = 4
-        ),
-        WordleDailyCalendarItem(
-            date = "2022-08-05".toLocalDate(),
-            state = CalendarItemState.WON,
-            wordSize = 4
-        ),
-    )
+    val monthView = CalendarMonthViewImpl()
+
+    val days = monthView.generateCalendarDays()
+
+    val firstDayDate = days
+        .filterIsInstance<MonthDay.Day>()
+        .firstOrNull()
+        ?.date
 
     NewQuizTheme {
         Surface {
             WordleCalendarView(
-                calendarItems = calendarItems,
-                onDateClick = {}
-            )
-        }
-    }
-}
-
-@Composable
-@Preview(showBackground = true, group = "Calendar header")
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, group = "Calendar header")
-private fun CalendarHeaderPreview() {
-    NewQuizTheme {
-        Surface {
-            CalendarHeader(
-                headerText = "August 2022",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                backMonth = {},
-                nextMonth = {}
+                days = days,
+                savedCalendarItems = emptyList(),
+                onDateClick = {},
+                onPreviousMonthClick = {},
+                onNextMonthClick = {},
+                firstDayDate = firstDayDate
             )
         }
     }
@@ -365,7 +317,7 @@ private fun CalendarHeaderPreview() {
 private fun CalendarItemPreview() {
     val tz = TimeZone.currentSystemDefault()
     val day = remember {
-        Clock.System.now().toLocalDateTime(tz).date
+        Clock.System.now().toLocalDateTime(tz).date.dayOfMonth.toString()
     }
 
     NewQuizTheme {
@@ -400,33 +352,6 @@ private fun CalendarItemPreview() {
                     modifier = Modifier.padding(16.dp)
                 )
             }
-        }
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, group = "Calendar days")
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, group = "Calendar days")
-private fun CalendarDaysPreview() {
-    val tz = TimeZone.currentSystemDefault()
-
-    val currentDay = Clock.System.now().toLocalDateTime(tz).date
-
-    val localDate = remember {
-        Clock.System.now().toLocalDateTime(tz).date
-    }
-
-    val days = localDate.getMonthAllDays()
-
-    NewQuizTheme {
-        Surface {
-            CalendarDays(
-                days = days,
-                currentDay = currentDay,
-                calendarItems = emptyList(),
-                onDateClick = {}
-            )
         }
     }
 }

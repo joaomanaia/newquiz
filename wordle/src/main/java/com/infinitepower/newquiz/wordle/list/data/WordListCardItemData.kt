@@ -6,7 +6,7 @@ import androidx.compose.material.icons.rounded.Today
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
-import com.infinitepower.newquiz.wordle.destinations.DailyWordSelectorScreenDestination
+import com.infinitepower.newquiz.wordle.destinations.DailyWordleCalendarScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -31,7 +31,7 @@ fun getWordListCardItemData(
         title = R.string.wordle_daily,
         icon = CardIcon.Icon(Icons.Rounded.Today),
         onClick = {
-            navigator.navigate(DailyWordSelectorScreenDestination)
+            navigator.navigate(DailyWordleCalendarScreenDestination)
         }
     ),
 )

@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.wordle.daily_word
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
+import com.infinitepower.newquiz.core.calendar.MonthView
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
@@ -14,56 +15,68 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
-class DailyWordleSelectorViewModel @Inject constructor(
+class DailyWordleCalendarViewModel @Inject constructor(
     private val dailyWordleRepository: DailyWordleRepository,
-    private val wordleLoggingAnalytics: WordleLoggingAnalytics
+    private val wordleLoggingAnalytics: WordleLoggingAnalytics,
+    private val monthView: MonthView
 ) : NavEventViewModel() {
-    private val _uiState = MutableStateFlow(DailyWordleSelectorUiState())
+    private val _uiState = MutableStateFlow(DailyWordleCalendarUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val tz = TimeZone.currentSystemDefault()
-
-    fun onEvent(event: DailyWordleSelectorUiEvent) {
+    fun onEvent(event: DailyWordleCalendarUiEvent) {
         when (event) {
-            is DailyWordleSelectorUiEvent.OnChangePageIndex -> {
+            is DailyWordleCalendarUiEvent.OnChangePageIndex -> {
                 _uiState.update { currentState ->
                     currentState.copy(pageIndex = event.index)
                 }
             }
-            is DailyWordleSelectorUiEvent.OnChangeInstant -> {
-                _uiState.update { currentState ->
-                    currentState.copy(instant = event.instant)
-                }
+
+            is DailyWordleCalendarUiEvent.NextMonth -> {
+                monthView.nextMonth()
+                updateCalendar()
             }
-            is DailyWordleSelectorUiEvent.OnDateClick -> dateClicked(event.date)
+
+            is DailyWordleCalendarUiEvent.PreviousMonth -> {
+                monthView.previousMonth()
+                updateCalendar()
+            }
+
+            is DailyWordleCalendarUiEvent.OnDateClick -> dateClicked(event.date)
         }
     }
 
     init {
+        updateCalendar()
+
         uiState
             .distinctUntilChanged { old, new ->
-                old.instant == new.instant && old.pageIndex == new.pageIndex
-            }.flatMapLatest { state ->
-                val localDate = state.instant.toLocalDateTime(tz).date
-
+                old.pageIndex == new.pageIndex && old.firstDayDate == new.firstDayDate
+            }.filter { state -> state.firstDayDate != null }
+            .flatMapLatest { state ->
                 dailyWordleRepository.getCalendarItems(
                     wordSize = state.wordSize,
-                    month = localDate.month,
-                    year = localDate.year
+                    month = state.firstDayDate!!.month,
+                    year = state.firstDayDate!!.year
                 )
             }.onEach { res ->
                 if (res is Resource.Success) {
                     _uiState.update { currentState ->
-                        currentState.copy(calendarItems = res.data.orEmpty())
+                        currentState.copy(calendarSavedItems = res.data.orEmpty())
                     }
                 }
             }.launchIn(viewModelScope)
+    }
+
+    private fun updateCalendar() {
+        val days = monthView.generateCalendarDays()
+
+        _uiState.update { currentState ->
+            currentState.copy(calendarDays = days)
+        }
     }
 
     private fun dateClicked(date: LocalDate) = viewModelScope.launch(Dispatchers.IO) {
@@ -73,17 +86,28 @@ class DailyWordleSelectorViewModel @Inject constructor(
             .getDailyWord(date, currentState.wordSize)
             .collect { res ->
                 if (res is Resource.Success && res.data != null) {
-                    val wordleQuiz = WordleScreenDestination(rowLimit = 6, word = res.data, date = date.toString())
+                    val wordleQuiz = WordleScreenDestination(
+                        rowLimit = 6,
+                        word = res.data,
+                        date = date.toString()
+                    )
 
-                    wordleLoggingAnalytics.logDailyWordleItemClick(currentState.wordSize, date.toString())
+                    wordleLoggingAnalytics.logDailyWordleItemClick(
+                        currentState.wordSize,
+                        date.toString()
+                    )
 
                     sendNavEventAsync(NavEvent.Navigate(wordleQuiz))
                     return@collect
                 }
 
                 if (res is Resource.Error) {
-                    Log.e("DailyWordleSelector", "Error while loading item", Throwable(res.message))
-                    sendNavEventAsync(NavEvent.ShowSnackBar(res.message ?: "Error while loading item"))
+                    Log.e("DailyWordleCalendar", "Error while loading item", Throwable(res.message))
+                    sendNavEventAsync(
+                        NavEvent.ShowSnackBar(
+                            res.message ?: "Error while loading item"
+                        )
+                    )
                     return@collect
                 }
             }
