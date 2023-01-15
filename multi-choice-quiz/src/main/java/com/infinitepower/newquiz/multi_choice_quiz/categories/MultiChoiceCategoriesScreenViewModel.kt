@@ -11,6 +11,7 @@ import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalyticsImpl
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
+import com.infinitepower.newquiz.model.UiText
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +41,7 @@ class MultiChoiceCategoriesScreenViewModel @Inject constructor() : ViewModel() {
                         _uiState.update { currentState ->
                             val flagCategory = MultiChoiceQuestionCategory(
                                 id = 1000,
-                                name = CoreR.string.flag_quiz,
+                                name = UiText.StringResource(CoreR.string.flag_quiz),
                                 image = CoreR.drawable.round_flag_circle_24
                             )
                             val newCategories = currentState.categories + flagCategory
@@ -59,7 +60,7 @@ class MultiChoiceCategoriesScreenViewModel @Inject constructor() : ViewModel() {
                         _uiState.update { currentState ->
                             val logoCategory = MultiChoiceQuestionCategory(
                                 id = 1001,
-                                name = CoreR.string.logo_quiz,
+                                name = UiText.StringResource(CoreR.string.logo_quiz),
                                 image = CoreR.drawable.round_android_24
                             )
                             val newCategories = currentState.categories + logoCategory
