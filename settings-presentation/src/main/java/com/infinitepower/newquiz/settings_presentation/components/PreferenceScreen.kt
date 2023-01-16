@@ -12,34 +12,9 @@ import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
+import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
 import com.infinitepower.newquiz.settings_presentation.model.Preference
-
-/**
- * Preference Screen composable which contains a list of [Preference] items
- * @param items [Preference] items which should be displayed on the preference screen. An item can be a single [PreferenceItem] or a group ([PreferenceGroup])
- * @param dataStore a [DataStore] where the preferences will be saved
- * @param modifier [Modifier] to be applied to the preferenceScreen layout
- */
-@Composable
-@ExperimentalMaterial3Api
-fun PreferenceScreen(
-    items: List<Preference>,
-    dataStore: DataStore<Preferences>,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp)
-) {
-    val dataStoreManager = remember {
-        DataStoreManagerImpl(dataStore)
-    }
-
-    PreferenceScreen(
-        items = items,
-        modifier = modifier,
-        dataStoreManager = dataStoreManager,
-        contentPadding = contentPadding
-    )
-}
 
 /**
  * Preference Screen composable which contains a list of [Preference] items
@@ -49,9 +24,9 @@ fun PreferenceScreen(
  */
 @Composable
 @ExperimentalMaterial3Api
-fun PreferenceScreen(
+internal fun PreferenceScreen(
     items: List<Preference>,
-    dataStoreManager: DataStoreManagerImpl,
+    dataStoreManager: DataStoreManager,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {

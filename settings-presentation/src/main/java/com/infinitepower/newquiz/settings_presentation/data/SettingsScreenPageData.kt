@@ -4,7 +4,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Language
+import androidx.compose.material.icons.rounded.ListAlt
+import androidx.compose.material.icons.rounded.Password
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.QuestionMark
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -12,10 +16,8 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.res.stringResource
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
-import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
@@ -41,6 +43,52 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
     object MainPage : SettingsScreenPageData(key = ScreenKey("main")) {
         override val stringRes: Int
             get() = CoreR.string.settings
+
+        @Composable
+        @ReadOnlyComposable
+        fun items(
+            navigateToScreen: (screenKey: ScreenKey) -> Unit,
+            screenExpanded: Boolean,
+            inMainPage: Boolean,
+            currentScreenKey: ScreenKey
+        ) = listOf(
+            Preference.PreferenceItem.NavigationButton(
+                title = stringResource(id = General.stringRes),
+                iconImageVector = Icons.Rounded.Settings,
+                screenKey = General.key,
+                onClick = { navigateToScreen(General.key) },
+                itemSelected = currentScreenKey == General.key,
+                screenExpanded = screenExpanded,
+                inMainPage = inMainPage
+            ),
+            Preference.PreferenceItem.NavigationButton(
+                title = stringResource(id = MultiChoiceQuiz.stringRes),
+                iconImageVector = Icons.Rounded.ListAlt,
+                screenKey = MultiChoiceQuiz.key,
+                onClick = { navigateToScreen(MultiChoiceQuiz.key) },
+                itemSelected = currentScreenKey == MultiChoiceQuiz.key,
+                screenExpanded = screenExpanded,
+                inMainPage = inMainPage
+            ),
+            Preference.PreferenceItem.NavigationButton(
+                title = stringResource(id = Wordle.stringRes),
+                iconImageVector = Icons.Rounded.Password,
+                screenKey = Wordle.key,
+                onClick = { navigateToScreen(Wordle.key) },
+                itemSelected = currentScreenKey == Wordle.key,
+                screenExpanded = screenExpanded,
+                inMainPage = inMainPage
+            ),
+            Preference.PreferenceItem.NavigationButton(
+                title = stringResource(id = User.stringRes),
+                iconImageVector = Icons.Rounded.Person,
+                screenKey = User.key,
+                onClick = { navigateToScreen(User.key) },
+                itemSelected = currentScreenKey == User.key,
+                screenExpanded = screenExpanded,
+                inMainPage = inMainPage
+            ),
+        )
     }
 
     object General : SettingsScreenPageData(key = ScreenKey("general")) {

@@ -74,6 +74,7 @@ dependencies {
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material3)
+    implementation(AndroidX.compose.material3.windowSizeClass)
     implementation(AndroidX.compose.material.icons.extended)
 
     implementation(Google.dagger.hilt.android)

@@ -1,7 +1,9 @@
 package com.infinitepower.newquiz.core.analytics.logging
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalInspectionMode
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -53,8 +55,32 @@ class CoreLoggingAnalyticsImpl @Inject constructor(
     }
 }
 
+object LocalCoreLoggingAnalytics : CoreLoggingAnalytics {
+    override fun logScreenView(screenName: String, screenClass: String?) {
+        Log.d("CoreLogging", "Screen view, screen name: $screenName, screen class: $screenClass")
+    }
+
+    override fun logNewLevel(level: Int, diamondsEarned: Int) {
+        Log.d("CoreLogging", "New level: $level, earned $diamondsEarned diamonds")
+    }
+
+    override fun logSpendDiamonds(amount: Int, usedFor: String) {
+        Log.d("CoreLogging", "$amount diamonds spent for $usedFor")
+    }
+
+    override fun setWordleLangUserProperty(lang: String) {
+        Log.d("CoreLogging", "User language property: $lang")
+    }
+
+    override fun setTranslatorModelDownloaded(downloaded: Boolean) {
+        Log.d("CoreLogging", "User translator downloaded: $downloaded")
+    }
+}
+
 @Composable
 fun rememberCoreLoggingAnalytics(): CoreLoggingAnalytics {
+    if (LocalInspectionMode.current) return LocalCoreLoggingAnalytics
+
     return remember {
         val firebaseAnalytics = Firebase.analytics
 

@@ -1,30 +1,33 @@
 package com.infinitepower.newquiz.settings_presentation
 
 import androidx.annotation.Keep
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
+import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
+import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.settings_presentation.components.PreferencesScreen
@@ -32,27 +35,30 @@ import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageDa
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
-import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
 
+@Keep
 data class SettingsScreenNavArgs(
     val screenKey: String = SettingsScreenPageData.MainPage.key.value
 )
 
 @Composable
 @Destination(navArgsDelegate = SettingsScreenNavArgs::class)
+@OptIn(ExperimentalMaterial3Api::class)
 fun SettingsScreen(
     navigator: DestinationsNavigator,
+    windowSizeClass: WindowSizeClass,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
 
     SettingsScreenImpl(
         uiState = uiState,
+        windowSizeClass = windowSizeClass,
         onBackClick = navigator::popBackStack,
-        onNavigateClickClick = navigator::navigate,
+        onNavigateClick = navigator::navigate,
         onEvent = settingsViewModel::onEvent
     )
 
@@ -60,212 +66,164 @@ fun SettingsScreen(
     LaunchedEffect(key1 = true) {
         coreLoggingAnalytics.logScreenView("SettingsScreen")
     }
-}
-
-@Composable
-private fun SettingsScreenImpl(
-    uiState: SettingsUiState,
-    onBackClick: () -> Unit,
-    onNavigateClickClick: (direction: Direction) -> Unit,
-    onEvent: (event: SettingsScreenUiEvent) -> Unit
-) {
-    when (uiState.screenKey) {
-        SettingsScreenPageData.MainPage.key -> MainSettingsScreen(
-            onNavigateClickClick = onNavigateClickClick,
-            onBackClick = onBackClick
-        )
-        else -> PreferencesScreen(
-            page = SettingsScreenPageData.getPage(uiState.screenKey),
-            onBackClick = onBackClick,
-            uiState = uiState,
-            onEvent = onEvent
-        )
-    }
 
     if (uiState.translationModelState == TranslatorUtil.TranslatorModelState.Downloading) {
-        AlertDialog(
-            onDismissRequest = {},
-            title = {
-                Text(text = "Downloading translation model")
-            },
-            text = {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "Please wait until translation model is downloaded!")
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-                    CircularProgressIndicator()
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {},
-                    enabled = false
-                ) {
-                    Text(text = "Close")
-                }
-            }
-        )
+        DownloadingTranslatorDialog()
     }
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun MainSettingsScreen(
-    onNavigateClickClick: (direction: Direction) -> Unit,
-    onBackClick: () -> Unit
+@ExperimentalMaterial3Api
+private fun SettingsScreenImpl(
+    uiState: SettingsUiState,
+    windowSizeClass: WindowSizeClass,
+    onBackClick: () -> Unit,
+    onNavigateClick: (direction: Direction) -> Unit,
+    onEvent: (event: SettingsScreenUiEvent) -> Unit
 ) {
-    val (searchQuery, setSearchQuery) = remember {
-        mutableStateOf("")
+    SettingsContainer(
+        screenKey = uiState.screenKey,
+        windowWidthSizeClass = windowSizeClass.widthSizeClass,
+        mainContent = {
+            PreferencesScreen(
+                page = SettingsScreenPageData.MainPage,
+                uiState = uiState,
+                onEvent = onEvent,
+                navigateToScreen = { screenKey ->
+                    onNavigateClick(SettingsScreenDestination(screenKey.value))
+                },
+                screenExpanded = windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact
+            )
+        },
+        settingsContent = {
+            PreferencesScreen(
+                page = SettingsScreenPageData.getPage(uiState.screenKey),
+                uiState = uiState,
+                onEvent = onEvent,
+                navigateToScreen = { screenKey ->
+                    onNavigateClick(SettingsScreenDestination(screenKey.value))
+                },
+                screenExpanded = windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact
+            )
+        },
+        onBackClick = onBackClick
+    )
+}
+
+@Composable
+@ExperimentalMaterial3Api
+private fun SettingsContainer(
+    modifier: Modifier = Modifier,
+    screenKey: ScreenKey,
+    windowWidthSizeClass: WindowWidthSizeClass,
+    onBackClick: () -> Unit,
+    mainContent: @Composable BoxScope.() -> Unit,
+    settingsContent: @Composable BoxScope.() -> Unit
+) {
+    val isMainPage = screenKey == SettingsScreenPageData.MainPage.key
+
+    val currentPage = remember(screenKey) {
+        SettingsScreenPageData.getPage(screenKey)
+    }
+
+    val topBarTextStringRes = if (isMainPage) {
+        SettingsScreenPageData.MainPage.stringRes
+    } else {
+        currentPage.stringRes
     }
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
-    val settingsItems = listOf(
-        SettingsBaseItemData(
-            key = SettingsScreenPageData.General.key,
-            icon = Icons.Rounded.Settings,
-            name = stringResource(id = SettingsScreenPageData.General.stringRes)
-        ),
-        SettingsBaseItemData(
-            key = SettingsScreenPageData.MultiChoiceQuiz.key,
-            icon = Icons.Rounded.Quiz,
-            name = stringResource(id = SettingsScreenPageData.MultiChoiceQuiz.stringRes)
-        ),
-        SettingsBaseItemData(
-            key = SettingsScreenPageData.Wordle.key,
-            icon = Icons.Rounded.Password,
-            name = stringResource(id = SettingsScreenPageData.Wordle.stringRes)
-        ),
-        SettingsBaseItemData(
-            key = SettingsScreenPageData.User.key,
-            icon = Icons.Rounded.Person,
-            name = stringResource(id = SettingsScreenPageData.User.stringRes)
-        )
+    val isExpandedWidthAndNotMainPage = windowWidthSizeClass > WindowWidthSizeClass.Compact && !isMainPage
+
+    val mainContentColor by animateColorAsState(
+        targetValue = if (isExpandedWidthAndNotMainPage) {
+            MaterialTheme.colorScheme.surfaceVariant
+        } else {
+            MaterialTheme.colorScheme.surface
+        }
     )
 
-    val spaceMedium = MaterialTheme.spacing.medium
-
-    Scaffold(
-        topBar = {
-            LargeTopAppBar(
-                title = {
-                    Text(text = stringResource(id = CoreR.string.settings))
-                },
-                scrollBehavior = scrollBehavior,
-                navigationIcon = { BackIconButton(onClick = onBackClick) }
-            )
-        },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(vertical = MaterialTheme.spacing.small)
-        ) {
-            /* TODO: Add search functionality
-            item {
-                SettingsSearchComponent(
-                    value = searchQuery,
-                    onValueChange = setSearchQuery,
-                    modifier = Modifier
-                        .fillParentMaxWidth()
-                        .padding(horizontal = spaceMedium)
-                )
-                Spacer(modifier = Modifier.height(spaceMedium))
-            }
-
-             */
-            items(settingsItems) { item ->
-                SettingsBaseItem(
-                    modifier = Modifier.fillParentMaxWidth(),
-                    data = item,
-                    onClick = {
-                        onNavigateClickClick(SettingsScreenDestination(item.key.value))
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun SettingsBaseItem(
-    modifier: Modifier = Modifier,
-    data: SettingsBaseItemData,
-    onClick: () -> Unit
-) {
-    Surface(
-        modifier = Modifier.clickable(
-            onClick = onClick,
-            role = Role.Button,
-            indication = rememberRipple(),
-            interactionSource = remember { MutableInteractionSource() },
-        )
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        ) {
+    Row(modifier = modifier.fillMaxSize()) {
+        if (isExpandedWidthAndNotMainPage) {
             Surface(
-                color = MaterialTheme.colorScheme.secondary,
-                shape = CircleShape
+                modifier = Modifier.weight(1f),
+                color = mainContentColor
             ) {
-                Icon(
-                    imageVector = data.icon,
-                    contentDescription = data.name,
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.padding(12.dp)
+                Box(
+                    content = mainContent,
+                    modifier = Modifier.padding(MaterialTheme.spacing.medium)
                 )
             }
-            Text(
-                text = data.name,
-                style = MaterialTheme.typography.titleLarge
+        }
+
+        Scaffold(
+            topBar = {
+                LargeTopAppBar(
+                    title = {
+                        Text(text = stringResource(id = topBarTextStringRes))
+                    },
+                    scrollBehavior = scrollBehavior,
+                    navigationIcon = { BackIconButton(onClick = onBackClick) }
+                )
+            },
+            modifier = Modifier
+                .weight(2f)
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier.padding(innerPadding),
+                content = settingsContent
             )
         }
     }
 }
 
-@Keep
-private data class SettingsBaseItemData(
-    val key: ScreenKey,
-    val icon: ImageVector,
-    val name: String
-)
+@Composable
+private fun DownloadingTranslatorDialog() {
+    AlertDialog(
+        onDismissRequest = {},
+        title = {
+            Text(text = "Downloading translation model")
+        },
+        text = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = "Please wait until translation model is downloaded!")
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+                CircularProgressIndicator()
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {},
+                enabled = false
+            ) {
+                Text(text = "Close")
+            }
+        }
+    )
+}
 
 @Composable
-private fun SettingsSearchComponent(
-    modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (value: String) -> Unit
-) {
-    Surface(
-        tonalElevation = 8.dp,
-        shape = CircleShape,
-        modifier = modifier
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Search,
-                contentDescription = "Search"
-            )
-            BasicTextField(
-                value = value,
-                onValueChange = onValueChange,
-                modifier = Modifier.fillMaxWidth(),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                textStyle = TextStyle(
-                    color = LocalContentColor.current,
+@AllPreviewsNightLight
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
+private fun SettingsScreenPreview() {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
+    val windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(screenWidth, screenHeight))
+
+    NewQuizTheme {
+        Surface {
+            SettingsScreenImpl(
+                uiState = SettingsUiState(
+                    screenKey = SettingsScreenPageData.General.key
                 ),
-                maxLines = 1
-            ) {
-                if (value.isBlank()) Text(text = "Search Settings")
-            }
+                windowSizeClass = windowSizeClass,
+                onBackClick = {},
+                onNavigateClick = {},
+                onEvent = {}
+            )
         }
     }
 }
