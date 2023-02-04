@@ -1,26 +1,28 @@
 package com.infinitepower.newquiz.multi_choice_quiz
 
-import android.content.res.Configuration
 import androidx.annotation.Keep
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -37,6 +39,8 @@ import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
+
+internal const val MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS = 30000L
 
 @Keep
 data class MultiChoiceQuizScreenNavArg(
@@ -56,8 +60,7 @@ data class MultiChoiceQuizScreenNavArg(
 )
 fun MultiChoiceQuizScreen(
     navigator: NavController,
-    windowWidthSizeClass: WindowWidthSizeClass,
-    windowHeightSizeClass: WindowHeightSizeClass,
+    windowSizeClass: WindowSizeClass,
     viewModel: QuizScreenViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -89,8 +92,7 @@ fun MultiChoiceQuizScreen(
 
     MultiChoiceQuizScreenImpl(
         onBackClick = navigator::popBackStack,
-        windowWidthSizeClass = windowWidthSizeClass,
-        windowHeightSizeClass = windowHeightSizeClass,
+        windowSizeClass = windowSizeClass,
         uiState = uiState,
         onEvent = viewModel::onEvent
     )
@@ -149,21 +151,20 @@ fun MultiChoiceQuizScreen(
 @Composable
 private fun MultiChoiceQuizScreenImpl(
     uiState: MultiChoiceQuizScreenUiState,
-    windowWidthSizeClass: WindowWidthSizeClass,
-    windowHeightSizeClass: WindowHeightSizeClass,
+    windowSizeClass: WindowSizeClass,
     onBackClick: () -> Unit,
     onEvent: (event: MultiChoiceQuizScreenUiEvent) -> Unit
 ) {
     val animatedProgress by animateFloatAsState(
-        targetValue = uiState.remainingTime.getRemainingPercent(),
+        targetValue = uiState.remainingTime.getRemainingPercent(MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS),
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
     
     Surface {
         Column(modifier = Modifier.fillMaxSize()) {
             QuizTopBar(
-                progressText = uiState.remainingTime.toMinuteSecond(),
-                windowHeightSizeClass = windowHeightSizeClass,
+                progressText = uiState.remainingTime.minuteSecondFormatted(),
+                windowHeightSizeClass = windowSizeClass.heightSizeClass,
                 progressIndicatorValue = animatedProgress,
                 userSignedIn = uiState.userSignedIn,
                 onBackClick = onBackClick,
@@ -172,7 +173,7 @@ private fun MultiChoiceQuizScreenImpl(
                 currentQuestionNull = uiState.currentQuestionStep == null
             )
 
-            if (windowWidthSizeClass == WindowWidthSizeClass.Compact) {
+            if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                 QuizContentWidthCompact(uiState = uiState, onEvent = onEvent)
             } else {
                 QuizContentWidthMedium(uiState = uiState, onEvent = onEvent)
@@ -380,8 +381,9 @@ private fun RowActionButtons(
 }
 
 @Composable
-@PreviewNightLight
-private fun QuizScreenPreviewWidthCompact() {
+@AllPreviewsNightLight
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+private fun QuizScreenPreview() {
     val questionSteps = listOf(
         MultiChoiceQuestionStep.Completed(
             question = getBasicMultiChoiceQuestion(),
@@ -403,54 +405,15 @@ private fun QuizScreenPreviewWidthCompact() {
         )
     }
 
-    NewQuizTheme {
-        MultiChoiceQuizScreenImpl(
-            uiState = uiState,
-            windowWidthSizeClass = WindowWidthSizeClass.Compact,
-            windowHeightSizeClass = WindowHeightSizeClass.Medium,
-            onBackClick = {},
-            onEvent = {},
-        )
-    }
-}
-
-@Composable
-@Preview(
-    showBackground = true,
-    device = "spec:shape=Normal,width=674,height=841,unit=dp,dpi=480"
-)
-@Preview(
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    device = "spec:shape=Normal,width=674,height=841,unit=dp,dpi=480"
-)
-private fun QuizScreenPreviewWidthMedium() {
-    val questionSteps = listOf(
-        MultiChoiceQuestionStep.Completed(
-            question = getBasicMultiChoiceQuestion(),
-            correct = true
-        ),
-        MultiChoiceQuestionStep.Completed(
-            question = getBasicMultiChoiceQuestion(),
-            correct = false
-        ),
-        MultiChoiceQuestionStep.Current(question = getBasicMultiChoiceQuestion()),
-        MultiChoiceQuestionStep.NotCurrent(question = getBasicMultiChoiceQuestion()),
-    )
-
-    val uiState = remember {
-        MultiChoiceQuizScreenUiState(
-            questionSteps = questionSteps,
-            selectedAnswer = SelectedAnswer.fromIndex((0..3).random()),
-            currentQuestionIndex = 2
-        )
-    }
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
+    val windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(screenWidth, screenHeight))
 
     NewQuizTheme {
         MultiChoiceQuizScreenImpl(
             uiState = uiState,
-            windowWidthSizeClass = WindowWidthSizeClass.Medium,
-            windowHeightSizeClass = WindowHeightSizeClass.Medium,
+            windowSizeClass = windowSizeClass,
             onBackClick = {},
             onEvent = {},
         )

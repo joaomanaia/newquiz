@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.settings_presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
@@ -11,7 +12,11 @@ import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil.TranslatorModelState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +25,8 @@ class SettingsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val dailyWordleRepository: DailyWordleRepository,
     private val translatorUtil: TranslatorUtil,
-    private val authUserRepository: AuthUserRepository
+    private val authUserRepository: AuthUserRepository,
+    private val coreLoggingAnalytics: CoreLoggingAnalytics
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
@@ -63,6 +69,7 @@ class SettingsViewModel @Inject constructor(
             is SettingsScreenUiEvent.DownloadTranslationModel -> downloadTranslationModel()
             is SettingsScreenUiEvent.ClearWordleCalendarItems -> clearWordleCalendarItems()
             is SettingsScreenUiEvent.SignOut -> authUserRepository.signOut()
+            is SettingsScreenUiEvent.EnableLoggingAnalytics -> coreLoggingAnalytics.enableLoggingAnalytics(event.enabled)
         }
     }
 

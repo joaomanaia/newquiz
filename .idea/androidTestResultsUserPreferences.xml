@@ -14,6 +14,7 @@
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi" value="120" />
                   <entry key="Xiaomi&#10; Redmi 6A" value="120" />
+                  <entry key="samsung&#10; SM-A137F" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -42,6 +43,7 @@
                   <entry key="192.168.1.70:5555" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="HUAWEI&#10; DRA-L21" value="120" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi&#10; Redmi 6A" value="120" />
                   <entry key="xiaomi&#10; Redmi 6A" value="120" />
@@ -64,6 +66,34 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-369304282">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="adb-RF8T80VY20Y-rjDXOs._adb-tls-connect._tcp" value="120" />
+                  <entry key="samsung&#10; SM-A137F" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="6634519">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="28629151">
           <value>
             <AndroidTestResultsTableState>
@@ -74,6 +104,7 @@
                   <entry key="21bf96207d29" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="HUAWEI&#10; DRA-L21" value="120" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
                   <entry key="Status" value="80" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi&#10; Redmi 6A" value="120" />
@@ -111,6 +142,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="275830547">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="357499469">
           <value>
             <AndroidTestResultsTableState>
@@ -122,6 +166,21 @@
                   <entry key="HUAWEI&#10; DRA-L21" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi&#10; Redmi 6A" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="597100417">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="adb-RF8T80VY20Y-rjDXOs._adb-tls-connect._tcp" value="120" />
+                  <entry key="samsung&#10; SM-A137F" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

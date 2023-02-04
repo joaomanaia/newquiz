@@ -49,16 +49,16 @@ internal class WordleKeyBoardTest {
         composeTestRule
             .onNodeWithTag(WordleKeyBoardTestingTags.KEY)
             .assertIsDisplayed()
-            .assertIsEnabled()
+            .assertIsNotEnabled()
             .assertTextContains("a")
     }
 
     @Test
-    fun testWordleKeyBoardItem_isDisabledWhenEnabledIsFalse() {
+    fun testWordleKeyBoardItem_disabled() {
         composeTestRule.setContent {
             WordleKeyboardKey(
                 key = 'a',
-                disabled = false,
+                disabled = true,
                 onKeyClick = {}
             )
         }
@@ -77,7 +77,7 @@ internal class WordleKeyBoardTest {
         composeTestRule.setContent {
             WordleKeyboardKey(
                 key = 'a',
-                disabled = true,
+                disabled = false,
                 onKeyClick = { wasOnClickCalled = true }
             )
         }

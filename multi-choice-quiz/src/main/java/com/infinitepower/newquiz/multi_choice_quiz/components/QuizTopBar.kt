@@ -92,13 +92,14 @@ private fun QuizTopBarPreview() {
             QuizTopBar(
                 windowHeightSizeClass = WindowHeightSizeClass.Medium,
                 progressText = "0:00",
-                progressIndicatorValue = 0f,
+                progressIndicatorValue = 0.7f,
                 userSignedIn = true,
                 onBackClick = {},
                 onSkipClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(16.dp),
+                currentQuestionNull = false
             )
         }
     }

@@ -68,7 +68,11 @@ internal fun PreferencesScreen(
                 inMainPage = uiState.screenKey == SettingsScreenPageData.MainPage.key,
                 currentScreenKey = uiState.screenKey
             )
-            is SettingsScreenPageData.General -> page.items(scope, dataStoreManager)
+            is SettingsScreenPageData.General -> page.items(
+                scope = scope,
+                dataStoreManager = dataStoreManager,
+                enableLoggingAnalytics = { onEvent(SettingsScreenUiEvent.EnableLoggingAnalytics(it)) }
+            )
             is SettingsScreenPageData.MultiChoiceQuiz -> page.items(
                 translationModelState = uiState.translationModelState,
                 downloadTranslationModel = { onEvent(SettingsScreenUiEvent.DownloadTranslationModel) },

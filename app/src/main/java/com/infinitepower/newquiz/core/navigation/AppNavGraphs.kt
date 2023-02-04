@@ -21,6 +21,7 @@ import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
 import com.ramcosta.composedestinations.scope.DestinationScope
+import com.ramcosta.composedestinations.scope.DestinationScopeWithNoDependencies
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.spec.NavGraphSpec
 import com.ramcosta.composedestinations.spec.Route
@@ -58,7 +59,7 @@ internal object AppNavGraphs {
     )
 }
 
-internal fun DestinationScope<*>.currentNavigator(): CommonNavGraphNavigator {
+internal fun DestinationScopeWithNoDependencies<*>.currentNavigator(): CommonNavGraphNavigator {
     return CommonNavGraphNavigator(navController)
 }
 

@@ -13,6 +13,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.infinitepower.newquiz.core.notification.wordle.DailyWordleNotificationServiceImpl
@@ -40,7 +41,7 @@ class NewQuizApp : Application(), Configuration.Provider {
         initializeRemoteConfig()
         createWorkers()
 
-        FirebaseApp.initializeApp(this)
+        Firebase.initialize(this)
         val firebaseAppCheck = FirebaseAppCheck.getInstance()
         firebaseAppCheck.installAppCheckProviderFactory(
             SafetyNetAppCheckProviderFactory.getInstance()

@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.multi_choice_quiz
 
 import androidx.annotation.Keep
-import com.infinitepower.newquiz.model.multi_choice_quiz.RemainingTime
+import com.infinitepower.newquiz.model.RemainingTime
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import com.infinitepower.newquiz.model.multi_choice_quiz.isAllCompleted

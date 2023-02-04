@@ -14,8 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.res.stringResource
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.R as CoreR
@@ -99,7 +97,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         @ReadOnlyComposable
         fun items(
             scope: CoroutineScope,
-            dataStoreManager: DataStoreManager
+            dataStoreManager: DataStoreManager,
+            enableLoggingAnalytics: (enabled: Boolean) -> Unit
         ) = listOf(
             Preference.PreferenceItem.SwitchPreference(
                 request = SettingsCommon.ShowLoginCard,
@@ -133,10 +132,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     Preference.PreferenceItem.SwitchPreference(
                         request = SettingsCommon.AnalyticsCollection,
                         title = "Analytics collection enabled",
-                        onCheckChange = { collectionEnabled ->
-                            val firebaseAnalytics = Firebase.analytics
-                            firebaseAnalytics.setAnalyticsCollectionEnabled(collectionEnabled)
-                        }
+                        onCheckChange = enableLoggingAnalytics
                     )
                 )
             )

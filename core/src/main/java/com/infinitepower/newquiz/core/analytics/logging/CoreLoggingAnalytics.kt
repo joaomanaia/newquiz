@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.core.analytics.logging
 
 interface CoreLoggingAnalytics {
+    fun enableLoggingAnalytics(enabled: Boolean)
+
     fun logScreenView(
         screenName: String,
         screenClass: String? = null
