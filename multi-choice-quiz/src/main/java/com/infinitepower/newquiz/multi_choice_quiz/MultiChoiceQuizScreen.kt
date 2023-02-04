@@ -27,7 +27,6 @@ import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.ads.admob.BannerAd
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
@@ -259,7 +258,6 @@ private fun ColumnScope.QuizContentWidthCompact(
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            BannerAd(adId = "ca-app-pub-1923025671607389/9840723939")
         }
     }
 }
@@ -335,7 +333,6 @@ private fun ColumnScope.QuizContentWidthMedium(
                 }
                 item {
                     Spacer(modifier = Modifier.height(spaceMedium))
-                    BannerAd(adId = "ca-app-pub-1923025671607389/9840723939")
                 }
             }
             CardQuestionAnswers(

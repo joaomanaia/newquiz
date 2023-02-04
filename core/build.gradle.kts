@@ -96,8 +96,6 @@ dependencies {
 
     implementation(KotlinX.datetime)
 
-    implementation(libs.play.services.ads)
-
     implementation(KotlinX.serialization.json)
 
     testImplementation(KotlinX.coroutines.test)

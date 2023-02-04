@@ -144,9 +144,6 @@ dependencies {
 
     implementation(KotlinX.datetime)
 
-    implementation(libs.play.services.ads)
-    implementation(libs.user.messaging.platform)
-
     implementation(libs.slf4j.simple)
 
     implementation(project(Modules.core))

@@ -38,9 +38,6 @@ import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnaly
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.ads.admob.BannerAd
-import com.infinitepower.newquiz.core.util.ads.admob.rewarded.RewardedAdUtil
-import com.infinitepower.newquiz.core.util.ads.admob.rewarded.RewardedAdUtilImpl
 import com.infinitepower.newquiz.core.util.compose.activity.getActivity
 import com.infinitepower.newquiz.model.wordle.WordleChar
 import com.infinitepower.newquiz.model.wordle.WordleItem
@@ -55,9 +52,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import com.infinitepower.newquiz.core.R as CoreR
-
-private const val WORDLE_BANNER_AD_ID = "ca-app-pub-1923025671607389/6274577111"
-private const val WORDLE_REWARDED_AD_ID = "ca-app-pub-1923025671607389/9652850233"
 
 @Keep
 data class WordleScreenNavArgs(
@@ -82,19 +76,10 @@ fun WordleScreen(
 ) {
     val uiState by wordleScreenViewModel.uiState.collectAsStateWithLifecycle()
 
-    val context = LocalContext.current
-
-    val rewardedAdUtil: RewardedAdUtil? = remember(context) {
-        val activity = context.getActivity() ?: return@remember null
-
-        RewardedAdUtilImpl(activity)
-    }
-
     WordleScreenImpl(
         uiState = uiState,
         onEvent = wordleScreenViewModel::onEvent,
         onBackClick = navigator::popBackStack,
-        rewardedAdUtil = rewardedAdUtil,
         windowSizeClass = windowSizeClass
     )
 
@@ -110,7 +95,6 @@ private fun WordleScreenImpl(
     uiState: WordleScreenUiState,
     onEvent: (event: WordleScreenUiEvent) -> Unit,
     onBackClick: () -> Unit,
-    rewardedAdUtil: RewardedAdUtil?,
     windowSizeClass: WindowSizeClass,
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
@@ -120,7 +104,6 @@ private fun WordleScreenImpl(
     }
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
 
     val (infoDialogVisible, setInfoDialogVisibility) = remember {
         mutableStateOf(false)
@@ -192,9 +175,6 @@ private fun WordleScreenImpl(
                     modifier = Modifier.testTag(WordleScreenTestTags.VERIFY_FAB)
                 )
             }
-        },
-        bottomBar = {
-            BannerAd(adId = WORDLE_BANNER_AD_ID)
         }
     ) { innerPadding ->
         WordleContainer(
@@ -290,27 +270,7 @@ private fun WordleScreenImpl(
             title = {
                 Text(text = stringResource(id = CoreR.string.game_over))
             },
-            text = {
-                Text(text = stringResource(id = CoreR.string.you_lost_the_game_watch_ad_q))
-            },
             confirmButton = {
-                val snackBarMessage = stringResource(id = CoreR.string.loading_rewarded_ad)
-                TextButton(
-                    onClick = {
-                        setGameOverPopupVisibility(false)
-                        scope.launch {
-                            snackbarHostState.showSnackbar(snackBarMessage)
-                        }
-                        rewardedAdUtil?.loadAndShow(
-                            adId = WORDLE_REWARDED_AD_ID,
-                            onUserEarnedReward = { onEvent(WordleScreenUiEvent.OnUserAdRewardedRow) }
-                        )
-                    }
-                ) {
-                    Text(text = stringResource(id = CoreR.string.watch_ad))
-                }
-            },
-            dismissButton = {
                 TextButton(onClick = { setGameOverPopupVisibility(false) }) {
                     Text(text = stringResource(id = CoreR.string.close))
                 }
@@ -570,7 +530,6 @@ private fun WordleScreenPreview() {
             ),
             onEvent = {},
             onBackClick = {},
-            rewardedAdUtil = null,
             windowSizeClass = windowSizeClass
         )
     }

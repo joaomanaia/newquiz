@@ -21,8 +21,6 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.7.21-1.
 kotlin = "1.8.0"
 ##  ⬆ = "1.8.10"
 
-google-android-play-services-ads = "21.5.0"
-
 firebase-appcheck-safetynet = "16.1.1"
 
 [libraries]
@@ -38,8 +36,6 @@ kotlin-parcelize-runtime = { group = "org.jetbrains.kotlin", name = "kotlin-parc
 lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 
 io-github-raamcosta-compose-destinations-core = "io.github.raamcosta.compose-destinations:core:1.8.33-beta"
-
-play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "google-android-play-services-ads" }
 
 user-messaging-platform = "com.google.android.ump:user-messaging-platform:2.0.0"
 

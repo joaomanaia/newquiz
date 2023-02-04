@@ -101,8 +101,6 @@ dependencies {
 
     implementation(COIL.compose)
 
-    implementation(libs.play.services.ads)
-
     implementation(AndroidX.work.runtimeKtx)
 
     implementation(project(Modules.core))

@@ -6,7 +6,6 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.google.android.ump.ConsentInformation
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
 import com.infinitepower.newquiz.math_quiz.list.destinations.MathQuizListScreenDestination
@@ -20,7 +19,6 @@ import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
-import com.ramcosta.composedestinations.scope.DestinationScope
 import com.ramcosta.composedestinations.scope.DestinationScopeWithNoDependencies
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.spec.NavGraphSpec
@@ -69,7 +67,6 @@ internal fun AppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     windowSizeClass: WindowSizeClass,
-    consentInformation: ConsentInformation,
     signedIn: Boolean
 ) {
     NavigationContainer(
@@ -86,7 +83,6 @@ internal fun AppNavigation(
                 dependency(windowSizeClass)
                 dependency(windowSizeClass.heightSizeClass)
                 dependency(windowSizeClass.widthSizeClass)
-                dependency(consentInformation)
             }
         )
     }

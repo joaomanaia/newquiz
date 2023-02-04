@@ -92,8 +92,6 @@ dependencies {
 
     implementation(KotlinX.datetime)
 
-    implementation(libs.play.services.ads)
-
     implementation(AndroidX.work.runtimeKtx)
 
     implementation(project(Modules.core))
