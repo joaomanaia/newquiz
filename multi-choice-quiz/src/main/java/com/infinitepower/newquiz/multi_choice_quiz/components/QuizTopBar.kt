@@ -1,85 +1,105 @@
 package com.infinitepower.newquiz.multi_choice_quiz.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.SkipNext
-import androidx.compose.material3.*
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
-import com.infinitepower.newquiz.compose.ui.RoundCircularProgressIndicator
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.model.RemainingTime
+import com.infinitepower.newquiz.multi_choice_quiz.MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS
 
 @Composable
 internal fun QuizTopBar(
     modifier: Modifier = Modifier,
     windowHeightSizeClass: WindowHeightSizeClass,
-    progressText: String,
-    progressIndicatorValue: Float,
+    remainingTime: RemainingTime,
     userSignedIn: Boolean,
     currentQuestionNull: Boolean = true,
     onBackClick: () -> Unit,
     onSkipClick: () -> Unit
+) {
+    val progressIndicatorVisible = windowHeightSizeClass > WindowHeightSizeClass.Compact
+
+    QuizTopBarContainer(
+        modifier = modifier,
+        skipButtonVisible = !currentQuestionNull && userSignedIn,
+        backButtonContent = { BackIconButton(onClick = onBackClick) },
+        remainingTimerContent = {
+            RemainingTimeComponent(
+                remainingTime = remainingTime,
+                maxTimeMillis = MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS,
+                showProgressIndicator = progressIndicatorVisible
+            )
+        },
+        skipButtonContent = {
+            FilledTonalIconButton(onClick = onSkipClick) {
+                Icon(
+                    imageVector = Icons.Rounded.SkipNext,
+                    contentDescription = "Skip question",
+                )
+            }
+        }
+    )
+}
+
+@Composable
+private fun QuizTopBarContainer(
+    modifier: Modifier = Modifier,
+    skipButtonVisible: Boolean,
+    backButtonContent: @Composable BoxScope.() -> Unit,
+    remainingTimerContent: @Composable BoxScope.() -> Unit,
+    skipButtonContent: @Composable BoxScope.() -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
     ConstraintLayout(modifier = modifier) {
         val (btnBackRef, progressRef, btnSkipRef) = createRefs()
 
-        BackIconButton(
-            onClick = onBackClick,
+        Box(
             modifier = Modifier.constrainAs(btnBackRef) {
                 top.linkTo(progressRef.top)
                 bottom.linkTo(progressRef.bottom)
                 start.linkTo(parent.start, spaceMedium)
-            }
+            },
+            content = backButtonContent,
+            contentAlignment = Alignment.Center
         )
 
         Box(
-            contentAlignment = Alignment.Center,
             modifier = Modifier.constrainAs(progressRef) {
                 top.linkTo(parent.top, spaceMedium)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-            }
-        ) {
-            if (windowHeightSizeClass != WindowHeightSizeClass.Compact) {
-                RoundCircularProgressIndicator(
-                    progress = progressIndicatorValue,
-                    modifier = Modifier.size(75.dp),
-                )
-            }
-            Text(
-                text = progressText,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
+            },
+            content = remainingTimerContent,
+            contentAlignment = Alignment.Center
+        )
 
-        if (!currentQuestionNull && userSignedIn) {
-            FilledTonalIconButton(
-                onClick = onSkipClick,
+        if (skipButtonVisible) {
+            Box(
                 modifier = Modifier.constrainAs(btnSkipRef) {
                     top.linkTo(progressRef.top)
                     bottom.linkTo(progressRef.bottom)
                     end.linkTo(parent.end, spaceMedium)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.SkipNext,
-                    contentDescription = "Skip question",
-                )
-            }
+                },
+                content = skipButtonContent,
+                contentAlignment = Alignment.Center
+            )
         }
     }
 }
@@ -91,8 +111,7 @@ private fun QuizTopBarPreview() {
         Surface {
             QuizTopBar(
                 windowHeightSizeClass = WindowHeightSizeClass.Medium,
-                progressText = "0:00",
-                progressIndicatorValue = 0.7f,
+                remainingTime = RemainingTime.ZERO,
                 userSignedIn = true,
                 onBackClick = {},
                 onSkipClick = {},

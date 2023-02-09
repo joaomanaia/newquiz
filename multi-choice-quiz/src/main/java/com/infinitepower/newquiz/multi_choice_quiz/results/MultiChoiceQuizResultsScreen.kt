@@ -185,7 +185,7 @@ private fun MultiChoiceQuizResultsScreenImpl(
                         CardQuestionAnswers(
                             answers = question.answers,
                             selectedAnswer = questionStep.selectedAnswer,
-                            resultsSelectedAnswer = SelectedAnswer.fromIndex(question.correctAns),
+                            correctAnswer = SelectedAnswer.fromIndex(question.correctAns),
                             isResultsScreen = true
                         )
                     }

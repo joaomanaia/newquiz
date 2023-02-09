@@ -20,13 +20,12 @@ import com.infinitepower.newquiz.compose.ui.RoundCircularProgressIndicator
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.model.RemainingTime
-import com.infinitepower.newquiz.multi_choice_quiz.MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS
 
 @Composable
 internal fun RemainingTimeComponent(
     modifier: Modifier = Modifier,
     remainingTime: RemainingTime,
-    maxTimeMillis: Long = MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS,
+    maxTimeMillis: Long,
     showProgressIndicator: Boolean = true
 ) {
     val animatedProgressValue by animateFloatAsState(
