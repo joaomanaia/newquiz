@@ -13,13 +13,13 @@ buildscript {
 }
 
 plugins {
-    id("com.android.application") version "8.0.0-alpha10" apply false
-    id("com.android.library") version "8.0.0-alpha10" apply false
-    id("org.jetbrains.kotlin.android") apply false version "1.7.21"
+    id("com.android.application") version "8.1.0-alpha03" apply false
+    id("com.android.library") version "8.1.0-alpha03" apply false
+    id("org.jetbrains.kotlin.android") apply false version "1.8.0"
     id("org.jetbrains.kotlin.plugin.serialization") apply false
     id("com.google.dagger.hilt.android") apply false
     id("com.google.gms.google-services") apply false
-    id("com.android.dynamic-feature") version "8.0.0-alpha10" apply false
+    id("com.android.dynamic-feature") version "8.1.0-alpha03" apply false
 }
 
 tasks.register("clean", Delete::class) {

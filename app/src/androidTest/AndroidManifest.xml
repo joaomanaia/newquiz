@@ -1,0 +1,21 @@
+<manifest
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:name=".NewQuizTestApp"
+        tools:replace="name">
+        <!-- disable firebase provider to get rid of "Default FirebaseApp is not initialized in this process" exceptions -->
+        <provider
+            android:authorities="${applicationId}.firebaseperfprovider"
+            android:name="com.google.firebase.perf.provider.FirebasePerfProvider"
+            tools:node="remove" />
+
+        <meta-data
+            android:name="firebase_performance_collection_deactivated"
+            android:value="true" />
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
+    </application>
+</manifest>

@@ -25,15 +25,15 @@ jobs:
         with:
           distribution: ${{ env.JAVA_DISTR }}
           java-version: ${{ env.JAVA_VERSION }}
-          
+
       - name: Create google-services.json file
         run: cat /home/runner/work/newquiz/newquiz/app/google-services.json | base64
-      
+
       - name: Put google-services.json data
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
-        
+
       - name: Workaround for Android Gradle Plugin issue
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
@@ -42,44 +42,6 @@ jobs:
         with:
           arguments: >
             testDebugUnitTest
-
-  assemble_apk:
-    name: "📦 Assemble APKs"
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: ${{ env.JAVA_DISTR }}
-          java-version: ${{ env.JAVA_VERSION }}
-          
-      - name: Create google-services.json file
-        run: cat /home/runner/work/newquiz/newquiz/app/google-services.json | base64
-      
-      - name: Put google-services.json data
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
-        
-      - name: Workaround for Android Gradle Plugin issue
-        run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
-
-      - name: Assemble debug APKs
-        uses: gradle/gradle-build-action@v2.3.3
-        with:
-          arguments: assembleDebug
-
-      - name: Upload APKs
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts.zip
-          path: |
-            app/build/outputs/apk/debug/app-debug.apk
-            newquiz_uploads/build/outputs/aar
 
   lint_off:
     name: "🔍 Android Lint"
@@ -97,7 +59,7 @@ jobs:
 
       - name: Create google-services.json file
         run: cat /home/runner/work/newquiz/newquiz/app/google-services.json | base64
-      
+
       - name: Put google-services.json data
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
@@ -105,7 +67,7 @@ jobs:
 
       - name: Increase gradle daemon memory
         run: "echo \"org.gradle.jvmargs=-Xmx4096m\" >> gradle.properties"
-        
+
       - name: Workaround for Android Gradle Plugin issue
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
@@ -118,3 +80,44 @@ jobs:
         uses: yutailang0119/action-android-lint@v3
         with:
           report-path: ./app/build/reports/lint-results.xml
+
+  assemble_apk:
+    name: "📦 Assemble APKs"
+    needs:
+      - test
+      - lint_off
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: ${{ env.JAVA_DISTR }}
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Create google-services.json file
+        run: cat /home/runner/work/newquiz/newquiz/app/google-services.json | base64
+
+      - name: Put google-services.json data
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
+
+      - name: Workaround for Android Gradle Plugin issue
+        run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
+
+      - name: Assemble debug APKs
+        uses: gradle/gradle-build-action@v2.3.3
+        with:
+          arguments: assembleDebug
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts.zip
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            newquiz_uploads/build/outputs/aar

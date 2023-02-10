@@ -5,7 +5,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp") version "1.7.21-1.0.8"
+    id("com.google.devtools.ksp") version "1.8.0-1.0.8"
 }
 
 android {
@@ -30,12 +30,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
+        jvmTarget = "17"
         freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
-        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -74,6 +74,7 @@ dependencies {
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material3)
+    implementation(AndroidX.compose.material3.windowSizeClass)
     implementation(AndroidX.compose.material.icons.extended)
 
     implementation(Google.dagger.hilt.android)

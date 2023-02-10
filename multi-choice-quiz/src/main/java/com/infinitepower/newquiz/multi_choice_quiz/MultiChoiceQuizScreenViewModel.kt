@@ -21,7 +21,7 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoice
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
-import com.infinitepower.newquiz.model.multi_choice_quiz.RemainingTime
+import com.infinitepower.newquiz.model.RemainingTime
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
@@ -29,7 +29,6 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.isAllCorrect
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import com.infinitepower.newquiz.online_services.core.worker.multichoicequiz.MultiChoiceQuizEndGameWorker
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
-import com.infinitepower.newquiz.online_services.model.user.UserNotLoggedInException
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -61,7 +60,7 @@ class QuizScreenViewModel @Inject constructor(
     private val timer = object : CountDownTimer(QUIZ_COUNTDOWN_IN_MILLIS, 250) {
         override fun onTick(millisUntilFinished: Long) {
             _uiState.update { currentState ->
-                currentState.copy(remainingTime = RemainingTime.fromValue(millisUntilFinished))
+                currentState.copy(remainingTime = RemainingTime.fromMilliseconds(millisUntilFinished))
             }
         }
 
@@ -245,7 +244,9 @@ class QuizScreenViewModel @Inject constructor(
                     val currentQuestionIndex = currentState.currentQuestionIndex
                     val currentQuestionStep = currentState.currentQuestionStep
 
-                    val questionTime = currentState.remainingTime.getQuestionTimeInSeconds()
+                    val questionTime = currentState.remainingTime.getElapsedSeconds(
+                        MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS
+                    )
 
                     if (currentQuestionStep != null) {
                         val questionCorrect =

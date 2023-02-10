@@ -8,4 +8,8 @@ interface MultiChoiceQuestionRepository : MultiChoiceQuestionBaseRepository {
     fun getRecentCategories(): Flow<List<MultiChoiceQuestionCategory>>
 
     suspend fun addCategoryToRecent(category: Int)
+
+    fun isFlagQuizInCategories(): Boolean
+
+    fun isLogoQuizInCategories(): Boolean
 }

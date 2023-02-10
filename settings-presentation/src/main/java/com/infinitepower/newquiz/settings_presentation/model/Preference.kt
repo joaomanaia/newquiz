@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.settings_presentation.model
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
 
 /**
@@ -24,6 +25,22 @@ sealed class Preference {
         abstract val dependency: List<PreferenceRequest<Boolean>>
 
         abstract val icon: @Composable (() -> Unit)?
+
+        data class NavigationButton(
+            override val title: String,
+            override val summary: String? = null,
+            override val singleLineTitle: Boolean = true,
+            override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
+            override val icon: @Composable (() -> Unit)? = null,
+            override val enabled: Boolean = true,
+
+            val screenKey: ScreenKey,
+            val iconImageVector: ImageVector,
+            val itemSelected: Boolean,
+            val screenExpanded: Boolean,
+            val inMainPage: Boolean,
+            val onClick: () -> Unit
+        ) : PreferenceItem<String>()
 
         /**
          * 	A basic [PreferenceItem] that only displays text.

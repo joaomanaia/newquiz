@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.perf.ktx.trace
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
@@ -22,7 +24,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.security.SecureRandom
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.random.Random
@@ -101,5 +102,13 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
             key = MultiChoiceQuestionDataStoreCommon.RecentCategories.key,
             newValue = newCategoriesIdsStr
         )
+    }
+
+    override fun isFlagQuizInCategories(): Boolean {
+        return Firebase.remoteConfig.getBoolean("show_flag_quiz_in_categories")
+    }
+
+    override fun isLogoQuizInCategories(): Boolean {
+        return Firebase.remoteConfig.getBoolean("show_logo_quiz_in_categories")
     }
 }

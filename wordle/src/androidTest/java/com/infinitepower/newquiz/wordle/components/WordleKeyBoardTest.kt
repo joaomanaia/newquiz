@@ -1,17 +1,15 @@
 package com.infinitepower.newquiz.wordle.components
 
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.test.assertTrue
 
 @SmallTest
 @RunWith(AndroidJUnit4::class)
@@ -20,37 +18,75 @@ internal class WordleKeyBoardTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun wordleKeyBoardItem_test() {
-        composeTestRule.setContent {
-            val (enabled, setEnabled) = remember {
-                mutableStateOf(true)
-            }
+    fun testWordleKeyBoard_displayCorrectNumberOfItems() {
+        val keys = charArrayOf('a', 'b', 'c')
 
-            NewQuizTheme {
-                Surface {
-                    WordleKeyBoardItem(
-                        key = 'A',
-                        enabled = enabled,
-                        onClick = { setEnabled(false) }
-                    )
-                }
-            }
+        composeTestRule.setContent {
+            WordleKeyBoard(
+                keys = keys,
+                disabledKeys = emptySet(),
+                onKeyClick = {},
+                windowWidthSizeClass = WindowWidthSizeClass.Compact,
+                wordleQuizType = WordleQuizType.TEXT
+            )
         }
 
         composeTestRule
-            .onNodeWithText("A")
-            .assertExists()
-            .assertHeightIsAtLeast(35.dp)
-            .assertWidthIsAtLeast(35.dp)
-            .assertIsEnabled()
+            .onAllNodesWithTag(WordleKeyBoardTestingTags.KEY)
+            .assertCountEquals(3)
+    }
+
+    @Test
+    fun testWordleKeyBoardItem_displayCorrectKey() {
+        composeTestRule.setContent {
+            WordleKeyboardKey(
+                key = 'a',
+                disabled = true,
+                onKeyClick = {}
+            )
+        }
+
+        composeTestRule
+            .onNodeWithTag(WordleKeyBoardTestingTags.KEY)
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+            .assertTextContains("a")
+    }
+
+    @Test
+    fun testWordleKeyBoardItem_disabled() {
+        composeTestRule.setContent {
+            WordleKeyboardKey(
+                key = 'a',
+                disabled = true,
+                onKeyClick = {}
+            )
+        }
+
+        composeTestRule
+            .onNodeWithTag(WordleKeyBoardTestingTags.KEY)
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+            .assertTextContains("a")
+    }
+
+    @Test
+    fun testWordleKeyBoardItem_callsOnClickWhenClicked() {
+        var wasOnClickCalled = false
+
+        composeTestRule.setContent {
+            WordleKeyboardKey(
+                key = 'a',
+                disabled = false,
+                onKeyClick = { wasOnClickCalled = true }
+            )
+        }
+
+        composeTestRule
+            .onNodeWithText("a")
             .assertHasClickAction()
             .performClick()
 
-        composeTestRule
-            .onNodeWithText("A")
-            .assertExists()
-            .assertHeightIsAtLeast(35.dp)
-            .assertWidthIsAtLeast(35.dp)
-            .assertIsNotEnabled()
+        assertTrue(wasOnClickCalled, "Button as not clicked")
     }
 }

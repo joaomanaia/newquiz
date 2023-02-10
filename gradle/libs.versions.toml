@@ -2,7 +2,7 @@
 
 [plugins]
 
-gradle = { id = "gradle", version = "8.0.0-alpha10" }
+gradle = { id = "gradle", version = "8.1.0-alpha03" }
 
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.7.21" }
 
@@ -18,15 +18,14 @@ com-google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.7.21-1.
 
 [versions]
 
-kotlin = "1.7.21"
+kotlin = "1.8.0"
+##  ⬆ = "1.8.10"
 
-google-android-play-services-ads = "21.4.0"
-
-firebase-appcheck-safetynet = "16.1.0"
+firebase-appcheck-safetynet = "16.1.1"
 
 [libraries]
 
-io-github-raamcosta-compose-destinations-ksp = "io.github.raamcosta.compose-destinations:ksp:1.7.27-beta"
+io-github-raamcosta-compose-destinations-ksp = "io.github.raamcosta.compose-destinations:ksp:1.8.33-beta"
 
 org-jacoco-ant = "org.jacoco:org.jacoco.ant:0.8.8"
 
@@ -36,9 +35,7 @@ kotlin-parcelize-runtime = { group = "org.jetbrains.kotlin", name = "kotlin-parc
 
 lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 
-io-github-raamcosta-compose-destinations-core = "io.github.raamcosta.compose-destinations:core:1.7.27-beta"
-
-play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "google-android-play-services-ads" }
+io-github-raamcosta-compose-destinations-core = "io.github.raamcosta.compose-destinations:core:1.8.33-beta"
 
 user-messaging-platform = "com.google.android.ump:user-messaging-platform:2.0.0"
 
@@ -56,15 +53,15 @@ kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-p
 
 symbol-processing-api = "com.google.devtools.ksp:symbol-processing-api:1.7.20-1.0.7"
 
-vico-compose = "com.patrykandpatryk.vico:compose:1.6.1"
+vico-compose = "com.patrykandpatryk.vico:compose:1.6.3"
 
-vico-compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.6.1"
+vico-compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.6.3"
 
-ksp = "io.github.raamcosta.compose-destinations:ksp:1.7.27-beta"
+ksp = "io.github.raamcosta.compose-destinations:ksp:1.8.33-beta"
 
-compose = "com.patrykandpatryk.vico:compose:1.6.1"
+compose = "com.patrykandpatryk.vico:compose:1.6.3"
 
-compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.6.1"
+compose-m3 = "com.patrykandpatryk.vico:compose-m3:1.6.3"
 
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.6"
 

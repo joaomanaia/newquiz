@@ -11,7 +11,7 @@ data class WordleScreenUiState(
     val rowLimit: Int = Int.MAX_VALUE,
     val rows: List<WordleRowItem> = emptyList(),
     val currentRowPosition: Int = -1,
-    val keysDisabled: List<Char> = emptyList(),
+    val keysDisabled: Set<Char> = emptySet(),
     val day: String? = null,
     val isColorBlindEnabled: Boolean = false,
     val isLetterHintEnabled: Boolean = false,
@@ -22,7 +22,7 @@ data class WordleScreenUiState(
     companion object {
         const val ALL_LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
 
-        val allNumbers = '0'..'9'
+        const val allNumbers = "1234567890"
 
         const val mathFormulaKeys = "0123456789+-*/="
     }

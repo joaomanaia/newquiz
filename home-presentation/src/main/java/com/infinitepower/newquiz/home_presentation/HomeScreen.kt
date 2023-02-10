@@ -1,30 +1,23 @@
 package com.infinitepower.newquiz.home_presentation
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusTarget
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.home_card.components.HomeCardItemContent
+import com.infinitepower.newquiz.core.ui.home_card.HomeListContent
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
-import com.infinitepower.newquiz.core.util.ui.nav_drawer.NavDrawerUtil
 import com.infinitepower.newquiz.home_presentation.data.getHomeCardItemData
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
@@ -32,39 +25,42 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 @Destination
-@OptIn(ExperimentalLifecycleComposeApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 fun HomeScreen(
     navigator: DestinationsNavigator,
     homeScreenNavigator: HomeScreenNavigator,
-    navDrawerUtil: NavDrawerUtil,
     homeViewModel: HomeScreenViewModel = hiltViewModel()
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
 
-    val homeCardItemData = remember(uiState.recommendedHomeGame) {
-        val defaultData = getHomeCardItemData(homeNavigator = homeScreenNavigator)
+    val homeCardItemData by remember(uiState.recommendedHomeGame) {
+        derivedStateOf {
+            getHomeCardItemData(homeNavigator = homeScreenNavigator)
+                .toMutableList()
+                .apply {
+                    if (!uiState.isLoggedIn && uiState.showLoginCard) {
+                        val homeLoginCardData = getLoginHomeData(
+                            navigateToLoginScreen = { navigator.navigate(LoginScreenDestination) },
+                            dismissLoginCard = { homeViewModel.onEvent(HomeScreenUiEvent.DismissLoginCard) }
+                        )
+                        add(0, homeLoginCardData)
+                    }
 
-        val noRecommendedHomeGame = uiState.recommendedHomeGame == RecommendedHomeGame.NO_GAME
+                    val hasRecommendedHomeGame = uiState.recommendedHomeGame != RecommendedHomeGame.NO_GAME
 
-        val dataWithRecommendedGame = if (!noRecommendedHomeGame) {
-            getRecommendedHomeData(uiState.recommendedHomeGame, homeScreenNavigator)
-        } else emptyList()
-
-        dataWithRecommendedGame + defaultData
+                    if (hasRecommendedHomeGame) {
+                        addAll(getRecommendedHomeData(uiState.recommendedHomeGame, homeScreenNavigator))
+                    }
+                }.toList()
+        }
     }
+
+    HomeListContent(items = homeCardItemData)
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
     LaunchedEffect(key1 = true) {
         coreLoggingAnalytics.logScreenView("HomeScreen")
     }
-
-    HomeScreenImpl(
-        uiState = uiState,
-        homeCardItemData = homeCardItemData,
-        onEvent = homeViewModel::onEvent,
-        navigateToLoginScreen = { navigator.navigate(LoginScreenDestination) },
-        openDrawer = navDrawerUtil::open
-    )
 }
 
 private fun getRecommendedHomeData(
@@ -94,68 +90,15 @@ private fun getRecommendedHomeData(
     )
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun HomeScreenImpl(
-    uiState: HomeScreenUiState,
-    homeCardItemData: List<HomeCardItem>,
-    onEvent: (event: HomeScreenUiEvent) -> Unit,
+private fun getLoginHomeData(
     navigateToLoginScreen: () -> Unit,
-    openDrawer: () -> Unit,
-) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
-        rememberTopAppBarState()
+    dismissLoginCard: () -> Unit
+): HomeCardItem = HomeCardItem.CustomItem {
+    SignInCard(
+        modifier = Modifier.fillMaxWidth(),
+        onSignInClick = navigateToLoginScreen,
+        onDismissClick = dismissLoginCard
     )
-
-    val spaceMedium = MaterialTheme.spacing.medium
-
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = "NewQuiz")
-                },
-                scrollBehavior = scrollBehavior,
-                navigationIcon = {
-                    IconButton(onClick = openDrawer) {
-                        Icon(
-                            imageVector = Icons.Rounded.Menu,
-                            contentDescription = "Open drawer"
-                        )
-                    }
-                }
-            )
-        }
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(innerPadding),
-            contentPadding = PaddingValues(spaceMedium),
-            verticalArrangement = Arrangement.spacedBy(spaceMedium)
-        ) {
-            if (!uiState.isLoggedIn && uiState.showLoginCard) {
-                item {
-                    SignInCard(
-                        modifier = Modifier.fillParentMaxWidth(),
-                        onSignInClick = navigateToLoginScreen,
-                        onDismissClick = {
-                            onEvent(HomeScreenUiEvent.DismissLoginCard)
-                        }
-                    )
-                }
-            }
-
-            items(
-                items = homeCardItemData,
-                key = { it.getId() },
-            ) { item ->
-                HomeCardItemContent(
-                    modifier = Modifier.fillParentMaxWidth(),
-                    item = item
-                )
-            }
-        }
-    }
 }
 
 @Composable
@@ -197,20 +140,13 @@ private fun SignInCard(
 
 @Composable
 @PreviewNightLight
+@OptIn(ExperimentalMaterial3Api::class)
 private fun HomeScreenPreview() {
-    val uiState = remember { HomeScreenUiState() }
-
     val homeCardItemData = remember {
         getHomeCardItemData(homeNavigator = HomeNavigatorPreviewImpl())
     }
 
     NewQuizTheme {
-        HomeScreenImpl(
-            uiState = uiState,
-            homeCardItemData = homeCardItemData,
-            onEvent = {},
-            navigateToLoginScreen = {},
-            openDrawer = {}
-        )
+        HomeListContent(items = homeCardItemData)
     }
 }

@@ -25,6 +25,9 @@ internal fun PreferenceItem(
     val scope = rememberCoroutineScope()
 
     when (item) {
+        is Preference.PreferenceItem.NavigationButton -> {
+            NavigationButtonWidget(preference = item)
+        }
         is Preference.PreferenceItem.SwitchPreference -> {
             SwitchPreferenceWidget(
                 preference = item,

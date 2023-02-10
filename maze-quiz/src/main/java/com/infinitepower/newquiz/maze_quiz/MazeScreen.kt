@@ -29,7 +29,6 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
@@ -52,7 +51,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
         DeepLink(uriPattern = "newquiz://maze")
     ]
 )
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 fun MazeScreen(
     navigator: DestinationsNavigator,
     mazeScreenNavigator: MazeScreenNavigator,

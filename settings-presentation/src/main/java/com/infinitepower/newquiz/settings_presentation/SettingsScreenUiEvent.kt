@@ -8,4 +8,8 @@ sealed interface SettingsScreenUiEvent {
     object SignOut : SettingsScreenUiEvent
 
     object ClearWordleCalendarItems : SettingsScreenUiEvent
+
+    data class EnableLoggingAnalytics(
+        val enabled: Boolean
+    ) : SettingsScreenUiEvent
 }

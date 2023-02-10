@@ -3,15 +3,20 @@ package com.infinitepower.newquiz.wordle
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.WorkManager
+import com.infinitepower.newquiz.core.analytics.logging.maze.LocalMazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.wordle.LocalWordleLoggingAnalyticsImpl
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -28,6 +33,7 @@ import javax.inject.Inject
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 class WordleScreenTest {
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
@@ -52,6 +58,10 @@ class WordleScreenTest {
             val configuration = LocalConfiguration.current
             val resources = LocalContext.current.resources
 
+            val screenHeight = configuration.screenHeightDp.dp
+            val screenWidth = configuration.screenWidthDp.dp
+            val windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(screenWidth, screenHeight))
+
             setEnglishLocale(configuration, resources)
 
             NewQuizTheme {
@@ -68,13 +78,15 @@ class WordleScreenTest {
                         wordleRepository,
                         savedStateHandle,
                         localAnalytics,
+                        mazeLoggingAnalytics = LocalMazeLoggingAnalytics(),
                         workManager
                     )
 
                     CompositionLocalProvider(LocalInspectionMode provides true) {
                         WordleScreen(
                             wordleScreenViewModel = viewModel,
-                            navigator = EmptyDestinationsNavigator
+                            navigator = EmptyDestinationsNavigator,
+                            windowSizeClass = windowSizeClass
                         )
                     }
                 }
