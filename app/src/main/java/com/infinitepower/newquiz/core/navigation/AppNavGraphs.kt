@@ -81,8 +81,6 @@ internal fun AppNavigation(
             dependenciesContainerBuilder = {
                 dependency(currentNavigator())
                 dependency(windowSizeClass)
-                dependency(windowSizeClass.heightSizeClass)
-                dependency(windowSizeClass.widthSizeClass)
             }
         )
     }

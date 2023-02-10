@@ -1,15 +1,44 @@
 package com.infinitepower.newquiz.multi_choice_quiz.results
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieAnimation
@@ -18,11 +47,14 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.model.multi_choice_quiz.*
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
+import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
+import com.infinitepower.newquiz.model.multi_choice_quiz.countCorrectQuestions
+import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
 import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswers
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
@@ -40,7 +72,8 @@ fun MultiChoiceQuizResultsScreen(
     category: Int? = null,
     difficulty: String? = null,
     type: MultiChoiceQuizType,
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    windowSizeClass: WindowSizeClass
 ) {
     val questionSteps: List<MultiChoiceQuestionStep.Completed> = remember {
         Json.decodeFromString(questionStepsStr)
@@ -67,7 +100,8 @@ fun MultiChoiceQuizResultsScreen(
                     type = type
                 )
             )
-        }
+        },
+        windowHeightSizeClass = windowSizeClass.heightSizeClass
     )
 }
 
@@ -75,6 +109,7 @@ fun MultiChoiceQuizResultsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MultiChoiceQuizResultsScreenImpl(
     questionSteps: List<MultiChoiceQuestionStep.Completed>,
+    windowHeightSizeClass: WindowHeightSizeClass,
     onBackClick: () -> Unit,
     onPlayAgainClick: () -> Unit
 ) {
@@ -97,63 +132,67 @@ private fun MultiChoiceQuizResultsScreenImpl(
             )
         }
     ) { innerPadding ->
-        Column(
+        ResultsScreenContainer(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(spaceMedium)
                 .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Surface(
-                modifier = Modifier.size(300.dp),
-                tonalElevation = 8.dp,
-                shape = CircleShape
-            ) {
-                LottieAnimation(
-                    composition = winnerLottieComposition,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(spaceMedium),
-                    iterations = LottieConstants.IterateForever,
+            windowHeightSizeClass = windowHeightSizeClass,
+            animationContent = {
+                Surface(
+                    modifier = Modifier.size(300.dp),
+                    tonalElevation = 8.dp,
+                    shape = CircleShape
+                ) {
+                    LottieAnimation(
+                        composition = winnerLottieComposition,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(spaceMedium),
+                        iterations = LottieConstants.IterateForever,
+                    )
+                }
+            },
+            resultScoreTextContent = {
+                Text(
+                    text = stringResource(
+                        id = CoreR.string.results_screen,
+                        "${questionSteps.countCorrectQuestions()}/${questionSteps.size}"
+                    ),
+                    style = MaterialTheme.typography.headlineMedium
                 )
-            }
-            Spacer(modifier = Modifier.height(spaceLarge))
-            Text(
-                text = stringResource(
-                    id = CoreR.string.results_screen,
-                    "${questionSteps.countCorrectQuestions()}/${questionSteps.size}"
-                ),
-                style = MaterialTheme.typography.headlineMedium
-            )
-            Spacer(modifier = Modifier.height(spaceLarge))
-            QuizStepViewRow(
-                modifier = Modifier.fillMaxWidth(),
-                questionSteps = questionSteps,
-                isResultsScreen = true,
-                onClick = { index, _ ->
-                    setQuestionDialog(index)
-                }
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(spaceMedium),
-                modifier = Modifier.padding(bottom = spaceLarge)
-            ) {
-                OutlinedButton(
-                    onClick = onPlayAgainClick,
-                    modifier = Modifier.weight(1f)
+            },
+            stepRowContent = {
+                QuizStepViewRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    questionSteps = questionSteps,
+                    isResultsScreen = true,
+                    onClick = { index, _ ->
+                        setQuestionDialog(index)
+                    }
+                )
+            },
+            actionButtonsContent = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(spaceMedium),
+                    modifier = Modifier.padding(bottom = spaceLarge)
                 ) {
-                    Text(text = stringResource(id = CoreR.string.play_again))
-                }
-                Button(
-                    onClick = onBackClick,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(text = stringResource(id = CoreR.string.back))
+                    OutlinedButton(
+                        onClick = onPlayAgainClick,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = stringResource(id = CoreR.string.play_again))
+                    }
+                    Button(
+                        onClick = onBackClick,
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = stringResource(id = CoreR.string.back))
+                    }
                 }
             }
-        }
+        )
     }
 
     if (questionDialog != null) {
@@ -201,7 +240,55 @@ private fun MultiChoiceQuizResultsScreenImpl(
 }
 
 @Composable
-@PreviewNightLight
+private fun ResultsScreenContainer(
+    modifier: Modifier = Modifier,
+    windowHeightSizeClass: WindowHeightSizeClass,
+    animationContent: @Composable BoxScope.() -> Unit,
+    resultScoreTextContent: @Composable () -> Unit,
+    stepRowContent: @Composable () -> Unit,
+    actionButtonsContent: @Composable () -> Unit
+) {
+    val spaceLarge = MaterialTheme.spacing.large
+
+    if (windowHeightSizeClass == WindowHeightSizeClass.Compact) {
+        Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                content = animationContent,
+                modifier = Modifier.weight(1f)
+            )
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                resultScoreTextContent()
+                Spacer(modifier = Modifier.height(spaceLarge))
+                stepRowContent()
+                Spacer(modifier = Modifier.weight(1f))
+                actionButtonsContent()
+            }
+        }
+    } else {
+        Column(
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(content = animationContent)
+            Spacer(modifier = Modifier.height(spaceLarge))
+            resultScoreTextContent()
+            Spacer(modifier = Modifier.height(spaceLarge))
+            stepRowContent()
+            Spacer(modifier = Modifier.weight(1f))
+            actionButtonsContent()
+        }
+    }
+}
+
+@Composable
+@AllPreviewsNightLight
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 private fun MultiChoiceQuizResultsScreenPreview() {
     val questionSteps = listOf(
         MultiChoiceQuestionStep.Completed(
@@ -218,12 +305,18 @@ private fun MultiChoiceQuizResultsScreenPreview() {
         ),
     )
 
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
+    val windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(screenWidth, screenHeight))
+
     NewQuizTheme {
         Surface {
             MultiChoiceQuizResultsScreenImpl(
                 questionSteps = questionSteps,
                 onBackClick = {},
-                onPlayAgainClick = {}
+                onPlayAgainClick = {},
+                windowHeightSizeClass = windowSizeClass.heightSizeClass
             )
         }
     }
