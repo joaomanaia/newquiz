@@ -1,45 +1,40 @@
 # New Quiz
 
+[![Version](https://img.shields.io/badge/Version-1.3.2-blueviolet)](https://github.com/joaomanaia/newquiz/releases/tag/1.3.2)
+[![Android CI](https://github.com/joaomanaia/newquiz/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/joaomanaia/newquiz/actions/workflows/android.yml)
+[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
+
+<a href='https://www.amazon.com/InfinitePower-NewQuiz/dp/B08T8JN4P9'><img height="75" alt='Available at amazon appstore' src='https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png'/></a>
+
 Do you like to challenge your knowledge? So NewQuiz is the ideal game for you.
 
-## Multi choice quiz
-
-- Several categories to choose from.
-- Several questions to play.
-- Multiple and true/false choice questions.
-- 3 difficulty levels: easy, medium and difficult.
-
-<div>
-<img src="pictures/multichoice1.png" alt="Home multi choice quiz" width="200"/>
-<img src="pictures/multichoice2.png" alt="Multi choice quiz" width="200"/>
-</div>
-
-## Flag Quiz
-
-Guess the country with the image of the flag. With 4 answers to choose.
-
-## Logo Quiz
-
-Guess the logo with the image, with 4 answers to choose.
-
-## Wordle quiz
-
-Guess the word with several tries. You have daily words you have one new word per day and at most 6 tries or infinite words you have random words and infinite tries.
-
-Spanish and French words are from [Words](https://github.com/lorenbrichter/Words).
-
-## Maze
-
-Have you ever thought of having all the game modes in one quiz? Then play the maze and you'll have a completely randomized game with all NewQuiz game modes.
-
-<img src="pictures/maze.png" alt="Wordle game photo 1" width="200"/>
-
-## Material you 
+![NewQuiz purple light](pictures/NewQuiz-Promotion-purple-light.png)
 
 New quiz is optimized to material you, the theme of new quiz will adapt to your background.
 
-<div>
-<img src="pictures/wordle1.png" alt="Wordle game photo 1" width="200"/>
-<img src="pictures/wordle2.png" alt="Wordle game photo 2" width="200"/>
-<img src="pictures/wordle3.png" alt="Wordle calendar" width="200"/>
-</div>
+![NewQuiz green night](pictures/NewQuiz-Promotion-green.png)
+
+## Features
+
+- Maze: Game mode with all other NewQuiz game modes in one quiz.
+
+- Multi choice quiz
+    - Logo quiz
+    - Flag quiz
+    - Solve the formula equation
+- Wordle
+    - Guess the text word
+    - Guess the number
+    - Guess the math formula
+
+## Build With
+
+- [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) is an architectural pattern in computer software that facilitates the separation of the development of the graphical user interface
+
+- [Jetpack Compose:](https://developer.android.com/jetpack/compose) Jetpack Compose is Android’s modern toolkit for building native UI.
+- [Material 3:](https://m3.material.io/) Design and build beautiful, usable products with Material3.
+- [Kotlin:](https://kotlinlang.org/) A modern programming language that makes developers happier.
+- [Kotlin Coroutines:](https://github.com/Kotlin/kotlinx.coroutines) Asynchronous or non-blocking programming
+- [Dagger Hilt:](https://github.com/google/dagger) A fast dependency injector for Java and Android.
+- [Ktor:](https://ktor.io/) For asynchronous HTTP client requests.
+- [Lottie Android:](https://github.com/airbnb/lottie-android/) Lottie is a library that parses Adobe After Effects animations exported as json.
