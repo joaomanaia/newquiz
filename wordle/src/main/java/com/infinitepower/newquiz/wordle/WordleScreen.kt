@@ -211,7 +211,7 @@ private fun WordleScreenImpl(
                     WordleRowComponent(
                         wordleRowItem = rowItem,
                         word = uiState.word.orEmpty(),
-                        onItemClick = { onEvent(WordleScreenUiEvent.OnRemoveKeyClick(index)) },
+                        onItemClick = { itemIndex -> onEvent(WordleScreenUiEvent.OnRemoveKeyClick(itemIndex)) },
                         isColorBlindEnabled = uiState.isColorBlindEnabled,
                         isLetterHintsEnabled = uiState.isLetterHintEnabled,
                         modifier = Modifier.testTag(WordleScreenTestTags.WORDLE_ROW),
