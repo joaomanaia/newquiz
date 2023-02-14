@@ -31,6 +31,30 @@ data class MultiChoiceQuestion(
     companion object {
         fun fromString(value: String): MultiChoiceQuestion = Json.decodeFromString(value)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is MultiChoiceQuestion) return false
+
+        val idEquals = id == other.id
+        val descriptionEquals = description == other.description
+        val imageUrlEquals = imageUrl == other.imageUrl
+        val answersEquals = answers == other.answers
+        val langEquals = lang == other.lang
+        val categoryEquals = category == other.category
+        val correctAnsEquals = correctAns == other.correctAns
+        val typeEquals = type == other.type
+        val difficultyEquals = difficulty == other.difficulty
+
+        return idEquals
+                && descriptionEquals
+                && imageUrlEquals
+                && answersEquals
+                && langEquals
+                && categoryEquals
+                && correctAnsEquals
+                && typeEquals
+                && difficultyEquals
+    }
 }
 
 fun getBasicMultiChoiceQuestion() = MultiChoiceQuestion(

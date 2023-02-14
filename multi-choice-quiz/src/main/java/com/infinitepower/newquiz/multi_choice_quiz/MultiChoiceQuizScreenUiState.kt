@@ -11,6 +11,7 @@ data class MultiChoiceQuizScreenUiState(
     val questionSteps: List<MultiChoiceQuestionStep> = emptyList(),
     val currentQuestionIndex: Int = -1,
     val selectedAnswer: SelectedAnswer = SelectedAnswer.NONE,
+    val questionSaved: Boolean = false,
     val remainingTime: RemainingTime = RemainingTime.ZERO,
     val userDiamonds: Int = -1,
     val userSignedIn: Boolean = false

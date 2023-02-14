@@ -209,6 +209,7 @@ private fun MultiChoiceQuizScreenImpl(
             if (currentQuestion != null) {
                 RowActionButtons(
                     answerSelected = uiState.selectedAnswer.isSelected,
+                    questionSaved = uiState.questionSaved,
                     onVerifyQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.VerifyAnswer) },
                     onSaveQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) }
                 )
@@ -221,6 +222,7 @@ private fun MultiChoiceQuizScreenImpl(
 private fun RowActionButtons(
     modifier: Modifier = Modifier,
     answerSelected: Boolean,
+    questionSaved: Boolean,
     onVerifyQuestionClick: () -> Unit,
     onSaveQuestionClick: () -> Unit,
 ) {
@@ -231,11 +233,13 @@ private fun RowActionButtons(
         horizontalArrangement = Arrangement.spacedBy(spaceMedium, Alignment.CenterHorizontally),
         modifier = modifier.fillMaxWidth()
     ) {
-        TextButton(
-            onClick = onSaveQuestionClick,
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(text = stringResource(id = CoreR.string.save))
+        if (!questionSaved) {
+            TextButton(
+                onClick = onSaveQuestionClick,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(text = stringResource(id = CoreR.string.save))
+            }
         }
         Button(
             onClick = onVerifyQuestionClick,

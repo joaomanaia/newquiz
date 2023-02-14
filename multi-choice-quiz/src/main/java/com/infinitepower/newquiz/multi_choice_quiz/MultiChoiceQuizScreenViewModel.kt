@@ -21,6 +21,7 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoice
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
+import com.infinitepower.newquiz.domain.use_case.question.IsQuestionSavedUseCase
 import com.infinitepower.newquiz.model.RemainingTime
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
@@ -52,7 +53,8 @@ class QuizScreenViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val coreLoggingAnalytics: CoreLoggingAnalytics,
     private val mazeLoggingAnalytics: MazeLoggingAnalytics,
-    private val authUserRepository: AuthUserRepository
+    private val authUserRepository: AuthUserRepository,
+    private val isQuestionSavedUseCase: IsQuestionSavedUseCase
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -107,6 +109,23 @@ class QuizScreenViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(userSignedIn = authUserRepository.isSignedIn)
         }
+
+        uiState
+            .distinctUntilChangedBy { it.currentQuestionStep?.question }
+            .filter { it.currentQuestionStep?.question != null }
+            .flatMapLatest { state ->
+                val question = state.currentQuestionStep?.question ?: return@flatMapLatest emptyFlow()
+
+                isQuestionSavedUseCase(question)
+            }.onEach { res ->
+                if (res is Resource.Success) {
+                    val questionSaved = res.data == true
+
+                    _uiState.update { currentState ->
+                        currentState.copy(questionSaved = questionSaved)
+                    }
+                }
+            }.launchIn(viewModelScope)
     }
 
     private fun skipQuestion() = viewModelScope.launch(Dispatchers.IO) {
