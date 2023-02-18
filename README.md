@@ -22,10 +22,12 @@ New quiz is optimized to material you, the theme of new quiz will adapt to your 
     - Logo quiz
     - Flag quiz
     - Solve the formula equation
+    - Number trivia
 - Wordle
     - Guess the text word
     - Guess the number
     - Guess the math formula
+    - Number trivia
 
 ## Build With
 
@@ -38,3 +40,13 @@ New quiz is optimized to material you, the theme of new quiz will adapt to your 
 - [Dagger Hilt:](https://github.com/google/dagger) A fast dependency injector for Java and Android.
 - [Ktor:](https://ktor.io/) For asynchronous HTTP client requests.
 - [Lottie Android:](https://github.com/airbnb/lottie-android/) Lottie is a library that parses Adobe After Effects animations exported as json.
+- [Compose destinations:](https://github.com/raamcosta/compose-destinations) Annotation processing library for type-safe Jetpack Compose navigation with no boilerplate.
+
+## Question Data Source
+
+- Multi choice quiz
+  - [OpenTDB:](https://opentdb.com/) multi choice questions
+  - [NumbersAPI:](http://numbersapi.com) api for number trivia questions
+  - [Country flags:](https://countryflagsapi.com/png) flag images
+- Wordle
+  - [Spanish and French words](https://github.com/lorenbrichter/Words)

@@ -21,7 +21,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -38,7 +37,6 @@ import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnaly
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.util.compose.activity.getActivity
 import com.infinitepower.newquiz.model.wordle.WordleChar
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
@@ -50,7 +48,6 @@ import com.infinitepower.newquiz.wordle.components.getItemRowTextColor
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.launch
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Keep
@@ -59,7 +56,8 @@ data class WordleScreenNavArgs(
     val word: String? = null,
     val date: String? = null,
     val quizType: WordleQuizType = WordleQuizType.TEXT,
-    val mazeItemId: String? = null
+    val mazeItemId: String? = null,
+    val textHelper: String? = null
 )
 
 @Composable
@@ -201,6 +199,16 @@ private fun WordleScreenImpl(
                             text = uiState.errorMessage,
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+
+                if (uiState.textHelper != null) {
+                    item {
+                        Text(
+                            text = uiState.textHelper,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(horizontal = spaceMedium)
                         )
                     }
                 }
@@ -526,7 +534,8 @@ private fun WordleScreenPreview() {
                 rows = rowItems,
                 currentRowPosition = 0,
                 loading = false,
-                wordleQuizType = WordleQuizType.TEXT
+                wordleQuizType = WordleQuizType.TEXT,
+                textHelper = "Wordle text helper for word."
             ),
             onEvent = {},
             onBackClick = {},

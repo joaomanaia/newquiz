@@ -195,15 +195,13 @@ private fun MultiChoiceQuizScreenImpl(
             }
         },
         answersContent = {
-            if (currentQuestion != null) {
-                CardQuestionAnswers(
-                    answers = currentQuestion.answers,
-                    selectedAnswer = uiState.selectedAnswer,
-                    onOptionClick = { answer ->
-                        onEvent(MultiChoiceQuizScreenUiEvent.SelectAnswer(answer))
-                    }
-                )
-            }
+            CardQuestionAnswers(
+                answers = currentQuestion?.answers.orEmpty(),
+                selectedAnswer = uiState.selectedAnswer,
+                onOptionClick = { answer ->
+                    onEvent(MultiChoiceQuizScreenUiEvent.SelectAnswer(answer))
+                }
+            )
         },
         actionButtonsContent = {
             if (currentQuestion != null) {

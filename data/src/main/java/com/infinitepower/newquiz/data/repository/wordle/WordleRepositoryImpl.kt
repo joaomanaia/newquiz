@@ -11,8 +11,10 @@ import com.infinitepower.newquiz.core.common.dataStore.infiniteWordleSupportedLa
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
+import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.infinitepower.newquiz.model.wordle.WordleWord
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -25,7 +27,8 @@ import kotlin.random.Random
 class WordleRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val mathQuizCoreRepository: MathQuizCoreRepository
+    private val mathQuizCoreRepository: MathQuizCoreRepository,
+    private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository
 ) : WordleRepository {
     private val baseNumbers by lazy { 0..9 }
 
@@ -59,7 +62,7 @@ class WordleRepositoryImpl @Inject constructor(
     override fun generateRandomWord(
         quizType: WordleQuizType,
         random: Random
-    ): FlowResource<String> = flow {
+    ): FlowResource<WordleWord> = flow {
         try {
             emit(Resource.Loading())
 
@@ -68,8 +71,9 @@ class WordleRepositoryImpl @Inject constructor(
                 WordleQuizType.NUMBER -> generateRandomNumberWord(random = random)
                 WordleQuizType.MATH_FORMULA -> {
                     val formula = mathQuizCoreRepository.generateMathFormula(random = random)
-                    formula.fullFormulaWithoutSpaces
+                    WordleWord(formula.fullFormulaWithoutSpaces)
                 }
+                WordleQuizType.NUMBER_TRIVIA -> numberTriviaQuestionRepository.generateWordleQuestion(random = random)
             }
 
             emit(Resource.Success(randomWord))
@@ -79,20 +83,20 @@ class WordleRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun generateRandomTextWord(random: Random): String {
+    override suspend fun generateRandomTextWord(random: Random): WordleWord {
         val allWords = getAllWords(random)
-        return allWords.random(random)
+        return WordleWord(allWords.random(random))
     }
 
     override suspend fun generateRandomNumberWord(
         wordSize: Int,
         random: Random
-    ): String {
+    ): WordleWord {
         val randomNumbers = List(wordSize) {
             baseNumbers.random(random)
         }
 
-        return randomNumbers.joinToString("")
+        return WordleWord(randomNumbers.joinToString(""))
     }
 
     override fun isColorBlindEnabled(): FlowResource<Boolean> = flow {
@@ -152,7 +156,7 @@ class WordleRepositoryImpl @Inject constructor(
     override fun validateWord(word: String, quizType: WordleQuizType): Boolean {
         return when (quizType) {
             WordleQuizType.TEXT -> word.isNotBlank()
-            WordleQuizType.NUMBER -> word.isDigitsOnly()
+            WordleQuizType.NUMBER, WordleQuizType.NUMBER_TRIVIA -> word.isDigitsOnly()
             WordleQuizType.MATH_FORMULA -> mathQuizCoreRepository.validateFormula(word)
         }
     }

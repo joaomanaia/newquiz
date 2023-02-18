@@ -87,6 +87,7 @@ class WordleScreenViewModel @Inject constructor(
     private fun generateGame() = viewModelScope.launch(Dispatchers.IO) {
         val initialWord = savedStateHandle.get<String?>(WordleScreenNavArgs::word.name)
         val date = savedStateHandle.get<String?>(WordleScreenNavArgs::date.name)
+        val textHelper = savedStateHandle.get<String?>(WordleScreenNavArgs::textHelper.name)
 
         val quizType = savedStateHandle
             .get<WordleQuizType>(WordleScreenNavArgs::quizType.name)
@@ -95,7 +96,7 @@ class WordleScreenViewModel @Inject constructor(
         // Checks if saved state has an initial word.
         // If has, generate the rows with the word, if not create a new word.
         if (initialWord != null) {
-            generateRows(initialWord, date, quizType)
+            generateRows(initialWord, quizType, textHelper, date)
             return@launch
         }
 
@@ -111,8 +112,12 @@ class WordleScreenViewModel @Inject constructor(
                 }
 
                 if (res is Resource.Success) {
-                    res.data?.let { word ->
-                        generateRows(word = word, quizType = quizType)
+                    res.data?.let { wordleWord ->
+                        generateRows(
+                            word = wordleWord.word,
+                            quizType = quizType,
+                            textHelper = wordleWord.textHelper
+                        )
                     }
                 }
             }
@@ -120,8 +125,9 @@ class WordleScreenViewModel @Inject constructor(
 
     private suspend fun generateRows(
         word: String,
-        day: String? = null,
-        quizType: WordleQuizType
+        quizType: WordleQuizType,
+        textHelper: String? = null,
+        day: String? = null
     ) {
         val rows = List(1) {
             emptyRowItem(size = word.length)
@@ -144,7 +150,8 @@ class WordleScreenViewModel @Inject constructor(
                 day = day,
                 keysDisabled = emptySet(),
                 errorMessage = null,
-                wordleQuizType = quizType
+                wordleQuizType = quizType,
+                textHelper = textHelper
             )
         }
     }

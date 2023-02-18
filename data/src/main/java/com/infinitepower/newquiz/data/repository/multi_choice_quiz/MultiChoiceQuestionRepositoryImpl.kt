@@ -28,6 +28,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.random.Random
 
+private const val OPENTDB_API_URL = "https://opentdb.com/api.php"
+
 @Singleton
 class MultiChoiceQuestionRepositoryImpl @Inject constructor(
     private val client: HttpClient,
@@ -57,7 +59,7 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
         category: Int?,
         difficulty: String?
     ): OpenTDBQuestionResponse {
-        val response: HttpResponse = client.request("https://opentdb.com/api.php") {
+        val response: HttpResponse = client.request(OPENTDB_API_URL) {
             method = HttpMethod.Get
             parameter("encode", "base64")
             parameter("amount", amount)

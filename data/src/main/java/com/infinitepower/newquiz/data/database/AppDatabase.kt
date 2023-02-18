@@ -28,7 +28,8 @@ import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
         WordleDailyCalendarItem::class,
         MazeQuizItemEntity::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun savedQuestionsDao(): SavedMultiChoiceQuestionsDao

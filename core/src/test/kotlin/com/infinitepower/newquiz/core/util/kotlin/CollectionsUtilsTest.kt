@@ -8,7 +8,15 @@ import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class CollectionUtilsTest {
+internal class CollectionUtilsTest {
+    @Test
+    fun `sum of empty intRanges returns 0 to 0`() {
+        val intRanges = emptyList<IntRange>()
+        val sum = intRanges.sum()
+
+        assertThat(sum).isEqualTo(0..0)
+    }
+
     @Test
     @DisplayName("Should return the sum of two ranges")
     fun sumOfTwoRanges() {

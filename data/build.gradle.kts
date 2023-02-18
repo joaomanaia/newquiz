@@ -100,3 +100,7 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+ksp {
+    arg("room.schemaLocation", "$rootDir/app/schemas")
+}

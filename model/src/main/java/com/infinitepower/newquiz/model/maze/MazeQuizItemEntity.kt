@@ -1,14 +1,13 @@
 package com.infinitepower.newquiz.model.maze
 
 import androidx.annotation.Keep
-import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.infinitepower.newquiz.model.math_quiz.MathFormula
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.infinitepower.newquiz.model.wordle.WordleWord
 
 @Keep
 @Entity(tableName = "mazeItems")
@@ -31,7 +30,8 @@ data class MazeQuizItemEntity(
     @Keep
     data class WordleEntity(
         val wordleWord: String,
-        val wordleQuizType: WordleQuizType
+        val wordleQuizType: WordleQuizType,
+        val textHelper: String? = null
     )
 
     enum class Type { WORDLE, MULTI_CHOICE }
@@ -40,7 +40,16 @@ data class MazeQuizItemEntity(
 fun MazeQuizItemEntity.toMazeQuizItem(): MazeQuiz.MazeItem = when (type) {
     MazeQuizItemEntity.Type.WORDLE -> {
         val wordleItem = this.wordleItem ?: throw NullPointerException("Wordle word is null")
-        MazeQuiz.MazeItem.Wordle(wordleItem.wordleWord, wordleItem.wordleQuizType, id, mazeSeed, difficulty, played)
+        MazeQuiz.MazeItem.Wordle(
+            wordleWord = WordleWord(
+                word = wordleItem.wordleWord
+            ),
+            wordleQuizType = wordleItem.wordleQuizType,
+            id = id,
+            mazeSeed = mazeSeed,
+            difficulty = difficulty,
+            played = played
+        )
     }
     MazeQuizItemEntity.Type.MULTI_CHOICE -> {
         val question = this.multiChoiceQuestion ?: throw NullPointerException("Question is null")
@@ -56,8 +65,9 @@ fun MazeQuiz.MazeItem.toEntity(): MazeQuizItemEntity = when (this) {
         played = played,
         type = MazeQuizItemEntity.Type.WORDLE,
         wordleItem = MazeQuizItemEntity.WordleEntity(
-            wordleWord = word,
-            wordleQuizType = wordleQuizType
+            wordleWord = wordleWord.word,
+            wordleQuizType = wordleQuizType,
+            textHelper = wordleWord.textHelper
         )
     )
     is MazeQuiz.MazeItem.MultiChoice -> MazeQuizItemEntity(

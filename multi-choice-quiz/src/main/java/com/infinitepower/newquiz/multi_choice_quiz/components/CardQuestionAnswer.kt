@@ -224,6 +224,22 @@ class CardQuestionAnswerColors internal constructor(
     }
 }
 
+
+@Composable
+@PreviewNightLight
+@OptIn(ExperimentalMaterial3Api::class)
+private fun CardQuestionsPreview() {
+    NewQuizTheme {
+        Surface {
+            CardQuestionAnswers(
+                answers = listOf("A", "B", "C", "D"),
+                selectedAnswer = SelectedAnswer.fromIndex(1),
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+    }
+}
+
 @Composable
 @PreviewNightLight
 @OptIn(ExperimentalMaterial3Api::class)

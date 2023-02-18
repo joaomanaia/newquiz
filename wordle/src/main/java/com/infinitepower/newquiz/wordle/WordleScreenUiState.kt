@@ -17,7 +17,8 @@ data class WordleScreenUiState(
     val isLetterHintEnabled: Boolean = false,
     val isHardModeEnabled: Boolean = false,
     val errorMessage: String? = null,
-    val wordleQuizType: WordleQuizType? = null
+    val wordleQuizType: WordleQuizType? = null,
+    val textHelper: String? = null
 ) {
     companion object {
         const val ALL_LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
@@ -46,8 +47,8 @@ data class WordleScreenUiState(
     val wordleKeys: CharArray
         get() = when (wordleQuizType) {
             WordleQuizType.TEXT -> ALL_LETTERS.toCharArray()
-            WordleQuizType.NUMBER -> allNumbers.toList().toCharArray()
+            WordleQuizType.NUMBER, WordleQuizType.NUMBER_TRIVIA -> allNumbers.toList().toCharArray()
             WordleQuizType.MATH_FORMULA -> mathFormulaKeys.toCharArray()
-            else -> charArrayOf()
+            null -> charArrayOf()
         }
 }

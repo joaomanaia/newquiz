@@ -1,11 +1,14 @@
 package com.infinitepower.newquiz.wordle.list.data
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Numbers
 import androidx.compose.material.icons.rounded.Quiz
 import androidx.compose.material.icons.rounded.Today
 import com.infinitepower.newquiz.core.R
+import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.wordle.destinations.DailyWordleCalendarScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -33,5 +36,11 @@ fun getWordListCardItemData(
         onClick = {
             navigator.navigate(DailyWordleCalendarScreenDestination)
         }
+    ),
+    HomeCardItem.GroupTitle(title = R.string.number_trivia),
+    HomeCardItem.LargeCard(
+        title = R.string.number_trivia,
+        icon = CardIcon.Icon(Icons.Rounded.Numbers),
+        onClick = { navigator.navigate(WordleScreenDestination(quizType = WordleQuizType.NUMBER_TRIVIA)) }
     ),
 )

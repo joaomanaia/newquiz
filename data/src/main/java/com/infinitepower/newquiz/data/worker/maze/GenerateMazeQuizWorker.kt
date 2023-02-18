@@ -6,7 +6,6 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
@@ -16,10 +15,12 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRep
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSolutionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
+import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.infinitepower.newquiz.model.wordle.WordleWord
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +38,8 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val wordleRepository: WordleRepository,
     private val multiChoiceQuestionRepository: MultiChoiceQuestionRepository,
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
-    private val mazeLoggingAnalytics: MazeLoggingAnalytics
+    private val mazeLoggingAnalytics: MazeLoggingAnalytics,
+    private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository
 ) : CoroutineWorker(appContext, workerParams) {
     private val remoteConfig by lazy { Firebase.remoteConfig }
 
@@ -180,6 +182,10 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
                 amount = questionSize,
                 random = random
             )
+            MultiChoiceQuizType.NUMBER_TRIVIA -> numberTriviaQuestionRepository.generateMultiChoiceQuestion(
+                size = questionSize,
+                random = random
+            )
         }
 
         return questions.map { question ->
@@ -209,14 +215,15 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
                         random = random
                     )
 
-                    formula.fullFormulaWithoutSpaces
+                    WordleWord(formula.fullFormulaWithoutSpaces)
                 }
+                WordleQuizType.NUMBER_TRIVIA -> numberTriviaQuestionRepository.generateWordleQuestion(random)
             }
         }
     ).map { word ->
         MazeQuiz.MazeItem.Wordle(
             mazeSeed = mazeSeed,
-            word = word,
+            wordleWord = word,
             wordleQuizType = wordleQuizType,
             difficulty = difficulty
         )

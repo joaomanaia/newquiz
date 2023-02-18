@@ -43,6 +43,7 @@ import com.infinitepower.newquiz.model.maze.isPlayableItem
 import com.infinitepower.newquiz.model.maze.toMazePoint
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.infinitepower.newquiz.model.wordle.WordleWord
 import kotlin.math.abs
 
 @Composable
@@ -266,7 +267,7 @@ private fun getContentColor(
 private fun MazeComponentPreview() {
     val completedItems = List(9) {
         MazeQuiz.MazeItem.Wordle(
-            word = "1+1=2",
+            wordleWord = WordleWord("1+1=2"),
             difficulty = QuestionDifficulty.Easy,
             played = true,
             wordleQuizType = WordleQuizType.MATH_FORMULA,
@@ -276,7 +277,7 @@ private fun MazeComponentPreview() {
 
     val otherItems = List(20) {
         MazeQuiz.MazeItem.Wordle(
-            word = "1+1=2",
+            wordleWord = WordleWord("1+1=2"),
             difficulty = QuestionDifficulty.Easy,
             wordleQuizType = WordleQuizType.MATH_FORMULA,
             mazeSeed = 0

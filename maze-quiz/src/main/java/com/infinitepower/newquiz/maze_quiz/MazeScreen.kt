@@ -40,6 +40,7 @@ import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.MazeQuiz.MazeItem
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.infinitepower.newquiz.model.wordle.WordleWord
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
@@ -184,7 +185,7 @@ private fun MazeScreenImpl(
 fun MazeScreenPreview() {
     val completedItems = List(9) {
         MazeItem.Wordle(
-            word = "1+1=2",
+            wordleWord = WordleWord("1+1=2"),
             difficulty = QuestionDifficulty.Easy,
             played = true,
             wordleQuizType = WordleQuizType.MATH_FORMULA,
@@ -194,7 +195,7 @@ fun MazeScreenPreview() {
 
     val otherItems = List(20) {
         MazeItem.Wordle(
-            word = "1+1=2",
+            wordleWord = WordleWord("1+1=2"),
             difficulty = QuestionDifficulty.Easy,
             wordleQuizType = WordleQuizType.MATH_FORMULA,
             mazeSeed = 0

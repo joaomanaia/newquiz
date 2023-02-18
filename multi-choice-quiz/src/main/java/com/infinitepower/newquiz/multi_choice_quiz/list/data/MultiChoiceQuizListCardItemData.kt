@@ -1,9 +1,11 @@
 package com.infinitepower.newquiz.multi_choice_quiz.list.data
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Numbers
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
@@ -22,9 +24,7 @@ internal fun getMultiChoiceQuizListCardItemData(
     savedQuestionsText: String,
     recentCategories: List<MultiChoiceQuestionCategory>
 ) = listOf(
-    HomeCardItem.GroupTitle(
-        title = CoreR.string.quick_quiz,
-    ),
+    HomeCardItem.GroupTitle(title = CoreR.string.quick_quiz),
     HomeCardItem.LargeCard(
         title = CoreR.string.quick_quiz,
         icon = CardIcon.Lottie(LottieCompositionSpec.RawRes(CoreR.raw.quick_quiz)),
@@ -56,6 +56,12 @@ internal fun getMultiChoiceQuizListCardItemData(
                 }
             )
         }
+    ),
+    HomeCardItem.GroupTitle(title = CoreR.string.number_trivia),
+    HomeCardItem.LargeCard(
+        title = CoreR.string.number_trivia,
+        icon = CardIcon.Icon(Icons.Rounded.Numbers),
+        onClick = { navigator.navigate(MultiChoiceQuizScreenDestination(type = MultiChoiceQuizType.NUMBER_TRIVIA)) }
     ),
     HomeCardItem.GroupTitle(title = CoreR.string.saved_questions),
     HomeCardItem.MediumCard(

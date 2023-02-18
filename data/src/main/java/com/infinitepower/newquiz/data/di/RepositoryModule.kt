@@ -7,6 +7,8 @@ import com.infinitepower.newquiz.data.repository.multi_choice_quiz.GuessMathSolu
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.LogoQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.MultiChoiceQuestionRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepositoryImpl
+import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionApiImpl
+import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.WordleRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.daily.DailyWordleRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
@@ -16,6 +18,8 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSo
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
+import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionApi
+import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import dagger.Binds
@@ -51,5 +55,11 @@ abstract class RepositoryModule {
     abstract fun bindMazeMathQuizRepository(mazeMathQuizRepository: MazeQuizRepositoryImpl): MazeQuizRepository
 
     @Binds
-    abstract fun bindGuessMathSolutionRepository(GuessMathSolutionRepository: GuessMathSolutionRepositoryImpl): GuessMathSolutionRepository
+    abstract fun bindGuessMathSolutionRepository(guessMathSolutionRepository: GuessMathSolutionRepositoryImpl): GuessMathSolutionRepository
+
+    @Binds
+    abstract fun bindNumberTriviaQuestionApi(numbersTriviaQuestionApiImpl: NumberTriviaQuestionApiImpl): NumberTriviaQuestionApi
+
+    @Binds
+    abstract fun bindNumberTriviaQuestionRepository(numberTriviaQuestionRepositoryImpl: NumberTriviaQuestionRepositoryImpl): NumberTriviaQuestionRepository
 }

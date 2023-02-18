@@ -144,4 +144,5 @@
     <string name="seed">Seed</string>
     <string name="user">User</string>
     <string name="sign_out">Sign out</string>
+    <string name="number_trivia">Number trivia</string>
 </resources>

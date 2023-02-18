@@ -4,5 +4,6 @@ enum class MultiChoiceQuizType {
     NORMAL,
     FLAG,
     LOGO,
-    GUESS_MATH_SOLUTION
+    GUESS_MATH_SOLUTION,
+    NUMBER_TRIVIA
 }

@@ -4,6 +4,7 @@ import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.infinitepower.newquiz.model.wordle.WordleWord
 
 @Keep
 data class MazeQuiz(
@@ -17,7 +18,7 @@ data class MazeQuiz(
 
         @Keep
         data class Wordle(
-            val word: String,
+            val wordleWord: WordleWord,
             val wordleQuizType: WordleQuizType,
             override val id: Int = 0,
             override val mazeSeed: Int,

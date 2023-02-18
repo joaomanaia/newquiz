@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
+import com.infinitepower.newquiz.core.util.kotlin.generateIncorrectNumberAnswers
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSolutionRepository
@@ -35,7 +36,7 @@ class GuessMathSolutionRepositoryImpl @Inject constructor(
                 )
             }
         ).map { formula ->
-            val incorrectAnswers = generateGenerateIncorrectAnswers(3, formula.solution)
+            val incorrectAnswers = generateIncorrectNumberAnswers(3, formula.solution)
             val answers = incorrectAnswers + formula.solution
             val answersShuffled = answers.shuffled(random)
 
@@ -51,16 +52,4 @@ class GuessMathSolutionRepositoryImpl @Inject constructor(
             )
         }
     }
-
-    private suspend fun generateGenerateIncorrectAnswers(
-        answerCount: Int,
-        correctSolution: Int,
-        random: Random = Random
-    ): List<Int> = generateRandomUniqueItems(
-        itemCount = answerCount,
-        exclusions = listOf(correctSolution),
-        generator = {
-            random.nextInt(correctSolution - 10, correctSolution + 10)
-        }
-    ).toList()
 }

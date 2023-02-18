@@ -62,9 +62,10 @@ class CommonNavGraphNavigator(
         val destination = when (item) {
             is MazeQuiz.MazeItem.Wordle -> {
                 WordleScreenDestination(
-                    word = item.word,
+                    word = item.wordleWord.word,
                     quizType = item.wordleQuizType,
-                    mazeItemId = item.id.toString()
+                    mazeItemId = item.id.toString(),
+                    textHelper = item.wordleWord.textHelper
                 )
             }
             is MazeQuiz.MazeItem.MultiChoice -> {

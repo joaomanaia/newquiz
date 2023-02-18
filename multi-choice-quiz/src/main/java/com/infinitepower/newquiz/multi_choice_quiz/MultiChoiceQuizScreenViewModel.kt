@@ -41,6 +41,7 @@ import javax.inject.Inject
 const val QUIZ_COUNTDOWN_IN_MILLIS = 30000L
 
 @HiltViewModel
+@OptIn(ExperimentalCoroutinesApi::class)
 class QuizScreenViewModel @Inject constructor(
     private val getRandomQuestionUseCase: GetRandomMultiChoiceQuestionUseCase,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,

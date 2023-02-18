@@ -9,6 +9,7 @@ import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.MazeQuizItemEntity
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.infinitepower.newquiz.model.wordle.WordleWord
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -65,7 +66,7 @@ internal class MazeMathQuizRepositoryImplTest {
         assertThat(maze.items).containsExactly(
             MazeQuiz.MazeItem.Wordle(
                 difficulty = QuestionDifficulty.Easy,
-                word = "1+1=2",
+                wordleWord = WordleWord("1+1=2"),
                 wordleQuizType = WordleQuizType.MATH_FORMULA,
                 mazeSeed = 0
             )

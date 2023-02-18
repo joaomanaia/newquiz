@@ -1,11 +1,14 @@
 package com.infinitepower.newquiz.core.util.kotlin
 
+import kotlin.random.Random
+
 /**
  * Returns the sum of all elements in the collection.
  */
 @JvmName("sumOfIntRange")
 fun Iterable<IntRange>.sum(): IntRange {
     if (count() == 0) return 0..0
+
     return reduce { acc, intRange ->
         (acc.first + intRange.first)..(acc.last + intRange.last)
     }
@@ -27,11 +30,25 @@ suspend fun <T> generateRandomUniqueItems(
     var iterations = 0
 
     while (items.size < itemCount && iterations < maxIterations) {
-        val generatedItem = generator()
-        if (generatedItem in exclusions) continue
+        val generatedItem = generator() // Generate new item
+        if (generatedItem in exclusions) continue // Checks if generated item is not in items
         items.add(generatedItem)
         iterations++
     }
 
     return items
 }
+
+suspend fun generateIncorrectNumberAnswers(
+    answerCount: Int,
+    correctSolution: Int,
+    fromRange: Int = 10,
+    toRange: Int = 10,
+    random: Random = Random
+): List<Int> = generateRandomUniqueItems(
+    itemCount = answerCount,
+    exclusions = listOf(correctSolution),
+    generator = {
+        random.nextInt(correctSolution - fromRange, correctSolution + toRange)
+    }
+).toList()
