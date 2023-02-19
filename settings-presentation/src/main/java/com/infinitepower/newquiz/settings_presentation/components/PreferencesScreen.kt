@@ -86,6 +86,7 @@ internal fun PreferencesScreen(
                 userIsSignedIn = uiState.userIsSignedIn,
                 signOut = { onEvent(SettingsScreenUiEvent.SignOut) }
             )
+            is SettingsScreenPageData.AboutAndHelp -> page.items()
         },
         dataStoreManager = dataStoreManager,
         modifier = Modifier.fillMaxSize()

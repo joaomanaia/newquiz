@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">NewQuiz</string>
     <string name="quick_quiz">Quiz rápido</string>
     <string name="back">Voltar</string>
     <string name="saved_questions">Perguntas guardadas</string>
@@ -145,4 +146,5 @@
     <string name="spanish">Espanhol</string>
     <string name="french">Francês</string>
     <string name="number_trivia">Curiosidades sobre números</string>
+    <string name="about_and_help">Sobre e ajuda</string>
 </resources>

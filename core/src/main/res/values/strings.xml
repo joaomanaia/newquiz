@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">NewQuiz</string>
     <string name="quick_quiz">Quick Quiz</string>
     <string name="back">Back</string>
     <string name="more_options">More options</string>
@@ -145,4 +146,5 @@
     <string name="user">User</string>
     <string name="sign_out">Sign out</string>
     <string name="number_trivia">Number trivia</string>
+    <string name="about_and_help">About and Help</string>
 </resources>

@@ -11,6 +11,7 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("com.google.devtools.ksp") version "1.8.0-1.0.8"
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
@@ -145,6 +146,8 @@ dependencies {
     implementation(KotlinX.datetime)
 
     implementation(libs.slf4j.simple)
+
+    implementation(libs.play.services.oss.licenses)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))

@@ -1,8 +1,13 @@
 package com.infinitepower.newquiz.settings_presentation.data
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.ExitToApp
+import androidx.compose.material.icons.rounded.Help
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.ListAlt
 import androidx.compose.material.icons.rounded.Password
@@ -10,12 +15,19 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
+import com.infinitepower.newquiz.settings_presentation.components.other.AppNameWithLogo
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
@@ -24,6 +36,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 sealed class SettingsScreenPageData(val key: ScreenKey) {
     abstract val stringRes: Int
 
@@ -34,6 +47,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             MultiChoiceQuiz.key -> MultiChoiceQuiz
             Wordle.key -> Wordle
             User.key -> User
+            AboutAndHelp.key -> AboutAndHelp
             else -> MainPage
         }
     }
@@ -86,6 +100,15 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 screenExpanded = screenExpanded,
                 inMainPage = inMainPage
             ),
+            Preference.PreferenceItem.NavigationButton(
+                title = stringResource(id = AboutAndHelp.stringRes),
+                iconImageVector = Icons.Rounded.Help,
+                screenKey = AboutAndHelp.key,
+                onClick = { navigateToScreen(AboutAndHelp.key) },
+                itemSelected = currentScreenKey == AboutAndHelp.key,
+                screenExpanded = screenExpanded,
+                inMainPage = inMainPage
+            )
         )
     }
 
@@ -278,6 +301,29 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         imageVector = Icons.Rounded.ExitToApp,
                         contentDescription = stringResource(id = CoreR.string.sign_out),
                     )
+                }
+            )
+        )
+    }
+
+    object AboutAndHelp : SettingsScreenPageData(key = ScreenKey("about_and_help")) {
+        override val stringRes: Int
+            get() = CoreR.string.about_and_help
+
+        @Composable
+        @ReadOnlyComposable
+        fun items() = listOf(
+            Preference.CustomPreference(
+                title = "NewQuiz Logo",
+                content = {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(MaterialTheme.spacing.medium)
+                    ) {
+                        AppNameWithLogo()
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
+                        AboutAndHelpButtons()
+                    }
                 }
             )
         )

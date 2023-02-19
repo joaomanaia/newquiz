@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.settings_presentation.model
 
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
@@ -145,5 +146,15 @@ sealed class Preference {
         override val enabled: Boolean = true,
 
         val preferenceItems: List<PreferenceItem<out Any>>
+    ) : Preference()
+
+    /**
+     * @param title in custom preference title will be the semantic description
+     */
+    data class CustomPreference(
+        override val title: String,
+        override val enabled: Boolean = true,
+
+        val content: @Composable BoxScope.() -> Unit
     ) : Preference()
 }

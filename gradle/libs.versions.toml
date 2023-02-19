@@ -22,6 +22,8 @@ kotlin = "1.8.0"
 ##  ⬆ = "1.8.10"
 
 firebase-appcheck-safetynet = "16.1.1"
+oss-licenses-plugin = "0.10.6"
+play-services-oss-licenses = "17.0.0"
 
 [libraries]
 
@@ -29,6 +31,8 @@ io-github-raamcosta-compose-destinations-ksp = "io.github.raamcosta.compose-dest
 
 org-jacoco-ant = "org.jacoco:org.jacoco.ant:0.8.8"
 
+oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", version.ref = "oss-licenses-plugin" }
+play-services-oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version.ref = "play-services-oss-licenses" }
 truth = "com.google.truth:truth:1.1.3"
 
 kotlin-parcelize-runtime = { group = "org.jetbrains.kotlin", name = "kotlin-parcelize-runtime", version.ref = "kotlin" }

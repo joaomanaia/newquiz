@@ -6,14 +6,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
+import com.infinitepower.newquiz.settings_presentation.components.widgets.CustomPreferenceWidget
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 /**
@@ -73,6 +75,12 @@ internal fun PreferenceScreen(
                             prefs = prefs,
                             dataStoreManager = dataStoreManager
                         )
+                    }
+                }
+
+                is Preference.CustomPreference -> {
+                    item {
+                        CustomPreferenceWidget(preference = preference)
                     }
                 }
             }

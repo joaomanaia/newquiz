@@ -9,6 +9,7 @@ buildscript {
         classpath(Firebase.crashlyticsGradlePlugin)
         classpath(Firebase.performanceMonitoringGradlePlugin)
         classpath(libs.kotlin.gradle.plugin)
+        classpath(libs.oss.licenses.plugin)
     }
 }
 
