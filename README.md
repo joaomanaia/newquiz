@@ -1,6 +1,6 @@
 # New Quiz
 
-[![Version](https://img.shields.io/badge/Version-1.3.2-blueviolet)](https://github.com/joaomanaia/newquiz/releases/tag/1.4.0)
+[![Version](https://img.shields.io/badge/Version-1.4.0-blueviolet)](https://github.com/joaomanaia/newquiz/releases/tag/1.4.0)
 [![Android CI](https://github.com/joaomanaia/newquiz/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/joaomanaia/newquiz/actions/workflows/android.yml)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 
