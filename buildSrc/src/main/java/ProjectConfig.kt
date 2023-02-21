@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion
+
 object ProjectConfig {
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -9,7 +11,11 @@ object ProjectConfig {
 
     const val targetSdk = 33
 
-    const val versionCode = 7
+    const val versionCode = 8
 
-    const val versionName = "1.3.2"
+    const val versionName = "1.4.0"
+
+    val javaVersionCompatibility = JavaVersion.VERSION_17
+
+    const val jvmTargetVersion = "17"
 }

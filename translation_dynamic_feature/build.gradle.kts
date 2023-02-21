@@ -28,11 +28,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = ProjectConfig.javaVersionCompatibility
+        targetCompatibility = ProjectConfig.javaVersionCompatibility
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = ProjectConfig.jvmTargetVersion
         freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
     buildFeatures {

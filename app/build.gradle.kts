@@ -10,7 +10,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
-    id("com.google.devtools.ksp") version "1.8.0-1.0.8"
+    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
     id("com.google.android.gms.oss-licenses-plugin")
 }
 
@@ -43,11 +43,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = ProjectConfig.javaVersionCompatibility
+        targetCompatibility = ProjectConfig.javaVersionCompatibility
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = ProjectConfig.jvmTargetVersion
         freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
     buildFeatures {
