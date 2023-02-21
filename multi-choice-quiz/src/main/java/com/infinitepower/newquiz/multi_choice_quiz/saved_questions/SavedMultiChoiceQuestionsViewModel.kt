@@ -2,21 +2,30 @@ package com.infinitepower.newquiz.multi_choice_quiz.saved_questions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
-import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
+import com.infinitepower.newquiz.data.worker.multichoicequiz.DownloadMultiChoiceQuestionsWorker
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SavedMultiChoiceQuestionsViewModel @Inject constructor(
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
-    private val questionRepository: MultiChoiceQuestionRepository,
-    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics
+    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
+    private val workManager: WorkManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SavedMultiChoiceQuestionsUiState())
     val uiState = _uiState.asStateFlow()
@@ -62,15 +71,17 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
         }
     }
 
-    private fun downloadQuestions() = viewModelScope.launch(Dispatchers.IO) {
+    private fun downloadQuestions() {
         multiChoiceQuizLoggingAnalytics.logDownloadQuestions()
 
-        val allSavedQuestions = savedQuestionsRepository.getQuestions()
-        val questions = questionRepository
-            .getRandomQuestions(amount = 50)
-            .filter { it !in allSavedQuestions }
+        val downloadQuestionsRequest = OneTimeWorkRequestBuilder<DownloadMultiChoiceQuestionsWorker>()
+            .setConstraints(
+                Constraints(
+                    requiredNetworkType = NetworkType.CONNECTED
+                )
+            ).build()
 
-        savedQuestionsRepository.insertQuestions(questions)
+        workManager.enqueue(downloadQuestionsRequest)
     }
 
     private fun deleteAllSelected() = viewModelScope.launch(Dispatchers.IO) {
