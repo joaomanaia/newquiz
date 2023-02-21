@@ -147,4 +147,10 @@
     <string name="sign_out">Sign out</string>
     <string name="number_trivia">Number trivia</string>
     <string name="about_and_help">About and Help</string>
+    <string name="animations">Animations</string>
+    <string name="animations_enabled">Animations Enabled</string>
+    <string name="global_animations_enabled">Global animations enabled</string>
+    <string name="wordle_animations_enabled">Wordle animations enabled</string>
+    <string name="analytics">Analytics</string>
+    <string name="analytics_collection_enabled">Analytics collection enabled</string>
 </resources>

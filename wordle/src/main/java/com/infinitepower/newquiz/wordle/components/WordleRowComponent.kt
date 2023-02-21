@@ -1,17 +1,23 @@
 package com.infinitepower.newquiz.wordle.components
 
 import androidx.annotation.VisibleForTesting
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -46,11 +52,49 @@ internal fun WordleRowComponent(
     isPreview: Boolean = false,
     isColorBlindEnabled: Boolean = false,
     isLetterHintsEnabled: Boolean = false,
+    animationEnabled: Boolean = !LocalInspectionMode.current,
     onItemClick: (index: Int) -> Unit
+) {
+    WordleRowContainer(
+        modifier = modifier,
+        word = word,
+        wordleRowItem = wordleRowItem,
+        animationEnabled = animationEnabled
+    ) { item, index, wordCharCount, itemCharCount ->
+        WordleComponent(
+            item = item,
+            enabled = !isPreview,
+            isColorBlindEnabled = isColorBlindEnabled,
+            onClick = { onItemClick(index) },
+            charCount = wordCharCount,
+            isLetterHintsEnabled = isLetterHintsEnabled && wordCharCount != itemCharCount
+        )
+    }
+}
+
+@Composable
+private fun WordleRowContainer(
+    modifier: Modifier = Modifier,
+    word: String,
+    wordleRowItem: WordleRowItem,
+    animationEnabled: Boolean = true,
+    wordleComponentContent: @Composable (
+        item: WordleItem,
+        index: Int,
+        wordCharCount: Int,
+        itemCharCount: Int
+    ) -> Unit
 ) {
     val presentItems = wordleRowItem
         .items
         .filterIsInstance<WordleItem.Present>()
+
+    val state = remember {
+        MutableTransitionState(!animationEnabled).apply {
+            // Start the animation immediately.
+            targetState = true
+        }
+    }
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
@@ -65,14 +109,21 @@ internal fun WordleRowComponent(
                 presentItem.char == item.char && item is WordleItem.Present
             }
 
-            WordleComponent(
-                item = item,
-                enabled = !isPreview,
-                isColorBlindEnabled = isColorBlindEnabled,
-                onClick = { onItemClick(index) },
-                charCount = wordCharCount,
-                isLetterHintsEnabled = isLetterHintsEnabled && wordCharCount != itemCharCount
-            )
+            if (animationEnabled) {
+                AnimatedVisibility(
+                    visibleState = state,
+                    enter = fadeIn(
+                        animationSpec = tween(
+                            durationMillis = 150,
+                            delayMillis = 150 * index
+                        )
+                    )
+                ) {
+                    wordleComponentContent(item, index, wordCharCount, itemCharCount)
+                }
+            } else {
+                wordleComponentContent(item, index, wordCharCount, itemCharCount)
+            }
         }
     }
 }
@@ -284,7 +335,8 @@ private fun WordleRowComponentPreview() {
                 word = "QUIZ",
                 wordleRowItem = item,
                 onItemClick = {},
-                isLetterHintsEnabled = true
+                isLetterHintsEnabled = true,
+                animationEnabled = false
             )
         }
     }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Animation
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Help
@@ -150,11 +151,32 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 }
             ),
             Preference.PreferenceGroup(
-                title = "Analytics",
+                title = stringResource(id = CoreR.string.animations),
+                preferenceItems = listOf(
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.GlobalAnimationsEnabled,
+                        title = stringResource(id = CoreR.string.animations_enabled),
+                        summary = stringResource(id = CoreR.string.global_animations_enabled),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Animation,
+                                contentDescription = stringResource(id = CoreR.string.animations_enabled)
+                            )
+                        }
+                    ),
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.WordleAnimationsEnabled,
+                        title = stringResource(id = CoreR.string.wordle_animations_enabled),
+                        dependency = listOf(SettingsCommon.GlobalAnimationsEnabled)
+                    ),
+                )
+            ),
+            Preference.PreferenceGroup(
+                title = stringResource(id = CoreR.string.analytics),
                 preferenceItems = listOf(
                     Preference.PreferenceItem.SwitchPreference(
                         request = SettingsCommon.AnalyticsCollection,
-                        title = "Analytics collection enabled",
+                        title = stringResource(id = CoreR.string.analytics_collection_enabled),
                         onCheckChange = enableLoggingAnalytics
                     )
                 )

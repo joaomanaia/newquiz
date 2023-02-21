@@ -4,6 +4,7 @@ import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.infinitepower.newquiz.model.wordle.WordleWord
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class FakeWordleRepository @Inject constructor() : WordleRepository {
     override fun generateRandomWord(
         quizType: WordleQuizType,
         random: Random
-    ): FlowResource<String> = flow {
+    ): FlowResource<WordleWord> = flow {
         try {
             emit(Resource.Loading())
 
@@ -29,6 +30,7 @@ class FakeWordleRepository @Inject constructor() : WordleRepository {
                 WordleQuizType.TEXT -> generateRandomTextWord(random = random)
                 WordleQuizType.NUMBER -> generateRandomNumberWord(random = random)
                 WordleQuizType.MATH_FORMULA -> generateRandomNumberWord(random = random)
+                WordleQuizType.NUMBER_TRIVIA -> generateRandomNumberWord(random = random)
             }
 
             emit(Resource.Success(randomWord))
@@ -38,20 +40,20 @@ class FakeWordleRepository @Inject constructor() : WordleRepository {
         }
     }
 
-    override suspend fun generateRandomTextWord(random: Random): String {
+    override suspend fun generateRandomTextWord(random: Random): WordleWord {
         val allWords = getAllWords()
-        return allWords.random()
+        return WordleWord(allWords.random())
     }
 
     override suspend fun generateRandomNumberWord(
         wordSize: Int,
         random: Random
-    ): String {
+    ): WordleWord {
         val randomNumbers = List(wordSize) {
             baseNumbers.random(random)
         }
 
-        return randomNumbers.joinToString("")
+        return WordleWord(randomNumbers.joinToString(""))
     }
 
     override fun isColorBlindEnabled(): FlowResource<Boolean> = flowOf(Resource.Success(false))

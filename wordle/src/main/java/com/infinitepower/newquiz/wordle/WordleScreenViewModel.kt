@@ -10,6 +10,9 @@ import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
+import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.wordle.util.worker.WordleEndGameWorker
@@ -36,7 +39,8 @@ class WordleScreenViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val wordleLoggingAnalytics: WordleLoggingAnalytics,
     private val mazeLoggingAnalytics: MazeLoggingAnalytics,
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    @SettingsDataStoreManager private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
     private var _uiState = MutableStateFlow(WordleScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -65,6 +69,15 @@ class WordleScreenViewModel @Inject constructor(
                     currentState.copy(isHardModeEnabled = res.data == true)
                 }
             }.launchIn(viewModelScope)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val animationsEnabled = dataStoreManager.getPreference(SettingsCommon.GlobalAnimationsEnabled)
+                    && dataStoreManager.getPreference(SettingsCommon.WordleAnimationsEnabled)
+
+            _uiState.update { currentState ->
+                currentState.copy(animationsEnabled = animationsEnabled)
+            }
+        }
 
         generateGame()
     }

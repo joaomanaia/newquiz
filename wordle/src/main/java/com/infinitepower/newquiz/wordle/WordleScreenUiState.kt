@@ -18,7 +18,8 @@ data class WordleScreenUiState(
     val isHardModeEnabled: Boolean = false,
     val errorMessage: String? = null,
     val wordleQuizType: WordleQuizType? = null,
-    val textHelper: String? = null
+    val textHelper: String? = null,
+    val animationsEnabled: Boolean = true
 ) {
     companion object {
         const val ALL_LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM"

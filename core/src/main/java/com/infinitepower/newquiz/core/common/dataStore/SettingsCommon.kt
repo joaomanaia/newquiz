@@ -51,6 +51,9 @@ object SettingsCommon {
 
     object WordleLetterHints :
         PreferenceRequest<Boolean>(booleanPreferencesKey("wordleLetterHints"), false)
+
+    object GlobalAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("animations_enabled"), true)
+    object WordleAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("wordle_animations_enabled"), true)
 }
 
 @Keep

@@ -223,7 +223,8 @@ private fun WordleScreenImpl(
                         isColorBlindEnabled = uiState.isColorBlindEnabled,
                         isLetterHintsEnabled = uiState.isLetterHintEnabled,
                         modifier = Modifier.testTag(WordleScreenTestTags.WORDLE_ROW),
-                        isPreview = !isCurrentRow
+                        isPreview = !isCurrentRow,
+                        animationEnabled = uiState.animationsEnabled
                     )
                 }
             },

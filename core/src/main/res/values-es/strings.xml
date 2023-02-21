@@ -147,4 +147,10 @@
     <string name="french">Francés</string>
     <string name="number_trivia">Curiosidades numéricas</string>
     <string name="about_and_help">Acerca de y Ayuda</string>
+    <string name="animations">animaciones</string>
+    <string name="animations_enabled">Animaciones habilitadas</string>
+    <string name="global_animations_enabled">Animaciones globales habilitadas</string>
+    <string name="wordle_animations_enabled">Animaciones de Wordle habilitadas</string>
+    <string name="analytics">Analítica</string>
+    <string name="analytics_collection_enabled">Recopilación de análisis habilitada</string>
 </resources>
