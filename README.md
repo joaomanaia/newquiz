@@ -3,6 +3,7 @@
 [![Version](https://img.shields.io/badge/Version-1.4.0-blueviolet)](https://github.com/joaomanaia/newquiz/releases/tag/1.4.0)
 [![Android CI](https://github.com/joaomanaia/newquiz/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/joaomanaia/newquiz/actions/workflows/android.yml)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Translation status](https://hosted.weblate.org/widgets/newquiz/-/android-strings/svg-badge.svg)](https://hosted.weblate.org/engage/newquiz)
 
 <a href='https://www.amazon.com/InfinitePower-NewQuiz/dp/B08T8JN4P9'><img height="75" alt='Available at amazon appstore' src='https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png'/></a>
 
@@ -50,3 +51,9 @@ New quiz is optimized to material you, the theme of new quiz will adapt to your 
   - [Country flags:](https://countryflagsapi.com/png) flag images
 - Wordle
   - [Spanish and French words](https://github.com/lorenbrichter/Words)
+
+## Translation
+
+Hello and thank you for your interest — NewQuiz is being translated using [Weblate](https://weblate.org/), a web tool designed to ease translating for both developers and translators.
+
+[![Translation status](https://hosted.weblate.org/widgets/newquiz/-/android-strings/horizontal-auto.svg)](https://hosted.weblate.org/engage/newquiz/)
