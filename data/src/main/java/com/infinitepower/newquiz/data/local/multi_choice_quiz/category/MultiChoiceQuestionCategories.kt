@@ -1,128 +1,152 @@
 package com.infinitepower.newquiz.data.local.multi_choice_quiz.category
 
 import com.infinitepower.newquiz.model.UiText
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.core.R as CoreR
 
 val multiChoiceQuestionCategories = listOf(
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "General knowledge",
         id = 9,
         name = UiText.StringResource((CoreR.string.general_knowledge)),
         image = CoreR.drawable.general_knowledge
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Books",
         id = 10,
         name = UiText.StringResource(CoreR.string.entertainment_books),
         image = CoreR.drawable.books
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Film",
         id = 11,
         name = UiText.StringResource(CoreR.string.entertainment_film),
         image = CoreR.drawable.films
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Music",
         id = 12,
         name = UiText.StringResource(CoreR.string.entertainment_music),
         image = CoreR.drawable.music
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "General Musicals & Theatres",
         id = 13,
         name = UiText.StringResource(CoreR.string.entertainment_musicals_and_theatres),
         image = CoreR.drawable.musicals_and_theatres
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Television",
         id = 14,
         name = UiText.StringResource(CoreR.string.entertainment_television),
         image = CoreR.drawable.entertainment_television
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Video Games",
         id = 15,
         name = UiText.StringResource(CoreR.string.entertainment_video_games),
         image = CoreR.drawable.entertainment_video_games
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Board Games",
         id = 16,
         name = UiText.StringResource(CoreR.string.entertainment_board_games),
         image = CoreR.drawable.entertainment_board_games
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Science & Nature",
         id = 17,
         name = UiText.StringResource(CoreR.string.science_and_nature),
         image = CoreR.drawable.science_and_nature
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Computers",
         id = 18,
         name = UiText.StringResource(CoreR.string.science_computers),
         image = CoreR.drawable.science_computers
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Mathematics",
         id = 19,
         name = UiText.StringResource(CoreR.string.science_mathematics),
         image = CoreR.drawable.science_mathematics
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Mythology",
         id = 20,
         name = UiText.StringResource(CoreR.string.mythology),
         image = CoreR.drawable.mythology
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Sports",
         id = 21,
         name = UiText.StringResource(CoreR.string.sports),
-        CoreR.drawable.sports
+        image = CoreR.drawable.sports
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Geography",
         id = 22,
         name = UiText.StringResource(CoreR.string.geography),
         image = CoreR.drawable.geography
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "History",
         id = 23,
         name = UiText.StringResource(CoreR.string.history),
         image = CoreR.drawable.history
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Politics",
         id = 24,
         name = UiText.StringResource(CoreR.string.politics),
         image = CoreR.drawable.politics
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Art",
         id = 25,
         name = UiText.StringResource(CoreR.string.art),
         image = CoreR.drawable.art
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Celebrities",
         id = 26,
         name = UiText.StringResource(CoreR.string.celebrities),
         image = CoreR.drawable.celebrities
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Animals",
         id = 27,
         name = UiText.StringResource(CoreR.string.animals),
         image = CoreR.drawable.animals
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Vehicles",
         id = 28,
         name = UiText.StringResource(CoreR.string.vehicles),
         image = CoreR.drawable.vehicles
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Comics",
         id = 29,
         name = UiText.StringResource(CoreR.string.entertainment_comics),
         image = CoreR.drawable.entertainment_comics
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Gadgets",
         id = 30,
         name = UiText.StringResource(CoreR.string.science_gadgets),
         image = CoreR.drawable.science_gadgets
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Japanese Anime & Manga",
         id = 31,
         name = UiText.StringResource(CoreR.string.entertainment_japanese_anime_and_manga),
         image = CoreR.drawable.entertainment_japanese_anime_and_manga
     ),
-    MultiChoiceQuestionCategory(
+    MultiChoiceCategory(
+        key = "Cartoon & Animations",
         id = 32,
         name = UiText.StringResource(CoreR.string.entertainment_cartoon_and_animations),
         image = CoreR.drawable.entertainment_cartoon_and_animations
-    ),
+    )
 )

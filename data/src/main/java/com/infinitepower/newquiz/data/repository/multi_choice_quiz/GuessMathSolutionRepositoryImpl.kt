@@ -4,7 +4,10 @@ import com.infinitepower.newquiz.core.util.kotlin.generateIncorrectNumberAnswers
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSolutionRepository
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
+import com.infinitepower.newquiz.model.multi_choice_quiz.QuestionLanguage
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,7 +19,7 @@ class GuessMathSolutionRepositoryImpl @Inject constructor(
 ) : GuessMathSolutionRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
-        category: Int?,
+        category: MultiChoiceBaseCategory.GuessMathSolution,
         difficulty: String?,
         random: Random
     ): List<MultiChoiceQuestion> {
@@ -44,11 +47,11 @@ class GuessMathSolutionRepositoryImpl @Inject constructor(
                 id = random.nextInt(),
                 description = "What is the solution of ${formula.leftFormula} ?",
                 answers = answersShuffled.map(Int::toString),
-                category = "Guess Math Solution",
+                category = MultiChoiceBaseCategory.GuessMathSolution,
                 correctAns = answersShuffled.indexOf(formula.solution),
-                difficulty = questionDifficulty.id,
-                lang = "en",
-                type = "multiple"
+                difficulty = questionDifficulty,
+                lang = QuestionLanguage.EN,
+                type = MultiChoiceQuestionType.MULTIPLE
             )
         }
     }

@@ -1,14 +1,5 @@
 package com.infinitepower.newquiz.model.math_quiz.maze
 
-import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.model.math_quiz.MathFormula
-import com.infinitepower.newquiz.model.maze.MazeQuiz
-import com.infinitepower.newquiz.model.maze.isItemPlayed
-import com.infinitepower.newquiz.model.maze.isPlayableItem
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
-import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
-import org.junit.jupiter.api.Test
-
 internal class MazeQuizTest {
     /*
     @Test

@@ -48,9 +48,9 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
-import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import com.infinitepower.newquiz.model.multi_choice_quiz.countCorrectQuestions
@@ -68,10 +68,9 @@ import kotlinx.serialization.json.Json
 @Destination
 fun MultiChoiceQuizResultsScreen(
     questionStepsStr: String,
+    category: MultiChoiceBaseCategory,
     byInitialQuestions: Boolean = false,
-    category: Int? = null,
     difficulty: String? = null,
-    type: MultiChoiceQuizType,
     navigator: DestinationsNavigator,
     windowSizeClass: WindowSizeClass
 ) {
@@ -95,9 +94,8 @@ fun MultiChoiceQuizResultsScreen(
             navigator.navigate(
                 MultiChoiceQuizScreenDestination(
                     initialQuestions = if (byInitialQuestions) initialQuestions else ArrayList(),
-                    category = category ?: -1,
-                    difficulty = difficulty,
-                    type = type
+                    category = category,
+                    difficulty = difficulty
                 )
             )
         },

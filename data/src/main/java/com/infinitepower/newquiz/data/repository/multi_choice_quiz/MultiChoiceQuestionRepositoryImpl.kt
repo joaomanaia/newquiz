@@ -6,11 +6,14 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
+import com.infinitepower.newquiz.core.util.kotlin.removeLast
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.opentdb.OpenTDBQuestionResponse
+import com.infinitepower.newquiz.model.multi_choice_quiz.toQuestion
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -37,7 +40,7 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
 ) : MultiChoiceQuestionRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
-        category: Int?,
+        category: MultiChoiceBaseCategory.Normal,
         difficulty: String?,
         random: Random
     ): List<MultiChoiceQuestion> = withContext(Dispatchers.IO) {
@@ -46,7 +49,9 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
 
             val questions = openTDBResults.map { result ->
                 async(Dispatchers.IO) {
-                    result.decodeResultToQuestion(id = random.nextInt())
+                    result
+                        .decodeResultToQuestionEntity(id = random.nextInt())
+                        .toQuestion()
                 }
             }
 
@@ -56,14 +61,17 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
 
     private suspend fun getOpenTDBResponse(
         amount: Int,
-        category: Int?,
+        category: MultiChoiceBaseCategory.Normal,
         difficulty: String?
     ): OpenTDBQuestionResponse {
         val response: HttpResponse = client.request(OPENTDB_API_URL) {
             method = HttpMethod.Get
             parameter("encode", "base64")
             parameter("amount", amount)
-            if (category != null) parameter("category", category)
+            if (category.hasCategory) {
+                val categoryDB = multiChoiceQuestionCategories.find { it.key == category.categoryKey }
+                if (categoryDB != null) parameter("category", categoryDB.id)
+            }
             if (difficulty != null) parameter("difficulty", difficulty)
 
             headers {
@@ -74,35 +82,30 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
         return Json.decodeFromString(textResponse)
     }
 
-    override fun getRecentCategories(): Flow<List<MultiChoiceQuestionCategory>> =
+    override fun getRecentCategories(): Flow<List<MultiChoiceCategory>> =
         settingsDataStoreManager
             .getPreferenceFlow(MultiChoiceQuestionDataStoreCommon.RecentCategories)
-            .map { recentCategoriesStr ->
-                val categoryIds = Json.decodeFromString<List<Int>>(recentCategoriesStr)
-
-                multiChoiceQuestionCategories.filter { it.id in categoryIds }
+            .map { recentCategories ->
+                multiChoiceQuestionCategories.filter { it.key in recentCategories }
             }
 
-    override suspend fun addCategoryToRecent(category: Int) {
-        val recentCategoriesStr = settingsDataStoreManager.getPreference(MultiChoiceQuestionDataStoreCommon.RecentCategories)
-        val categoryIds = Json.decodeFromString<List<Int>>(recentCategoriesStr)
+    override suspend fun addCategoryToRecent(category: MultiChoiceBaseCategory) {
+        val recentCategories = settingsDataStoreManager.getPreference(MultiChoiceQuestionDataStoreCommon.RecentCategories)
 
-        val newCategoriesIds = categoryIds
-            .toMutableList()
+        val newCategoriesIds = recentCategories
+            .toMutableSet()
             .apply {
                 // If the category to add is in the recent it's not necessary
                 // to add the category, so return
-                if (category in this) return
+                if (category.key in this) return
 
                 if (size >= 3) removeLast()
-                add(0, category)
-            }
-
-        val newCategoriesIdsStr = Json.encodeToString(newCategoriesIds)
+                add(category.key)
+            }.toSet()
 
         settingsDataStoreManager.editPreference(
             key = MultiChoiceQuestionDataStoreCommon.RecentCategories.key,
-            newValue = newCategoriesIdsStr
+            newValue = newCategoriesIds
         )
     }
 

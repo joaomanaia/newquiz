@@ -12,7 +12,7 @@ import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsDao
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleDao
 import com.infinitepower.newquiz.model.maze.MazeQuizItemEntity
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionEntity
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
 
 @SuppressLint("all")
@@ -24,7 +24,7 @@ import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
 )
 @Database(
     entities = [
-        MultiChoiceQuestion::class,
+        MultiChoiceQuestionEntity::class,
         WordleDailyCalendarItem::class,
         MazeQuizItemEntity::class
     ],

@@ -5,7 +5,8 @@ import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.model.UiText
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +30,8 @@ class MultiChoiceCategoriesScreenViewModel @Inject constructor(
             .also { showFlagQuiz ->
                 if (showFlagQuiz) {
                     _uiState.update { currentState ->
-                        val flagCategory = MultiChoiceQuestionCategory(
+                        val flagCategory = MultiChoiceCategory(
+                            key = MultiChoiceBaseCategory.Logo.key,
                             id = 1000,
                             name = UiText.StringResource(CoreR.string.flag_quiz),
                             image = CoreR.drawable.round_flag_circle_24
@@ -46,7 +48,8 @@ class MultiChoiceCategoriesScreenViewModel @Inject constructor(
             .also { showLogoQuiz ->
                 if (showLogoQuiz) {
                     _uiState.update { currentState ->
-                        val logoCategory = MultiChoiceQuestionCategory(
+                        val logoCategory = MultiChoiceCategory(
+                            key = MultiChoiceBaseCategory.Flag.key,
                             id = 1001,
                             name = UiText.StringResource(CoreR.string.logo_quiz),
                             image = CoreR.drawable.round_android_24

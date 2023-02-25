@@ -1,3 +1,3 @@
 package com.infinitepower.newquiz.model.multi_choice_quiz
 
-enum class QuestionLanguage { EN }
+enum class MultiChoiceQuestionType { MULTIPLE, BOOLEAN }

@@ -5,12 +5,12 @@ import androidx.compose.material.icons.rounded.Numbers
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceCategoriesScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.SavedMultiChoiceQuestionsScreenDestination
@@ -22,7 +22,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 internal fun getMultiChoiceQuizListCardItemData(
     navigator: DestinationsNavigator,
     savedQuestionsText: String,
-    recentCategories: List<MultiChoiceQuestionCategory>
+    recentCategories: List<MultiChoiceCategory>
 ) = listOf(
     HomeCardItem.GroupTitle(title = CoreR.string.quick_quiz),
     HomeCardItem.LargeCard(
@@ -51,8 +51,8 @@ internal fun getMultiChoiceQuizListCardItemData(
                 navigateToCategoriesScreen = {
                     navigator.navigate(MultiChoiceCategoriesScreenDestination)
                 },
-                navigateToQuizScreen = { categoryId ->
-                    navigator.navigate(MultiChoiceQuizScreenDestination(category = categoryId))
+                navigateToQuizScreen = { categoryKey ->
+                    navigator.navigate(MultiChoiceQuizScreenDestination(category = categoryKey))
                 }
             )
         }
@@ -61,7 +61,7 @@ internal fun getMultiChoiceQuizListCardItemData(
     HomeCardItem.LargeCard(
         title = CoreR.string.number_trivia,
         icon = CardIcon.Icon(Icons.Rounded.Numbers),
-        onClick = { navigator.navigate(MultiChoiceQuizScreenDestination(type = MultiChoiceQuizType.NUMBER_TRIVIA)) }
+        onClick = { navigator.navigate(MultiChoiceQuizScreenDestination(category = MultiChoiceBaseCategory.NumberTrivia)) }
     ),
     HomeCardItem.GroupTitle(title = CoreR.string.saved_questions),
     HomeCardItem.MediumCard(

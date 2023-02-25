@@ -7,7 +7,6 @@ import androidx.work.WorkerParameters
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
-import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
@@ -18,6 +17,7 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoice
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.maze.MazeQuiz
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord
@@ -89,19 +89,19 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
                 GameModes.MULTI_CHOICE -> generateMultiChoiceMazeItems(
                     mazeSeed = seed,
                     questionSize = questionSizePerMode,
-                    multiChoiceQuizType = MultiChoiceQuizType.NORMAL,
+                    multiChoiceQuizType = MultiChoiceBaseCategory.Normal(),
                     random = random
                 )
                 GameModes.LOGO -> generateMultiChoiceMazeItems(
                     mazeSeed = seed,
                     questionSize = questionSizePerMode,
-                    multiChoiceQuizType = MultiChoiceQuizType.LOGO,
+                    multiChoiceQuizType = MultiChoiceBaseCategory.Logo,
                     random = random
                 )
                 GameModes.FLAG -> generateMultiChoiceMazeItems(
                     mazeSeed = seed,
                     questionSize = questionSizePerMode,
-                    multiChoiceQuizType = MultiChoiceQuizType.FLAG,
+                    multiChoiceQuizType = MultiChoiceBaseCategory.Flag,
                     random = random
                 )
                 GameModes.WORDLE -> generateWordleMazeItems(
@@ -125,7 +125,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
                 GameModes.GUESS_MATH_SOLUTION -> generateMultiChoiceMazeItems(
                     mazeSeed = seed,
                     questionSize = questionSizePerMode,
-                    multiChoiceQuizType = MultiChoiceQuizType.GUESS_MATH_SOLUTION,
+                    multiChoiceQuizType = MultiChoiceBaseCategory.GuessMathSolution,
                     random = random
                 )
             }
@@ -161,28 +161,32 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private suspend fun generateMultiChoiceMazeItems(
         mazeSeed: Int,
         questionSize: Int,
-        multiChoiceQuizType: MultiChoiceQuizType,
+        multiChoiceQuizType: MultiChoiceBaseCategory,
         difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
         random: Random = Random
     ): List<MazeQuiz.MazeItem> {
         val questions = when (multiChoiceQuizType) {
-            MultiChoiceQuizType.NORMAL -> multiChoiceQuestionRepository.getRandomQuestions(
+            is MultiChoiceBaseCategory.Normal -> multiChoiceQuestionRepository.getRandomQuestions(
                 amount = questionSize,
-                random = random
+                random = random,
+                category = multiChoiceQuizType
             )
-            MultiChoiceQuizType.LOGO -> logoQuizRepository.getRandomQuestions(
+            is MultiChoiceBaseCategory.Logo -> logoQuizRepository.getRandomQuestions(
                 amount = questionSize,
-                random = random
+                random = random,
+                category = multiChoiceQuizType
             )
-            MultiChoiceQuizType.FLAG -> flagQuizRepository.getRandomQuestions(
+            is MultiChoiceBaseCategory.Flag -> flagQuizRepository.getRandomQuestions(
                 amount = questionSize,
-                random = random
+                random = random,
+                category = multiChoiceQuizType
             )
-            MultiChoiceQuizType.GUESS_MATH_SOLUTION -> guessMathSolutionRepository.getRandomQuestions(
+            is MultiChoiceBaseCategory.GuessMathSolution -> guessMathSolutionRepository.getRandomQuestions(
                 amount = questionSize,
-                random = random
+                random = random,
+                category = multiChoiceQuizType
             )
-            MultiChoiceQuizType.NUMBER_TRIVIA -> numberTriviaQuestionRepository.generateMultiChoiceQuestion(
+            is MultiChoiceBaseCategory.NumberTrivia -> numberTriviaQuestionRepository.generateMultiChoiceQuestion(
                 size = questionSize,
                 random = random
             )

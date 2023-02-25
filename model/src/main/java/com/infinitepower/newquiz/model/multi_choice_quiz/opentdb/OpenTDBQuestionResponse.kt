@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.model.multi_choice_quiz.opentdb
 
 import androidx.annotation.Keep
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionEntity
 import com.infinitepower.newquiz.model.util.base64.base64Decoded
 import kotlinx.serialization.Serializable
 import java.security.SecureRandom
@@ -31,13 +31,13 @@ data class OpenTDBQuestionResponse(
             incorrect_answers = incorrect_answers.map { answer -> answer.base64Decoded }
         )
 
-        private fun toQuestion(
+        private fun toQuestionEntity(
             id: Int
-        ): MultiChoiceQuestion {
+        ): MultiChoiceQuestionEntity {
             val answers = incorrect_answers.plus(correct_answer).shuffled()
             val correctAnswerIndex = answers.indexOf(correct_answer)
 
-            return MultiChoiceQuestion(
+            return MultiChoiceQuestionEntity(
                 id = SecureRandom().nextInt(),
                 description = question,
                 answers = answers,
@@ -49,6 +49,6 @@ data class OpenTDBQuestionResponse(
             )
         }
 
-        fun decodeResultToQuestion(id: Int): MultiChoiceQuestion = decodeBase64OpenTDBResult().toQuestion(id)
+        fun decodeResultToQuestionEntity(id: Int): MultiChoiceQuestionEntity = decodeBase64OpenTDBResult().toQuestionEntity(id)
     }
 }

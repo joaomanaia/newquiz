@@ -46,9 +46,7 @@ class MultiChoiceQuizXPRepositoryImpl @Inject constructor() : MultiChoiceQuizXPR
         return questionSteps
             .filter(MultiChoiceQuestionStep.Completed::correct)
             .sumOf { step ->
-                val difficultyStr = step.question.difficulty
-                val difficulty = QuestionDifficulty.from(difficultyStr)
-
+                val difficulty = step.question.difficulty
                 generateRandomXP(difficulty)
             }
     }

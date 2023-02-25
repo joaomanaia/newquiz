@@ -3,8 +3,12 @@ package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
+import com.infinitepower.newquiz.model.multi_choice_quiz.QuestionLanguage
 import com.infinitepower.newquiz.model.multi_choice_quiz.logo_quiz.LogoQuizBaseItem
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -18,7 +22,7 @@ class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
 
     override suspend fun getRandomQuestions(
         amount: Int,
-        category: Int?,
+        category: MultiChoiceBaseCategory.Logo,
         difficulty: String?,
         random: Random
     ): List<MultiChoiceQuestion> {
@@ -53,10 +57,10 @@ class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
             imageUrl = imgUrl,
             answers = answers,
             correctAns = answers.indexOf(name),
-            category = "Logo Quiz",
-            difficulty = difficulty,
-            lang = "en",
-            type = "multiple"
+            category = MultiChoiceBaseCategory.Flag,
+            difficulty = QuestionDifficulty.Medium,
+            lang = QuestionLanguage.EN,
+            type = MultiChoiceQuestionType.MULTIPLE
         )
     }
 }

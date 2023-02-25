@@ -5,7 +5,6 @@ import androidx.compose.material.icons.rounded.Numbers
 import androidx.compose.material.icons.rounded.Quiz
 import androidx.compose.material.icons.rounded.Today
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 import com.infinitepower.newquiz.model.wordle.WordleQuizType

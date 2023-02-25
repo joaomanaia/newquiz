@@ -35,9 +35,9 @@ import coil.compose.AsyncImage
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
-import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
@@ -58,9 +58,8 @@ internal const val MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS = 30000L
 @Keep
 data class MultiChoiceQuizScreenNavArg(
     val initialQuestions: ArrayList<MultiChoiceQuestion> = arrayListOf(),
-    val category: Int = -1,
+    val category: MultiChoiceBaseCategory = MultiChoiceBaseCategory.Normal(),
     val difficulty: String? = null,
-    val type: MultiChoiceQuizType = MultiChoiceQuizType.NORMAL,
     val mazeItemId: String? = null
 )
 
@@ -173,7 +172,7 @@ private fun MultiChoiceQuizScreenImpl(
         },
         questionImageContent = {
             currentQuestion?.imageUrl?.let { imageUrl ->
-                val imageScale = if (currentQuestion.category == "Logo Quiz") {
+                val imageScale = if (currentQuestion.category == MultiChoiceBaseCategory.Logo) {
                     ContentScale.FillHeight
                 } else ContentScale.Crop
 

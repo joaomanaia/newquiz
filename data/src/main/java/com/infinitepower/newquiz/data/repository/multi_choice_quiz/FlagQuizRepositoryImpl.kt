@@ -4,8 +4,12 @@ import android.content.Context
 import com.infinitepower.newquiz.core.util.android.resources.readRawJson
 import com.infinitepower.newquiz.data.R
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
+import com.infinitepower.newquiz.model.multi_choice_quiz.QuestionLanguage
 import com.infinitepower.newquiz.model.multi_choice_quiz.flag_quiz.CountryFlagQuizBaseItem
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,7 +22,7 @@ class FlagQuizRepositoryImpl @Inject constructor(
 ) : FlagQuizRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
-        category: Int?,
+        category: MultiChoiceBaseCategory.Flag,
         difficulty: String?,
         random: Random
     ): List<MultiChoiceQuestion> {
@@ -50,10 +54,10 @@ class FlagQuizRepositoryImpl @Inject constructor(
             imageUrl = flagUrl,
             answers = answers,
             correctAns = answers.indexOf(name),
-            category = "Flag Quiz",
-            difficulty = "medium",
-            lang = "en",
-            type = "multiple"
+            category = MultiChoiceBaseCategory.Flag,
+            difficulty = QuestionDifficulty.Medium,
+            lang = QuestionLanguage.EN,
+            type = MultiChoiceQuestionType.MULTIPLE
         )
     }
 }

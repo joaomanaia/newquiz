@@ -7,6 +7,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.infinitepower.newquiz.core.analytics.logging.param
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,7 +31,7 @@ class MultiChoiceQuizLoggingAnalyticsImpl @Inject constructor(
 ) : MultiChoiceQuizLoggingAnalytics {
     override fun logGameStart(
         questionsSize: Int,
-        category: Int?,
+        category: MultiChoiceBaseCategory,
         difficulty: String?,
         mazeItemId: Int?
     ) {
@@ -50,9 +51,9 @@ class MultiChoiceQuizLoggingAnalyticsImpl @Inject constructor(
         }
     }
 
-    override fun logCategoryClicked(id: Int) {
+    override fun logCategoryClicked(category: MultiChoiceBaseCategory) {
         firebaseAnalytics.logEvent(EVENT_CATEGORY_CLICKED) {
-            param(PARAM_ID, id)
+            param(PARAM_ID, category.key)
         }
     }
 

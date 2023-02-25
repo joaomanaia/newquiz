@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.multi_choice_quiz
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
@@ -15,7 +16,6 @@ import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
-import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
@@ -23,6 +23,7 @@ import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
 import com.infinitepower.newquiz.domain.use_case.question.IsQuestionSavedUseCase
 import com.infinitepower.newquiz.model.RemainingTime
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
@@ -103,7 +104,7 @@ class QuizScreenViewModel @Inject constructor(
             if (initialQuestions.isEmpty()) {
                 loadByCloudQuestions()
             } else {
-                createQuestionSteps(initialQuestions)
+                createQuestionSteps(initialQuestions, MultiChoiceBaseCategory.Normal())
             }
         }
 
@@ -119,7 +120,7 @@ class QuizScreenViewModel @Inject constructor(
 
                 isQuestionSavedUseCase(question)
             }.onEach { res ->
-                if (res is Resource.Success) {
+                if (res.isSuccess()) {
                     val questionSaved = res.data == true
 
                     _uiState.update { currentState ->
@@ -153,18 +154,17 @@ class QuizScreenViewModel @Inject constructor(
         val questionSize =
             settingsDataStoreManager.getPreference(SettingsCommon.MultiChoiceQuizQuestionsSize)
 
-        val categoryState = savedStateHandle.get<Int>(MultiChoiceQuizScreenNavArg::category.name)
-        val category = if (categoryState == -1) null else categoryState
+        val category = savedStateHandle
+            .get<MultiChoiceBaseCategory>(MultiChoiceQuizScreenNavArg::category.name)
+            ?: MultiChoiceBaseCategory.Normal()
 
         val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
 
-        if (category != null && category != -1) {
+        if (category is MultiChoiceBaseCategory.Normal && category.hasCategory) {
             multiChoiceQuestionsRepository.addCategoryToRecent(category)
         }
 
-        val type = savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
-
-        getRandomQuestionUseCase(questionSize, category, difficulty, type).collect { res ->
+        getRandomQuestionUseCase(questionSize, category, difficulty).collect { res ->
             if (res is Resource.Success) {
                 createQuestionSteps(res.data.orEmpty(), category, difficulty)
             }
@@ -195,7 +195,7 @@ class QuizScreenViewModel @Inject constructor(
 
     private suspend fun createQuestionSteps(
         questions: List<MultiChoiceQuestion>,
-        category: Int? = null,
+        category: MultiChoiceBaseCategory,
         difficulty: String? = null
     ) {
         val questionSteps = questions
@@ -300,16 +300,14 @@ class QuizScreenViewModel @Inject constructor(
     private fun endGame(questionSteps: List<MultiChoiceQuestionStep.Completed>) {
         viewModelScope.launch(Dispatchers.IO) {
             val questionStepsStr = Json.encodeToString(questionSteps)
-            val category = savedStateHandle.get<Int?>(MultiChoiceQuizScreenNavArg::category.name)
+            val category = savedStateHandle.get<MultiChoiceBaseCategory?>(MultiChoiceQuizScreenNavArg::category.name)
+                ?: MultiChoiceBaseCategory.Normal()
 
             val initialQuestions = savedStateHandle
                 .get<ArrayList<MultiChoiceQuestion>>(MultiChoiceQuizScreenNavArg::initialQuestions.name)
                 .orEmpty()
 
-            val difficulty =
-                savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
-            val type =
-                savedStateHandle.get<MultiChoiceQuizType>(MultiChoiceQuizScreenNavArg::type.name)
+            val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
 
             val endGameWorkRequest = OneTimeWorkRequestBuilder<MultiChoiceQuizEndGameWorker>()
                 .setInputData(
@@ -352,8 +350,7 @@ class QuizScreenViewModel @Inject constructor(
                         questionStepsStr = questionStepsStr,
                         byInitialQuestions = initialQuestions.isNotEmpty(),
                         category = category,
-                        difficulty = difficulty,
-                        type = type ?: MultiChoiceQuizType.NORMAL
+                        difficulty = difficulty
                     )
                 )
             )

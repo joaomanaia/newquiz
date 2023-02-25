@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.multi_choice_quiz.saved_questions
 
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,23 +8,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.rememberMultiChoiceLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
+import com.infinitepower.newquiz.multi_choice_quiz.saved_questions.components.SavedQuestionItem
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -65,9 +61,7 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
     playWithQuestions: (questions: List<MultiChoiceQuestion>) -> Unit,
     onEvent: (event: SavedMultiChoiceQuestionsUiEvent) -> Unit
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
-        rememberTopAppBarState()
-    )
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     val (moreVertPopupExpanded, setMoreVertPopupExpanded) = remember {
         mutableStateOf(false)
@@ -83,18 +77,6 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
                 scrollBehavior = scrollBehavior,
                 navigationIcon = { BackIconButton(onClick = onBackClick) },
                 actions = {
-                    if (uiState.questions.isNotEmpty()) {
-                        TopBarActionButton(
-                            imageVector = Icons.Rounded.Shuffle,
-                            contentDescription = "Play quiz with random saved questions",
-                            onClick = { playWithQuestions(uiState.randomQuestions()) }
-                        )
-                    }
-                    TopBarActionButton(
-                        imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = "More options",
-                        onClick = { setMoreVertPopupExpanded(true) }
-                    )
                     MoreVertPopup(
                         expanded = moreVertPopupExpanded,
                         questionsSelected = uiState.selectedQuestions.isNotEmpty(),
@@ -115,22 +97,49 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
                 }
             )
         },
-        floatingActionButton = {
-            if (uiState.selectedQuestions.isNotEmpty()) {
-                ExtendedFloatingActionButton(
-                    text = {
-                        Text(text = "Play quiz")
-                    },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.PlayArrow,
-                            contentDescription = "Play quiz with selected questions"
+        bottomBar = {
+            if (uiState.questions.isNotEmpty()) {
+                BottomAppBar(
+                    actions = {
+                        TopBarActionButton(
+                            imageVector = Icons.Rounded.MoreVert,
+                            contentDescription = "More options",
+                            onClick = { setMoreVertPopupExpanded(true) }
                         )
+                        if (uiState.questions.isNotEmpty()) {
+                            TopBarActionButton(
+                                imageVector = Icons.Rounded.Sort,
+                                contentDescription = "Sort questions",
+                                onClick = { playWithQuestions(uiState.randomQuestions()) }
+                            )
+                            TopBarActionButton(
+                                imageVector = Icons.Rounded.Shuffle,
+                                contentDescription = "Play quiz with random saved questions",
+                                onClick = { playWithQuestions(uiState.randomQuestions()) }
+                            )
+                        }
                     },
-                    onClick = { playWithQuestions(uiState.arrayListSelectedQuestions) }
+                    floatingActionButton = {
+                        if (uiState.selectedQuestions.isNotEmpty()) {
+                            ExtendedFloatingActionButton(
+                                text = {
+                                    Text(text = "Play quiz")
+                                },
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.PlayArrow,
+                                        contentDescription = "Play quiz with selected questions"
+                                    )
+                                },
+                                onClick = { playWithQuestions(uiState.arrayListSelectedQuestions) },
+                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                            )
+                        }
+                    }
                 )
             }
-        },
+        }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier.padding(innerPadding),
@@ -141,7 +150,7 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
             ) { question ->
                 val selected = question in uiState.selectedQuestions
 
-                QuestionItem(
+                SavedQuestionItem(
                     modifier = Modifier.fillMaxWidth(),
                     question = question,
                     selected = selected,
@@ -154,33 +163,7 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
     }
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun QuestionItem(
-    modifier: Modifier = Modifier,
-    question: MultiChoiceQuestion,
-    selected: Boolean,
-    onClick: () -> Unit,
-) {
-    Surface(
-        onClick = onClick,
-        selected = selected,
-        tonalElevation = if (selected) 8.dp else 0.dp,
-        modifier = modifier
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(MaterialTheme.spacing.medium)
-        ) {
-            Text(
-                text = question.description,
-                style = MaterialTheme.typography.bodyLarge,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-    }
-}
+
 
 @Composable
 private fun TopBarActionButton(
@@ -258,14 +241,17 @@ private fun MoreVertPopup(
 }
 
 @Composable
-@PreviewNightLight
+@AllPreviewsNightLight
 private fun SavedMultiChoiceQuestionsScreenPreview() {
+    val questions = List(10) {
+        getBasicMultiChoiceQuestion()
+    }
+
     NewQuizTheme {
         SavedMultiChoiceQuestionsScreenImpl(
             uiState = SavedMultiChoiceQuestionsUiState(
-                questions = List(10) {
-                    getBasicMultiChoiceQuestion()
-                }
+                questions = questions,
+                selectedQuestions = questions.take(3)
             ),
             onBackClick = {},
             onEvent = {},

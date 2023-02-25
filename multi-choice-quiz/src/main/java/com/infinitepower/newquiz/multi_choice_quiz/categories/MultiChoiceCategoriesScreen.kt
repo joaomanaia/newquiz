@@ -7,7 +7,11 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -30,14 +34,18 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.model.UiText
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.toBaseCategory
 import com.infinitepower.newquiz.multi_choice_quiz.categories.components.CategoryComponent
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
+@OptIn(ExperimentalMaterial3Api::class)
 fun MultiChoiceCategoriesScreen(
     navigator: DestinationsNavigator,
     viewModel: MultiChoiceCategoriesScreenViewModel = hiltViewModel()
@@ -49,9 +57,9 @@ fun MultiChoiceCategoriesScreen(
     MultiChoiceCategoriesScreenImpl(
         uiState = uiState,
         onBackClick = navigator::popBackStack,
-        navigateToQuizScreen = { categoryId ->
-            multiChoiceLoggingAnalytics.logCategoryClicked(categoryId)
-            navigator.navigate(MultiChoiceQuizScreenDestination(category = categoryId))
+        navigateToQuizScreen = { category ->
+            multiChoiceLoggingAnalytics.logCategoryClicked(category)
+            navigator.navigate(MultiChoiceQuizScreenDestination(category = category))
         }
     )
 
@@ -62,11 +70,11 @@ fun MultiChoiceCategoriesScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 private fun MultiChoiceCategoriesScreenImpl(
     uiState: MultiChoiceCategoriesUiState,
     onBackClick: () -> Unit,
-    navigateToQuizScreen: (category: Int) -> Unit
+    navigateToQuizScreen: (category: MultiChoiceBaseCategory) -> Unit
 ) {
     SearchBarContainer(
         onBackClick = onBackClick,
@@ -74,7 +82,7 @@ private fun MultiChoiceCategoriesScreenImpl(
     ) { category ->
         CategoryComponent(
             category = category,
-            onClick = { navigateToQuizScreen(category.id) },
+            onClick = { navigateToQuizScreen(category.toBaseCategory()) },
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -84,8 +92,8 @@ private fun MultiChoiceCategoriesScreenImpl(
 @ExperimentalMaterial3Api
 private fun SearchBarContainer(
     onBackClick: () -> Unit,
-    categories: List<MultiChoiceQuestionCategory>,
-    categoryItem: @Composable LazyGridItemScope.(category: MultiChoiceQuestionCategory) -> Unit
+    categories: List<MultiChoiceCategory>,
+    categoryItem: @Composable LazyGridItemScope.(category: MultiChoiceCategory) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -183,9 +191,15 @@ private fun SearchBarContainer(
 
 @Composable
 @AllPreviewsNightLight
+@OptIn(ExperimentalMaterial3Api::class)
 fun MultiChoiceCategoriesPreview() {
     val categories = List(10) {
-        MultiChoiceQuestionCategory(it, UiText.DynamicString("Category $it"))
+        MultiChoiceCategory(
+            key = it.toString(),
+            id = it,
+            name = UiText.DynamicString("Category $it"),
+            image = CoreR.drawable.logo_monochromatic
+        )
     }
 
     NewQuizTheme {

@@ -1,44 +1,31 @@
 package com.infinitepower.newquiz.model.multi_choice_quiz
 
 import androidx.annotation.Keep
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import java.security.SecureRandom
 
+/**
+ * Multi choice question entity, used to save items in database.
+ */
 @Keep
 @Serializable
-data class MultiChoiceQuestion(
-    val id: Int,
+@Entity(tableName = "saved_multi_choice_questions")
+data class MultiChoiceQuestionEntity(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val description: String,
-    val imageUrl: String? = null,
+    @ColumnInfo(name = "image_url") val imageUrl: String? = null,
     val answers: List<String>,
-    val lang: QuestionLanguage,
-    val category: MultiChoiceBaseCategory,
-    val correctAns: Int,
-    val type: MultiChoiceQuestionType,
-    val difficulty: QuestionDifficulty
+    val lang: String,
+    val category: String,
+    @ColumnInfo(name = "correct_ans") val correctAns: Int,
+    val type: String,
+    val difficulty: String
 ) : java.io.Serializable {
-    fun toQuestionStep() = MultiChoiceQuestionStep.NotCurrent(this)
-
-    fun toEntity() = MultiChoiceQuestionEntity(
-        id = id,
-        description = description,
-        imageUrl = imageUrl,
-        answers = answers,
-        lang = lang.name,
-        category = category.toString(),
-        correctAns = correctAns,
-        type = type.name,
-        difficulty = difficulty.toString()
-    )
-
-    override fun toString(): String = Json.encodeToString(this)
-
     override fun equals(other: Any?): Boolean {
-        if (other !is MultiChoiceQuestion) return false
+        if (other !is MultiChoiceQuestionEntity) return false
 
         val idEquals = id == other.id
         val descriptionEquals = description == other.description
@@ -75,19 +62,14 @@ data class MultiChoiceQuestion(
     }
 }
 
-fun getBasicMultiChoiceQuestion() = MultiChoiceQuestion(
-    id = SecureRandom().nextInt(),
-    description = "New Social is the best social network?",
-    imageUrl = null,
-    answers = listOf(
-        "No",
-        "The Best",
-        "Yes",
-        "The Worst",
-    ),
+fun MultiChoiceQuestionEntity.toQuestion(): MultiChoiceQuestion = MultiChoiceQuestion(
+    id = id,
+    description = description,
+    imageUrl = imageUrl,
+    answers = answers,
     lang = QuestionLanguage.EN,
-    category = MultiChoiceBaseCategory.Normal("test"),
-    correctAns = (0..3).random(),
+    category = MultiChoiceBaseCategory.fromKey(category),
+    correctAns = correctAns,
     type = MultiChoiceQuestionType.MULTIPLE,
-    difficulty = QuestionDifficulty.Medium
+    difficulty = QuestionDifficulty.from(difficulty)
 )

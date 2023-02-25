@@ -1,9 +1,11 @@
 package com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz
 
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+
 interface MultiChoiceQuizLoggingAnalytics {
     fun logGameStart(
         questionsSize: Int,
-        category: Int? = null,
+        category: MultiChoiceBaseCategory,
         difficulty: String? = null,
         mazeItemId: Int? = null
     )
@@ -14,7 +16,7 @@ interface MultiChoiceQuizLoggingAnalytics {
         mazeItemId: Int? = null
     )
 
-    fun logCategoryClicked(id: Int)
+    fun logCategoryClicked(category: MultiChoiceBaseCategory)
 
     fun logSaveQuestion()
 

@@ -10,10 +10,7 @@
     <string name="verify">Verificar</string>
     <string name="play_again">Jogar novamente</string>
     <string name="close">Fechar</string>
-    <string name="watch_ad">Ver anúncio</string>
-    <string name="loading_rewarded_ad">A carregar o anúncio</string>
     <string name="game_over">Fim de jogo</string>
-    <string name="you_lost_the_game_watch_ad_q">Você perdeu o jogo.\n Quer assistir um anúncio para poder adicionar mais uma linha?</string>
     <string name="item_empty">Item vazio</string>
     <string name="item_i_none">Item %1$s nada</string>
     <string name="item_i_present">Item %1$s present</string>

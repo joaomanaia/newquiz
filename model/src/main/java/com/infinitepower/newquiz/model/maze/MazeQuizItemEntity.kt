@@ -4,7 +4,8 @@ import androidx.annotation.Keep
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.model.multi_choice_quiz.toQuestion
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord
@@ -21,7 +22,7 @@ data class MazeQuizItemEntity(
 
     // Multi choice quiz
     @Embedded("maze_question_")
-    val multiChoiceQuestion: MultiChoiceQuestion? = null,
+    val multiChoiceQuestion: MultiChoiceQuestionEntity? = null,
 
     // Wordle
     @Embedded("maze_wordle_")
@@ -52,8 +53,8 @@ fun MazeQuizItemEntity.toMazeQuizItem(): MazeQuiz.MazeItem = when (type) {
         )
     }
     MazeQuizItemEntity.Type.MULTI_CHOICE -> {
-        val question = this.multiChoiceQuestion ?: throw NullPointerException("Question is null")
-        MazeQuiz.MazeItem.MultiChoice(question, id, mazeSeed, difficulty, played)
+        val questionEntity = this.multiChoiceQuestion ?: throw NullPointerException("Question is null")
+        MazeQuiz.MazeItem.MultiChoice(questionEntity.toQuestion(), id, mazeSeed, difficulty, played)
     }
 }
 
@@ -76,6 +77,6 @@ fun MazeQuiz.MazeItem.toEntity(): MazeQuizItemEntity = when (this) {
         difficulty = difficulty,
         played = played,
         type = MazeQuizItemEntity.Type.MULTI_CHOICE,
-        multiChoiceQuestion = question
+        multiChoiceQuestion = question.toEntity()
     )
 }

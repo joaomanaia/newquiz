@@ -11,10 +11,7 @@
     <string name="verify">Verificar</string>
     <string name="play_again">Juega de nuevo</string>
     <string name="close">Cerrar</string>
-    <string name="watch_ad">Mira AD</string>
-    <string name="loading_rewarded_ad">Cargando anuncio recompensado</string>
     <string name="game_over">Juego terminado</string>
-    <string name="you_lost_the_game_watch_ad_q">Perdiste el juego. \n¿Quieres ver un anuncio para probar una fila más?</string>
     <string name="item_empty">Letra vacío</string>
     <string name="item_i_none">Letra %1$s ninguno</string>
     <string name="item_i_present">Letra %1$s presente</string>

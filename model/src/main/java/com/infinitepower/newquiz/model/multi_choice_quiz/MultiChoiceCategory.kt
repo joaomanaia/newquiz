@@ -5,8 +5,11 @@ import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.UiText
 
 @Keep
-data class MultiChoiceQuestionCategory(
+data class MultiChoiceCategory(
+    val key: String,
     val id: Int,
     val name: UiText,
-    @DrawableRes val image: Int? = null
+    @DrawableRes val image: Int
 )
+
+fun MultiChoiceCategory.toBaseCategory() = MultiChoiceBaseCategory.fromKey(key)

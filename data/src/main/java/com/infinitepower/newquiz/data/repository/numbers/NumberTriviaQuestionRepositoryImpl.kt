@@ -1,10 +1,12 @@
 package com.infinitepower.newquiz.data.repository.numbers
 
-import com.infinitepower.newquiz.core.multi_choice_quiz.MultiChoiceQuizType
 import com.infinitepower.newquiz.core.util.kotlin.generateIncorrectNumberAnswers
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionApi
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
+import com.infinitepower.newquiz.model.multi_choice_quiz.QuestionLanguage
 import com.infinitepower.newquiz.model.number.NumberTriviaQuestion
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleWord
@@ -47,10 +49,10 @@ class NumberTriviaQuestionRepositoryImpl @Inject constructor(
                 description = question.question,
                 answers = answers.map(Int::toString),
                 correctAns = answers.indexOf(question.number),
-                lang = "en",
-                category = "Number Trivia",
-                type = MultiChoiceQuizType.NUMBER_TRIVIA.name,
-                difficulty = QuestionDifficulty.Easy.id
+                lang = QuestionLanguage.EN,
+                category = MultiChoiceBaseCategory.NumberTrivia,
+                type = MultiChoiceQuestionType.MULTIPLE,
+                difficulty = QuestionDifficulty.Easy
             )
         }
     }

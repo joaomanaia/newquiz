@@ -1,7 +1,16 @@
 package com.infinitepower.newquiz.multi_choice_quiz.categories.components
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,7 +23,7 @@ import coil.compose.AsyncImage
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.core.R as CoreR
 
 private val CARD_WIDTH = 175.dp
@@ -23,7 +32,7 @@ private val CARD_WIDTH = 175.dp
 @ExperimentalMaterial3Api
 internal fun CategoryComponent(
     modifier: Modifier = Modifier,
-    category: MultiChoiceQuestionCategory,
+    category: MultiChoiceCategory,
     maxLines: Int = 2,
     onClick: () -> Unit
 ) {
@@ -84,7 +93,7 @@ private fun CategoryComponentPreview() {
         Surface {
             CategoryComponent(
                 name = "Animals",
-                image = CoreR.drawable.animals,
+                image = CoreR.drawable.logo_monochromatic,
                 modifier = Modifier.padding(16.dp),
                 onClick = {}
             )

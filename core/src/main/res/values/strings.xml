@@ -11,10 +11,7 @@
     <string name="verify">Verify</string>
     <string name="play_again">Play again</string>
     <string name="close">Close</string>
-    <string name="watch_ad">Watch ad</string>
-    <string name="loading_rewarded_ad">Loading rewarded ad</string>
     <string name="game_over">Game Over</string>
-    <string name="you_lost_the_game_watch_ad_q">You lost the game.\nDo you want to watch one ad to try one more row?</string>
     <string name="item_empty">Item empty</string>
     <string name="item_i_none">Item %1$s none</string>
     <string name="item_i_present">Item %1$s present</string>

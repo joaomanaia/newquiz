@@ -1,3 +1,5 @@
 package com.infinitepower.newquiz.domain.repository.multi_choice_quiz
 
-interface GuessMathSolutionRepository : MultiChoiceQuestionBaseRepository
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+
+interface GuessMathSolutionRepository : MultiChoiceQuestionBaseRepository<MultiChoiceBaseCategory.GuessMathSolution>

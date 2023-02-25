@@ -6,6 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
@@ -20,7 +21,7 @@ class DownloadMultiChoiceQuestionsWorker @AssistedInject constructor(
         val allSavedQuestions = savedQuestionsRepository.getQuestions()
 
         val questions = questionRepository
-            .getRandomQuestions(amount = 50)
+            .getRandomQuestions(amount = 50, category = MultiChoiceBaseCategory.Normal())
             .filter { it !in allSavedQuestions }
 
         savedQuestionsRepository.insertQuestions(questions)

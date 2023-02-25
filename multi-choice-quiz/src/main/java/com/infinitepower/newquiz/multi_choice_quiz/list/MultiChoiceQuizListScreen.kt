@@ -19,7 +19,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home_card.HomeListContent
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.toBaseCategory
 import com.infinitepower.newquiz.multi_choice_quiz.categories.components.CategoryComponent
 import com.infinitepower.newquiz.multi_choice_quiz.list.data.getMultiChoiceQuizListCardItemData
 import com.infinitepower.newquiz.core.R as CoreR
@@ -59,9 +61,9 @@ fun MultiChoiceQuizListScreen(
 @Composable
 @ExperimentalMaterial3Api
 fun MultiChoiceCategoriesSelector(
-    recentCategories: List<MultiChoiceQuestionCategory>,
+    recentCategories: List<MultiChoiceCategory>,
     navigateToCategoriesScreen: () -> Unit,
-    navigateToQuizScreen: (category: Int) -> Unit
+    navigateToQuizScreen: (category: MultiChoiceBaseCategory) -> Unit
 ) {
     val mediumSpace = MaterialTheme.spacing.medium
 
@@ -73,7 +75,7 @@ fun MultiChoiceCategoriesSelector(
             CategoryComponent(
                 category = category,
                 maxLines = 1,
-                onClick = { navigateToQuizScreen(category.id) }
+                onClick = { navigateToQuizScreen(category.toBaseCategory()) }
             )
         }
 
