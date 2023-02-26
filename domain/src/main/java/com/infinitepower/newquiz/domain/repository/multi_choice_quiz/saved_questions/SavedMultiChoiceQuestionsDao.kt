@@ -19,6 +19,12 @@ interface SavedMultiChoiceQuestionsDao {
     @Query("SELECT * FROM saved_multi_choice_questions")
     fun getFlowQuestions(): Flow<List<MultiChoiceQuestionEntity>>
 
+    @Query("SELECT * FROM saved_multi_choice_questions ORDER BY description ASC")
+    fun getFlowQuestionsSortedByDescription(): Flow<List<MultiChoiceQuestionEntity>>
+
+    @Query("SELECT * FROM saved_multi_choice_questions ORDER BY category ASC")
+    fun getFlowQuestionsSortedByCategory(): Flow<List<MultiChoiceQuestionEntity>>
+
     @Query("SELECT * FROM saved_multi_choice_questions")
     suspend fun getQuestions(): List<MultiChoiceQuestionEntity>
 

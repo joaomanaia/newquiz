@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.multi_choice_quiz.saved_questions
 
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.saved.SortSavedQuestionsBy
 
 @Keep
 data class SavedMultiChoiceQuestionsUiState(

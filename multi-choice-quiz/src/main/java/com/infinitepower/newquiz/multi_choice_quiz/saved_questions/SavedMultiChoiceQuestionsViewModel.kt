@@ -10,11 +10,14 @@ import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiC
 import com.infinitepower.newquiz.data.worker.multichoicequiz.DownloadMultiChoiceQuestionsWorker
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.saved.SortSavedQuestionsBy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -22,6 +25,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+@OptIn(ExperimentalCoroutinesApi::class)
 class SavedMultiChoiceQuestionsViewModel @Inject constructor(
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
     private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
@@ -30,10 +34,13 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SavedMultiChoiceQuestionsUiState())
     val uiState = _uiState.asStateFlow()
 
+    private val sortQuestionsBy = MutableStateFlow(SortSavedQuestionsBy.BY_DEFAULT)
+
     init {
-        savedQuestionsRepository
-            .getFlowQuestions()
-            .onEach { questions ->
+        sortQuestionsBy
+            .flatMapLatest { sortBy ->
+                savedQuestionsRepository.getFlowQuestions(sortBy)
+            }.onEach { questions ->
                 _uiState.update { currentState ->
                     currentState.copy(questions = questions)
                 }
@@ -46,6 +53,11 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
             is SavedMultiChoiceQuestionsUiEvent.SelectAll -> selectAllQuestions()
             is SavedMultiChoiceQuestionsUiEvent.DeleteAllSelected -> deleteAllSelected()
             is SavedMultiChoiceQuestionsUiEvent.DownloadQuestions -> downloadQuestions()
+            is SavedMultiChoiceQuestionsUiEvent.SortQuestions -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    sortQuestionsBy.emit(event.sortBy)
+                }
+            }
         }
     }
 

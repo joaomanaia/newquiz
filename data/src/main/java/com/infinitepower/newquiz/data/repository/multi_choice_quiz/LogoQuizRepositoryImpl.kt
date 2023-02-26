@@ -57,7 +57,7 @@ class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
             imageUrl = imgUrl,
             answers = answers,
             correctAns = answers.indexOf(name),
-            category = MultiChoiceBaseCategory.Flag,
+            category = MultiChoiceBaseCategory.Logo,
             difficulty = QuestionDifficulty.Medium,
             lang = QuestionLanguage.EN,
             type = MultiChoiceQuestionType.MULTIPLE

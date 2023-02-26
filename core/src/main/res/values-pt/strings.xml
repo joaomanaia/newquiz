@@ -150,4 +150,15 @@
     <string name="wordle_animations_enabled">Animações do Wordle ativadas</string>
     <string name="analytics">Dados de Análise</string>
     <string name="analytics_collection_enabled">Coleta de análise ativada</string>
+    <string name="sort_questions">Ordenar perguntas</string>
+    <string name="play_with_random_saved_questions">Jogar quiz com as perguntas guardadas</string>
+    <string name="play">Jogar</string>
+    <string name="play_with_selected_questions">Jogar com as perguntas selecionadas</string>
+    <string name="unselect_all">Desmarcar Tudo</string>
+    <string name="select_all">Selecionar Tudo</string>
+    <string name="delete_selected">Apagar Selecionados</string>
+    <string name="download_questions">Transferir perguntas</string>
+    <string name="sort_by_default">Ordenar por Padrão</string>
+    <string name="sort_by_description">Ordenar pela Descrição</string>
+    <string name="sort_by_category">Ordenar pela Categoria</string>
 </resources>

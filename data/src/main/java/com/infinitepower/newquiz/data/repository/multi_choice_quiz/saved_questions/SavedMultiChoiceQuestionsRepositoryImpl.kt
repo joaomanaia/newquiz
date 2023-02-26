@@ -4,6 +4,7 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_quest
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.model.multi_choice_quiz.saved.SortSavedQuestionsBy
 import com.infinitepower.newquiz.model.multi_choice_quiz.toQuestion
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -24,9 +25,17 @@ class SavedMultiChoiceQuestionsRepositoryImpl @Inject constructor(
         savedQuestionsDao.insertQuestions(questionsEntity)
     }
 
-    override fun getFlowQuestions(): Flow<List<MultiChoiceQuestion>> = savedQuestionsDao
-        .getFlowQuestions()
-        .map { flowQuestions -> flowQuestions.map(MultiChoiceQuestionEntity::toQuestion) }
+    override fun getFlowQuestions(
+        sortBy: SortSavedQuestionsBy
+    ): Flow<List<MultiChoiceQuestion>> {
+        val questionsFlow = when (sortBy) {
+            SortSavedQuestionsBy.BY_DEFAULT -> savedQuestionsDao.getFlowQuestions()
+            SortSavedQuestionsBy.BY_DESCRIPTION -> savedQuestionsDao.getFlowQuestionsSortedByDescription()
+            SortSavedQuestionsBy.BY_CATEGORY -> savedQuestionsDao.getFlowQuestionsSortedByCategory()
+        }
+
+        return questionsFlow.map { flowQuestions -> flowQuestions.map(MultiChoiceQuestionEntity::toQuestion) }
+    }
 
     override suspend fun getQuestions(): List<MultiChoiceQuestion> = savedQuestionsDao
         .getQuestions()

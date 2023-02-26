@@ -75,19 +75,29 @@ data class MultiChoiceQuestion(
     }
 }
 
-fun getBasicMultiChoiceQuestion() = MultiChoiceQuestion(
-    id = SecureRandom().nextInt(),
-    description = "New Social is the best social network?",
-    imageUrl = null,
-    answers = listOf(
-        "No",
-        "The Best",
-        "Yes",
-        "The Worst",
-    ),
-    lang = QuestionLanguage.EN,
-    category = MultiChoiceBaseCategory.Normal("test"),
-    correctAns = (0..3).random(),
-    type = MultiChoiceQuestionType.MULTIPLE,
-    difficulty = QuestionDifficulty.Medium
-)
+fun getBasicMultiChoiceQuestion(): MultiChoiceQuestion {
+    val allCategories = listOf(
+        MultiChoiceBaseCategory.Random,
+        MultiChoiceBaseCategory.Logo,
+        MultiChoiceBaseCategory.Flag,
+        MultiChoiceBaseCategory.GuessMathSolution,
+        MultiChoiceBaseCategory.NumberTrivia,
+    )
+
+    return MultiChoiceQuestion(
+        id = SecureRandom().nextInt(),
+        description = "New Social is the best social network?",
+        imageUrl = null,
+        answers = listOf(
+            "No",
+            "The Best",
+            "Yes",
+            "The Worst",
+        ),
+        lang = QuestionLanguage.EN,
+        category = allCategories.random(),
+        correctAns = (0..3).random(),
+        type = MultiChoiceQuestionType.MULTIPLE,
+        difficulty = QuestionDifficulty.Medium
+    )
+}

@@ -150,4 +150,15 @@
     <string name="wordle_animations_enabled">Wordle animations enabled</string>
     <string name="analytics">Analytics</string>
     <string name="analytics_collection_enabled">Analytics collection enabled</string>
+    <string name="sort_questions">Sort questions</string>
+    <string name="play_with_random_saved_questions">Play quiz with random saved questions</string>
+    <string name="play">Play</string>
+    <string name="play_with_selected_questions">Play with selected questions</string>
+    <string name="unselect_all">Unselect All</string>
+    <string name="select_all">Select All</string>
+    <string name="delete_selected">Delete Selected</string>
+    <string name="download_questions">Download questions</string>
+    <string name="sort_by_default">Sort by Default</string>
+    <string name="sort_by_description">Sort by Description</string>
+    <string name="sort_by_category">Sort by Category</string>
 </resources>
