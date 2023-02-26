@@ -75,11 +75,11 @@ class WordleScreenTest {
 
                     val localAnalytics: WordleLoggingAnalytics = LocalWordleLoggingAnalyticsImpl()
                     viewModel = WordleScreenViewModel(
-                        wordleRepository,
-                        savedStateHandle,
-                        localAnalytics,
+                        wordleRepository = wordleRepository,
+                        savedStateHandle = savedStateHandle,
+                        wordleLoggingAnalytics = localAnalytics,
                         mazeLoggingAnalytics = LocalMazeLoggingAnalytics(),
-                        workManager
+                        workManager = workManager
                     )
 
                     CompositionLocalProvider(LocalInspectionMode provides true) {

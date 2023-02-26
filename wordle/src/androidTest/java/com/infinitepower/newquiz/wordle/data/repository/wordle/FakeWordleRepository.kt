@@ -62,6 +62,8 @@ class FakeWordleRepository @Inject constructor() : WordleRepository {
 
     override fun isHardModeEnabled(): FlowResource<Boolean> = flowOf(Resource.Success(false))
 
+    override suspend fun animationsEnabled(): Boolean = true
+
     override suspend fun getWordleMaxRows(defaultMaxRow: Int?): Int = defaultMaxRow ?: Int.MAX_VALUE
 
     override fun getAdRewardRowsToAdd(): Int = 1

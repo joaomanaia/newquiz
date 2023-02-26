@@ -2,18 +2,23 @@ package com.infinitepower.newquiz.online_services.data.game.xp
 
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.util.kotlin.sum
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
+import com.infinitepower.newquiz.model.multi_choice_quiz.QuestionLanguage
+import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
+import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
-import com.infinitepower.newquiz.model.multi_choice_quiz.*
 import com.infinitepower.newquiz.online_services.domain.game.xp.MultiChoiceQuizXPRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
 
-class MultiChoiceQuizXPRepositoryImplTest {
+internal class MultiChoiceQuizXPRepositoryImplTest {
     private lateinit var multiChoiceQuizXPRepository: MultiChoiceQuizXPRepository
 
     @BeforeEach
@@ -22,7 +27,7 @@ class MultiChoiceQuizXPRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("Should return 20..20 when the difficulty is medium")
+    @DisplayName("Should return 10..20 when the difficulty is medium")
     fun randomXPRange() {
         val expectedRange = 10..20
 
@@ -77,9 +82,7 @@ class MultiChoiceQuizXPRepositoryImplTest {
 
 
     // Random xp from question steps
-
     @Test
-    @RepeatedTest(10)
     @DisplayName("Should return 0 when the question steps is empty")
     fun generateQuestionsRandomXPWhenQuestionStepsIsEmptyThenReturnZero() {
         val questionSteps = emptyList<MultiChoiceQuestionStep.Completed>()
@@ -90,7 +93,6 @@ class MultiChoiceQuizXPRepositoryImplTest {
     }
 
     @Test
-    @RepeatedTest(10)
     @DisplayName("Should return 0 when the question steps is not empty but all of them are incorrect")
     fun generateQuestionsRandomXPWhenQuestionStepsIsNotEmptyButAllOfThemAreIncorrectThenReturnZero() {
         val questionSteps = List(5) {
@@ -116,11 +118,11 @@ class MultiChoiceQuizXPRepositoryImplTest {
                     description = "",
                     imageUrl = null,
                     answers = emptyList(),
-                    lang = QuestionLanguage.EN.name,
-                    category = "",
+                    lang = QuestionLanguage.EN,
+                    category = MultiChoiceBaseCategory.Random,
                     correctAns = 0,
-                    type = "multiple",
-                    difficulty = "easy"
+                    type = MultiChoiceQuestionType.MULTIPLE,
+                    difficulty = QuestionDifficulty.Easy
                 ),
                 correct = false,
                 selectedAnswer = SelectedAnswer.NONE
@@ -133,7 +135,6 @@ class MultiChoiceQuizXPRepositoryImplTest {
     }
 
     @Test
-    @RepeatedTest(10)
     @DisplayName("Should return a random number between 50 and 100 when the question steps size is 5 and difficulty is easy")
     fun generateQuestionsRandomXPWhenQuestionStepsSizeIs5ThenReturns50To100() {
         val questionSteps = List(5) {
@@ -143,11 +144,11 @@ class MultiChoiceQuizXPRepositoryImplTest {
                     description = "",
                     imageUrl = null,
                     answers = emptyList(),
-                    lang = QuestionLanguage.EN.name,
-                    category = "",
+                    lang = QuestionLanguage.EN,
+                    category = MultiChoiceBaseCategory.Random,
                     correctAns = 0,
-                    type = "multiple",
-                    difficulty = "easy"
+                    type = MultiChoiceQuestionType.MULTIPLE,
+                    difficulty = QuestionDifficulty.Easy
                 ),
                 correct = true,
                 selectedAnswer = SelectedAnswer.NONE
@@ -160,7 +161,6 @@ class MultiChoiceQuizXPRepositoryImplTest {
     }
 
     @Test
-    @RepeatedTest(10)
     @DisplayName("Should return a random number when the question steps size is 5 and difficulty is random")
     fun generateQuestionsRandomXPWhenQuestionStepsSizeIs5ThenReturnsRandomNumber() {
         val questionSteps = List(5) {
@@ -170,11 +170,11 @@ class MultiChoiceQuizXPRepositoryImplTest {
                     description = "",
                     imageUrl = null,
                     answers = emptyList(),
-                    lang = QuestionLanguage.EN.name,
-                    category = "",
+                    lang = QuestionLanguage.EN,
+                    category = MultiChoiceBaseCategory.Random,
                     correctAns = 0,
-                    type = "multiple",
-                    difficulty = QuestionDifficulty.items().random().id
+                    type = MultiChoiceQuestionType.MULTIPLE,
+                    difficulty = QuestionDifficulty.items().random()
                 ),
                 correct = Random.nextBoolean(),
                 selectedAnswer = SelectedAnswer.NONE
@@ -186,9 +186,7 @@ class MultiChoiceQuizXPRepositoryImplTest {
         val xpObtainable = questionSteps
             .filter(MultiChoiceQuestionStep.Completed::correct)
             .map { step ->
-                val difficultyStr = step.question.difficulty
-                val difficulty = QuestionDifficulty.from(difficultyStr)
-
+                val difficulty = step.question.difficulty
                 val multiplier = multiChoiceQuizXPRepository.getXpMultiplierFactor(difficulty)
 
                 val minXPObtainable = (10 * multiplier).roundToInt()

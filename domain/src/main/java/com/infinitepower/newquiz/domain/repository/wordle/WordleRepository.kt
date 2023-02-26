@@ -26,6 +26,8 @@ interface WordleRepository {
 
     fun isHardModeEnabled(): FlowResource<Boolean>
 
+    suspend fun animationsEnabled(): Boolean
+
     suspend fun getWordleMaxRows(
         defaultMaxRow: Int? = null
     ): Int

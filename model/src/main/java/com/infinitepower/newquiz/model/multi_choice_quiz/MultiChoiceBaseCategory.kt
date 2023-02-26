@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.model.multi_choice_quiz
 
-import androidx.annotation.Keep
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -26,11 +25,15 @@ sealed class MultiChoiceBaseCategory(
     override fun toString(): String = key
 
     /**
+     * Random multi choice category using [Normal] class
+     */
+    object Random : Normal()
+
+    /**
      * Normal multi choice type with category
      * @param categoryKey category to the quiz
      */
-    @Keep
-    data class Normal(
+    open class Normal(
         val categoryKey: String
     ) : MultiChoiceBaseCategory(key = categoryKey) {
         /** Sets multi choice type as no category */
