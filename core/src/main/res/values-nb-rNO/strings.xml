@@ -6,7 +6,6 @@
     <string name="wordle">Wordle</string>
     <string name="verify">Bekreft</string>
     <string name="play_again">Spill igjen</string>
-    <string name="watch_ad">Vis reklame</string>
     <string name="item_empty">Tomt element</string>
     <string name="four_letters">4 bokstaver</string>
     <string name="quiz_language">Quiz-språk</string>
@@ -77,14 +76,11 @@
     <string name="is_in_the_word_but_in_the_wrong_spot_wordle">" er i ordet, men på feil plass."</string>
     <string name="rows_limited">Begrensede rader</string>
     <string name="science_mathematics">Matematikk</string>
-    <string name="good_day_text">God %1$s,
-\n</string>
+    <string name="good_day_text">God %1$s,\n</string>
     <string name="translation">Oversettelse</string>
     <string name="correct_answers">Riktige svar</string>
     <string name="clean_calendar_data">Tøm kalenderdata</string>
     <string name="you_have_n_diamonds_skip_question_q">Du har %1$d diamanter. Vil du bruke en for å hoppe over dette spørsmålet\?</string>
-    <string name="you_lost_the_game_watch_ad_q">Du har tapt spillet.
-\nVil du se en reklame til og prøve en rad til\?</string>
     <string name="medium">Middels</string>
     <string name="saved_questions">Lagrede spørsmål</string>
     <string name="item_i_present">Element %1$s finnes</string>
@@ -110,7 +106,6 @@
     <string name="n_correct_questions">$1%s riktige spørsmål</string>
     <string name="correct_words">Riktige ord</string>
     <string name="night">Natt</string>
-    <string name="loading_rewarded_ad">Last inn rekompenseringsreklame</string>
     <string name="hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word">Hint over bokstaven om at den finnes to eller flere ganger i det skjulte ordet</string>
     <string name="wordle_infinite_row_limited">Begrensede rader for uendelig wordle.</string>
     <string name="clean_saved_calendar_wins_losses">Tømmer alle lagrede kalenderseire/tap.</string>

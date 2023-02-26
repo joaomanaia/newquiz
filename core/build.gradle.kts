@@ -56,6 +56,7 @@ android {
     lint {
         disable += "DialogFragmentCallbacksDetector"
         disable += "UnusedResources"
+        disable += "MissingTranslation"
     }
 }
 
