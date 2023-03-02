@@ -69,7 +69,7 @@ private fun getIconByCategory(
     multiChoiceQuestionCategory: MultiChoiceBaseCategory
 ) = when (multiChoiceQuestionCategory) {
     is MultiChoiceBaseCategory.Logo -> Icons.Rounded.Android
-    is MultiChoiceBaseCategory.Flag -> Icons.Rounded.Flag
+    is MultiChoiceBaseCategory.Flag, MultiChoiceBaseCategory.CountryCapitalFlags -> Icons.Rounded.Flag
     is MultiChoiceBaseCategory.GuessMathSolution -> Icons.Rounded.FormatListNumbered
     is MultiChoiceBaseCategory.NumberTrivia -> Icons.Rounded.Numbers
     else -> Icons.Rounded.Category

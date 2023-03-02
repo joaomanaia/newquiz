@@ -18,6 +18,7 @@ sealed class MultiChoiceBaseCategory(
             Flag.key -> Flag
             GuessMathSolution.key -> GuessMathSolution
             NumberTrivia.key -> NumberTrivia
+            CountryCapitalFlags.key -> CountryCapitalFlags
             else -> Normal(key)
         }
     }
@@ -58,6 +59,9 @@ sealed class MultiChoiceBaseCategory(
 
     /** Flag multi choice quiz category */
     object Flag : MultiChoiceBaseCategory(key = "flag")
+
+    /** Number trivia multi choice quiz category */
+    object CountryCapitalFlags : MultiChoiceBaseCategory(key = "country_capital_flags")
 
     /** Guess math solution multi choice quiz category */
     object GuessMathSolution : MultiChoiceBaseCategory(key = "guess_math_solution")

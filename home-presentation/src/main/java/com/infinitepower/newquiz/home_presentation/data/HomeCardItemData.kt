@@ -50,6 +50,14 @@ fun getHomeCardItemData(
         onClick = homeNavigator::navigateToFlagQuiz
     ),
     HomeCardItem.GroupTitle(
+        title = CoreR.string.country_capital_flags,
+    ),
+    HomeCardItem.LargeCard(
+        title = CoreR.string.country_capital_flags,
+        icon = CardIcon.Icon(Icons.Rounded.Flag),
+        onClick = homeNavigator::navigateToCountryCapitalFlagsQuiz
+    ),
+    HomeCardItem.GroupTitle(
         title = CoreR.string.logo_quiz,
     ),
     HomeCardItem.LargeCard(

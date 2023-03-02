@@ -161,4 +161,5 @@
     <string name="sort_by_default">Ordenar por Padrão</string>
     <string name="sort_by_description">Ordenar pela Descrição</string>
     <string name="sort_by_category">Ordenar pela Categoria</string>
+    <string name="country_capital_flags">Bandeiras da capital do país</string>
 </resources>

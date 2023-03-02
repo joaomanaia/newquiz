@@ -10,6 +10,7 @@ import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytic
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
+import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSolutionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
@@ -39,7 +40,8 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val multiChoiceQuestionRepository: MultiChoiceQuestionRepository,
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
     private val mazeLoggingAnalytics: MazeLoggingAnalytics,
-    private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository
+    private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository,
+    private val countryCapitalFlagsQuizRepository: CountryCapitalFlagsQuizRepository
 ) : CoroutineWorker(appContext, workerParams) {
     private val remoteConfig by lazy { Firebase.remoteConfig }
 
@@ -182,6 +184,11 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
                 category = multiChoiceQuizType
             )
             is MultiChoiceBaseCategory.GuessMathSolution -> guessMathSolutionRepository.getRandomQuestions(
+                amount = questionSize,
+                random = random,
+                category = multiChoiceQuizType
+            )
+            is MultiChoiceBaseCategory.CountryCapitalFlags -> countryCapitalFlagsQuizRepository.getRandomQuestions(
                 amount = questionSize,
                 random = random,
                 category = multiChoiceQuizType

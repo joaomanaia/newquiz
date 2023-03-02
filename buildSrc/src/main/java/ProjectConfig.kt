@@ -11,9 +11,9 @@ object ProjectConfig {
 
     const val targetSdk = 33
 
-    const val versionCode = 8
+    const val versionCode = 9
 
-    const val versionName = "1.4.0"
+    const val versionName = "1.4.1"
 
     val javaVersionCompatibility = JavaVersion.VERSION_17
 

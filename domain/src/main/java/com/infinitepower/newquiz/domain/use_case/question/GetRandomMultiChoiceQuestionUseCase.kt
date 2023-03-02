@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.domain.use_case.question
 
 import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSolutionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
@@ -19,7 +20,8 @@ class GetRandomMultiChoiceQuestionUseCase @Inject constructor(
     private val flagQuizRepository: FlagQuizRepository,
     private val logoQuizRepository: LogoQuizRepository,
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
-    private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository
+    private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository,
+    private val countryCapitalFlagsQuizRepository: CountryCapitalFlagsQuizRepository
 ) {
     operator fun invoke(
         amount: Int = 5,
@@ -46,6 +48,11 @@ class GetRandomMultiChoiceQuestionUseCase @Inject constructor(
                     difficulty
                 )
                 is MultiChoiceBaseCategory.GuessMathSolution -> guessMathSolutionRepository.getRandomQuestions(
+                    amount,
+                    category,
+                    difficulty
+                )
+                is MultiChoiceBaseCategory.CountryCapitalFlags -> countryCapitalFlagsQuizRepository.getRandomQuestions(
                     amount,
                     category,
                     difficulty

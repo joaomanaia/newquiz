@@ -38,6 +38,10 @@ class CommonNavGraphNavigator(
         navController.navigate(MultiChoiceQuizScreenDestination(category = MultiChoiceBaseCategory.Flag))
     }
 
+    override fun navigateToCountryCapitalFlagsQuiz() {
+        navController.navigate(MultiChoiceQuizScreenDestination(category = MultiChoiceBaseCategory.CountryCapitalFlags))
+    }
+
     override fun navigateToLogoQuiz() {
         navController.navigate(MultiChoiceQuizScreenDestination(category = MultiChoiceBaseCategory.Logo))
     }

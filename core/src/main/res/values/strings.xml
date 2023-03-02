@@ -161,4 +161,5 @@
     <string name="sort_by_default">Sort by Default</string>
     <string name="sort_by_description">Sort by Description</string>
     <string name="sort_by_category">Sort by Category</string>
+    <string name="country_capital_flags">Country capital flags</string>
 </resources>
