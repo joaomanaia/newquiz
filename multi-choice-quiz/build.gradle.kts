@@ -100,6 +100,7 @@ dependencies {
     implementation(libs.lottie.compose)
 
     implementation(COIL.compose)
+    implementation(COIL.svg)
 
     implementation(AndroidX.work.runtimeKtx)
 

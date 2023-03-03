@@ -25,13 +25,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
@@ -130,6 +133,14 @@ private fun MultiChoiceQuizScreenImpl(
     onBackClick: () -> Unit,
     onEvent: (event: MultiChoiceQuizScreenUiEvent) -> Unit
 ) {
+    val context = LocalContext.current
+
+    val imageLoader = ImageLoader
+        .Builder(context)
+        .components {
+            add(SvgDecoder.Factory())
+        }.build()
+    
     val spaceMedium = MaterialTheme.spacing.medium
 
     val widthCompact = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
@@ -188,7 +199,8 @@ private fun MultiChoiceQuizScreenImpl(
                         modifier = Modifier
                             .aspectRatio(16 / 9f)
                             .clip(MaterialTheme.shapes.medium),
-                        contentScale = imageScale
+                        contentScale = imageScale,
+                        imageLoader = imageLoader
                     )
                 }
             }

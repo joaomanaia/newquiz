@@ -9,5 +9,5 @@ import kotlinx.serialization.Serializable
 data class CountryFlagQuizBaseItem(
     val code: String,
     val name: String,
-    val flagUrl: String = "${BaseUrls}/$code"
+    val flagUrl: String = "${BaseUrls.FLAG_BASE_URL}/$code"
 )
