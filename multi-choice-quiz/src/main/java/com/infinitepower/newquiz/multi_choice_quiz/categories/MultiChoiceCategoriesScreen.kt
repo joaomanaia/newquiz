@@ -1,6 +1,13 @@
 package com.infinitepower.newquiz.multi_choice_quiz.categories
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
@@ -24,6 +31,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,8 +46,10 @@ import com.infinitepower.newquiz.model.UiText
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.toBaseCategory
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.multi_choice_quiz.categories.components.CategoryComponent
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
+import com.infinitepower.newquiz.multi_choice_quiz.components.difficulty.SelectableDifficultyRow
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.infinitepower.newquiz.core.R as CoreR
@@ -57,9 +68,9 @@ fun MultiChoiceCategoriesScreen(
     MultiChoiceCategoriesScreenImpl(
         uiState = uiState,
         onBackClick = navigator::popBackStack,
-        navigateToQuizScreen = { category ->
+        navigateToQuizScreen = { category, difficulty ->
             multiChoiceLoggingAnalytics.logCategoryClicked(category)
-            navigator.navigate(MultiChoiceQuizScreenDestination(category = category))
+            navigator.navigate(MultiChoiceQuizScreenDestination(category = category, difficulty = difficulty?.toString()))
         }
     )
 
@@ -74,15 +85,25 @@ fun MultiChoiceCategoriesScreen(
 private fun MultiChoiceCategoriesScreenImpl(
     uiState: MultiChoiceCategoriesUiState,
     onBackClick: () -> Unit,
-    navigateToQuizScreen: (category: MultiChoiceBaseCategory) -> Unit
+    navigateToQuizScreen: (
+        category: MultiChoiceBaseCategory,
+        difficulty: QuestionDifficulty?
+    ) -> Unit
 ) {
+    val (selectedDifficulty, setSelectedDifficulty) = remember {
+        // When null, difficulty will be random
+        mutableStateOf<QuestionDifficulty?>(null)
+    }
+
     SearchBarContainer(
         onBackClick = onBackClick,
-        categories = uiState.categories
+        categories = uiState.categories,
+        selectedDifficulty = selectedDifficulty,
+        setSelectedDifficulty = setSelectedDifficulty
     ) { category ->
         CategoryComponent(
             category = category,
-            onClick = { navigateToQuizScreen(category.toBaseCategory()) },
+            onClick = { navigateToQuizScreen(category.toBaseCategory(), selectedDifficulty) },
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -93,6 +114,8 @@ private fun MultiChoiceCategoriesScreenImpl(
 private fun SearchBarContainer(
     onBackClick: () -> Unit,
     categories: List<MultiChoiceCategory>,
+    selectedDifficulty: QuestionDifficulty?,
+    setSelectedDifficulty: (QuestionDifficulty?) -> Unit,
     categoryItem: @Composable LazyGridItemScope.(category: MultiChoiceCategory) -> Unit
 ) {
     val context = LocalContext.current
@@ -132,9 +155,11 @@ private fun SearchBarContainer(
 
     val spaceMedium = MaterialTheme.spacing.medium
 
-    Box(Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         SearchBar(
-            modifier = Modifier.align(Alignment.TopCenter),
             query = searchText,
             onQueryChange = { searchText = it },
             onSearch = { closeSearchBar() },
@@ -168,14 +193,27 @@ private fun SearchBarContainer(
                 }
             }
         }
-
+        Column(
+            modifier = Modifier.padding(vertical = MaterialTheme.spacing.large)
+        ) {
+            Text(
+                text = stringResource(id = CoreR.string.difficulty),
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.padding(start = spaceMedium)
+            )
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+            SelectableDifficultyRow(
+                selectedDifficulty = selectedDifficulty,
+                setSelectedDifficulty = setSelectedDifficulty
+            )
+        }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(128.dp),
             horizontalArrangement = Arrangement.spacedBy(spaceMedium),
             verticalArrangement = Arrangement.spacedBy(spaceMedium),
             contentPadding = PaddingValues(
                 start = spaceMedium,
-                top = 72.dp,
                 end = spaceMedium,
                 bottom = spaceMedium
             ),
@@ -209,7 +247,7 @@ fun MultiChoiceCategoriesPreview() {
                     categories = categories
                 ),
                 onBackClick = {},
-                navigateToQuizScreen = {}
+                navigateToQuizScreen = { _, _ ->}
             )
         }
     }

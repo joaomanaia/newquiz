@@ -1,13 +1,10 @@
 package com.infinitepower.newquiz.model.question
 
-import androidx.annotation.StringRes
-import com.infinitepower.newquiz.model.R
 import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class QuestionDifficulty(
-    val id: String,
-    @StringRes val nameRes: Int
+    val id: String
 ) : java.io.Serializable {
     companion object {
         fun items() = listOf(Easy, Medium, Hard)
@@ -23,20 +20,11 @@ sealed class QuestionDifficulty(
     override fun toString(): String = id
 
     @Serializable
-    object Easy : QuestionDifficulty(
-        id = "easy",
-        nameRes = R.string.easy
-    )
+    object Easy : QuestionDifficulty(id = "easy")
 
     @Serializable
-    object Medium : QuestionDifficulty(
-        id = "medium",
-        nameRes = R.string.medium
-    )
+    object Medium : QuestionDifficulty(id = "medium")
 
     @Serializable
-    object Hard : QuestionDifficulty(
-        id = "hard",
-        nameRes = R.string.hard
-    )
+    object Hard : QuestionDifficulty(id = "hard")
 }

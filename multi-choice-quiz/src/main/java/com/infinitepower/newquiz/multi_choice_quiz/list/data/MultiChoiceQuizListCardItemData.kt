@@ -15,7 +15,7 @@ import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceCateg
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.SavedMultiChoiceQuestionsScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.list.MultiChoiceCategoriesSelector
-import com.infinitepower.newquiz.multi_choice_quiz.list.components.CardDifficulty
+import com.infinitepower.newquiz.multi_choice_quiz.components.difficulty.FilledCardDifficulty
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @ExperimentalMaterial3Api
@@ -35,7 +35,7 @@ internal fun getMultiChoiceQuizListCardItemData(
     HomeCardItem.HorizontalItems(
         items = QuestionDifficulty.items(),
         itemContent = { difficulty ->
-            CardDifficulty(
+            FilledCardDifficulty(
                 multiChoiceQuizDifficulty = difficulty,
                 onClick = {
                     navigator.navigate(MultiChoiceQuizScreenDestination(difficulty = difficulty.id))

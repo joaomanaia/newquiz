@@ -25,6 +25,10 @@ class MultiChoiceCategoriesScreenViewModel @Inject constructor(
             currentState.copy(categories = multiChoiceQuestionCategories)
         }
 
+        addAdditionalCategories()
+    }
+
+    private fun addAdditionalCategories() {
         multiChoiceQuestionRepository
             .isFlagQuizInCategories()
             .also { showFlagQuiz ->
@@ -55,6 +59,24 @@ class MultiChoiceCategoriesScreenViewModel @Inject constructor(
                             image = CoreR.drawable.round_android_24
                         )
                         val newCategories = currentState.categories + logoCategory
+
+                        currentState.copy(categories = newCategories)
+                    }
+                }
+            }
+
+        multiChoiceQuestionRepository
+            .isCountryCapitalFlagQuizInCategories()
+            .also { showCountryCapitalFlagQuiz ->
+                if (showCountryCapitalFlagQuiz) {
+                    _uiState.update { currentState ->
+                        val countryCapitalFlagCategory = MultiChoiceCategory(
+                            key = MultiChoiceBaseCategory.CountryCapitalFlags.key,
+                            id = 1002,
+                            name = UiText.StringResource(CoreR.string.country_capital_flags),
+                            image = CoreR.drawable.round_flag_circle_24
+                        )
+                        val newCategories = currentState.categories + countryCapitalFlagCategory
 
                         currentState.copy(categories = newCategories)
                     }

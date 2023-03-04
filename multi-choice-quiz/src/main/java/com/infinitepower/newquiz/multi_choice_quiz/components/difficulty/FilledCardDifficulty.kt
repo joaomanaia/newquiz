@@ -1,24 +1,27 @@
-package com.infinitepower.newquiz.multi_choice_quiz.list.components
+package com.infinitepower.newquiz.multi_choice_quiz.components.difficulty
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.SignalCellularAlt
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.extendedColors
-import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.util.model.getText
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 
 @Composable
 @ExperimentalMaterial3Api
-internal fun CardDifficulty(
+internal fun FilledCardDifficulty(
     modifier: Modifier = Modifier,
     multiChoiceQuizDifficulty: QuestionDifficulty,
     onClick: () -> Unit
@@ -37,48 +40,52 @@ internal fun CardDifficulty(
         is QuestionDifficulty.Hard -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Red)
     }
 
-    CardDifficultyImpl(
+    FilledCardDifficulty(
         modifier = modifier,
-        text = stringResource(id = multiChoiceQuizDifficulty.nameRes),
-        backgroundColor = backgroundColor,
-        textColor = textColor,
+        text = multiChoiceQuizDifficulty.getText().asString(),
+        containerColor = backgroundColor,
+        contentColor = textColor,
         onClick = onClick
     )
 }
 
 @Composable
 @ExperimentalMaterial3Api
-private fun CardDifficultyImpl(
+internal fun FilledCardDifficulty(
     modifier: Modifier = Modifier,
     text: String,
-    backgroundColor: Color,
-    textColor: Color,
+    containerColor: Color,
+    contentColor: Color,
     onClick: () -> Unit
 ) {
-    val spaceMedium = MaterialTheme.spacing.medium
+    FilledCardDifficultyContainer(
+        modifier = modifier,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        onClick = onClick,
+    ) {
+        BaseCardDifficultyContent(text = text)
+    }
+}
 
+@Composable
+@ExperimentalMaterial3Api
+private fun FilledCardDifficultyContainer(
+    modifier: Modifier = Modifier,
+    containerColor: Color,
+    contentColor: Color,
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
+) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = backgroundColor,
-            contentColor = textColor
+            containerColor = containerColor,
+            contentColor = contentColor
         ),
         onClick = onClick
     ) {
-        Column(modifier = Modifier.padding(spaceMedium)) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.height(spaceMedium))
-            Box(modifier = Modifier.padding(start = MaterialTheme.spacing.extraLarge)) {
-                Icon(
-                    imageVector = Icons.Rounded.SignalCellularAlt,
-                    contentDescription = text,
-                    modifier = Modifier.size(35.dp)
-                )
-            }
-        }
+        content()
     }
 }
 
@@ -92,15 +99,15 @@ private fun CardDifficultyPreview() {
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CardDifficulty(
+                FilledCardDifficulty(
                     multiChoiceQuizDifficulty = QuestionDifficulty.Easy,
                     onClick = {}
                 )
-                CardDifficulty(
+                FilledCardDifficulty(
                     multiChoiceQuizDifficulty = QuestionDifficulty.Medium,
                     onClick = {}
                 )
-                CardDifficulty(
+                FilledCardDifficulty(
                     multiChoiceQuizDifficulty = QuestionDifficulty.Hard,
                     onClick = {}
                 )

@@ -12,5 +12,7 @@ interface MultiChoiceQuestionRepository : MultiChoiceQuestionBaseRepository<Mult
 
     fun isFlagQuizInCategories(): Boolean
 
+    fun isCountryCapitalFlagQuizInCategories(): Boolean
+
     fun isLogoQuizInCategories(): Boolean
 }
