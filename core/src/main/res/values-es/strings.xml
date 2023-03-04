@@ -28,7 +28,7 @@
     <string name="english">inglés</string>
     <string name="portuguese">portugués</string>
     <string name="color_blind_mode">Modo daltónico</string>
-    <string name="high_contrast_colors" >Colores de alto contraste</string>
+    <string name="high_contrast_colors">Colores de alto contraste</string>
     <string name="info">Información</string>
     <string name="letter_hints">Sugerencias de letras</string>
     <string name="hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word">Sugerencia sobre la letra que aparece dos veces o más en la palabra oculta</string>
@@ -76,9 +76,9 @@
     <string name="n_questions_available">%1$s Preguntas disponibles</string>
     <string name="see_all">Ver todo</string>
     <string name="difficulty">Dificultad</string>
-    <string name="is_not_in_the_target_word_wordle">"No está en la palabra objetivo".</string>
-    <string name="is_in_the_word_but_in_the_wrong_spot_wordle">"Está en la palabra pero en el lugar equivocado".</string>
-    <string name="is_in_the_word_and_in_the_correct_spot_wordle">"Está en la palabra y en el lugar correcto".</string>
+    <string name="is_not_in_the_target_word_wordle">" no está en la palabra objetivo."</string>
+    <string name="is_in_the_word_but_in_the_wrong_spot_wordle">" está en la palabra pero en el lugar equivocado."</string>
+    <string name="is_in_the_word_and_in_the_correct_spot_wordle">" está en la palabra y en el lugar correcto."</string>
     <string name="results_screen">Pantalla de resultados</string>
     <string name="n_correct_questions">$1%s Preguntas correctas</string>
     <string name="quiz_question_size">Tamaño de la pregunta del cuestionario</string>
@@ -150,4 +150,16 @@
     <string name="wordle_animations_enabled">Animaciones de Wordle habilitadas</string>
     <string name="analytics">Analítica</string>
     <string name="analytics_collection_enabled">Recopilación de análisis habilitada</string>
+    <string name="play">Jugar</string>
+    <string name="play_with_selected_questions">Jugar con las preguntas seleccionadas</string>
+    <string name="unselect_all">Deseleccionar todo</string>
+    <string name="select_all">Seleccionar todo</string>
+    <string name="delete_selected">Borrar las seleccionadas</string>
+    <string name="download_questions">Descargar las preguntas</string>
+    <string name="sort_by_default">Ordenar por defecto</string>
+    <string name="sort_by_description">Ordenar por descripción</string>
+    <string name="sort_by_category">Ordenar por categorías</string>
+    <string name="sort_questions">Ordenar las preguntas</string>
+    <string name="play_with_random_saved_questions">Juega al cuestionario con preguntas guardadas al azar</string>
+    <string name="country_capital_flags">Banderas de las capitales de los países</string>
 </resources>
