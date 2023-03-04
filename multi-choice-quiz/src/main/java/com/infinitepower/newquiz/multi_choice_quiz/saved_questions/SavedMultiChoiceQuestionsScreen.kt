@@ -112,71 +112,73 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
             )
         },
         bottomBar = {
-            if (uiState.questions.isNotEmpty()) {
-                BottomAppBar(
-                    actions = {
+            BottomAppBar(
+                actions = {
+                    TopBarActionButton(
+                        imageVector = Icons.Rounded.MoreVert,
+                        contentDescription = stringResource(id = CoreR.string.more_options),
+                        onClick = { setMoreVertPopupExpanded(true) }
+                    )
+                    MoreVertPopup(
+                        expanded = moreVertPopupExpanded,
+                        isQuestionsNotEmpty = uiState.questions.isNotEmpty(),
+                        questionsSelected = uiState.selectedQuestions.isNotEmpty(),
+                        onDismiss = { setMoreVertPopupExpanded(false) },
+                        onSelectAllClick = {
+                            onEvent(SavedMultiChoiceQuestionsUiEvent.SelectAll)
+                            setMoreVertPopupExpanded(false)
+                        },
+                        onDeleteAllSelectedClick = {
+                            onEvent(SavedMultiChoiceQuestionsUiEvent.DeleteAllSelected)
+                            setMoreVertPopupExpanded(false)
+                        },
+                        onDownloadQuestionsClick = {
+                            onEvent(SavedMultiChoiceQuestionsUiEvent.DownloadQuestions)
+                            setMoreVertPopupExpanded(false)
+                        }
+                    )
+                    if (uiState.questions.isNotEmpty()) {
                         TopBarActionButton(
-                            imageVector = Icons.Rounded.MoreVert,
-                            contentDescription = stringResource(id = CoreR.string.more_options),
-                            onClick = { setMoreVertPopupExpanded(true) }
+                            imageVector = Icons.Rounded.Sort,
+                            contentDescription = stringResource(id = CoreR.string.sort_questions),
+                            onClick = { setSortPopupExpanded(true) }
                         )
-                        MoreVertPopup(
-                            expanded = moreVertPopupExpanded,
-                            isQuestionsNotEmpty = uiState.questions.isNotEmpty(),
-                            questionsSelected = uiState.selectedQuestions.isNotEmpty(),
-                            onDismiss = { setMoreVertPopupExpanded(false) },
-                            onSelectAllClick = {
-                                onEvent(SavedMultiChoiceQuestionsUiEvent.SelectAll)
-                                setMoreVertPopupExpanded(false)
-                            },
-                            onDeleteAllSelectedClick = {
-                                onEvent(SavedMultiChoiceQuestionsUiEvent.DeleteAllSelected)
-                                setMoreVertPopupExpanded(false)
-                            },
-                            onDownloadQuestionsClick = {
-                                onEvent(SavedMultiChoiceQuestionsUiEvent.DownloadQuestions)
-                                setMoreVertPopupExpanded(false)
+                        SortPopup(
+                            expanded = sortPopupExpanded,
+                            onDismiss = { setSortPopupExpanded(false) },
+                            onSortClick = { sortBy ->
+                                setSortPopupExpanded(false)
+                                onEvent(SavedMultiChoiceQuestionsUiEvent.SortQuestions(sortBy))
                             }
                         )
-                        if (uiState.questions.isNotEmpty()) {
-                            TopBarActionButton(
-                                imageVector = Icons.Rounded.Sort,
-                                contentDescription = stringResource(id = CoreR.string.sort_questions),
-                                onClick = { setSortPopupExpanded(true) }
-                            )
-                            SortPopup(
-                                expanded = sortPopupExpanded,
-                                onDismiss = { setSortPopupExpanded(false) },
-                                onSortClick = { sortBy ->
-                                    setSortPopupExpanded(false)
-                                    onEvent(SavedMultiChoiceQuestionsUiEvent.SortQuestions(sortBy))
-                                }
-                            )
-                            TopBarActionButton(
-                                imageVector = Icons.Rounded.Shuffle,
-                                contentDescription = stringResource(id = CoreR.string.play_with_random_saved_questions),
-                                onClick = { playWithQuestions(uiState.randomQuestions()) }
-                            )
-                        }
-                    },
-                    floatingActionButton = {
-                        if (uiState.selectedQuestions.isNotEmpty()) {
-                            ExtendedFloatingActionButton(
-                                text = { Text(text = stringResource(id = CoreR.string.play)) },
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.PlayArrow,
-                                        contentDescription = stringResource(id = CoreR.string.play_with_selected_questions)
-                                    )
-                                },
-                                onClick = { playWithQuestions(uiState.arrayListSelectedQuestions) },
-                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                            )
-                        }
+                        TopBarActionButton(
+                            imageVector = Icons.Rounded.Shuffle,
+                            contentDescription = stringResource(id = CoreR.string.play_with_random_saved_questions),
+                            onClick = { playWithQuestions(uiState.randomQuestions()) }
+                        )
                     }
-                )
-            }
+                },
+                floatingActionButton = {
+                    if (uiState.selectedQuestions.isNotEmpty()) {
+                        ExtendedFloatingActionButton(
+                            text = { Text(text = stringResource(id = CoreR.string.play)) },
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.PlayArrow,
+                                    contentDescription = stringResource(id = CoreR.string.play_with_selected_questions)
+                                )
+                            },
+                            onClick = {
+                                // Ensure question size is below 50
+                                val playQuestions = uiState.selectedQuestions.take(50)
+                                playWithQuestions(playQuestions)
+                            },
+                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                        )
+                    }
+                }
+            )
         }
     ) { innerPadding ->
         LazyColumn(
