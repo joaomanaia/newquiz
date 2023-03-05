@@ -39,6 +39,14 @@ suspend fun <T> generateRandomUniqueItems(
     return items
 }
 
+/**
+ * Generates a list of [answerCount] number of incorrect answers for a given [correctSolution] integer.
+ * @param answerCount The number of incorrect answers to generate.
+ * @param correctSolution The correct solution to the question.
+ * @param fromRange The minimum range of values from which to generate incorrect answers. Default value is 10.
+ * @param toRange The maximum range of values from which to generate incorrect answers. Default value is 10.
+ * @param random The random number generator used to generate the incorrect answers.
+*/
 suspend fun generateIncorrectNumberAnswers(
     answerCount: Int,
     correctSolution: Int,

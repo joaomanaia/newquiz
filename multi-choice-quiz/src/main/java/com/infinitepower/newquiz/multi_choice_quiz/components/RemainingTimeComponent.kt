@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.compose.ui.RoundCircularProgressIndicator
+import com.infinitepower.newquiz.core.ui.components.progress_indicator.RoundCircularProgressIndicator
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.model.RemainingTime

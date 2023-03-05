@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.compose.ui
+package com.infinitepower.newquiz.core.ui.components.progress_indicator
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.focusable

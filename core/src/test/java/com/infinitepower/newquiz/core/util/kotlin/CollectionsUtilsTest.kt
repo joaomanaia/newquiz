@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.core.util.kotlin
 
 import com.google.common.truth.Truth.assertThat
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.DisplayName
@@ -78,5 +80,46 @@ internal class CollectionUtilsTest {
 
         assertThat(items).hasSize(1)
         assertThat(items).containsNoDuplicates()
+    }
+
+    @Test
+    fun `Test ClosedFloatingPointRange increaseEndBy`() {
+        val range = 1f..3f
+        val result = range increaseEndBy 2f
+        assertThat(result).isEqualTo(3f..5f)
+    }
+
+    @Test
+    fun `test generateIncorrectNumberAnswers`() = runTest {
+        val mockRandom = mockk<Random>()
+
+        every { mockRandom.nextInt(0, 20) } returnsMany listOf(11, 15, 13, 8)
+
+        val result = generateIncorrectNumberAnswers(
+            answerCount = 3,
+            correctSolution = 10,
+            fromRange = 10,
+            toRange = 10,
+            random = mockRandom
+        )
+
+        assertThat(result).containsExactly(11, 15, 13)
+    }
+
+    @Test
+    fun `test generateIncorrectNumberAnswers from 0 to 20`() = runTest {
+        val mockRandom = mockk<Random>()
+
+        every { mockRandom.nextInt(10, 30) } returnsMany listOf(23, 11, 14, 28)
+
+        val result = generateIncorrectNumberAnswers(
+            answerCount = 3,
+            correctSolution = 10,
+            fromRange = 0,
+            toRange = 20,
+            random = mockRandom
+        )
+
+        assertThat(result).containsExactly(23, 11, 14)
     }
 }

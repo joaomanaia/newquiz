@@ -58,6 +58,11 @@ android {
         disable += "UnusedResources"
         disable += "MissingTranslation"
     }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/*"
+        }
+    }
 }
 
 dependencies {
@@ -65,6 +70,19 @@ dependencies {
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
     testImplementation(Testing.mockK.android)
+
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(Testing.mockK.android)
+    androidTestImplementation(Kotlin.test.junit)
+    androidTestImplementation(AndroidX.test.runner)
+    androidTestImplementation(AndroidX.test.rules)
+    androidTestImplementation(AndroidX.test.ext.junit)
+    androidTestImplementation(Testing.junit.jupiter)
+    androidTestImplementation(AndroidX.test.runner)
+
+    androidTestImplementation(AndroidX.compose.ui.test)
+    androidTestImplementation(AndroidX.compose.ui.testJunit4)
+    debugImplementation(AndroidX.compose.ui.testManifest)
 
     implementation(AndroidX.core.ktx)
 

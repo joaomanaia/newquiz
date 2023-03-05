@@ -22,4 +22,22 @@ class BooleanExtensionsTest {
         val actual = boolean.toInt()
         assertThat(expected).isEqualTo(actual)
     }
+
+    @Test
+    @DisplayName("Should return 1L when the boolean is true")
+    fun toLongWhenBooleanIsTrue() {
+        val boolean = true
+        val expected = 1L
+        val actual = boolean.toLong()
+        assertThat(expected).isEqualTo(actual)
+    }
+
+    @Test
+    @DisplayName("Should return 0L when the boolean is false")
+    fun toLongWhenBooleanIsFalse() {
+        val boolean = false
+        val expected = 0L
+        val actual = boolean.toLong()
+        assertThat(expected).isEqualTo(actual)
+    }
 }
