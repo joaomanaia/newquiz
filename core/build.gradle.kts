@@ -60,7 +60,8 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += "/META-INF/*"
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
         }
     }
 }
