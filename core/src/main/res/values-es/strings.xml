@@ -129,7 +129,7 @@
     <string name="restart_maze">Reiniciar laberinto</string>
     <string name="generate_maze">Generar laberinto</string>
     <string name="generate_offline_maze">Generar laberinto fuera de línea</string>
-    <string name="generate_offline_maze_description">Genere laberinto con todos los modos no necesitan conexión a Internet.</string>
+    <string name="generate_offline_maze_description">Genere laberinto con todos los modos de juego no necesitan conexión a Internet.</string>
     <string name="random_maze">Laberinto aleatorio</string>
     <string name="generate_maze_with_random_items">Generar laberinto con preguntas aleatorias, se incluirán todos los modos de juego.</string>
     <string name="custom_maze">Laberinto personalizado</string>

@@ -30,7 +30,7 @@
     <string name="spanish">Spanish</string>
     <string name="french">French</string>
     <string name="color_blind_mode">Color blind mode</string>
-    <string name="high_contrast_colors" >High contrast colors</string>
+    <string name="high_contrast_colors">High contrast colors</string>
     <string name="info">Info</string>
     <string name="letter_hints">Letter hints</string>
     <string name="hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word">Hint above the letter that it appears twice or more in the hidden word</string>
@@ -131,7 +131,7 @@
     <string name="restart_maze">Restart maze</string>
     <string name="generate_maze">Generate maze</string>
     <string name="generate_offline_maze">Generate offline maze</string>
-    <string name="generate_offline_maze_description">Generate maze with all modes don\'t need internet connection.</string>
+    <string name="generate_offline_maze_description">Generate maze with all game modes that don\'t need internet connection.</string>
     <string name="random_maze">Random maze</string>
     <string name="generate_maze_with_random_items">Generate maze with random questions, all game modes will be included.</string>
     <string name="custom_maze">Custom maze</string>
