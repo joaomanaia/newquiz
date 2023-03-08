@@ -123,14 +123,18 @@ private fun MazeComponentImpl(
         abs(mazePoints.lastOrNull()?.y ?: 0f) + 100.dp.toPx()
     }
 
-    val playVector = Icons.Rounded.PlayArrow
-    val playPainter = rememberVectorPainter(image = playVector)
+    val playPainter = rememberVectorPainter(image = Icons.Rounded.PlayArrow)
+    val checkPainter = rememberVectorPainter(image = Icons.Rounded.Check)
+    val lockPainter = rememberVectorPainter(image = Icons.Rounded.Lock)
 
-    val checkVector = Icons.Rounded.Check
-    val checkPainter = rememberVectorPainter(image = checkVector)
+    val iconPlaySizer = with(localDensity) {
+        Size(30.dp.toPx(), 30.dp.toPx())
+    }
 
-    val lockVector = Icons.Rounded.Lock
-    val lockPainter = rememberVectorPainter(image = lockVector)
+    // Value to center the play button in the circle
+    val dp15 = with(localDensity) {
+        15.dp.toPx()
+    }
 
     Canvas(
         modifier = modifier
@@ -211,15 +215,6 @@ private fun MazeComponentImpl(
                         radius = circleRadius / 1.5f,
                         center = pointOffset
                     )
-                }
-
-                val iconPlaySizer = with(localDensity) {
-                    Size(30.dp.toPx(), 30.dp.toPx())
-                }
-
-                // Value to center the play button in the circle
-                val dp15 = with(localDensity) {
-                    15.dp.toPx()
                 }
 
                 val iconColor = when {

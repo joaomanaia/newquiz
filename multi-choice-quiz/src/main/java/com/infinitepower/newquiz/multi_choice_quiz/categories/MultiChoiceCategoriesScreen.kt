@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -193,31 +194,30 @@ private fun SearchBarContainer(
                 }
             }
         }
-        Column(
-            modifier = Modifier.padding(vertical = MaterialTheme.spacing.large)
-        ) {
-            Text(
-                text = stringResource(id = CoreR.string.difficulty),
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Start,
-                modifier = Modifier.padding(start = spaceMedium)
-            )
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-            SelectableDifficultyRow(
-                selectedDifficulty = selectedDifficulty,
-                setSelectedDifficulty = setSelectedDifficulty
-            )
-        }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(128.dp),
             horizontalArrangement = Arrangement.spacedBy(spaceMedium),
             verticalArrangement = Arrangement.spacedBy(spaceMedium),
-            contentPadding = PaddingValues(
-                start = spaceMedium,
-                end = spaceMedium,
-                bottom = spaceMedium
-            ),
+            contentPadding = PaddingValues(spaceMedium)
         ) {
+            item(
+                key = "difficulty_selector",
+                span = { GridItemSpan(maxLineSpan) }
+            ) {
+                Column {
+                    Text(
+                        text = stringResource(id = CoreR.string.difficulty),
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Start
+                    )
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+                    SelectableDifficultyRow(
+                        selectedDifficulty = selectedDifficulty,
+                        setSelectedDifficulty = setSelectedDifficulty
+                    )
+                }
+            }
+
             items(
                 items = filteredCategories,
                 key = { it.id },

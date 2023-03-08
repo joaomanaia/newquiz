@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.components.RoundedPolygonShape
 import com.infinitepower.newquiz.core.util.rememberAppVersion
 import com.infinitepower.newquiz.core.R as CoreR
 

@@ -92,6 +92,7 @@ dependencies {
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material)
     implementation(AndroidX.compose.material3)
+    implementation(AndroidX.constraintLayout.compose)
 
     implementation(Google.android.material)
 

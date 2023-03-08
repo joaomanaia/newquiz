@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.model.maze
 import androidx.annotation.Keep
 import androidx.compose.ui.geometry.Offset
 import kotlin.math.pow
+import kotlin.math.sin
 
 @Keep
 data class MazePoint(

@@ -1,11 +1,6 @@
 package com.infinitepower.newquiz
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import androidx.work.OneTimeWorkRequestBuilder
@@ -16,13 +11,10 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import com.infinitepower.newquiz.core.notification.wordle.DailyWordleNotificationServiceImpl
 import com.infinitepower.newquiz.core.workers.AppStartLoggingAnalyticsWorker
 import com.infinitepower.newquiz.online_services.core.worker.CheckUserDBWorker
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
-
-private const val TWELVE_HOUR_IN_SECONDS = 3600L
 
 @HiltAndroidApp
 class NewQuizApp : Application(), Configuration.Provider {
@@ -63,37 +55,6 @@ class NewQuizApp : Application(), Configuration.Provider {
     override fun getWorkManagerConfiguration() = Configuration.Builder()
         .setWorkerFactory(workerFactory)
         .build()
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannels() {
-        val channels = listOf(
-            createNotificationChannel(
-                id = DailyWordleNotificationServiceImpl.DAILY_WORDLE_CHANNEL_ID,
-                name = "Daily Wordle",
-                description = "New daily word notification",
-                importance = NotificationManager.IMPORTANCE_LOW
-            )
-        )
-
-        NotificationManagerCompat.from(this).createNotificationChannels(channels)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(
-        id: String,
-        name: String,
-        description: String?,
-        importance: Int = NotificationManager.IMPORTANCE_DEFAULT
-    ): NotificationChannel {
-        val channel = NotificationChannel(
-            id,
-            name,
-            importance
-        )
-        channel.description = description
-
-        return channel
-    }
 
     private fun createWorkers() {
         val appStartLoggingAnalyticsWorker = OneTimeWorkRequestBuilder<AppStartLoggingAnalyticsWorker>().build()

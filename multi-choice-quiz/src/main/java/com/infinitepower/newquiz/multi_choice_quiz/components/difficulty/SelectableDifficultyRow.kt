@@ -34,8 +34,7 @@ internal fun SelectableDifficultyRow(
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(spaceMedium),
-        verticalAlignment = Alignment.CenterVertically,
-        contentPadding = PaddingValues(horizontal = spaceMedium)
+        verticalAlignment = Alignment.CenterVertically
     ) {
         item {
             if (selectedDifficulty == null) {

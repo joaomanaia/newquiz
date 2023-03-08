@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.settings_presentation.components.other
+package com.infinitepower.newquiz.core.ui.components
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
@@ -28,7 +28,6 @@ class RoundedPolygonShape(
     private val rotation: Float = 0f,
     private val iterations: Int = 360
 ) : Shape {
-
     private companion object {
         const val TWO_PI = 2 * PI
     }
