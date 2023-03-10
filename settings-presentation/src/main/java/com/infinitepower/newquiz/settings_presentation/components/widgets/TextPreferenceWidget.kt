@@ -23,7 +23,7 @@ internal fun TextPreferenceWidget(
     StatusWrapper(enabled = isEnabled) {
         if (summaryText == null) {
             ListItem(
-                headlineText = {
+                headlineContent = {
                     Text(
                         text = preference.title,
                         maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE
@@ -38,15 +38,13 @@ internal fun TextPreferenceWidget(
             )
         } else {
             ListItem(
-                headlineText = {
+                headlineContent = {
                     Text(
                         text = preference.title,
                         maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE
                     )
                 },
-                supportingText = {
-                    Text(text = summaryText)
-                },
+                supportingContent = { Text(text = summaryText) },
                 leadingContent = preference.icon,
                 modifier = Modifier.clickable(
                     enabled = isEnabled,
@@ -70,13 +68,13 @@ internal fun TextPreferenceWidgetRes(
 
     StatusWrapper(enabled = isEnabled) {
         ListItem(
-            headlineText = {
+            headlineContent = {
                 Text(
                     text = preference.title,
                     maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE
                 )
             },
-            supportingText = {
+            supportingContent = {
                 val text = summary ?: preference.summary
                 if (text != null) Text(text = text)
             },
@@ -102,14 +100,14 @@ internal fun TextPreferenceWidget(
 
     StatusWrapper(enabled = isEnabled) {
         ListItem(
-            headlineText = {
+            headlineContent = {
                 Text(
                     text = preference.title,
                     maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE,
                     style = MaterialTheme.typography.titleMedium
                 )
             },
-            supportingText = summary,
+            supportingContent = summary,
             leadingContent = preference.icon,
             modifier = Modifier.clickable(
                 enabled = isEnabled,

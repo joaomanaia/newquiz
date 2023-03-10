@@ -80,7 +80,7 @@ private fun SelectableListItem(
     onClick: () -> Unit
 ) {
     ListItem(
-        headlineText = { Text(text = text) },
+        headlineContent = { Text(text = text) },
         leadingContent = {
             RadioButton(
                 selected = isSelected,
