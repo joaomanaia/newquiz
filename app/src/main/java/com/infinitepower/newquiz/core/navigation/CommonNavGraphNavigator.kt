@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.core.navigation
 import androidx.navigation.NavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.infinitepower.newquiz.comparison_quiz.ui.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
 import com.infinitepower.newquiz.maze_quiz.MazeScreenNavigator
@@ -60,6 +61,10 @@ class CommonNavGraphNavigator(
 
     override fun navigateToMaze() {
         navController.navigate(MazeScreenDestination)
+    }
+
+    override fun navigateToComparisonQuiz() {
+        navController.navigate(ComparisonQuizScreenDestination)
     }
 
     override fun navigateToGame(item: MazeQuiz.MazeItem) {

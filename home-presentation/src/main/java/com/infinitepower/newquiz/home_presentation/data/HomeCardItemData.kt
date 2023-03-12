@@ -4,9 +4,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Android
 import androidx.compose.material.icons.rounded.Flag
 import androidx.compose.material.icons.rounded.List
-import androidx.compose.material.icons.rounded.LogoDev
+import androidx.compose.material.icons.rounded.NewReleases
 import androidx.compose.material.icons.rounded.Password
-import androidx.compose.material.icons.rounded.QuestionMark
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
@@ -16,6 +15,14 @@ import com.infinitepower.newquiz.core.R as CoreR
 fun getHomeCardItemData(
     homeNavigator: HomeScreenNavigator
 ) = listOf(
+    HomeCardItem.GroupTitle(
+        title = CoreR.string.app_name,
+    ),
+    HomeCardItem.LargeCard(
+        title = CoreR.string.app_name,
+        icon = CardIcon.Icon(Icons.Rounded.NewReleases),
+        onClick = homeNavigator::navigateToComparisonQuiz
+    ),
     HomeCardItem.GroupTitle(
         title = CoreR.string.maze,
     ),

@@ -18,6 +18,8 @@ interface HomeScreenNavigator {
     fun navigateToWordle()
 
     fun navigateToMaze()
+
+    fun navigateToComparisonQuiz()
 }
 
 internal class HomeNavigatorPreviewImpl : HomeScreenNavigator {
@@ -51,5 +53,9 @@ internal class HomeNavigatorPreviewImpl : HomeScreenNavigator {
 
     override fun navigateToMaze() {
         println("Navigating to Maze")
+    }
+
+    override fun navigateToComparisonQuiz() {
+        println("Navigating to Comparison Quiz")
     }
 }
