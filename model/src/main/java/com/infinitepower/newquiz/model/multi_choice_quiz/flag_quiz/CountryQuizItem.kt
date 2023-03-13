@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.model.multi_choice_quiz.flag_quiz
 
 import androidx.annotation.Keep
-import com.infinitepower.newquiz.model.common.BaseUrls
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlinx.serialization.Serializable
 
@@ -13,5 +12,5 @@ data class CountryQuizItem(
     val capital: String,
     val continent: Continent,
     val difficulty: QuestionDifficulty,
-    val flagUrl: String = "${BaseUrls.FLAG_BASE_URL}/$countryCode"
+    val flagUrl: String
 ) : java.io.Serializable
