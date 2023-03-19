@@ -162,7 +162,7 @@
     <string name="sort_by_description">Sort by Description</string>
     <string name="sort_by_category">Sort by Category</string>
     <string name="country_capital_flags">Country capital flags</string>
-    <string name="comparison_quiz">Comparison Quiz</string>
+    <string name="comparison_quiz">Comparison quiz</string>
     <string name="or">or</string>
     <string name="position_n">Position: %1$d</string>
     <string name="highest_n">Highest: %1$d</string>
