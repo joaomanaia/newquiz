@@ -29,7 +29,8 @@ fun getHomeCardItemData(
     HomeCardItem.LargeCard(
         title = CoreR.string.multi_choice_quiz,
         icon = CardIcon.Icon(Icons.Rounded.List),
-        onClick = homeNavigator::navigateToQuickQuiz
+        onClick = homeNavigator::navigateToQuickQuiz,
+        requireInternetConnection = true
     ),
     HomeCardItem.GroupTitle(
         title = CoreR.string.wordle,
@@ -45,7 +46,8 @@ fun getHomeCardItemData(
     HomeCardItem.LargeCard(
         title = CoreR.string.flag_quiz,
         icon = CardIcon.Icon(Icons.Rounded.Flag),
-        onClick = homeNavigator::navigateToFlagQuiz
+        onClick = homeNavigator::navigateToFlagQuiz,
+        requireInternetConnection = true
     ),
     HomeCardItem.GroupTitle(
         title = CoreR.string.country_capital_flags,
@@ -53,7 +55,8 @@ fun getHomeCardItemData(
     HomeCardItem.LargeCard(
         title = CoreR.string.country_capital_flags,
         icon = CardIcon.Icon(Icons.Rounded.Flag),
-        onClick = homeNavigator::navigateToCountryCapitalFlagsQuiz
+        onClick = homeNavigator::navigateToCountryCapitalFlagsQuiz,
+        requireInternetConnection = true
     ),
     HomeCardItem.GroupTitle(
         title = CoreR.string.logo_quiz,
@@ -61,6 +64,7 @@ fun getHomeCardItemData(
     HomeCardItem.LargeCard(
         title = CoreR.string.logo_quiz,
         icon = CardIcon.Icon(Icons.Rounded.Android),
-        onClick = homeNavigator::navigateToLogoQuiz
+        onClick = homeNavigator::navigateToLogoQuiz,
+        requireInternetConnection = true
     ),
 )

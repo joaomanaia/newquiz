@@ -17,6 +17,7 @@ sealed class HomeCardItem {
         val icon: CardIcon,
         val enabled: Boolean = true,
         val backgroundPrimary: Boolean = false,
+        val requireInternetConnection: Boolean = false,
         val onClick: () -> Unit
     ) : HomeCardItem()
 
@@ -25,6 +26,7 @@ sealed class HomeCardItem {
         val description: String? = null,
         val icon: CardIcon,
         val enabled: Boolean = true,
+        val requireInternetConnection: Boolean = false,
         val onClick: () -> Unit
     ) : HomeCardItem()
 

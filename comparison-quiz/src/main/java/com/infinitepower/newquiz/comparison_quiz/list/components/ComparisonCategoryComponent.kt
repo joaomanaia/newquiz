@@ -28,13 +28,15 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 internal fun ComparisonCategoryComponent(
     modifier: Modifier = Modifier,
     category: ComparisonQuizCategory,
+    enabled: Boolean = true,
     onClick: () -> Unit = {}
 ) {
     ComparisonCategoryComponent(
         modifier = modifier,
         title = category.title,
         imageUrl = category.imageUrl,
-        onClick = onClick
+        onClick = onClick,
+        enabled = enabled
     )
 }
 
@@ -43,6 +45,7 @@ internal fun ComparisonCategoryComponent(
     modifier: Modifier = Modifier,
     title: String,
     imageUrl: String,
+    enabled: Boolean = true,
     onClick: () -> Unit = {}
 ) {
     val shapeMedium = MaterialTheme.shapes.medium
@@ -58,7 +61,8 @@ internal fun ComparisonCategoryComponent(
             .height(120.dp)
             .fillMaxWidth(),
         shape = shapeMedium,
-        onClick = onClick
+        onClick = onClick,
+        enabled = enabled
     ) {
         AsyncImage(
             model = imageUrl,

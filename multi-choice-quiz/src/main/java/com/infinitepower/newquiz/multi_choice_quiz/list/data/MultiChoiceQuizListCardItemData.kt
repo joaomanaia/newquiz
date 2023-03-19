@@ -5,6 +5,7 @@ import androidx.compose.material.icons.rounded.Numbers
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.infinitepower.newquiz.core.ui.components.RequireInternetComponent
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
@@ -29,18 +30,22 @@ internal fun getMultiChoiceQuizListCardItemData(
         title = CoreR.string.quick_quiz,
         icon = CardIcon.Lottie(LottieCompositionSpec.RawRes(CoreR.raw.quick_quiz)),
         backgroundPrimary = true,
-        onClick = { navigator.navigate(MultiChoiceQuizScreenDestination()) }
+        onClick = { navigator.navigate(MultiChoiceQuizScreenDestination()) },
+        requireInternetConnection = true
     ),
     HomeCardItem.GroupTitle(title = CoreR.string.difficulty),
     HomeCardItem.HorizontalItems(
         items = QuestionDifficulty.items(),
         itemContent = { difficulty ->
-            FilledCardDifficulty(
-                multiChoiceQuizDifficulty = difficulty,
-                onClick = {
-                    navigator.navigate(MultiChoiceQuizScreenDestination(difficulty = difficulty.id))
-                }
-            )
+            RequireInternetComponent { isInternetAvailable ->
+                FilledCardDifficulty(
+                    multiChoiceQuizDifficulty = difficulty,
+                    onClick = {
+                        navigator.navigate(MultiChoiceQuizScreenDestination(difficulty = difficulty.id))
+                    },
+                    enabled = isInternetAvailable
+                )
+            }
         }
     ),
     HomeCardItem.GroupTitle(title = CoreR.string.categories),
@@ -61,7 +66,8 @@ internal fun getMultiChoiceQuizListCardItemData(
     HomeCardItem.LargeCard(
         title = CoreR.string.number_trivia,
         icon = CardIcon.Icon(Icons.Rounded.Numbers),
-        onClick = { navigator.navigate(MultiChoiceQuizScreenDestination(category = MultiChoiceBaseCategory.NumberTrivia)) }
+        onClick = { navigator.navigate(MultiChoiceQuizScreenDestination(category = MultiChoiceBaseCategory.NumberTrivia)) },
+        requireInternetConnection = true
     ),
     HomeCardItem.GroupTitle(title = CoreR.string.saved_questions),
     HomeCardItem.MediumCard(

@@ -26,6 +26,7 @@ import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnaly
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.core.R as CoreR
@@ -68,6 +69,8 @@ private fun ComparisonQuizListScreenImpl(
     onSelectMode: (mode: ComparisonModeByFirst) -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
+    
+    val isInternetAvailable = rememberIsInternetAvailable()
 
     LazyColumn(
         contentPadding = PaddingValues(spaceMedium),
@@ -114,7 +117,8 @@ private fun ComparisonQuizListScreenImpl(
             ComparisonCategoryComponent(
                 category = category,
                 onClick = { onCategoryClick(category) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                enabled = isInternetAvailable
             )
         }
     }

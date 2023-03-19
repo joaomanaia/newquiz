@@ -17,6 +17,7 @@ import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.components.RequireInternetComponent
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 
@@ -38,50 +39,59 @@ fun HomeLargeCard(
         MaterialTheme.colorScheme.onPrimary
     } else MaterialTheme.colorScheme.onSurfaceVariant
 
-    Card(
-        onClick = data.onClick,
-        enabled = data.enabled,
-        modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = containerColor,
-            contentColor = contentColor,
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(spaceMedium),
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(spaceMedium))
-            Row(
-                modifier = Modifier.align(Alignment.End),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(spaceMedium)
-            ) {
-                when (data.icon) {
-                    is CardIcon.Icon -> {
-                        Icon(
-                            imageVector = data.icon.vector,
-                            contentDescription = title,
-                            modifier = Modifier.size(100.dp)
-                        )
-                    }
-                    is CardIcon.Lottie -> {
-                        val composition by rememberLottieComposition(spec = data.icon.spec)
+    RequireInternetComponent { isInternetAvailable ->
+        // Determine whether the card should be enabled based on the following conditions:
+        // data enabled is true
+        // requireInternetConnection is false, OR
+        // requireInternetConnection is true and isInternetAvailable is also true
+        val isCardEnabled = data.enabled && (!data.requireInternetConnection || isInternetAvailable)
 
-                        LottieAnimation(
-                            composition = composition,
-                            modifier = Modifier.size(100.dp),
-                            iterations = LottieConstants.IterateForever,
-                        )
+        Card(
+            onClick = data.onClick,
+            enabled = isCardEnabled,
+            modifier = modifier,
+            colors = CardDefaults.cardColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(spaceMedium),
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(spaceMedium))
+                Row(
+                    modifier = Modifier.align(Alignment.End),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(spaceMedium)
+                ) {
+                    when (data.icon) {
+                        is CardIcon.Icon -> {
+                            Icon(
+                                imageVector = data.icon.vector,
+                                contentDescription = title,
+                                modifier = Modifier.size(100.dp)
+                            )
+                        }
+                        is CardIcon.Lottie -> {
+                            val composition by rememberLottieComposition(spec = data.icon.spec)
+
+                            LottieAnimation(
+                                composition = composition,
+                                modifier = Modifier.size(100.dp),
+                                iterations = LottieConstants.IterateForever,
+                            )
+                        }
                     }
                 }
             }
         }
     }
+
 }
 
 @Composable

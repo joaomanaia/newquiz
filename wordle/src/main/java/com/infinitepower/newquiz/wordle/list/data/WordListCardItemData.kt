@@ -40,6 +40,7 @@ fun getWordListCardItemData(
     HomeCardItem.LargeCard(
         title = R.string.number_trivia,
         icon = CardIcon.Icon(Icons.Rounded.Numbers),
-        onClick = { navigator.navigate(WordleScreenDestination(quizType = WordleQuizType.NUMBER_TRIVIA)) }
+        onClick = { navigator.navigate(WordleScreenDestination(quizType = WordleQuizType.NUMBER_TRIVIA)) },
+        requireInternetConnection = true
     ),
 )

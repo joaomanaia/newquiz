@@ -24,6 +24,7 @@ import com.infinitepower.newquiz.model.question.QuestionDifficulty
 internal fun FilledCardDifficulty(
     modifier: Modifier = Modifier,
     multiChoiceQuizDifficulty: QuestionDifficulty,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     val backgroundColor = when (multiChoiceQuizDifficulty) {
@@ -45,7 +46,8 @@ internal fun FilledCardDifficulty(
         text = multiChoiceQuizDifficulty.getText().asString(),
         containerColor = backgroundColor,
         contentColor = textColor,
-        onClick = onClick
+        onClick = onClick,
+        enabled = enabled
     )
 }
 
@@ -56,6 +58,7 @@ internal fun FilledCardDifficulty(
     text: String,
     containerColor: Color,
     contentColor: Color,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     FilledCardDifficultyContainer(
@@ -63,6 +66,7 @@ internal fun FilledCardDifficulty(
         containerColor = containerColor,
         contentColor = contentColor,
         onClick = onClick,
+        enabled = enabled
     ) {
         BaseCardDifficultyContent(text = text)
     }
@@ -74,6 +78,7 @@ private fun FilledCardDifficultyContainer(
     modifier: Modifier = Modifier,
     containerColor: Color,
     contentColor: Color,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
@@ -83,6 +88,7 @@ private fun FilledCardDifficultyContainer(
             containerColor = containerColor,
             contentColor = contentColor
         ),
+        enabled = enabled,
         onClick = onClick
     ) {
         content()
