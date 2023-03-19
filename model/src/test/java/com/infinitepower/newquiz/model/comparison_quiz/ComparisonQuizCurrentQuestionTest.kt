@@ -33,98 +33,6 @@ internal class ComparisonQuizCurrentQuestionTest {
     }
 
     @Test
-    fun `isCorrectAnswer returns true if mode is GREATER and first value is greater`() {
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
-
-        val quizItem1 = ComparisonQuizItem(
-            title = "A",
-            imgUri = uriMock,
-            value = 10
-        )
-
-        val quizItem2 = ComparisonQuizItem(
-            title = "B",
-            imgUri = uriMock,
-            value = 5
-        )
-
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
-
-        assertThat(question.isCorrectAnswer(ComparisonModeByFirst.GREATER)).isTrue()
-    }
-
-    @Test
-    fun `isCorrectAnswer returns false if mode is GREATER and first value is less`() {
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
-
-        val quizItem1 = ComparisonQuizItem(
-            title = "A",
-            imgUri = uriMock,
-            value = 5
-        )
-
-        val quizItem2 = ComparisonQuizItem(
-            title = "B",
-            imgUri = uriMock,
-            value = 10
-        )
-
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
-
-        assertThat(question.isCorrectAnswer(ComparisonModeByFirst.GREATER)).isFalse()
-    }
-
-    @Test
-    fun `isCorrectAnswer returns true if mode is LESS and first value is less`() {
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
-
-        val quizItem1 = ComparisonQuizItem(
-            title = "A",
-            imgUri = uriMock,
-            value = 5
-        )
-
-        val quizItem2 = ComparisonQuizItem(
-            title = "B",
-            imgUri = uriMock,
-            value = 10
-        )
-
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
-
-        assertThat(question.isCorrectAnswer(ComparisonModeByFirst.LESS)).isTrue()
-    }
-
-    @Test
-    fun `isCorrectAnswer returns false if mode is LESS and first value is greater`() {
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
-
-        val quizItem1 = ComparisonQuizItem(
-            title = "A",
-            imgUri = uriMock,
-            value = 10
-        )
-
-        val quizItem2 = ComparisonQuizItem(
-            title = "B",
-            imgUri = uriMock,
-            value = 5
-        )
-
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
-
-        assertThat(question.isCorrectAnswer(ComparisonModeByFirst.LESS)).isFalse()
-    }
-
-    @Test
     fun `nextQuestion returns a new ComparisonQuizCurrentQuestion with the second question replaced`() {
         mockkStatic(Uri::class)
         val uriMock = mockk<Uri>()
@@ -157,5 +65,113 @@ internal class ComparisonQuizCurrentQuestionTest {
 
         assertThat(updatedQuestion.questions.first).isEqualTo(quizItem2)
         assertThat(updatedQuestion.questions.second).isEqualTo(newQuestion)
+    }
+
+    @Test
+    fun `test isCorrectAnswer when correct answer is first and the user answer is first`() {
+        mockkStatic(Uri::class)
+        val uriMock = mockk<Uri>()
+        every { Uri.parse("test/path") } returns uriMock
+
+        val quizItem1 = ComparisonQuizItem(
+            title = "A",
+            imgUri = uriMock,
+            value = 2
+        )
+
+        val quizItem2 = ComparisonQuizItem(
+            title = "B",
+            imgUri = uriMock,
+            value = 1
+        )
+
+        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+
+        val isCorrectGreater = question.isCorrectAnswer(quizItem1, ComparisonModeByFirst.GREATER)
+        assertThat(isCorrectGreater).isTrue()
+
+        val isCorrectLower = question.isCorrectAnswer(quizItem1, ComparisonModeByFirst.LESSER)
+        assertThat(isCorrectLower).isFalse()
+    }
+
+    @Test
+    fun `test isCorrectAnswer when correct answer is first and the user answer is second`() {
+        mockkStatic(Uri::class)
+        val uriMock = mockk<Uri>()
+        every { Uri.parse("test/path") } returns uriMock
+
+        val quizItem1 = ComparisonQuizItem(
+            title = "A",
+            imgUri = uriMock,
+            value = 2
+        )
+
+        val quizItem2 = ComparisonQuizItem(
+            title = "B",
+            imgUri = uriMock,
+            value = 1
+        )
+
+        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+
+        val isCorrectGreater = question.isCorrectAnswer(quizItem2, ComparisonModeByFirst.GREATER)
+        assertThat(isCorrectGreater).isFalse()
+
+        val isCorrectLower = question.isCorrectAnswer(quizItem2, ComparisonModeByFirst.LESSER)
+        assertThat(isCorrectLower).isTrue()
+    }
+
+    @Test
+    fun `test isCorrectAnswer when correct answer is second and the user answer is first`() {
+        mockkStatic(Uri::class)
+        val uriMock = mockk<Uri>()
+        every { Uri.parse("test/path") } returns uriMock
+
+        val quizItem1 = ComparisonQuizItem(
+            title = "A",
+            imgUri = uriMock,
+            value = 1
+        )
+
+        val quizItem2 = ComparisonQuizItem(
+            title = "B",
+            imgUri = uriMock,
+            value = 2
+        )
+
+        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+
+        val isCorrectGreater = question.isCorrectAnswer(quizItem1, ComparisonModeByFirst.GREATER)
+        assertThat(isCorrectGreater).isFalse()
+
+        val isCorrectLower = question.isCorrectAnswer(quizItem1, ComparisonModeByFirst.LESSER)
+        assertThat(isCorrectLower).isTrue()
+    }
+
+    @Test
+    fun `test isCorrectAnswer when correct answer is second and the user answer is second`() {
+        mockkStatic(Uri::class)
+        val uriMock = mockk<Uri>()
+        every { Uri.parse("test/path") } returns uriMock
+
+        val quizItem1 = ComparisonQuizItem(
+            title = "A",
+            imgUri = uriMock,
+            value = 1
+        )
+
+        val quizItem2 = ComparisonQuizItem(
+            title = "B",
+            imgUri = uriMock,
+            value = 2
+        )
+
+        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+
+        val isCorrectGreater = question.isCorrectAnswer(quizItem2, ComparisonModeByFirst.GREATER)
+        assertThat(isCorrectGreater).isTrue()
+
+        val isCorrectLower = question.isCorrectAnswer(quizItem2, ComparisonModeByFirst.LESSER)
+        assertThat(isCorrectLower).isFalse()
     }
 }

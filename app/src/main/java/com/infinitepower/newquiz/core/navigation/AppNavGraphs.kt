@@ -6,7 +6,8 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.infinitepower.newquiz.comparison_quiz.ui.destinations.ComparisonQuizScreenDestination
+import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizListScreenDestination
+import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
 import com.infinitepower.newquiz.math_quiz.list.destinations.MathQuizListScreenDestination
@@ -54,7 +55,8 @@ internal object AppNavGraphs {
             ProfileScreenDestination,
             MathQuizListScreenDestination,
             MazeScreenDestination,
-            ComparisonQuizScreenDestination
+            ComparisonQuizScreenDestination,
+            ComparisonQuizListScreenDestination
         )
     )
 }

@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.comparison_quiz.ui
 
 import android.net.Uri
+import androidx.annotation.Keep
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -25,28 +26,42 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonItem
+import com.infinitepower.newquiz.comparison_quiz.ui.components.GameOverContent
 import com.infinitepower.newquiz.comparison_quiz.ui.components.HelperValueState
+import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@Keep
+data class ComparisonQuizListScreenNavArg(
+    val category: ComparisonQuizCategory,
+    val comparisonMode: ComparisonModeByFirst = ComparisonModeByFirst.GREATER
+)
+
 @Composable
-@Destination
+@Destination(navArgsDelegate = ComparisonQuizListScreenNavArg::class)
 @OptIn(ExperimentalMaterial3Api::class)
 fun ComparisonQuizScreen(
     windowSizeClass: WindowSizeClass,
@@ -58,9 +73,22 @@ fun ComparisonQuizScreen(
     ComparisonQuizScreenImpl(
         uiState = uiState,
         windowSizeClass = windowSizeClass,
+        onEvent = viewModel::onEvent,
         onBackClick = navigator::popBackStack,
-        onEvent = viewModel::onEvent
+        onPlayAgainClick = {
+            navigator.navigate(
+                ComparisonQuizScreenDestination(
+                    category = viewModel.getCategory(),
+                    comparisonMode = viewModel.getComparisonMode()
+                )
+            )
+        }
     )
+
+    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
+    LaunchedEffect(key1 = true) {
+        coreLoggingAnalytics.logScreenView("ComparisonQuizScreen")
+    }
 }
 
 
@@ -70,27 +98,40 @@ private fun ComparisonQuizScreenImpl(
     uiState: ComparisonQuizUiState,
     windowSizeClass: WindowSizeClass,
     onBackClick: () -> Unit = {},
+    onPlayAgainClick: () -> Unit = {},
     onEvent: (event: ComparisonQuizUiEvent) -> Unit = {}
 ) {
     val verticalContent = windowSizeClass.heightSizeClass > WindowHeightSizeClass.Compact
             && windowSizeClass.widthSizeClass < WindowWidthSizeClass.Expanded
 
-    if (uiState.currentQuestion != null && uiState.gameDescription != null) {
-        ComparisonQuizContent(
-            modifier = Modifier.fillMaxSize(),
-            currentQuestion = uiState.currentQuestion,
-            gameDescription = uiState.gameDescription,
-            questionPosition = uiState.currentPosition,
-            verticalContent = verticalContent,
-            onBackClick = onBackClick,
-            onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) }
-        )
-    } else {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
+    when {
+        uiState.currentQuestion != null && uiState.gameDescription != null -> {
+            ComparisonQuizContent(
+                modifier = Modifier.fillMaxSize(),
+                currentQuestion = uiState.currentQuestion,
+                gameDescription = uiState.gameDescription,
+                questionPosition = uiState.currentPosition,
+                highestPosition = uiState.highestPosition,
+                verticalContent = verticalContent,
+                onBackClick = onBackClick,
+                onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) }
+            )
+        }
+        uiState.isGameOver -> {
+            GameOverContent(
+                scorePosition = uiState.currentPosition,
+                highestPosition = uiState.highestPosition,
+                onBackClick = onBackClick,
+                onPlayAgainClick = onPlayAgainClick
+            )
+        }
+        else -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
 }
@@ -101,6 +142,7 @@ private fun ComparisonQuizContent(
     currentQuestion: ComparisonQuizCurrentQuestion,
     gameDescription: String,
     questionPosition: Int,
+    highestPosition: Int,
     verticalContent: Boolean,
     onBackClick: () -> Unit,
     onAnswerClick: (ComparisonQuizItem) -> Unit
@@ -133,7 +175,7 @@ private fun ComparisonQuizContent(
         midContent = {
             ComparisonMidContent(
                 questionPosition = questionPosition,
-                highestPosition = 10,
+                highestPosition = highestPosition,
                 heightCompact = verticalContent
             )
         },
@@ -229,14 +271,14 @@ fun ComparisonMidContent(
         verticalContent = heightCompact,
         currentPositionContent = {
             Text(
-                text = "Position: $questionPosition",
+                text = stringResource(id = CoreR.string.position_n, questionPosition),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )
         },
         highestPositionContent = {
             Text(
-                text = "Highest: $highestPosition",
+                text = stringResource(id = CoreR.string.highest_n, highestPosition),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )
@@ -254,7 +296,7 @@ fun ComparisonMidContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "OR",
+                        text = stringResource(id = CoreR.string.or).uppercase(),
                         style = MaterialTheme.typography.headlineSmall
                     )
                 }

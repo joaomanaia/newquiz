@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.model.comparison_quiz
 
 import androidx.annotation.Keep
 
-enum class ComparisonModeByFirst { GREATER, LESS }
+enum class ComparisonModeByFirst { GREATER, LESSER }
 
 @Keep
 data class ComparisonQuizData(
@@ -10,9 +10,12 @@ data class ComparisonQuizData(
     val gameDescription: String? = null,
     val currentQuestion: ComparisonQuizCurrentQuestion? = null,
     val comparisonMode: ComparisonModeByFirst = ComparisonModeByFirst.GREATER,
-    val currentPosition: Int = 0
+    val currentPosition: Int = 0,
+    val isGameOver: Boolean = false
 ) {
-    fun nextQuestion(): ComparisonQuizData {
+    fun nextQuestion(
+        checkHighestPosition: () -> Unit = {}
+    ): ComparisonQuizData {
         if (questions.isEmpty()) {
             return copy(currentQuestion = null)
         }
@@ -37,6 +40,8 @@ data class ComparisonQuizData(
 
             currentQuestion.nextQuestion(firstQuestion)
         }
+
+        checkHighestPosition()
 
         return copy(
             questions = newQuestions,

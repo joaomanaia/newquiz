@@ -7,5 +7,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQues
 data class ComparisonQuizUiState(
     val currentQuestion: ComparisonQuizCurrentQuestion? = null,
     val gameDescription: String? = null,
-    val currentPosition: Int = 0
+    val currentPosition: Int = 0,
+    val highestPosition: Int = 0,
+    val isGameOver: Boolean = false
 )

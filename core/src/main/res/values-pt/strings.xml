@@ -162,4 +162,15 @@
     <string name="sort_by_description">Ordenar pela Descrição</string>
     <string name="sort_by_category">Ordenar pela Categoria</string>
     <string name="country_capital_flags">Bandeiras da capital do país</string>
+    <string name="comparison_quiz">Jogo de Comparação</string>
+    <string name="or">ou</string>
+    <string name="position_n">Posição: %1$d</string>
+    <string name="highest_n">Melhor: %1$d</string>
+    <string name="your_score">Sua pontuação</string>
+    <string name="highest_score">Melhor pontuação</string>
+    <string name="select_a_comparison_mode_for_the_first_item">Selecione um modo de comparação para o primeiro item</string>
+    <string name="image_category_of_s">Imagem da categoria %1$s</string>
+    <string name="icon_of_s">Icon de %1$s</string>
+    <string name="greater">Maior</string>
+    <string name="lesser">Menor</string>
 </resources>

@@ -72,6 +72,7 @@ dependencies {
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material3)
     implementation(AndroidX.compose.material3.windowSizeClass)
+    implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.constraintLayout.compose)
 
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
@@ -92,6 +93,14 @@ dependencies {
 
     implementation(COIL.compose)
     implementation(COIL.svg)
+
+    implementation(Ktor.client.core)
+    implementation(Ktor.client.okHttp)
+    implementation(Ktor.client.serialization)
+
+    implementation(libs.lottie.compose)
+
+    implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))

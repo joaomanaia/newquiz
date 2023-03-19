@@ -3,6 +3,8 @@ package com.infinitepower.newquiz.core.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.infinitepower.newquiz.core.common.dataStore.comparisonQuizDataStore
+import com.infinitepower.newquiz.core.common.dataStore.multiChoiceCategoriesDataStore
 import com.infinitepower.newquiz.core.common.dataStore.settingsDataStore
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
@@ -17,6 +19,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
+    // Settings data store
     @Provides
     @Singleton
     @SettingsDataStore
@@ -31,12 +34,14 @@ object DataStoreModule {
         @SettingsDataStore dataStore: DataStore<Preferences>
     ): DataStoreManager = DataStoreManagerImpl(dataStore)
 
+    // Multi choice question data store
+
     @Provides
     @Singleton
     @MultiChoiceQuestionDataStore
     fun provideMultiChoiceQuestionDatastore(
         @ApplicationContext context: Context
-    ): DataStore<Preferences> = context.settingsDataStore
+    ): DataStore<Preferences> = context.multiChoiceCategoriesDataStore
 
     @Provides
     @Singleton
@@ -44,8 +49,25 @@ object DataStoreModule {
     fun provideMultiChoiceQuestionStoreManager(
         @MultiChoiceQuestionDataStore dataStore: DataStore<Preferences>
     ): DataStoreManager = DataStoreManagerImpl(dataStore)
+
+    // Comparison quiz data store
+
+    @Provides
+    @Singleton
+    @ComparisonQuizDataStore
+    fun provideComparisonQuizDatastore(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> = context.comparisonQuizDataStore
+
+    @Provides
+    @Singleton
+    @ComparisonQuizDataStoreManager
+    fun provideComparisonQuizStoreManager(
+        @ComparisonQuizDataStore dataStore: DataStore<Preferences>
+    ): DataStoreManager = DataStoreManagerImpl(dataStore)
 }
 
+// Settings data store
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class SettingsDataStore
@@ -54,6 +76,8 @@ annotation class SettingsDataStore
 @Retention(AnnotationRetention.RUNTIME)
 annotation class SettingsDataStoreManager
 
+// Multi choice question data store
+
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class MultiChoiceQuestionDataStore
@@ -61,3 +85,13 @@ annotation class MultiChoiceQuestionDataStore
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class MultiChoiceQuestionDataStoreManager
+
+// Comparison quiz data store
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ComparisonQuizDataStore
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ComparisonQuizDataStoreManager

@@ -19,16 +19,23 @@ value class ComparisonQuizCurrentQuestion(
     }
 
     /**
-     * Checks if the answer is correct.
-     * @param mode Mode of comparison, based on the first question of the [questions].
-     * @return True if the answer is correct, false otherwise, depending on the [mode].
+     * Returns true if the [answer] is the correct answer for the [mode].
+     * @param answer The user selected answer to check.
+     * @param mode Mode of comparison.
+     * @return True if the [answer] is the correct answer for the [mode].
      * @see ComparisonModeByFirst
+     * @see ComparisonQuizItem
      */
-    fun isCorrectAnswer(mode: ComparisonModeByFirst): Boolean {
-        return when (mode) {
-            ComparisonModeByFirst.GREATER -> questions.first.value > questions.second.value
-            ComparisonModeByFirst.LESS -> questions.first.value < questions.second.value
+    fun isCorrectAnswer(
+        answer: ComparisonQuizItem,
+        mode: ComparisonModeByFirst
+    ): Boolean {
+        val correctValue = when (mode) {
+            ComparisonModeByFirst.GREATER -> maxOf(questions.first.value, questions.second.value)
+            ComparisonModeByFirst.LESSER -> minOf(questions.first.value, questions.second.value)
         }
+
+        return answer.value == correctValue
     }
 
     /**

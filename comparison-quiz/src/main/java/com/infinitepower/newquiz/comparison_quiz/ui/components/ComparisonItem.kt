@@ -16,17 +16,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 internal fun ComparisonItem(
@@ -36,11 +42,14 @@ internal fun ComparisonItem(
     helperValueState: HelperValueState = HelperValueState.HIDDEN,
     onClick: () -> Unit
 ) {
+    val numberFormat = remember { NumberFormat.getNumberInstance(Locale.getDefault()) }
+    val numberFormatted = remember(item.value) { numberFormat.format(item.value) }
+
     ComparisonItem(
         modifier = modifier,
         title = item.title,
         image = item.imgUri,
-        value = item.value,
+        value = numberFormatted,
         helperContentAlignment = helperContentAlignment,
         helperValueState = helperValueState,
         onClick = onClick
@@ -54,7 +63,7 @@ private fun ComparisonItem(
     modifier: Modifier = Modifier,
     title: String,
     image: Uri,
-    value: Int,
+    value: String,
     helperContentAlignment: Alignment,
     helperValueState: HelperValueState,
     onClick: () -> Unit
@@ -62,6 +71,14 @@ private fun ComparisonItem(
     val spaceMedium = MaterialTheme.spacing.medium
 
     val helperColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
+
+    val context = LocalContext.current
+
+    val imageLoader = ImageLoader
+        .Builder(context)
+        .components {
+            add(SvgDecoder.Factory())
+        }.build()
 
     Surface(
         modifier = modifier,
@@ -76,7 +93,8 @@ private fun ComparisonItem(
                 model = image,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                imageLoader = imageLoader
             )
 
             Surface(
@@ -104,8 +122,8 @@ private fun ComparisonItem(
                                 .width(DividerDefaults.Thickness)
                         )
                         Text(
-                            text = value.toString(),
-                            style = MaterialTheme.typography.titleMedium,
+                            text = value,
+                            style = MaterialTheme.typography.titleMedium
                         )
                     }
                 }
@@ -129,7 +147,7 @@ private fun ComparisonQuizScreenPreview(
                     .size(400.dp),
                 title = "NewQuiz",
                 image = Uri.EMPTY,
-                value = 12345,
+                value = "12,345",
                 onClick = {},
                 helperContentAlignment = alignment,
                 helperValueState = HelperValueState.NORMAL
