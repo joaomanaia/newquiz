@@ -51,7 +51,7 @@ internal fun ComparisonModeComponent(
     } else {
         MaterialTheme.colorScheme.surface
     }
-    
+
     val iconContainerColor = if (selected) {
         MaterialTheme.colorScheme.onPrimary
     } else {
@@ -65,7 +65,7 @@ internal fun ComparisonModeComponent(
     }
 
     val border = if (selected) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
-    
+
     val spaceMedium = MaterialTheme.spacing.medium
 
     Surface(
