@@ -15,7 +15,7 @@ object ProjectConfig {
 
     const val versionName = "1.5.0"
 
-    val javaVersionCompatibility = JavaVersion.VERSION_11
+    val javaVersionCompatibility = JavaVersion.VERSION_17
 
-    const val jvmTargetVersion = "11"
+    const val jvmTargetVersion = "17"
 }
