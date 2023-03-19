@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.ui.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Compare
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.ListAlt
 import androidx.compose.material.icons.rounded.Numbers
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
+import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizListScreenDestination
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.navigation.NavDrawerItemGroup
@@ -45,6 +47,12 @@ internal val navigationItems = listOf(
         text = R.string.wordle,
         icon = Icons.Rounded.Password,
         direction = WordleListScreenDestination,
+        primary = true
+    ),
+    NavigationItem.Item(
+        text = R.string.comparison_quiz,
+        icon = Icons.Rounded.Compare,
+        direction = ComparisonQuizListScreenDestination,
         primary = true
     ),
     NavigationItem.Item(

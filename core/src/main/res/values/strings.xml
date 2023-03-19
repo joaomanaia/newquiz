@@ -162,4 +162,15 @@
     <string name="sort_by_description">Sort by Description</string>
     <string name="sort_by_category">Sort by Category</string>
     <string name="country_capital_flags">Country capital flags</string>
+    <string name="comparison_quiz">Comparison quiz</string>
+    <string name="or">or</string>
+    <string name="position_n">Position: %1$d</string>
+    <string name="highest_n">Highest: %1$d</string>
+    <string name="your_score">Your score</string>
+    <string name="highest_score">Highest score</string>
+    <string name="select_a_comparison_mode_for_the_first_item">Select a comparison mode for the first item</string>
+    <string name="image_category_of_s">Image category of %1$s</string>
+    <string name="icon_of_s">Icon of %1$s</string>
+    <string name="greater">Greater</string>
+    <string name="lesser">Lesser</string>
 </resources>

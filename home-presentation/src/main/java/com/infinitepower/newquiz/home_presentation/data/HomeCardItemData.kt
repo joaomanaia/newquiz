@@ -4,9 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Android
 import androidx.compose.material.icons.rounded.Flag
 import androidx.compose.material.icons.rounded.List
-import androidx.compose.material.icons.rounded.LogoDev
 import androidx.compose.material.icons.rounded.Password
-import androidx.compose.material.icons.rounded.QuestionMark
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon

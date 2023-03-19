@@ -11,4 +11,5 @@ object Modules {
     const val onlineServices = ":online_services"
     const val mathQuiz = ":math-quiz"
     const val mazeQuiz = ":maze-quiz"
+    const val comparisonQuiz = ":comparison-quiz"
 }

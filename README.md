@@ -24,11 +24,15 @@ New quiz is optimized to material you, the theme of new quiz will adapt to your 
   - Flag quiz
   - Solve the formula equation
   - Number trivia
+  
 - Wordle
   - Guess the text word
   - Guess the number
   - Guess the math formula
   - Number trivia
+  
+ - Comparison Quiz
+   - Compare the country population 
 
 # Build With
 
@@ -45,12 +49,15 @@ New quiz is optimized to material you, the theme of new quiz will adapt to your 
 
 # Question Data Source
 
+- [FlagCDN:](https://flagcdn.com/) country flag images
+
 - Multi choice quiz
   - [OpenTDB:](https://opentdb.com/) multi choice questions
   - [NumbersAPI:](http://numbersapi.com) api for number trivia questions
-  - [Country flags:](https://countryflagsapi.com/png) flag images
 - Wordle
   - [Spanish and French words](https://github.com/lorenbrichter/Words)
+- Comparison Quiz
+  - [Rest Countries:](https://restcountries.com/) country information
 
 # Translation
 

@@ -5,18 +5,20 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.ui.components.progress_indicator.RoundCircularProgressIndicator
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.model.RemainingTime
@@ -30,7 +32,8 @@ internal fun RemainingTimeComponent(
 ) {
     val animatedProgressValue by animateFloatAsState(
         targetValue = remainingTime.getRemainingPercent(maxTimeMillis),
-        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
+        label = "Animated progress value"
     )
 
     Box(
@@ -38,11 +41,13 @@ internal fun RemainingTimeComponent(
         modifier = modifier
     ) {
         if (showProgressIndicator) {
-            RoundCircularProgressIndicator(
+            CircularProgressIndicator(
                 progress = animatedProgressValue,
                 modifier = Modifier
                     .size(75.dp)
                     .testTag(RemainingTimeComponentTestTags.PROGRESS_INDICATOR),
+                strokeCap = StrokeCap.Round,
+                trackColor = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
             )
         }
 

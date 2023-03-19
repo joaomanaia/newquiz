@@ -53,6 +53,7 @@ android {
 dependencies {
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
+    testImplementation(Testing.mockK.android)
 
     implementation(AndroidX.annotation)
 

@@ -122,6 +122,8 @@ dependencies {
 
     testImplementation(KotlinX.coroutines.test)
 
+    //implementation("androidx.palette:palette-ktx:1.0.0")
+
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.io.github.raamcosta.compose.destinations.ksp)
 
