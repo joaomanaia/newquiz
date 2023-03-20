@@ -163,4 +163,14 @@
     <string name="play_with_random_saved_questions">Juega al cuestionario con preguntas guardadas al azar</string>
     <string name="country_capital_flags">Banderas de las capitales de los países</string>
     <string name="comparison_quiz">Cuestionario de comparación</string>
+    <string name="position_n">Posición: %1$d</string>
+    <string name="highest_n">Más alto: %1$d</string>
+    <string name="your_score">Tu puntuación</string>
+    <string name="highest_score">Máxima puntuación</string>
+    <string name="select_a_comparison_mode_for_the_first_item">Seleccione un modo de comparación para el primer elemento</string>
+    <string name="image_category_of_s">Categoría de la imagen de %1$s</string>
+    <string name="icon_of_s">Icono de %1$s</string>
+    <string name="greater">Mayor que</string>
+    <string name="lesser">Menor que</string>
+    <string name="or">o</string>
 </resources>
