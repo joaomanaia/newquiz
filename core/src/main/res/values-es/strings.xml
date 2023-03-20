@@ -162,4 +162,5 @@
     <string name="sort_questions">Ordenar las preguntas</string>
     <string name="play_with_random_saved_questions">Juega al cuestionario con preguntas guardadas al azar</string>
     <string name="country_capital_flags">Banderas de las capitales de los países</string>
+    <string name="comparison_quiz">Cuestionario de comparación</string>
 </resources>
