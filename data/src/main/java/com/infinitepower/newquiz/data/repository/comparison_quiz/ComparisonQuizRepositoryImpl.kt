@@ -56,9 +56,7 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
             val textResponse = response.bodyAsText()
             val entityQuestions: List<ComparisonQuizItemEntity> = Json.decodeFromString(textResponse)
 
-            val questions = entityQuestions
-                .map(ComparisonQuizItemEntity::toComparisonQuizItem)
-                .shuffled()
+            val questions = entityQuestions.map(ComparisonQuizItemEntity::toComparisonQuizItem)
 
             val gameDescription = when (comparisonMode) {
                 ComparisonModeByFirst.GREATER -> category.questionDescription.greater

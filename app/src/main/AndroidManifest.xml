@@ -20,6 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:appCategory="game"
+        android:isGame="true"
         android:theme="@style/Theme.NewQuiz.Starting">
         <activity
             android:name="com.infinitepower.newquiz.MainActivity"
