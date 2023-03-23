@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
@@ -38,18 +39,24 @@ import java.util.Locale
 internal fun ComparisonItem(
     modifier: Modifier = Modifier,
     item: ComparisonQuizItem,
+    helperValueSuffix: String? = null,
     helperContentAlignment: Alignment,
     helperValueState: HelperValueState = HelperValueState.HIDDEN,
     onClick: () -> Unit
 ) {
     val numberFormat = remember { NumberFormat.getNumberInstance(Locale.getDefault()) }
-    val numberFormatted = remember(item.value) { numberFormat.format(item.value) }
+
+    val helperValue = remember(item.value) {
+        val numberFormatted = numberFormat.format(item.value)
+
+        if (helperValueSuffix != null) "$numberFormatted $helperValueSuffix" else numberFormatted
+    }
 
     ComparisonItem(
         modifier = modifier,
         title = item.title,
         image = item.imgUri,
-        value = numberFormatted,
+        helperValue = helperValue,
         helperContentAlignment = helperContentAlignment,
         helperValueState = helperValueState,
         onClick = onClick
@@ -63,7 +70,7 @@ private fun ComparisonItem(
     modifier: Modifier = Modifier,
     title: String,
     image: Uri,
-    value: String,
+    helperValue: String,
     helperContentAlignment: Alignment,
     helperValueState: HelperValueState,
     onClick: () -> Unit
@@ -113,7 +120,9 @@ private fun ComparisonItem(
                 ) {
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     if (helperValueState == HelperValueState.NORMAL) {
                         Divider(
@@ -122,8 +131,9 @@ private fun ComparisonItem(
                                 .width(DividerDefaults.Thickness)
                         )
                         Text(
-                            text = value,
-                            style = MaterialTheme.typography.titleMedium
+                            text = helperValue,
+                            style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1
                         )
                     }
                 }
@@ -147,7 +157,7 @@ private fun ComparisonQuizScreenPreview(
                     .size(400.dp),
                 title = "NewQuiz",
                 image = Uri.EMPTY,
-                value = "12,345",
+                helperValue = "12,345",
                 onClick = {},
                 helperContentAlignment = alignment,
                 helperValueState = HelperValueState.NORMAL

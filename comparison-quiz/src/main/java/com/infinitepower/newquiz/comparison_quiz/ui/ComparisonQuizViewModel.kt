@@ -40,7 +40,8 @@ class ComparisonQuizViewModel @Inject constructor(
                         currentQuestion = data.currentQuestion,
                         gameDescription = data.gameDescription,
                         currentPosition = data.currentPosition,
-                        isGameOver = data.isGameOver
+                        isGameOver = data.isGameOver,
+                        gameCategory = getCategory()
                     )
                 }
             }.launchIn(viewModelScope)
