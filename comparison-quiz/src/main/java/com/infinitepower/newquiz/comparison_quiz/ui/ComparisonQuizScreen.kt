@@ -81,7 +81,11 @@ fun ComparisonQuizScreen(
                     category = viewModel.getCategory(),
                     comparisonMode = viewModel.getComparisonMode()
                 )
-            )
+            ) {
+                popUpTo(ComparisonQuizScreenDestination.route) {
+                    inclusive = true
+                }
+            }
         }
     )
 
