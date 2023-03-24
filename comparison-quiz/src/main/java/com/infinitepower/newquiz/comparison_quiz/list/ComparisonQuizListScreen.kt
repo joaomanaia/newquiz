@@ -137,7 +137,6 @@ private fun ComparisonQuizListScreenPreview() {
                             description = "Description",
                             title = "Title",
                             imageUrl = "",
-                            apiUrl = "",
                             questionDescription = ComparisonQuizCategory.QuestionDescription(
                                 greater = "Greater",
                                 less = "Less"

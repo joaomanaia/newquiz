@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.data.repository.comparison_quiz
 
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.infinitepower.newquiz.core.common.BaseApiUrls
 import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.ComparisonQuizDataStoreCommon
@@ -47,7 +48,9 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
         try {
             emit(Resource.Loading())
 
-            val response: HttpResponse = client.request(category.apiUrl) {
+            val apiUrl = "${BaseApiUrls.NEWQUIZ}/api/comparisonquiz/${category.id}"
+
+            val response: HttpResponse = client.request(apiUrl) {
                 headers {
                     append(HttpHeaders.Accept, "application/json")
                 }

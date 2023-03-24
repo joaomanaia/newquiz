@@ -8,7 +8,8 @@ import kotlinx.serialization.Serializable
  * @param id The id of the category.
  * @param title The title of the category.
  * @param imageUrl The url of the image of the category.
- * @param apiUrl The url of the api to get the quiz data by the category.
+ * @param questionDescription The description of the question.
+ * @param helperValueSuffix The suffix of the question value.
  */
 @Keep
 @Serializable
@@ -17,8 +18,8 @@ data class ComparisonQuizCategory(
     val title: String,
     val description: String,
     val imageUrl: String,
-    val apiUrl: String,
-    val questionDescription: QuestionDescription
+    val questionDescription: QuestionDescription,
+    val helperValueSuffix: String? = null
 ) : java.io.Serializable {
     @Keep
     @Serializable

@@ -81,7 +81,11 @@ fun ComparisonQuizScreen(
                     category = viewModel.getCategory(),
                     comparisonMode = viewModel.getComparisonMode()
                 )
-            )
+            ) {
+                popUpTo(ComparisonQuizScreenDestination.route) {
+                    inclusive = true
+                }
+            }
         }
     )
 
@@ -114,7 +118,8 @@ private fun ComparisonQuizScreenImpl(
                 highestPosition = uiState.highestPosition,
                 verticalContent = verticalContent,
                 onBackClick = onBackClick,
-                onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) }
+                onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) },
+                helperValueSuffix = uiState.gameCategory?.helperValueSuffix
             )
         }
         uiState.isGameOver -> {
@@ -144,6 +149,7 @@ private fun ComparisonQuizContent(
     questionPosition: Int,
     highestPosition: Int,
     verticalContent: Boolean,
+    helperValueSuffix: String? = null,
     onBackClick: () -> Unit,
     onAnswerClick: (ComparisonQuizItem) -> Unit
 ) {
@@ -161,7 +167,8 @@ private fun ComparisonQuizContent(
                 item = currentQuestion.questions.first,
                 onClick = { onAnswerClick(currentQuestion.questions.first) },
                 helperContentAlignment = Alignment.BottomCenter,
-                helperValueState = HelperValueState.NORMAL
+                helperValueState = HelperValueState.NORMAL,
+                helperValueSuffix = helperValueSuffix
             )
         },
         secondQuestionContent = {
@@ -169,7 +176,8 @@ private fun ComparisonQuizContent(
                 item = currentQuestion.questions.second,
                 onClick = { onAnswerClick(currentQuestion.questions.second) },
                 helperContentAlignment = if (verticalContent) Alignment.TopCenter else Alignment.BottomCenter,
-                helperValueState = HelperValueState.HIDDEN
+                helperValueState = HelperValueState.HIDDEN,
+                helperValueSuffix = helperValueSuffix
             )
         },
         midContent = {
