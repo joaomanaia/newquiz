@@ -119,7 +119,8 @@ private fun ComparisonQuizScreenImpl(
                 verticalContent = verticalContent,
                 onBackClick = onBackClick,
                 onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) },
-                helperValueSuffix = uiState.gameCategory?.helperValueSuffix
+                helperValueSuffix = uiState.gameCategory?.helperValueSuffix,
+                attributionText = uiState.gameCategory?.dataSourceAttribution?.text
             )
         }
         uiState.isGameOver -> {
@@ -150,6 +151,7 @@ private fun ComparisonQuizContent(
     highestPosition: Int,
     verticalContent: Boolean,
     helperValueSuffix: String? = null,
+    attributionText: String? = null,
     onBackClick: () -> Unit,
     onAnswerClick: (ComparisonQuizItem) -> Unit
 ) {
@@ -187,7 +189,15 @@ private fun ComparisonQuizContent(
                 heightCompact = verticalContent
             )
         },
-        backIconContent = { BackIconButton(onClick = onBackClick) }
+        backIconContent = { BackIconButton(onClick = onBackClick) },
+        attributionText = attributionText?.let { text ->
+            {
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
     )
 }
 
@@ -199,7 +209,8 @@ fun ComparisonQuizContainer(
     descriptionContent: @Composable () -> Unit,
     firstQuestionContent: @Composable BoxScope.() -> Unit,
     secondQuestionContent: @Composable BoxScope.() -> Unit,
-    midContent: @Composable () -> Unit
+    midContent: @Composable () -> Unit,
+    attributionText: (@Composable () -> Unit)? = null
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -233,6 +244,10 @@ fun ComparisonQuizContainer(
                     .weight(1f),
                 content = secondQuestionContent
             )
+            attributionText?.let { attribution ->
+                Spacer(modifier = Modifier.height(spaceMedium))
+                attribution()
+            }
         }
     } else {
         Column(
@@ -262,6 +277,10 @@ fun ComparisonQuizContainer(
                     modifier = Modifier.weight(1f),
                     content = secondQuestionContent
                 )
+            }
+            attributionText?.let { attribution ->
+                Spacer(modifier = Modifier.height(spaceMedium))
+                attribution()
             }
         }
     }
@@ -350,13 +369,13 @@ fun ComparisonMidContainer(
 private fun ComparisonQuizScreenPreview() {
     val question1 = ComparisonQuizItem(
         title = "NewQuiz",
-        value = 3245,
+        value = 3245.0,
         imgUri = Uri.EMPTY
     )
 
     val question2 = ComparisonQuizItem(
         title = "NewSocial",
-        value = 23445,
+        value = 23445.0,
         imgUri = Uri.EMPTY
     )
 
@@ -372,7 +391,20 @@ private fun ComparisonQuizScreenPreview() {
                     currentQuestion = ComparisonQuizCurrentQuestion(
                         questions = question1 to question2
                     ),
-                    gameDescription = "Which one is more popular?"
+                    gameDescription = "Which one is more popular?",
+                    gameCategory = ComparisonQuizCategory(
+                        title = "Social",
+                        description = "Social media",
+                        imageUrl = "",
+                        id = "social",
+                        questionDescription = ComparisonQuizCategory.QuestionDescription(
+                            greater = "Which one is more popular?",
+                            less = "Which one is less popular?"
+                        ),
+                        dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
+                            text = "Data from NewQuiz"
+                        )
+                    )
                 ),
                 windowSizeClass = windowSizeClass
             )

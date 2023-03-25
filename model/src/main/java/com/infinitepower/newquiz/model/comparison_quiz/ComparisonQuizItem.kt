@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Keep
 data class ComparisonQuizItem(
     val title: String,
-    val value: Int,
+    val value: Double,
     val imgUri: Uri
 )
 
@@ -15,7 +15,7 @@ data class ComparisonQuizItem(
 @Serializable
 data class ComparisonQuizItemEntity(
     val title: String,
-    val value: Int,
+    val value: Double,
     val imgUrl: String
 ) : java.io.Serializable
 

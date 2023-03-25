@@ -19,12 +19,23 @@ data class ComparisonQuizCategory(
     val description: String,
     val imageUrl: String,
     val questionDescription: QuestionDescription,
-    val helperValueSuffix: String? = null
+    val helperValueSuffix: String? = null,
+    val dataSourceAttribution: DataSourceAttribution? = null
 ) : java.io.Serializable {
     @Keep
     @Serializable
     data class QuestionDescription(
         val greater: String,
         val less: String
+    ) : java.io.Serializable
+
+    /**
+     * The data source attribution of the category.
+     */
+    @Keep
+    @Serializable
+    data class DataSourceAttribution(
+        val text: String,
+        val logo: String? = null
     ) : java.io.Serializable
 }
