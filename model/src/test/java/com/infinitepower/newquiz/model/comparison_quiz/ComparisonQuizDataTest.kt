@@ -17,13 +17,13 @@ internal class ComparisonQuizDataTest {
         val quizItem1 = ComparisonQuizItem(
             title = "A",
             imgUri = uriMock,
-            value = 10
+            value = 10.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
             imgUri = uriMock,
-            value = 5
+            value = 5.0
         )
 
         val quizData = ComparisonQuizData(
@@ -70,19 +70,19 @@ internal class ComparisonQuizDataTest {
         val quizItem1 = ComparisonQuizItem(
             title = "A",
             imgUri = uriMock,
-            value = 10
+            value = 10.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
             imgUri = uriMock,
-            value = 5
+            value = 5.0
         )
 
         val quizItem3 = ComparisonQuizItem(
             title = "C",
             imgUri = uriMock,
-            value = 8
+            value = 8.0
         )
 
         val quizData = ComparisonQuizData(
@@ -111,19 +111,19 @@ internal class ComparisonQuizDataTest {
         val quizItem1 = ComparisonQuizItem(
             title = "A",
             imgUri = uriMock,
-            value = 10
+            value = 10.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
             imgUri = uriMock,
-            value = 5
+            value = 5.0
         )
 
         val quizItem3 = ComparisonQuizItem(
             title = "C",
             imgUri = uriMock,
-            value = 8
+            value = 8.0
         )
 
         val quizData = ComparisonQuizData(

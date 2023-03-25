@@ -18,13 +18,13 @@ internal class ComparisonQuizCurrentQuestionTest {
         val quizItem1 = ComparisonQuizItem(
             title = "A",
             imgUri = uriMock,
-            value = 10
+            value = 10.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
             imgUri = uriMock,
-            value = 10
+            value = 10.0
         )
 
         assertThrows<IllegalArgumentException> {
@@ -41,13 +41,13 @@ internal class ComparisonQuizCurrentQuestionTest {
         val quizItem1 = ComparisonQuizItem(
             title = "A",
             imgUri = uriMock,
-            value = 5
+            value = 5.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
             imgUri = uriMock,
-            value = 10
+            value = 10.0
         )
 
         val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
@@ -55,7 +55,7 @@ internal class ComparisonQuizCurrentQuestionTest {
         val newQuestion = ComparisonQuizItem(
             title = "C",
             imgUri = uriMock,
-            value = 7
+            value = 7.0
         )
 
         assertThat(question.questions.first).isEqualTo(quizItem1)
@@ -76,13 +76,13 @@ internal class ComparisonQuizCurrentQuestionTest {
         val quizItem1 = ComparisonQuizItem(
             title = "A",
             imgUri = uriMock,
-            value = 2
+            value = 2.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
             imgUri = uriMock,
-            value = 1
+            value = 1.0
         )
 
         val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
@@ -103,13 +103,13 @@ internal class ComparisonQuizCurrentQuestionTest {
         val quizItem1 = ComparisonQuizItem(
             title = "A",
             imgUri = uriMock,
-            value = 2
+            value = 2.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
             imgUri = uriMock,
-            value = 1
+            value = 1.0
         )
 
         val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
@@ -130,13 +130,13 @@ internal class ComparisonQuizCurrentQuestionTest {
         val quizItem1 = ComparisonQuizItem(
             title = "A",
             imgUri = uriMock,
-            value = 1
+            value = 1.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
             imgUri = uriMock,
-            value = 2
+            value = 2.0
         )
 
         val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
@@ -157,13 +157,13 @@ internal class ComparisonQuizCurrentQuestionTest {
         val quizItem1 = ComparisonQuizItem(
             title = "A",
             imgUri = uriMock,
-            value = 1
+            value = 1.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
             imgUri = uriMock,
-            value = 2
+            value = 2.0
         )
 
         val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
