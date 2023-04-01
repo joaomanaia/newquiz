@@ -34,7 +34,6 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun CardQuestionAnswers(
     modifier: Modifier = Modifier,
     answers: List<String>,
@@ -66,7 +65,6 @@ internal fun CardQuestionAnswers(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal fun CardQuestionAnswer(
     modifier: Modifier = Modifier,
@@ -88,7 +86,10 @@ internal fun CardQuestionAnswer(
         answerCorrect = answerCorrect,
         resultAnswerCorrect = resultAnswerCorrect
     )
-    val containerColorAnimated by animateColorAsState(containerColor)
+    val containerColorAnimated by animateColorAsState(
+        targetValue = containerColor,
+        label = "container color animation"
+    )
 
     val contentColor by colors.contentColor(
         isResults = isResults,
@@ -96,7 +97,10 @@ internal fun CardQuestionAnswer(
         answerCorrect = answerCorrect,
         resultAnswerCorrect = resultAnswerCorrect
     )
-    val contentColorAnimated by animateColorAsState(contentColor)
+    val contentColorAnimated by animateColorAsState(
+        targetValue = contentColor,
+        label = "content color animation"
+    )
 
     Surface(
         modifier = modifier.fillMaxWidth(),

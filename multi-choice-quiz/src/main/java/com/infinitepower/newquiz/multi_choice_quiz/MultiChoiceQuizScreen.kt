@@ -1,32 +1,24 @@
 package com.infinitepower.newquiz.multi_choice_quiz
 
 import androidx.annotation.Keep
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,7 +31,6 @@ import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnaly
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
@@ -51,7 +42,6 @@ import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizTopBar
 import com.infinitepower.newquiz.multi_choice_quiz.components.dialog.NoDiamondsDialog
 import com.infinitepower.newquiz.multi_choice_quiz.components.dialog.SkipQuestionDialog
-import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
@@ -140,8 +130,6 @@ private fun MultiChoiceQuizScreenImpl(
         .components {
             add(SvgDecoder.Factory())
         }.build()
-    
-    val spaceMedium = MaterialTheme.spacing.medium
 
     val widthCompact = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
 
@@ -150,6 +138,8 @@ private fun MultiChoiceQuizScreenImpl(
     MultiChoiceQuizContainer(
         modifier = Modifier.fillMaxSize(),
         windowSizeClass = windowSizeClass,
+        answerSelected = uiState.selectedAnswer.isSelected,
+        onVerifyQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.VerifyAnswer) },
         topBarContent = {
             QuizTopBar(
                 remainingTime = uiState.remainingTime,
@@ -157,8 +147,10 @@ private fun MultiChoiceQuizScreenImpl(
                 userSignedIn = uiState.userSignedIn,
                 onBackClick = onBackClick,
                 onSkipClick = { onEvent(MultiChoiceQuizScreenUiEvent.GetUserSkipQuestionDiamonds) },
+                onSaveClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) },
                 modifier = Modifier.fillMaxWidth(),
-                currentQuestionNull = uiState.currentQuestionStep == null
+                currentQuestionNull = uiState.currentQuestionStep == null,
+                questionSaved = uiState.questionSaved
             )
         },
         stepsContent = {
@@ -189,7 +181,6 @@ private fun MultiChoiceQuizScreenImpl(
 
                 val maxWidth = if (widthCompact) 1f else 0.4f
 
-                Spacer(modifier = Modifier.height(spaceMedium))
                 Box(
                     modifier = Modifier.fillMaxWidth(maxWidth)
                 ) {
@@ -213,51 +204,8 @@ private fun MultiChoiceQuizScreenImpl(
                     onEvent(MultiChoiceQuizScreenUiEvent.SelectAnswer(answer))
                 }
             )
-        },
-        actionButtonsContent = {
-            if (currentQuestion != null) {
-                RowActionButtons(
-                    answerSelected = uiState.selectedAnswer.isSelected,
-                    questionSaved = uiState.questionSaved,
-                    onVerifyQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.VerifyAnswer) },
-                    onSaveQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) }
-                )
-            }
         }
     )
-}
-
-@Composable
-private fun RowActionButtons(
-    modifier: Modifier = Modifier,
-    answerSelected: Boolean,
-    questionSaved: Boolean,
-    onVerifyQuestionClick: () -> Unit,
-    onSaveQuestionClick: () -> Unit,
-) {
-    val spaceMedium = MaterialTheme.spacing.medium
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spaceMedium, Alignment.CenterHorizontally),
-        modifier = modifier.fillMaxWidth()
-    ) {
-        if (!questionSaved) {
-            TextButton(
-                onClick = onSaveQuestionClick,
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(text = stringResource(id = CoreR.string.save))
-            }
-        }
-        Button(
-            onClick = onVerifyQuestionClick,
-            enabled = answerSelected,
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(text = stringResource(id = CoreR.string.verify))
-        }
-    }
 }
 
 @Composable
