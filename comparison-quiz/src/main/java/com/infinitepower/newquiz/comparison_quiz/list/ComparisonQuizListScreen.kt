@@ -29,6 +29,7 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -140,7 +141,8 @@ private fun ComparisonQuizListScreenPreview() {
                             questionDescription = ComparisonQuizCategory.QuestionDescription(
                                 greater = "Greater",
                                 less = "Less"
-                            )
+                            ),
+                            formatType = ComparisonQuizFormatType.Number
                         )
                     )
                 ),

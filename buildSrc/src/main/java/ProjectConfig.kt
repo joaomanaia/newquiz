@@ -13,7 +13,7 @@ object ProjectConfig {
 
     const val versionCode = 12
 
-    const val versionName = "1.5.2"
+    const val versionName = "1.5.3"
 
     val javaVersionCompatibility = JavaVersion.VERSION_17
 

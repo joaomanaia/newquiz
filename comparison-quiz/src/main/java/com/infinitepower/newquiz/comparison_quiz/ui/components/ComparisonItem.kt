@@ -31,25 +31,20 @@ import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLigh
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import java.text.NumberFormat
-import java.util.Locale
 
 @Composable
 internal fun ComparisonItem(
     modifier: Modifier = Modifier,
+    category: ComparisonQuizCategory,
     item: ComparisonQuizItem,
-    helperValueSuffix: String? = null,
     helperContentAlignment: Alignment,
     helperValueState: HelperValueState = HelperValueState.HIDDEN,
     onClick: () -> Unit
 ) {
-    val numberFormat = remember { NumberFormat.getNumberInstance(Locale.getDefault()) }
-
     val helperValue = remember(item.value) {
-        val numberFormatted = numberFormat.format(item.value)
-
-        if (helperValueSuffix != null) "$numberFormatted $helperValueSuffix" else numberFormatted
+        category.formatValueToString(item.value)
     }
 
     ComparisonItem(

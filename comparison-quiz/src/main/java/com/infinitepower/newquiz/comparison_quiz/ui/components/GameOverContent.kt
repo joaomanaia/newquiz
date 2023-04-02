@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.comparison_quiz.ui.components
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -59,85 +59,99 @@ internal fun GameOverContent(
         ),
     )
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(vertical = MaterialTheme.spacing.extraLarge),
-        horizontalAlignment = Alignment.CenterHorizontally
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = PaddingValues(
+            vertical = MaterialTheme.spacing.extraLarge,
+            horizontal = spaceLarge
+        )
     ) {
-        Text(
-            text = stringResource(id = CoreR.string.game_over),
-            style = MaterialTheme.typography.headlineLarge
-        )
-        Spacer(modifier = Modifier.height(spaceLarge))
-        LottieAnimation(
-            composition = trophyLottieComposition,
-            modifier = Modifier.size(200.dp),
-            dynamicProperties = dynamicProperties
-        )
-        Spacer(modifier = Modifier.height(spaceLarge))
-        Text(
-            text = stringResource(id = CoreR.string.your_score).uppercase(),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Spacer(modifier = Modifier.height(spaceMedium))
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spaceLarge)
-        ){
-            Box(
-                contentAlignment = Alignment.Center,
+        item("headline") {
+            Text(
+                text = stringResource(id = CoreR.string.game_over),
+                style = MaterialTheme.typography.headlineLarge
+            )
+            Spacer(modifier = Modifier.height(spaceLarge))
+        }
+
+        item("animation_image") {
+            LottieAnimation(
+                composition = trophyLottieComposition,
+                modifier = Modifier.size(200.dp),
+                dynamicProperties = dynamicProperties
+            )
+            Spacer(modifier = Modifier.height(spaceLarge))
+        }
+
+        item("current_score") {
+            Text(
+                text = stringResource(id = CoreR.string.your_score).uppercase(),
+                style = MaterialTheme.typography.titleMedium
+            )
+            Spacer(modifier = Modifier.height(spaceMedium))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spaceLarge)
+            ){
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = scorePosition.toString(),
+                        style = MaterialTheme.typography.headlineLarge,
+                        modifier = Modifier.padding(vertical = MaterialTheme.spacing.small)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(spaceLarge))
+        }
+
+        item("highest_score") {
+            Text(
+                text = stringResource(id = CoreR.string.highest_score).uppercase(),
+                style = MaterialTheme.typography.titleMedium
+            )
+            Spacer(modifier = Modifier.height(spaceMedium))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = spaceLarge)
+            ){
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = highestPosition.toString(),
+                        style = MaterialTheme.typography.headlineLarge,
+                        modifier = Modifier.padding(vertical = MaterialTheme.spacing.small)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
+        }
+
+        item("buttons") {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = scorePosition.toString(),
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.small)
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(spaceLarge))
-        Text(
-            text = stringResource(id = CoreR.string.highest_score).uppercase(),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Spacer(modifier = Modifier.height(spaceMedium))
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spaceLarge)
-        ){
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = highestPosition.toString(),
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(vertical = MaterialTheme.spacing.small)
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = spaceLarge)
-        ) {
-            OutlinedButton(
-                onClick = onBackClick,
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(text = stringResource(id = CoreR.string.back))
-            }
-            Spacer(modifier = Modifier.width(spaceMedium))
-            Button(
-                onClick = onPlayAgainClick,
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(text = stringResource(id = CoreR.string.play_again))
+                OutlinedButton(
+                    onClick = onBackClick,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(text = stringResource(id = CoreR.string.back))
+                }
+                Spacer(modifier = Modifier.width(spaceMedium))
+                Button(
+                    onClick = onPlayAgainClick,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(text = stringResource(id = CoreR.string.play_again))
+                }
             }
         }
     }
@@ -145,7 +159,6 @@ internal fun GameOverContent(
 
 @Composable
 @AllPreviewsNightLight
-@OptIn(ExperimentalMaterial3Api::class)
 private fun GameOverContentPreview() {
     NewQuizTheme {
         Surface {

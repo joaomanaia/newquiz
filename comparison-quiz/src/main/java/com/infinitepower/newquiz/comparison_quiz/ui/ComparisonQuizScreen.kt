@@ -49,6 +49,7 @@ import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
@@ -109,7 +110,7 @@ private fun ComparisonQuizScreenImpl(
             && windowSizeClass.widthSizeClass < WindowWidthSizeClass.Expanded
 
     when {
-        uiState.currentQuestion != null && uiState.gameDescription != null -> {
+        uiState.currentQuestion != null && uiState.gameDescription != null && uiState.gameCategory != null -> {
             ComparisonQuizContent(
                 modifier = Modifier.fillMaxSize(),
                 currentQuestion = uiState.currentQuestion,
@@ -119,8 +120,7 @@ private fun ComparisonQuizScreenImpl(
                 verticalContent = verticalContent,
                 onBackClick = onBackClick,
                 onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) },
-                helperValueSuffix = uiState.gameCategory?.helperValueSuffix,
-                attributionText = uiState.gameCategory?.dataSourceAttribution?.text
+                gameCategory = uiState.gameCategory
             )
         }
         uiState.isGameOver -> {
@@ -146,15 +146,16 @@ private fun ComparisonQuizScreenImpl(
 private fun ComparisonQuizContent(
     modifier: Modifier = Modifier,
     currentQuestion: ComparisonQuizCurrentQuestion,
+    gameCategory: ComparisonQuizCategory,
     gameDescription: String,
     questionPosition: Int,
     highestPosition: Int,
     verticalContent: Boolean,
-    helperValueSuffix: String? = null,
-    attributionText: String? = null,
     onBackClick: () -> Unit,
     onAnswerClick: (ComparisonQuizItem) -> Unit
 ) {
+    val attributionText = gameCategory.dataSourceAttribution?.text
+
     ComparisonQuizContainer(
         modifier = modifier.fillMaxSize(),
         verticalContent = verticalContent,
@@ -170,7 +171,7 @@ private fun ComparisonQuizContent(
                 onClick = { onAnswerClick(currentQuestion.questions.first) },
                 helperContentAlignment = Alignment.BottomCenter,
                 helperValueState = HelperValueState.NORMAL,
-                helperValueSuffix = helperValueSuffix
+                category = gameCategory
             )
         },
         secondQuestionContent = {
@@ -179,7 +180,7 @@ private fun ComparisonQuizContent(
                 onClick = { onAnswerClick(currentQuestion.questions.second) },
                 helperContentAlignment = if (verticalContent) Alignment.TopCenter else Alignment.BottomCenter,
                 helperValueState = HelperValueState.HIDDEN,
-                helperValueSuffix = helperValueSuffix
+                category = gameCategory
             )
         },
         midContent = {
@@ -403,7 +404,8 @@ private fun ComparisonQuizScreenPreview() {
                         ),
                         dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
                             text = "Data from NewQuiz"
-                        )
+                        ),
+                        formatType = ComparisonQuizFormatType.Number
                     )
                 ),
                 windowSizeClass = windowSizeClass
