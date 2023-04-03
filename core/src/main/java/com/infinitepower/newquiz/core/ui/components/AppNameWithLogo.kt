@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.settings_presentation.components.other
+package com.infinitepower.newquiz.core.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -29,13 +29,12 @@ import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.components.RoundedPolygonShape
 import com.infinitepower.newquiz.core.util.rememberAppVersion
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @ExperimentalMaterial3Api
-internal fun AppNameWithLogo(
+fun AppNameWithLogo(
     modifier: Modifier = Modifier
 ) {
     val appVersion = rememberAppVersion()
@@ -53,7 +52,6 @@ internal fun AppNameWithLogo(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun AppNameWithLogo(
     modifier: Modifier = Modifier,
     logoContent: @Composable () -> Unit,
@@ -92,8 +90,7 @@ private fun AppNameWithVersion(
 }
 
 @Composable
-@ExperimentalMaterial3Api
-private fun AppLogo(
+fun AppLogo(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },

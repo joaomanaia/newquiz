@@ -173,4 +173,9 @@
     <string name="icon_of_s">Icon of %1$s</string>
     <string name="greater">Greater</string>
     <string name="lesser">Lesser</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="next">Next</string>
 </resources>

@@ -69,6 +69,7 @@ dependencies {
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.compose.material3)
+    implementation(AndroidX.compose.material3.windowSizeClass)
     implementation(AndroidX.activity.compose)
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
 

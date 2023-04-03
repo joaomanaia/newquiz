@@ -28,7 +28,7 @@ import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
-import com.infinitepower.newquiz.settings_presentation.components.other.AppNameWithLogo
+import com.infinitepower.newquiz.core.ui.components.AppNameWithLogo
 import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
