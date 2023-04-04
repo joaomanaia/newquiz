@@ -1,5 +1,7 @@
 package com.infinitepower.newquiz.online_services.di
 
+import com.infinitepower.newquiz.online_services.core.login.LoginCore
+import com.infinitepower.newquiz.online_services.core.login.LoginCoreImpl
 import com.infinitepower.newquiz.online_services.data.UserApiImpl
 import com.infinitepower.newquiz.online_services.data.UserRepositoryImpl
 import com.infinitepower.newquiz.online_services.data.game.xp.MultiChoiceQuizXPRepositoryImpl
@@ -17,22 +19,17 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
     @Binds
-    abstract fun bindUserRepository(
-        userRepositoryImpl: UserRepositoryImpl
-    ): UserRepository
+    abstract fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
 
     @Binds
-    internal abstract fun bindUserApi(
-        userApiImpl: UserApiImpl
-    ): UserApi
+    internal abstract fun bindUserApi(userApiImpl: UserApiImpl): UserApi
 
     @Binds
-    abstract fun bindMultiChoiceQuizXPRepository(
-        multiChoiceQuizXPRepositoryImpl: MultiChoiceQuizXPRepositoryImpl
-    ): MultiChoiceQuizXPRepository
+    abstract fun bindMultiChoiceQuizXPRepository(multiChoiceQuizXPRepositoryImpl: MultiChoiceQuizXPRepositoryImpl): MultiChoiceQuizXPRepository
 
     @Binds
-    abstract fun bindWordleXPRepository(
-        wordleXpRepositoryImpl: WordleXpRepositoryImpl
-    ): WordleXpRepository
+    abstract fun bindWordleXPRepository(wordleXpRepositoryImpl: WordleXpRepositoryImpl): WordleXpRepository
+
+    @Binds
+    abstract fun bindLoginCore(loginCoreImpl: LoginCoreImpl): LoginCore
 }

@@ -42,7 +42,7 @@ class NewQuizApp : Application(), Configuration.Provider {
     private fun initializeRemoteConfig() {
         val remoteConfig = Firebase.remoteConfig
 
-        val remoteConfigMinFetchInterval = 0L //if (BuildConfig.DEBUG) 0L else TWELVE_HOUR_IN_SECONDS
+        val remoteConfigMinFetchInterval = if (BuildConfig.DEBUG) 0L else 3600L
         val remoteConfigSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = remoteConfigMinFetchInterval
         }

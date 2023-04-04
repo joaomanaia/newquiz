@@ -10,6 +10,7 @@ import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizList
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
+import com.infinitepower.newquiz.home_presentation.destinations.LoginWithEmailScreenDestination
 import com.infinitepower.newquiz.math_quiz.list.destinations.MathQuizListScreenDestination
 import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.*
@@ -49,6 +50,7 @@ internal object AppNavGraphs {
             WordleListScreenDestination,
             DailyWordleCalendarScreenDestination,
             LoginScreenDestination,
+            LoginWithEmailScreenDestination,
             MultiChoiceQuizResultsScreenDestination,
             MultiChoiceQuizListScreenDestination,
             MultiChoiceCategoriesScreenDestination,

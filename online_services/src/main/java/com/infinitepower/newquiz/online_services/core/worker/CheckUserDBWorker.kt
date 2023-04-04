@@ -8,8 +8,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
-import com.infinitepower.newquiz.online_services.domain.user.UserRepository
-import com.infinitepower.newquiz.online_services.model.user.User
 import com.infinitepower.newquiz.online_services.model.user.UserEntity
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -37,7 +35,7 @@ class CheckUserDBWorker @AssistedInject constructor(
         val newUser = UserEntity(
             uid = localUid,
             info = UserEntity.UserInfo(
-                fullName = authUserRepository.name,
+                fullName = authUserRepository.name ?: "NewQuiz User",
                 imageUrl = authUserRepository.photoUrl?.toString()
             ),
             data = UserEntity.UserData(diamonds = initialDiamonds.toInt())
