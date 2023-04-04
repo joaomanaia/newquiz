@@ -143,7 +143,7 @@ internal class ComparisonQuizFormatTypeTest {
         val value = 12.34
         val expected = "$12.34"
 
-        val result = ComparisonQuizFormatType.Currency.formatValueToString(value)
+        val result = ComparisonQuizFormatType.Currency.formatValueToString(value, locale = Locale.US)
         assertThat(result).isEqualTo(expected)
     }
 
@@ -153,7 +153,7 @@ internal class ComparisonQuizFormatTypeTest {
         val helperValueSuffix = "USD"
         val expected = "$12.34 USD"
 
-        val result = ComparisonQuizFormatType.Currency.formatValueToString(value, helperValueSuffix)
+        val result = ComparisonQuizFormatType.Currency.formatValueToString(value, helperValueSuffix, Locale.US)
         assertThat(result).isEqualTo(expected)
     }
 
