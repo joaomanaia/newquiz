@@ -173,4 +173,9 @@
     <string name="greater">Mayor que</string>
     <string name="lesser">Menor que</string>
     <string name="or">o</string>
+    <string name="sign_up">Regístrate</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="name">Nombre</string>
+    <string name="next">Siguiente</string>
 </resources>
