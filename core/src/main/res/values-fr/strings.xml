@@ -80,7 +80,7 @@
     <string name="is_in_the_word_but_in_the_wrong_spot_wordle">"est dans le mot mais au mauvais endroit."</string>
     <string name="is_in_the_word_and_in_the_correct_spot_wordle">"est dans le mot et au bon endroit."</string>
     <string name="results_screen">Écran des résultats</string>
-    <string name="n_correct_questions">1%$s des questions correctes</string>
+    <string name="n_correct_questions">%1$s des questions correctes</string>
     <string name="quiz_question_size">Taille de la question du quiz</string>
     <string name="translation">Traduction</string>
     <string name="translation_enabled">Traduction activée</string>
