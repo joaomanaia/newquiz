@@ -1,53 +1,212 @@
-# Logging analytics
+# Overview
 
-## Core logging analytics
+This document describes the logging analytics events and parameters, collected by the application. 
+The events are sent anonymously to the Firebase Analytics. The user can opt out from the analytics in the settings screen.
+These events are used to improve the application and to provide better user experience.
 
-| Event name  | Triggered when...                  | Parameters                        |
-|-------------|------------------------------------|-----------------------------------|
-| screen_view | This event signifies a screen view | screen_name                       |
-| create_maze | User generates a new maze          | seed<br/>item_size<br/>game_modes |
+Firebase automatically collects some [events](https://support.google.com/firebase/answer/9234069?visit_id=638163118323661106-1839920987&rd=1).
 
-### Parameters
+# Core logging
 
-| Parameter name | Description                 | Type   |
-|----------------|-----------------------------|--------|
-| screen_name    | Current screen name         | String |
-| seed           | The seed of the maze        | Number |
-| item_size      | The count of maze questions | Number |
-| game_modes     | All maze game modes enabled | String |
+## screen_view
 
-## Multi choice logging analytics
-
-| Event name              | Triggered when...      | Parameters                                                                                         |
-|-------------------------|------------------------|----------------------------------------------------------------------------------------------------|
-| multi_choice_game_start | user starts a new game | multi_choice_questions_size<br/>multi_choice_category<br/>multi_choice_difficulty<br/>maze_item_id |
-| multi_choice_game_end   | user starts a new game | multi_choice_questions_size<br/>multi_choice_correct_answers<br/>maze_item_id                      |
+This event logs the current user screen.
 
 ### Parameters
 
-| Parameter name               | Description                  | Type   |
-|------------------------------|------------------------------|--------|
-| multi_choice_questions_size  | Questions size               | Number |
-| multi_choice_correct_answers | Correct answers size         | Number |
-| multi_choice_category        | Category for all questions   | String |
-| multi_choice_difficulty      | Difficulty for all questions | String |
-| maze_item_id                 | Item id from maze game mode  | String |
+| Parameter name |  Type  | Required | Example value | Description |
+|----------------|--------|----------|---------------|-------------|
+| screen_name    | string | No       | Home Screen   | Screen name |
 
-## Wordle logging analytics
+## level_up
 
-| Event name        | Triggered when...      | Parameters                                                                                                             |
-|-------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
-| wordle_game_start | user starts a new game | wordle_word_length<br/>wordle_max_rows<br/>wordle_day<br/>maze_item_id                                                 |
-| wordle_row_end    | user ends the game     | wordle_word_length<br/>wordle_max_rows<br/>wordle_last_row<br/>wordle_last_row_correct<br/>wordle_day<br/>maze_item_id |
+This event logs the new level reached by the user.
 
 ### Parameters
 
-| Parameter name          | Description                 | Type   |
-|-------------------------|-----------------------------|--------|
-| wordle_word_length      | Word length                 | Number |
-| wordle_max_rows         | Quiz max rows               | Number |
-| wordle_day              | Wordle day mode: word date  | String |
-| wordle_last_row         | Quiz last row position      | Number |
-| wordle_last_row_correct | Is quiz last row correct    | String |
-| wordle_quiz_type        | Type of wordle quiz         | String |
-| maze_item_id            | Item id from maze game mode | String |
+| Parameter name |  Type  | Required | Example value | Description             |
+|----------------|--------|----------|---------------|-------------------------|
+| level          | number | Yes      | 10            | New level of the user   |
+| character      | string | No       | global        | Where the user level up |
+
+## earn_virtual_currency
+
+This event logs the virtual currency earned by the user. This can be trigger when the user
+reached a new level or when the user completed a quiz.
+
+### Parameters
+
+| Parameter name        |  Type  | Required | Example value | Description             |
+|-----------------------|--------|----------|---------------|-------------------------|
+| virtual_currency_name | string | Yes      | diamonds      | Virtual currency name   |
+| value                 | number | Yes      | 10            | Virtual currency value  |
+
+## spend_virtual_currency
+
+This event logs the virtual currency spent by the user. This can be trigger when the user
+buy a skips the question.
+
+### Parameters
+
+| Parameter name        |  Type  | Required | Example value | Description             |
+|-----------------------|--------|----------|---------------|-------------------------|
+| virtual_currency_name | string | Yes      | diamonds      | Virtual currency name   |
+| value                 | number | Yes      | 10            | Virtual currency value  |
+
+# Multi choice quiz
+
+## multi_choice_game_start
+
+This event logs the multi choice game quiz start.
+
+### Parameters
+
+| Parameter name              |  Type  | Required | Example value | Description                 |
+|-----------------------------|--------|----------|---------------|-----------------------------|
+| multi_choice_questions_size | number | Yes      | 10            | Questions size              |
+| multi_choice_category       | string | No       | flag          | Category for questions      |
+| multi_choice_difficulty     | string | No       | easy          | Difficulty for questions    |
+| maze_item_id                | string | No       | 123456        | Item id from maze game mode |
+
+## multi_choice_game_end
+
+This event logs the multi choice game quiz end.
+
+### Parameters
+
+| Parameter name               |  Type  | Required | Example value | Description                 |
+|------------------------------|--------|----------|---------------|-----------------------------|
+| multi_choice_questions_size  | number | Yes      | 10            | Questions size              |
+| multi_choice_correct_answers | number | Yes      | 5             | Correct answers size        |
+| maze_item_id                 | string | No       | 123456        | Item id from maze game mode |
+
+## multi_choice_category_clicked
+
+This event logs when the user clicked on a multi choice quiz category.
+
+### Parameters
+
+| Parameter name | Type   | Required | Example value | Description     |
+|----------------|--------|----------|---------------|-----------------|
+| id             | string | Yes      | flag          | The category id |
+
+## multi_choice_save_question
+
+This event logs the user save a question from the multi choice quiz game.
+
+## multi_choice_save_question
+
+This event logs the user downloads multi choice quiz questions to save then.
+
+## multi_choice_play_saved_questions
+
+This event logs the user plays the saved multi choice quiz questions.
+
+### Parameters
+
+| Parameter name              | Type   | Required | Example value | Description    |
+|-----------------------------|--------|----------|---------------|----------------|
+| multi_choice_questions_size | number | Yes      | 10            | Questions size |
+
+# Wordle logging analytics
+
+## wordle_game_start
+
+This event logs the wordle game quiz start.
+
+### Parameters
+
+| Parameter name     | Type   | Required | Example value | Description                 |
+|--------------------|--------|----------|---------------|-----------------------------|
+| wordle_word_length | number | Yes      | 5             | Word length                 |
+| wordle_max_rows    | number | Yes      | 10            | Quiz max rows               |
+| wordle_quiz_type   | string | No       | text          | The type of the wordle quiz |
+| wordle_day         | string | No       | 2019-01-01    | Wordle day mode: word date  |
+| maze_item_id       | string | No       | 123456        | Item id from maze game mode |
+
+## wordle_game_end
+
+This event logs the wordle game quiz end.
+
+### Parameters
+
+| Parameter name          | Type   | Required | Example value | Description                 |
+|-------------------------|--------|----------|---------------|-----------------------------|
+| wordle_word_length      | number | Yes      | 5             | Word length                 |
+| wordle_max_rows         | number | Yes      | 10            | Quiz max rows               |
+| wordle_last_row         | number | Yes      | 5             | Quiz last row position      |
+| wordle_last_row_correct | string | Yes      | true          | Is quiz last row correct    |
+| wordle_quiz_type        | string | No       | text          | The type of the wordle quiz |
+| wordle_day              | string | No       | 2019-01-01    | Wordle day mode: word date  |
+| maze_item_id            | string | No       | 123456        | Item id from maze game mode |
+
+## daily_wordle_item_click
+
+This event logs when the user click on a daily wordle item.
+
+### Parameters
+
+| Parameter name     | Type   | Required | Example value | Description                |
+|--------------------|--------|----------|---------------|----------------------------|
+| wordle_word_length | number | Yes      | 5             | Word length                |
+| day                | string | Yes      | 2019-01-01    | Wordle day mode: word date |
+
+## daily_wordle_item_complete
+
+This event logs when the user complete a daily wordle item.
+
+### Parameters
+
+| Parameter name          | Type   | Required | Example value | Description                |
+|-------------------------|--------|----------|---------------|----------------------------|
+| wordle_word_length      | number | Yes      | 5             | Word length                |
+| wordle_last_row_correct | string | Yes      | true          | Is quiz last row correct   |
+| day                     | string | No       | 2019-01-01    | Wordle day mode: word date |
+
+# Maze
+
+## create_maze
+
+This event logs the maze game mode creation.
+
+### Parameters
+
+| Parameter name |  Type  | Required | Example value | Description         |
+|----------------|--------|----------|---------------|---------------------|
+| seed           | number | No       | 123456        | Maze random seed    |
+| item_size      | number | No       | 10            | Maze questions size |
+| game_modes     | string | No       | wordle        | Maze game modes     |
+
+## restart_maze
+
+This event logs when the user restart the maze game mode.
+
+## maze_item_click
+
+This event logs when the user click on a maze item.
+
+### Parameters
+
+| Parameter name | Type   | Required | Example value | Description     |
+|----------------|--------|----------|---------------|-----------------|
+| item_index     | number | Yes      | 23            | Maze item index |
+
+## maze_item_played
+
+This event logs when the user play and ends the game of the maze item.
+
+### Parameters
+
+| Parameter name | Type   | Required | Example value | Description                     |
+|----------------|--------|----------|---------------|---------------------------------|
+| correct        | string | Yes      | true          | The user got the answer correct |
+
+## maze_completed
+
+This event logs when the user completes all the questions the maze game mode.
+
+### Parameters
+
+| Parameter name | Type   | Required | Example value | Description                     |
+|----------------|--------|----------|---------------|---------------------------------|
+| item_size      | number | Yes      | 23            | Number of questions in the maze |
