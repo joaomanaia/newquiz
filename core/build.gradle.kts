@@ -67,7 +67,6 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":model")))
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
     testImplementation(Testing.mockK.android)
@@ -83,6 +82,7 @@ dependencies {
 
     androidTestImplementation(AndroidX.compose.ui.test)
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
+
     debugImplementation(AndroidX.compose.ui.testManifest)
 
     implementation(AndroidX.core.ktx)
@@ -127,7 +127,10 @@ dependencies {
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.io.github.raamcosta.compose.destinations.ksp)
 
+    // Modules
     implementation(project(Modules.model))
+    testImplementation(project(Modules.coreTest))
+    androidTestImplementation(project(Modules.coreTest))
 }
 
 tasks.withType<Test> {

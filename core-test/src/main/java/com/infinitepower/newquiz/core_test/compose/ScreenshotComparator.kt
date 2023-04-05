@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.core
+package com.infinitepower.newquiz.core_test.compose
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.captureToImage
 import androidx.test.platform.app.InstrumentationRegistry
+import java.io.File
 import java.io.FileOutputStream
 
 /**
@@ -68,4 +69,9 @@ private fun Bitmap.compare(other: Bitmap) {
 
 private fun Bitmap.getRow(pixels: IntArray, column: Int) {
     this.getPixels(pixels, 0, width, 0, column, width, 1)
+}
+
+fun clearExistingImages(folderName: String) {
+    val path = File(InstrumentationRegistry.getInstrumentation().targetContext.filesDir, folderName)
+    path.deleteRecursively()
 }
