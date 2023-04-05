@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -31,25 +33,20 @@ import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLigh
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import java.text.NumberFormat
-import java.util.Locale
 
 @Composable
 internal fun ComparisonItem(
     modifier: Modifier = Modifier,
+    category: ComparisonQuizCategory,
     item: ComparisonQuizItem,
-    helperValueSuffix: String? = null,
     helperContentAlignment: Alignment,
     helperValueState: HelperValueState = HelperValueState.HIDDEN,
     onClick: () -> Unit
 ) {
-    val numberFormat = remember { NumberFormat.getNumberInstance(Locale.getDefault()) }
-
     val helperValue = remember(item.value) {
-        val numberFormatted = numberFormat.format(item.value)
-
-        if (helperValueSuffix != null) "$numberFormatted $helperValueSuffix" else numberFormatted
+        category.formatValueToString(item.value)
     }
 
     ComparisonItem(
@@ -75,6 +72,7 @@ private fun ComparisonItem(
     helperValueState: HelperValueState,
     onClick: () -> Unit
 ) {
+    val spaceExtraSmall = MaterialTheme.spacing.extraSmall
     val spaceMedium = MaterialTheme.spacing.medium
 
     val helperColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
@@ -119,21 +117,27 @@ private fun ComparisonItem(
                     modifier = Modifier.padding(spaceMedium)
                 ) {
                     Text(
+                        modifier = Modifier.weight(1f),
                         text = title,
                         style = MaterialTheme.typography.titleMedium,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center
                     )
                     if (helperValueState == HelperValueState.NORMAL) {
+                        Spacer(modifier = Modifier.width(spaceExtraSmall))
                         Divider(
                             modifier = Modifier
                                 .height(24.dp)
                                 .width(DividerDefaults.Thickness)
                         )
+                        Spacer(modifier = Modifier.width(spaceExtraSmall))
                         Text(
+                            modifier = Modifier.weight(1f),
                             text = helperValue,
                             style = MaterialTheme.typography.titleMedium,
-                            maxLines = 1
+                            maxLines = 1,
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
@@ -155,7 +159,7 @@ private fun ComparisonQuizScreenPreview(
                 modifier = Modifier
                     .padding(16.dp)
                     .size(400.dp),
-                title = "NewQuiz",
+                title = "NewQuizsssssssssssssssssssssssssssssssssss",
                 image = Uri.EMPTY,
                 helperValue = "12,345",
                 onClick = {},

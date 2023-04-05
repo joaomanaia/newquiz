@@ -25,6 +25,7 @@ plugins {
 rootProject.name = "NewQuiz"
 include(":app")
 include(":core")
+include(":core-test")
 include(":model")
 include(":domain")
 include(":data")

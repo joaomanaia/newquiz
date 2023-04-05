@@ -10,7 +10,11 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.infinitepower.newquiz.core.assertMatchesGolden
+import com.infinitepower.newquiz.core_test.compose.assertMatchesGolden
+import com.infinitepower.newquiz.core_test.compose.clearExistingImages
+import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
+import com.infinitepower.newquiz.core_test.utils.setDeviceLocale
+import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,16 +25,30 @@ internal class BackIconButtonTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    companion object {
+        private const val BUTTON_GOLDEN_NAME = "back_button"
+
+        @JvmStatic
+        @BeforeClass
+        fun clearExistingImagesBeforeStart() {
+            clearExistingImages(BUTTON_GOLDEN_NAME)
+        }
+    }
+
     @Test
     fun backIconButton_shouldRenderCorrectly() {
         var clicked = false
 
         composeTestRule.setContent {
-            Surface {
-                BackIconButton(
-                    onClick = { clicked = true },
-                    modifier = Modifier.testTag("BackButton")
-                )
+            setDeviceLocale()
+
+            NewQuizTestTheme {
+                Surface {
+                    BackIconButton(
+                        onClick = { clicked = true },
+                        modifier = Modifier.testTag("BackButton")
+                    )
+                }
             }
         }
 
@@ -58,6 +76,6 @@ internal class BackIconButtonTest {
 
         composeTestRule
             .onNodeWithTag("BackButton")
-            .assertMatchesGolden("back_button", "buttons")
+            .assertMatchesGolden(BUTTON_GOLDEN_NAME, "buttons")
     }
 }
