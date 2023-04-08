@@ -8,7 +8,8 @@ data class MultiChoiceCategory(
     val key: String,
     val id: Int,
     val name: UiText,
-    val image: Any
+    val image: Any,
+    val requireInternetConnection: Boolean = true
 )
 
 fun MultiChoiceCategory.toBaseCategory() = MultiChoiceBaseCategory.fromKey(key)

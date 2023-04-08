@@ -80,7 +80,6 @@
     <string name="translation">Oversettelse</string>
     <string name="correct_answers">Riktige svar</string>
     <string name="clean_calendar_data">Tøm kalenderdata</string>
-    <string name="you_have_n_diamonds_skip_question_q">Du har %1$d diamanter. Vil du bruke en for å hoppe over dette spørsmålet\?</string>
     <string name="medium">Middels</string>
     <string name="saved_questions">Lagrede spørsmål</string>
     <string name="item_i_present">Element %1$s finnes</string>
@@ -145,7 +144,6 @@
     <string name="animations_enabled">Animasjoner påskrudd</string>
     <string name="analytics">Analyse</string>
     <string name="analytics_collection_enabled">Innsamling av analysedata påskrudd</string>
-    <string name="n_questions_available">%1$s spørsmål tilgjengelig</string>
     <string name="last_quiz_times">Siste quiz-tider</string>
     <string name="download_translation_model_to_device_language">Last ned oversettelsesmodell til ditt enhetsspråk.</string>
     <string name="wordle_animations_enabled">Wordle-animasjoner påskrudd</string>

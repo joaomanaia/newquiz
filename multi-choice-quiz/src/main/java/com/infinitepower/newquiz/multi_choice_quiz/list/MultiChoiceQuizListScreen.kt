@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,6 +52,7 @@ import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.multi_choice_quiz.components.difficulty.SelectableDifficultyRow
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.SavedMultiChoiceQuestionsScreenDestination
+import com.infinitepower.newquiz.multi_choice_quiz.list.util.MultiChoiceQuizListUtils
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
@@ -86,9 +88,10 @@ private fun MultiChoiceQuizListScreenImpl(
 
     val isInternetAvailable = rememberIsInternetAvailable()
 
-    val questionsAvailableText = stringResource(
-        id = CoreR.string.n_questions_available,
-        uiState.savedQuestionsSize
+    val questionsAvailableText = pluralStringResource(
+        id = CoreR.plurals.n_questions_available,
+        count = uiState.savedQuestionsSize,
+        formatArgs = arrayOf(uiState.savedQuestionsSize)
     )
 
     val (selectedDifficulty, setSelectedDifficulty) = remember {
@@ -110,18 +113,20 @@ private fun MultiChoiceQuizListScreenImpl(
         Icons.Rounded.ExpandMore
     }
 
-    val allCategories = remember { multiChoiceQuestionCategories }
+    val allCategories = remember(isInternetAvailable) {
+        MultiChoiceQuizListUtils.getAllCategories(isInternetAvailable = isInternetAvailable)
+    }
 
-    val recentCategories = remember(uiState.recentCategories) {
-        uiState.recentCategories.ifEmpty {
-            // If there are no recent categories, we take 3 random ones,
-            // So we don't show all categories initially
-            allCategories.shuffled().take(3)
-        }
+    val recentCategories = remember(uiState.recentCategories, isInternetAvailable) {
+        MultiChoiceQuizListUtils.getRecentCategories(
+            recentCategories = uiState.recentCategories,
+            allCategories = multiChoiceQuestionCategories,
+            isInternetAvailable = isInternetAvailable
+        )
     }
 
     // The other categories are the ones that are not recent
-    val otherCategories = remember(recentCategories) {
+    val otherCategories = remember(allCategories, recentCategories) {
         allCategories - recentCategories.toSet()
     }
 
@@ -192,7 +197,7 @@ private fun MultiChoiceQuizListScreenImpl(
                         )
                     )
                 },
-                enabled = isInternetAvailable
+                enabled = isInternetAvailable || !category.requireInternetConnection
             )
         }
 
@@ -202,8 +207,7 @@ private fun MultiChoiceQuizListScreenImpl(
                 contentAlignment = Alignment.Center
             ) {
                 TextButton(
-                    onClick = { seeAllCategories = !seeAllCategories },
-                    enabled = isInternetAvailable
+                    onClick = { seeAllCategories = !seeAllCategories }
                 ) {
                     Icon(
                         imageVector = seeAllIcon,
@@ -238,7 +242,7 @@ private fun MultiChoiceQuizListScreenImpl(
                             )
                         )
                     },
-                    enabled = isInternetAvailable
+                    enabled = isInternetAvailable || !category.requireInternetConnection
                 )
             }
         }

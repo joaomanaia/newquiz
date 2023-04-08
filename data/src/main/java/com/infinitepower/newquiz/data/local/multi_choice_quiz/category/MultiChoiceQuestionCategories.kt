@@ -28,7 +28,8 @@ val multiChoiceQuestionCategories = listOf(
         key = MultiChoiceBaseCategory.GuessMathSolution.key,
         id = 1004,
         name = UiText.StringResource(CoreR.string.guess_solution),
-        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fnumber_illustration.jpg?alt=media&token=68faf243-2b0e-4a13-aa9c-223743e263fd"
+        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fnumber_illustration.jpg?alt=media&token=68faf243-2b0e-4a13-aa9c-223743e263fd",
+        requireInternetConnection = false
     ),
     MultiChoiceCategory(
         key = MultiChoiceBaseCategory.NumberTrivia.key,
