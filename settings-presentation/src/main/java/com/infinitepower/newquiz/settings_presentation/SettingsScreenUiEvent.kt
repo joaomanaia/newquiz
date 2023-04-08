@@ -12,4 +12,6 @@ sealed interface SettingsScreenUiEvent {
     data class EnableLoggingAnalytics(
         val enabled: Boolean
     ) : SettingsScreenUiEvent
+
+    object ClearMultiChoiceQuizRecentCategories : SettingsScreenUiEvent
 }

@@ -178,4 +178,11 @@
     <string name="name">Name</string>
     <string name="sign_up">Sign Up</string>
     <string name="next">Next</string>
+    <string name="random_quiz">Random Quiz</string>
+    <string name="random">Random</string>
+    <string name="quiz_with_random_categories">Quiz with random categories</string>
+    <string name="see_all_categories">See all categories</string>
+    <string name="see_less_categories">See less categories</string>
+    <string name="clear_recent_categories">Clear recent categories</string>
+    <string name="clear_recent_categories_description">Remove all recent categories from the list screen</string>
 </resources>

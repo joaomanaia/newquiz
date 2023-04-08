@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.comparison_quiz.list.components
+package com.infinitepower.newquiz.core.ui.components.category
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -17,35 +17,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.core.ui.compose.StatusWrapper
 
 @Composable
-internal fun ComparisonCategoryComponent(
-    modifier: Modifier = Modifier,
-    category: ComparisonQuizCategory,
-    enabled: Boolean = true,
-    onClick: () -> Unit = {}
-) {
-    ComparisonCategoryComponent(
-        modifier = modifier,
-        title = category.title,
-        imageUrl = category.imageUrl,
-        onClick = onClick,
-        enabled = enabled
-    )
-}
-
-@Composable
-internal fun ComparisonCategoryComponent(
+fun CategoryComponent(
     modifier: Modifier = Modifier,
     title: String,
-    imageUrl: String,
+    imageUrl: Any,
     enabled: Boolean = true,
+    textStyle: TextStyle = MaterialTheme.typography.headlineLarge,
     onClick: () -> Unit = {}
 ) {
     val shapeMedium = MaterialTheme.shapes.medium
@@ -56,46 +43,52 @@ internal fun ComparisonCategoryComponent(
         MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
     }
 
-    Surface(
-        modifier = modifier
-            .height(120.dp)
-            .fillMaxWidth(),
-        shape = shapeMedium,
-        onClick = onClick,
+    StatusWrapper(
         enabled = enabled
     ) {
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = stringResource(id = R.string.image_category_of_s, title),
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(MaterialTheme.shapes.medium),
-            contentScale = ContentScale.Crop
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(containerOverlayColor),
-            contentAlignment = Alignment.Center
+        Surface(
+            modifier = modifier,
+            shape = shapeMedium,
+            onClick = onClick,
+            enabled = enabled
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineLarge,
-                color = Color.White
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = stringResource(id = R.string.image_category_of_s, title),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(MaterialTheme.shapes.medium),
+                contentScale = ContentScale.Crop
             )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(containerOverlayColor),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = title,
+                    style = textStyle,
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
 
 @Composable
 @PreviewNightLight
-private fun ComparisonCategoryPreview() {
+private fun CategoryPreview() {
     NewQuizTheme {
         Surface {
-            ComparisonCategoryComponent(
+            CategoryComponent(
                 title = "Title",
                 imageUrl = "",
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
+                    .height(200.dp)
+                    .fillMaxWidth()
             )
         }
     }

@@ -1,32 +1,60 @@
 package com.infinitepower.newquiz.multi_choice_quiz.list
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.rounded.ExpandLess
+import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material.icons.rounded.Save
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
+import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
+import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.home_card.HomeListContent
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
+import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
+import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
+import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
+import com.infinitepower.newquiz.core.ui.home_card.components.HomeLargeCard
+import com.infinitepower.newquiz.core.ui.home_card.components.HomeMediumCard
+import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
+import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
+import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.model.multi_choice_quiz.toBaseCategory
-import com.infinitepower.newquiz.multi_choice_quiz.categories.components.CategoryComponent
-import com.infinitepower.newquiz.multi_choice_quiz.list.data.getMultiChoiceQuizListCardItemData
-import com.infinitepower.newquiz.core.R as CoreR
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
+import com.infinitepower.newquiz.multi_choice_quiz.components.difficulty.SelectableDifficultyRow
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.SavedMultiChoiceQuestionsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
@@ -37,20 +65,10 @@ fun MultiChoiceQuizListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val questionsAvailableText = stringResource(
-        id = CoreR.string.n_questions_available,
-        uiState.savedQuestionsSize
+    MultiChoiceQuizListScreenImpl(
+        uiState = uiState,
+        navigator = navigator
     )
-
-    val cardItemData = remember(uiState.savedQuestionsSize) {
-        getMultiChoiceQuizListCardItemData(
-            navigator = navigator,
-            savedQuestionsText = questionsAvailableText,
-            recentCategories = uiState.recentCategories
-        )
-    }
-
-    HomeListContent(items = cardItemData)
 
     val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
     LaunchedEffect(key1 = true) {
@@ -60,66 +78,198 @@ fun MultiChoiceQuizListScreen(
 
 @Composable
 @ExperimentalMaterial3Api
-fun MultiChoiceCategoriesSelector(
-    recentCategories: List<MultiChoiceCategory>,
-    navigateToCategoriesScreen: () -> Unit,
-    navigateToQuizScreen: (category: MultiChoiceBaseCategory) -> Unit
+private fun MultiChoiceQuizListScreenImpl(
+    uiState: MultiChoiceQuizListScreenUiState,
+    navigator: DestinationsNavigator
 ) {
-    val mediumSpace = MaterialTheme.spacing.medium
+    val spaceMedium = MaterialTheme.spacing.medium
 
-    LazyRow(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(mediumSpace)
+    val isInternetAvailable = rememberIsInternetAvailable()
+
+    val questionsAvailableText = stringResource(
+        id = CoreR.string.n_questions_available,
+        uiState.savedQuestionsSize
+    )
+
+    val (selectedDifficulty, setSelectedDifficulty) = remember {
+        // When null, difficulty will be random
+        mutableStateOf<QuestionDifficulty?>(null)
+    }
+
+    var seeAllCategories by remember { mutableStateOf(false) }
+
+    val seeAllText = if (seeAllCategories) {
+        stringResource(id = CoreR.string.see_less_categories)
+    } else {
+        stringResource(id = CoreR.string.see_all_categories)
+    }
+
+    val seeAllIcon = if (seeAllCategories) {
+        Icons.Rounded.ExpandLess
+    } else {
+        Icons.Rounded.ExpandMore
+    }
+
+    val allCategories = remember { multiChoiceQuestionCategories }
+
+    val recentCategories = remember(uiState.recentCategories) {
+        uiState.recentCategories.ifEmpty {
+            // If there are no recent categories, we take 3 random ones,
+            // So we don't show all categories initially
+            allCategories.shuffled().take(3)
+        }
+    }
+
+    // The other categories are the ones that are not recent
+    val otherCategories = remember(recentCategories) {
+        allCategories - recentCategories.toSet()
+    }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(spaceMedium),
+        contentPadding = PaddingValues(
+            start = spaceMedium,
+            end = spaceMedium,
+            bottom = MaterialTheme.spacing.large,
+        )
     ) {
-        items(items = recentCategories) { category ->
-            CategoryComponent(
-                category = category,
-                maxLines = 1,
-                onClick = { navigateToQuizScreen(category.toBaseCategory()) }
+        item {
+            HomeGroupTitle(title = stringResource(id = CoreR.string.random_quiz))
+        }
+
+        item {
+            HomeLargeCard(
+                modifier = Modifier.fillParentMaxWidth(),
+                data = HomeCardItem.LargeCard(
+                    title = CoreR.string.quiz_with_random_categories,
+                    icon = CardIcon.Lottie(LottieCompositionSpec.RawRes(CoreR.raw.quick_quiz)),
+                    backgroundPrimary = true,
+                    onClick = {
+                        navigator.navigate(MultiChoiceQuizScreenDestination(difficulty = selectedDifficulty?.id))
+                    },
+                    requireInternetConnection = true
+                )
             )
         }
 
         item {
-            SeeAllCategoriesCard(onClick = navigateToCategoriesScreen)
+            Text(
+                text = stringResource(id = CoreR.string.difficulty),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        item {
+            SelectableDifficultyRow(
+                selectedDifficulty = selectedDifficulty,
+                setSelectedDifficulty = setSelectedDifficulty
+            )
+        }
+
+        item {
+            Text(
+                text = stringResource(id = CoreR.string.categories),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        items(
+            items = recentCategories,
+            key = { category -> "recent_category_${category.id}" }
+        ) { category ->
+            CategoryComponent(
+                modifier = Modifier
+                    .fillParentMaxWidth()
+                    .height(120.dp),
+                title = category.name.asString(),
+                imageUrl = category.image,
+                onClick = {
+                    navigator.navigate(
+                        MultiChoiceQuizScreenDestination(
+                            category = category.toBaseCategory(),
+                            difficulty = selectedDifficulty?.id
+                        )
+                    )
+                },
+                enabled = isInternetAvailable
+            )
+        }
+
+        item {
+            Box(
+                modifier = Modifier.fillParentMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                TextButton(
+                    onClick = { seeAllCategories = !seeAllCategories },
+                    enabled = isInternetAvailable
+                ) {
+                    Icon(
+                        imageVector = seeAllIcon,
+                        contentDescription = seeAllText,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
+                    Text(
+                        text = seeAllText,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+        }
+
+        if (seeAllCategories) {
+            items(
+                items = otherCategories,
+                key = { category -> category.id }
+            ) { category ->
+                CategoryComponent(
+                    modifier = Modifier
+                        .fillParentMaxWidth()
+                        .height(120.dp),
+                    title = category.name.asString(),
+                    imageUrl = category.image,
+                    onClick = {
+                        navigator.navigate(
+                            MultiChoiceQuizScreenDestination(
+                                category = category.toBaseCategory(),
+                                difficulty = selectedDifficulty?.id
+                            )
+                        )
+                    },
+                    enabled = isInternetAvailable
+                )
+            }
+        }
+
+        item {
+            HomeGroupTitle(title = stringResource(id = CoreR.string.saved_questions))
+        }
+
+        item {
+            HomeMediumCard(
+                modifier = Modifier.fillParentMaxWidth(),
+                data = HomeCardItem.MediumCard(
+                    title = CoreR.string.saved_questions,
+                    icon = CardIcon.Icon(Icons.Rounded.Save),
+                    onClick = { navigator.navigate(SavedMultiChoiceQuestionsScreenDestination) },
+                    description = questionsAvailableText
+                )
+            )
         }
     }
 }
 
 @Composable
-@ExperimentalMaterial3Api
-fun SeeAllCategoriesCard(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
-    val mediumShape = MaterialTheme.shapes.medium
-    val mediumSpace = MaterialTheme.spacing.medium
-
-    OutlinedCard(
-        modifier = modifier.requiredWidth(175.dp),
-        onClick = onClick,
-    ) {
-        Column(
-            modifier = Modifier.padding(MaterialTheme.spacing.small),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier.padding(MaterialTheme.spacing.large)
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Search,
-                    contentDescription = stringResource(id = CoreR.string.see_all),
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .clip(mediumShape)
-                )
-            }
-            Spacer(modifier = Modifier.height(mediumSpace))
-            Text(
-                text = stringResource(id = CoreR.string.see_all),
-                style = MaterialTheme.typography.titleMedium,
-                maxLines = 2,
-                textAlign = TextAlign.Center,
-                overflow = TextOverflow.Ellipsis
+@AllPreviewsNightLight
+@OptIn(ExperimentalMaterial3Api::class)
+fun MultiChoiceCategoriesPreview() {
+    NewQuizTheme {
+        Surface {
+            MultiChoiceQuizListScreenImpl(
+                uiState = MultiChoiceQuizListScreenUiState(),
+                navigator = EmptyDestinationsNavigator
             )
         }
     }

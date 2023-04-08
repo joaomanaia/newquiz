@@ -17,22 +17,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
-import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonCategoryComponent
 import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonModeComponent
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
 import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
-import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
@@ -115,10 +116,13 @@ private fun ComparisonQuizListScreenImpl(
             items = uiState.categories,
             key = { category -> category.id }
         ) { category ->
-            ComparisonCategoryComponent(
-                category = category,
+            CategoryComponent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                title = category.title,
+                imageUrl = category.imageUrl,
                 onClick = { onCategoryClick(category) },
-                modifier = Modifier.fillMaxWidth(),
                 enabled = isInternetAvailable
             )
         }

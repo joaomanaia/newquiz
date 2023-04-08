@@ -178,4 +178,11 @@
     <string name="name">Nome</string>
     <string name="sign_up">Registrar</string>
     <string name="next">Continuar</string>
+    <string name="random_quiz">Quiz Aleatório</string>
+    <string name="random">Aleatório</string>
+    <string name="quiz_with_random_categories">Quiz com categorias aleatórias</string>
+    <string name="see_all_categories">Ver todas as categorias</string>
+    <string name="see_less_categories">Ver menos categorias</string>
+    <string name="clear_recent_categories">Limpar categorias recentes</string>
+    <string name="clear_recent_categories_description">Remova todas as categorias recentes da tela de lista</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.multi_choice_quiz
 
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
@@ -160,7 +159,7 @@ class QuizScreenViewModel @Inject constructor(
 
         val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
 
-        if (category is MultiChoiceBaseCategory.Normal && category.hasCategory) {
+        if (category.hasCategory) {
             multiChoiceQuestionsRepository.addCategoryToRecent(category)
         }
 

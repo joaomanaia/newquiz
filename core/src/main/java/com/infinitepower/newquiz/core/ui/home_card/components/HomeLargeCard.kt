@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
@@ -40,6 +41,8 @@ fun HomeLargeCard(
     } else MaterialTheme.colorScheme.onSurfaceVariant
 
     RequireInternetComponent { isInternetAvailable ->
+        val isInspectionMode = LocalInspectionMode.current
+
         // Determine whether the card should be enabled based on the following conditions:
         // data enabled is true
         // requireInternetConnection is false, OR
@@ -48,7 +51,7 @@ fun HomeLargeCard(
 
         Card(
             onClick = data.onClick,
-            enabled = isCardEnabled,
+            enabled = isCardEnabled || isInspectionMode,
             modifier = modifier,
             colors = CardDefaults.cardColors(
                 containerColor = containerColor,

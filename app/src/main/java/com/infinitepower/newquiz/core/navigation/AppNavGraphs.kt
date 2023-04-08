@@ -11,9 +11,11 @@ import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScre
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
 import com.infinitepower.newquiz.home_presentation.destinations.LoginWithEmailScreenDestination
-import com.infinitepower.newquiz.math_quiz.list.destinations.MathQuizListScreenDestination
 import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
-import com.infinitepower.newquiz.multi_choice_quiz.destinations.*
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.SavedMultiChoiceQuestionsScreenDestination
 import com.infinitepower.newquiz.online_services.ui.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.ui.navigation.NavigationContainer
@@ -53,9 +55,7 @@ internal object AppNavGraphs {
             LoginWithEmailScreenDestination,
             MultiChoiceQuizResultsScreenDestination,
             MultiChoiceQuizListScreenDestination,
-            MultiChoiceCategoriesScreenDestination,
             ProfileScreenDestination,
-            MathQuizListScreenDestination,
             MazeScreenDestination,
             ComparisonQuizScreenDestination,
             ComparisonQuizListScreenDestination

@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Compare
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.ListAlt
-import androidx.compose.material.icons.rounded.Numbers
 import androidx.compose.material.icons.rounded.Password
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Settings
@@ -18,11 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizListScreenDestination
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.navigation.NavDrawerItemGroup
+import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.navigation.ScreenType
 import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
-import com.infinitepower.newquiz.math_quiz.list.destinations.MathQuizListScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
 import com.infinitepower.newquiz.online_services.ui.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
@@ -53,12 +51,6 @@ internal val navigationItems = listOf(
         text = R.string.comparison_quiz,
         icon = Icons.Rounded.Compare,
         direction = ComparisonQuizListScreenDestination,
-        primary = true
-    ),
-    NavigationItem.Item(
-        text = R.string.math_quiz,
-        icon = Icons.Rounded.Numbers,
-        direction = MathQuizListScreenDestination,
         primary = true
     ),
     NavigationItem.Label(

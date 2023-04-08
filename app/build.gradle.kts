@@ -57,7 +57,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -159,7 +159,6 @@ dependencies {
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
     implementation(project(Modules.onlineServices))
-    implementation(project(Modules.mathQuiz))
     implementation(project(Modules.mazeQuiz))
     implementation(project(Modules.translationDynamicFeature))
     implementation(project(Modules.comparisonQuiz))

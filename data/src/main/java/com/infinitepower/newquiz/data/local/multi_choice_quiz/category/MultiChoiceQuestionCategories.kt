@@ -1,14 +1,45 @@
 package com.infinitepower.newquiz.data.local.multi_choice_quiz.category
 
 import com.infinitepower.newquiz.model.UiText
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.core.R as CoreR
 
 val multiChoiceQuestionCategories = listOf(
     MultiChoiceCategory(
+        key = MultiChoiceBaseCategory.Logo.key,
+        id = 1001,
+        name = UiText.StringResource(CoreR.string.logo_quiz),
+        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Flogo_quiz_illustration.jpg?alt=media&token=cd9e54a2-a5d1-45f1-a285-cc490cc44cad"
+    ),
+    MultiChoiceCategory(
+        key = MultiChoiceBaseCategory.Flag.key,
+        id = 1002,
+        name = UiText.StringResource(CoreR.string.flag_quiz),
+        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fflags_illustration.png?alt=media&token=ec6b2820-1d26-4352-9c54-201bd387ae94"
+    ),
+    MultiChoiceCategory(
+        key = MultiChoiceBaseCategory.CountryCapitalFlags.key,
+        id = 1003,
+        name = UiText.StringResource(CoreR.string.country_capital_flags),
+        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fflags_illustration.png?alt=media&token=ec6b2820-1d26-4352-9c54-201bd387ae94"
+    ),
+    MultiChoiceCategory(
+        key = MultiChoiceBaseCategory.GuessMathSolution.key,
+        id = 1004,
+        name = UiText.StringResource(CoreR.string.guess_solution),
+        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fnumber_illustration.jpg?alt=media&token=68faf243-2b0e-4a13-aa9c-223743e263fd"
+    ),
+    MultiChoiceCategory(
+        key = MultiChoiceBaseCategory.NumberTrivia.key,
+        id = 1005,
+        name = UiText.StringResource(CoreR.string.number_trivia),
+        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fnumber_12_in_beach.jpg?alt=media&token=9b888c81-c51c-49ac-a376-0b3bde45db36"
+    ),
+    MultiChoiceCategory(
         key = "General knowledge",
         id = 9,
-        name = UiText.StringResource((CoreR.string.general_knowledge)),
+        name = UiText.StringResource(CoreR.string.general_knowledge),
         image = CoreR.drawable.general_knowledge
     ),
     MultiChoiceCategory(

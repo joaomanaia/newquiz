@@ -43,4 +43,24 @@ fun getWordListCardItemData(
         onClick = { navigator.navigate(WordleScreenDestination(quizType = WordleQuizType.NUMBER_TRIVIA)) },
         requireInternetConnection = true
     ),
+    HomeCardItem.GroupTitle(
+        title = R.string.guess_number,
+    ),
+    HomeCardItem.LargeCard(
+        title = R.string.guess_number,
+        icon = CardIcon.Icon(Icons.Rounded.Numbers),
+        onClick = {
+            navigator.navigate(WordleScreenDestination(quizType = WordleQuizType.NUMBER))
+        }
+    ),
+    HomeCardItem.GroupTitle(
+        title = R.string.guess_math_formula,
+    ),
+    HomeCardItem.LargeCard(
+        title = R.string.guess_math_formula,
+        icon = CardIcon.Icon(Icons.Rounded.Numbers),
+        onClick = {
+            navigator.navigate(WordleScreenDestination(quizType = WordleQuizType.MATH_FORMULA))
+        }
+    ),
 )

@@ -58,7 +58,7 @@ android {
         disable += "UnusedResources"
         disable += "MissingTranslation"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/LICENSE.md"
             excludes += "/META-INF/LICENSE-notice.md"
@@ -121,6 +121,9 @@ dependencies {
     implementation(KotlinX.serialization.json)
 
     testImplementation(KotlinX.coroutines.test)
+
+    implementation(COIL.compose)
+    implementation(COIL.svg)
 
     //implementation("androidx.palette:palette-ktx:1.0.0")
 
