@@ -78,7 +78,7 @@
         <item quantity="other">%1$s perguntas disponíveis</item>
     </plurals>
     <string name="see_all">Ver tudo</string>
-    <string name="guess_number">Adivinha o número</string>
+    <string name="guess_the_word">Adivinha a Palavra</string>
     <string name="guess_math_formula">Adivinha a fórmula matematica</string>
     <string name="guess_solution">Adinha a solução</string>
     <string name="math_quiz">Jogo de matemática</string>
@@ -193,4 +193,5 @@
     <string name="see_less_categories">Ver menos categorias</string>
     <string name="clear_recent_categories">Limpar categorias recentes</string>
     <string name="clear_recent_categories_description">Remova todas as categorias recentes da tela de lista</string>
+    <string name="guess_the_number">Adivinha o Número</string>
 </resources>

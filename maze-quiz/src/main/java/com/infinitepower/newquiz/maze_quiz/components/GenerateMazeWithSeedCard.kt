@@ -212,7 +212,7 @@ fun getGameModeText(gameMode: GameModes) = when (gameMode) {
     GameModes.LOGO -> stringResource(id = CoreR.string.logo_quiz)
     GameModes.FLAG -> stringResource(id = CoreR.string.flag_quiz)
     GameModes.WORDLE -> stringResource(id = CoreR.string.wordle)
-    GameModes.GUESS_NUMBER -> stringResource(id = CoreR.string.guess_number)
+    GameModes.GUESS_NUMBER -> stringResource(id = CoreR.string.guess_the_number)
     GameModes.GUESS_MATH_FORMULA -> stringResource(id = CoreR.string.guess_math_formula)
     GameModes.GUESS_MATH_SOLUTION -> stringResource(id = CoreR.string.guess_solution)
 }

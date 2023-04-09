@@ -126,7 +126,8 @@
     <string name="sign_in">Sign in</string>
     <string name="show_login_card">Show login card</string>
     <string name="show_login_card_at_home_screen">Show login card at home screen</string>
-    <string name="guess_number">Guess number</string>
+    <string name="guess_the_word">Guess the Word</string>
+    <string name="guess_the_number">Guess the Number</string>
     <string name="guess_math_formula">Guess math formula</string>
     <string name="guess_solution">Guess solution</string>
     <string name="math_quiz">Math quiz</string>

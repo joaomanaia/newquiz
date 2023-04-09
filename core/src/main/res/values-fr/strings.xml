@@ -114,7 +114,6 @@
     <string name="sign_in">S\'identifier</string>
     <string name="show_login_card">Afficher la carte de connexion</string>
     <string name="show_login_card_at_home_screen">Afficher la carte de connexion à l\'écran d\'accueil</string>
-    <string name="guess_number">Numéro de supposition</string>
     <string name="guess_math_formula">Devinez la formule mathématique</string>
     <string name="guess_solution">Deviner la solution</string>
     <string name="math_quiz">Quiz en mathématiques</string>

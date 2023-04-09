@@ -108,7 +108,7 @@ private fun WordleScreenImpl(
     }
 
     val screenTitle = when (uiState.wordleQuizType) {
-        WordleQuizType.NUMBER -> stringResource(id = CoreR.string.guess_number)
+        WordleQuizType.NUMBER -> stringResource(id = CoreR.string.guess_the_number)
         WordleQuizType.MATH_FORMULA -> stringResource(id = CoreR.string.guess_math_formula)
         else -> stringResource(id = CoreR.string.wordle)
     }

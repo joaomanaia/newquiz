@@ -268,7 +268,7 @@ private fun MultiChoiceQuizListScreenImpl(
 @Composable
 @AllPreviewsNightLight
 @OptIn(ExperimentalMaterial3Api::class)
-fun MultiChoiceCategoriesPreview() {
+private fun MultiChoiceCategoriesPreview() {
     NewQuizTheme {
         Surface {
             MultiChoiceQuizListScreenImpl(
