@@ -12,7 +12,7 @@ object MultiChoiceQuizListUtils {
      * @param isInternetAvailable Whether the internet is available or not
      * @return All the categories of the multi-choice questions.
      */
-    internal fun getAllCategories(
+    fun getAllCategories(
         isInternetAvailable: Boolean
     ): List<MultiChoiceCategory> {
         // If there is no internet, we make the categories that don't require internet connection
@@ -36,7 +36,7 @@ object MultiChoiceQuizListUtils {
      * from the list of all categories (if there is no internet connection, it only returns the categories that don't
      * require internet connection).
      */
-    internal fun getRecentCategories(
+    fun getRecentCategories(
         recentCategories: List<MultiChoiceCategory>,
         allCategories: List<MultiChoiceCategory>,
         isInternetAvailable: Boolean

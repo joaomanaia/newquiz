@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Today
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
 import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
+import com.infinitepower.newquiz.core.ui.home_card.components.HomeLargeCard
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeMediumCard
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
@@ -35,6 +37,7 @@ import com.infinitepower.newquiz.wordle.destinations.DailyWordleCalendarScreenDe
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlin.random.Random
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Keep
@@ -91,6 +94,21 @@ private fun WordleListScreenImpl(
         }
 
         item {
+            HomeLargeCard(
+                modifier = Modifier.fillParentMaxWidth(),
+                data = HomeCardItem.LargeCard(
+                    title = CoreR.string.quiz_with_random_categories,
+                    icon = CardIcon.Icon(Icons.Rounded.QuestionMark),
+                    backgroundPrimary = true,
+                    onClick = {
+                        val randomCategory = getRandomWordleCategory(categories, isInternetAvailable)
+                        navigateToWordleQuiz(randomCategory.wordleQuizType)
+                    }
+                )
+            )
+        }
+
+        item {
             Text(
                 text = stringResource(id = CoreR.string.categories),
                 style = MaterialTheme.typography.bodyMedium
@@ -99,7 +117,7 @@ private fun WordleListScreenImpl(
 
         items(
             items = categories,
-            key = { category -> "recent_category_${category.id}" }
+            key = { category -> category.id }
         ) { category ->
             CategoryComponent(
                 modifier = Modifier
@@ -129,7 +147,26 @@ private fun WordleListScreenImpl(
     }
 }
 
-private fun getWordleCategories() = listOf(
+/**
+ * Returns a random [WordleCategory] from the list of [allCategories].
+ * If [isInternetAvailable] is false, it will only return categories that don't require internet connection.
+ *
+ * @param allCategories The list of all categories to get the random category.
+ * @param isInternetAvailable Whether the internet is available or not.
+ * @param random The random instance to use.
+ * @see [WordleCategory]
+ */
+fun getRandomWordleCategory(
+    allCategories: List<WordleCategory>,
+    isInternetAvailable: Boolean,
+    random: Random = Random
+): WordleCategory = if (isInternetAvailable) {
+    allCategories.random(random)
+} else {
+    allCategories.filter { !it.requireInternetConnection }.random(random)
+}
+
+fun getWordleCategories() = listOf(
     WordleCategory(
         id = 1,
         name = UiText.StringResource(CoreR.string.guess_the_word),
@@ -152,7 +189,8 @@ private fun getWordleCategories() = listOf(
         id = 4,
         name = UiText.StringResource(CoreR.string.number_trivia),
         image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fnumber_12_in_beach.jpg?alt=media&token=9b888c81-c51c-49ac-a376-0b3bde45db36",
-        wordleQuizType = WordleQuizType.NUMBER_TRIVIA
+        wordleQuizType = WordleQuizType.NUMBER_TRIVIA,
+        requireInternetConnection = true
     )
 )
 

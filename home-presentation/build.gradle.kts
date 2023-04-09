@@ -100,6 +100,9 @@ dependencies {
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
     implementation(project(Modules.onlineServices))
+    implementation(project(Modules.multiChoicequiz))
+    implementation(project(Modules.wordle))
+    implementation(project(Modules.comparisonQuiz))
 }
 
 ksp {
