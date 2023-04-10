@@ -75,7 +75,11 @@
     <string name="entertainment_japanese_anime_and_manga">Japanese Anime &amp; Manga</string>
     <string name="entertainment_cartoon_and_animations">Cartoon &amp; Animations</string>
     <string name="categories">Categories</string>
-    <string name="n_questions_available">%1$s questions available</string>
+    <plurals name="n_questions_available">
+        <item quantity="zero">No questions available</item>
+        <item quantity="one">%1$s question available</item>
+        <item quantity="other">%1$s questions available</item>
+    </plurals>
     <string name="see_all">See all</string>
     <string name="difficulty">Difficulty</string>
     <string name="is_not_in_the_target_word_wordle">" is not in the target word."</string>
@@ -110,7 +114,11 @@
     <string name="good_day_text">Good %1$s, \n</string>
     <string name="no_diamonds">No diamonds</string>
     <string name="skip_question_q">Skip question?</string>
-    <string name="you_have_n_diamonds_skip_question_q">You have %1$d diamonds, do you want to use 1 diamond to skip this question?</string>
+    <plurals name="you_have_n_diamonds_skip_question_q">
+        <item quantity="zero">You don\'t have diamonds to skip this question!</item>
+        <item quantity="one">You have %1$d diamond, do you want to use the diamond to skip this question?</item>
+        <item quantity="other">You have %1$d diamonds, do you want to use one diamond to skip this question?</item>
+    </plurals>
     <string name="skip">Skip</string>
     <string name="save">Save</string>
     <string name="save_you_progress_description">Save your progress, buy skips and see leaderboard by signing in!</string>
@@ -118,7 +126,8 @@
     <string name="sign_in">Sign in</string>
     <string name="show_login_card">Show login card</string>
     <string name="show_login_card_at_home_screen">Show login card at home screen</string>
-    <string name="guess_number">Guess number</string>
+    <string name="guess_the_word">Guess the Word</string>
+    <string name="guess_the_number">Guess the Number</string>
     <string name="guess_math_formula">Guess math formula</string>
     <string name="guess_solution">Guess solution</string>
     <string name="math_quiz">Math quiz</string>
@@ -178,4 +187,11 @@
     <string name="name">Name</string>
     <string name="sign_up">Sign Up</string>
     <string name="next">Next</string>
+    <string name="random_quiz">Random Quiz</string>
+    <string name="random">Random</string>
+    <string name="quiz_with_random_categories">Quiz with random categories</string>
+    <string name="see_all_categories">See all categories</string>
+    <string name="see_less_categories">See less categories</string>
+    <string name="clear_recent_categories">Clear recent categories</string>
+    <string name="clear_recent_categories_description">Remove all recent categories from the list screen</string>
 </resources>

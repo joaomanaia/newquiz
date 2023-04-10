@@ -4,6 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
+import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
+import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
@@ -26,7 +29,8 @@ class SettingsViewModel @Inject constructor(
     private val dailyWordleRepository: DailyWordleRepository,
     private val translatorUtil: TranslatorUtil,
     private val authUserRepository: AuthUserRepository,
-    private val coreLoggingAnalytics: CoreLoggingAnalytics
+    private val coreLoggingAnalytics: CoreLoggingAnalytics,
+    @MultiChoiceQuestionDataStoreManager private val multiChoiceSettingsDataStoreManager: DataStoreManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
@@ -70,6 +74,7 @@ class SettingsViewModel @Inject constructor(
             is SettingsScreenUiEvent.ClearWordleCalendarItems -> clearWordleCalendarItems()
             is SettingsScreenUiEvent.SignOut -> authUserRepository.signOut()
             is SettingsScreenUiEvent.EnableLoggingAnalytics -> coreLoggingAnalytics.enableLoggingAnalytics(event.enabled)
+            is SettingsScreenUiEvent.ClearMultiChoiceQuizRecentCategories -> cleanMultiChoiceRecentCategoriesItems()
         }
     }
 
@@ -85,5 +90,12 @@ class SettingsViewModel @Inject constructor(
                     currentState.copy(translationModelState = res.data ?: TranslatorModelState.None)
                 }
             }
+    }
+
+    private fun cleanMultiChoiceRecentCategoriesItems() = viewModelScope.launch(Dispatchers.IO) {
+        multiChoiceSettingsDataStoreManager.editPreference(
+            key = MultiChoiceQuestionDataStoreCommon.RecentCategories.key,
+            newValue = emptySet()
+        )
     }
 }

@@ -1,18 +1,12 @@
 package com.infinitepower.newquiz.home_presentation
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 
 @Keep
 data class HomeScreenUiState(
-    val isLoggedIn: Boolean = false,
     val showLoginCard: Boolean = false,
-    val recommendedHomeGame: RecommendedHomeGame = RecommendedHomeGame.NO_GAME
+    val multiChoiceRecentCategories: List<MultiChoiceCategory> = emptyList(),
+    val comparisonQuizCategories: List<ComparisonQuizCategory> = emptyList(),
 )
-
-enum class RecommendedHomeGame {
-    NO_GAME,
-    QUICK_MULTICHOICEQUIZ,
-    WORDLE_INFINITE,
-    FLAG,
-    LOGO
-}

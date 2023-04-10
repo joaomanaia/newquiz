@@ -73,7 +73,6 @@
     <string name="entertainment_japanese_anime_and_manga">Anime japonais &amp; Manga</string>
     <string name="entertainment_cartoon_and_animations">Dessin animé &amp; Animations</string>
     <string name="categories">Catégories</string>
-    <string name="n_questions_available">%1$S Questions disponibles</string>
     <string name="see_all">Voir tout</string>
     <string name="difficulty">Difficulté</string>
     <string name="is_not_in_the_target_word_wordle">"n'est pas dans le mot cible."</string>
@@ -108,7 +107,6 @@
     <string name="good_day_text">Bon %1$s, \n</string>
     <string name="no_diamonds">Pas de diamants</string>
     <string name="skip_question_q">Sauter la question?</string>
-    <string name="you_have_n_diamonds_skip_question_q">Vous avez un de diamants %1$d, voulez-vous utiliser 1 diamant pour sauter cette question?</string>
     <string name="skip">Sauter</string>
     <string name="save">Sauver</string>
     <string name="save_you_progress_description">Économisez vos progrès, achetez des saut et voyez le classement en vous connectant!</string>
@@ -116,7 +114,6 @@
     <string name="sign_in">S\'identifier</string>
     <string name="show_login_card">Afficher la carte de connexion</string>
     <string name="show_login_card_at_home_screen">Afficher la carte de connexion à l\'écran d\'accueil</string>
-    <string name="guess_number">Numéro de supposition</string>
     <string name="guess_math_formula">Devinez la formule mathématique</string>
     <string name="guess_solution">Deviner la solution</string>
     <string name="math_quiz">Quiz en mathématiques</string>

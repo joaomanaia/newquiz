@@ -25,6 +25,9 @@ sealed class MultiChoiceBaseCategory(
 
     override fun toString(): String = key
 
+    val hasCategory: Boolean
+        get() = key.isNotBlank() && key != "random"
+
     /**
      * Random multi choice category using [Normal] class
      */
@@ -39,9 +42,6 @@ sealed class MultiChoiceBaseCategory(
     ) : MultiChoiceBaseCategory(key = categoryKey) {
         /** Sets multi choice type as no category */
         constructor() : this("random")
-
-        val hasCategory: Boolean
-            get() = categoryKey.isNotBlank() && categoryKey != "random"
 
         override fun toString(): String = categoryKey
 

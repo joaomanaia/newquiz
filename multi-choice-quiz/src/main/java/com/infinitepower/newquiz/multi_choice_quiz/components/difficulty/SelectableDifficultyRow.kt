@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.multi_choice_quiz.components.difficulty
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -14,11 +13,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @ExperimentalMaterial3Api
@@ -39,14 +40,14 @@ internal fun SelectableDifficultyRow(
         item {
             if (selectedDifficulty == null) {
                 FilledCardDifficulty(
-                    text = "Random",
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    text = stringResource(id = CoreR.string.random),
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     onClick = {}
                 )
             } else {
                 OutlinedCardDifficulty(
-                    text = "Random",
+                    text = stringResource(id = CoreR.string.random),
                     color = MaterialTheme.colorScheme.primary,
                     onClick = { setSelectedDifficulty(null) }
                 )

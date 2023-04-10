@@ -9,7 +9,6 @@ object Modules {
     const val wordle = ":wordle"
     const val translationDynamicFeature = ":translation_dynamic_feature"
     const val onlineServices = ":online_services"
-    const val mathQuiz = ":math-quiz"
     const val mazeQuiz = ":maze-quiz"
     const val comparisonQuiz = ":comparison-quiz"
     const val coreTest = ":core-test"

@@ -49,9 +49,9 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.saved.SortSavedQuestionsBy
 import com.infinitepower.newquiz.multi_choice_quiz.saved_questions.components.SavedQuestionItem
-import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
@@ -71,7 +71,7 @@ fun SavedMultiChoiceQuestionsScreen(
         onEvent = viewModel::onEvent,
         playWithQuestions = { questions ->
             multiChoiceQuizLoggingAnalytics.logPlaySavedQuestions(questions.size)
-            savedQuestionsScreenNavigator.navigateToQuickQuiz(ArrayList(questions))
+            savedQuestionsScreenNavigator.navigateToMultiChoiceQuiz(ArrayList(questions))
         }
     )
 

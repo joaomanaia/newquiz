@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">NewQuiz</string>
     <string name="quick_quiz">Quiz rápido</string>
     <string name="back">Voltar</string>
@@ -72,9 +72,13 @@
     <string name="entertainment_japanese_anime_and_manga">Animação japonesa e Manga</string>
     <string name="entertainment_cartoon_and_animations">Cartoon e animações</string>
     <string name="categories">Categorias</string>
-    <string name="n_questions_available">%1$s questões disponíveis</string>
+    <plurals name="n_questions_available" tools:ignore="MissingQuantity,UnusedQuantity">
+        <item quantity="zero">Sem perguntas disponíveis</item>
+        <item quantity="one">%1$s pergunta disponível</item>
+        <item quantity="other">%1$s perguntas disponíveis</item>
+    </plurals>
     <string name="see_all">Ver tudo</string>
-    <string name="guess_number">Adivinha o número</string>
+    <string name="guess_the_word">Adivinha a Palavra</string>
     <string name="guess_math_formula">Adivinha a fórmula matematica</string>
     <string name="guess_solution">Adinha a solução</string>
     <string name="math_quiz">Jogo de matemática</string>
@@ -115,7 +119,11 @@
     <string name="good_day_text">Boa %1$s, \n</string>
     <string name="no_diamonds">Sem diamantes</string>
     <string name="skip_question_q">Saltar pergunta?</string>
-    <string name="you_have_n_diamonds_skip_question_q">Você tem %1$d diamantes, quer usar um diamante para saltar esta pergunta?</string>
+    <plurals name="you_have_n_diamonds_skip_question_q" tools:ignore="MissingQuantity,UnusedQuantity">
+        <item quantity="zero">Não tens diamantes para saltar esta pergunta!</item>
+        <item quantity="one">Tens %1$d diamante disponível, queres usar o diamante para saltar esta pergunta?</item>
+        <item quantity="other">Tens %1$d diamantes disponíveis, queres usar um diamante para saltar esta pergunta?</item>
+    </plurals>
     <string name="skip">Saltar</string>
     <string name="save">Guardar</string>
     <string name="save_you_progress_description">Guarda o teu progresso, compra skips e vê a tua posição no ranking ao fazer login!</string>
@@ -178,4 +186,12 @@
     <string name="name">Nome</string>
     <string name="sign_up">Registrar</string>
     <string name="next">Continuar</string>
+    <string name="random_quiz">Quiz Aleatório</string>
+    <string name="random">Aleatório</string>
+    <string name="quiz_with_random_categories">Quiz com categorias aleatórias</string>
+    <string name="see_all_categories">Ver todas as categorias</string>
+    <string name="see_less_categories">Ver menos categorias</string>
+    <string name="clear_recent_categories">Limpar categorias recentes</string>
+    <string name="clear_recent_categories_description">Remova todas as categorias recentes da tela de lista</string>
+    <string name="guess_the_number">Adivinha o Número</string>
 </resources>

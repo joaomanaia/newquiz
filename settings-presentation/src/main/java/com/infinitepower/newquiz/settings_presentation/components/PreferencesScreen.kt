@@ -76,7 +76,8 @@ internal fun PreferencesScreen(
             is SettingsScreenPageData.MultiChoiceQuiz -> page.items(
                 translationModelState = uiState.translationModelState,
                 downloadTranslationModel = { onEvent(SettingsScreenUiEvent.DownloadTranslationModel) },
-                deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) }
+                deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) },
+                cleanRecentCategories = { onEvent(SettingsScreenUiEvent.ClearMultiChoiceQuizRecentCategories) }
             )
             is SettingsScreenPageData.Wordle -> page.items(
                 clearWordleCalendarItems = { onEvent(SettingsScreenUiEvent.ClearWordleCalendarItems) },

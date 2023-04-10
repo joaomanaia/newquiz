@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Animation
+import androidx.compose.material.icons.rounded.ClearAll
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Help
@@ -27,15 +28,15 @@ import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
 import com.infinitepower.newquiz.core.ui.components.AppNameWithLogo
-import com.infinitepower.newquiz.core.R as CoreR
+import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil.TranslatorModelState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.infinitepower.newquiz.core.R as CoreR
 
 @OptIn(ExperimentalMaterial3Api::class)
 sealed class SettingsScreenPageData(val key: ScreenKey) {
@@ -193,7 +194,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         fun items(
             translationModelState: TranslatorModelState,
             downloadTranslationModel: () -> Unit,
-            deleteTranslationModel: () -> Unit
+            deleteTranslationModel: () -> Unit,
+            cleanRecentCategories: () -> Unit
         ) = listOf(
             Preference.PreferenceItem.SeekBarPreference(
                 request = SettingsCommon.MultiChoiceQuizQuestionsSize,
@@ -206,6 +208,17 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     )
                 },
                 valueRange = (5..20)
+            ),
+            Preference.PreferenceItem.TextPreference(
+                title = stringResource(id = CoreR.string.clear_recent_categories),
+                summary = stringResource(id = CoreR.string.clear_recent_categories_description),
+                onClick = cleanRecentCategories,
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.ClearAll,
+                        contentDescription = stringResource(id = CoreR.string.clear_recent_categories),
+                    )
+                }
             ),
             Preference.PreferenceGroup(
                 title = stringResource(id = CoreR.string.translation),
