@@ -175,4 +175,23 @@
     <string name="password">Contraseña</string>
     <string name="name">Nombre</string>
     <string name="next">Siguiente</string>
+    <string name="guess_the_word">Adivina la palabra</string>
+    <string name="guess_the_number">Adivina el número</string>
+    <string name="random_quiz">Cuestionario aleatorio</string>
+    <string name="random">Aleatorio</string>
+    <string name="quiz_with_random_categories">Cuestionario con categorías aleatorias</string>
+    <string name="see_all_categories">Ver todas las categorías</string>
+    <string name="see_less_categories">Ver menos categorías</string>
+    <string name="clear_recent_categories">Borrar las categorías recientes</string>
+    <string name="clear_recent_categories_description">Eliminar todas las categorías recientes de la lista</string>
+    <plurals name="n_questions_available">
+        <item quantity="one">%1$s pregunta disponible</item>
+        <item quantity="many">%1$s preguntas disponibles</item>
+        <item quantity="other">%1$s preguntas disponibles</item>
+    </plurals>
+    <plurals name="you_have_n_diamonds_skip_question_q">
+        <item quantity="one">Tienes %1$d diamante, ¿quieres usar el diamante para omitir esta pregunta\?</item>
+        <item quantity="many">Tienes %1$d diamantes, ¿quieres usar los diamantes para omitir esta pregunta\?</item>
+        <item quantity="other">Tienes %1$d diamantes, ¿quieres usar los diamantes para omitir esta pregunta\?</item>
+    </plurals>
 </resources>
