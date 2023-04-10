@@ -4,39 +4,34 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Compare
+import androidx.compose.material.icons.rounded.List
+import androidx.compose.material.icons.rounded.Password
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
-import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
+import com.infinitepower.newquiz.core.ui.home_card.components.HomeLargeCard
+import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
+import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 import com.infinitepower.newquiz.home_presentation.components.SignInCard
 import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
-import com.infinitepower.newquiz.model.multi_choice_quiz.toBaseCategory
-import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
-import com.infinitepower.newquiz.multi_choice_quiz.list.util.MultiChoiceQuizListUtils
-import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
-import com.infinitepower.newquiz.wordle.list.getRandomWordleCategory
-import com.infinitepower.newquiz.wordle.list.getWordleCategories
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
@@ -47,6 +42,7 @@ import com.infinitepower.newquiz.core.R as CoreR
 @OptIn(ExperimentalMaterial3Api::class)
 fun HomeScreen(
     navigator: DestinationsNavigator,
+    homeNavigator: HomeScreenNavigator,
     homeViewModel: HomeScreenViewModel = hiltViewModel()
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
@@ -54,6 +50,7 @@ fun HomeScreen(
     HomeScreenImpl(
         uiState = uiState,
         navigator = navigator,
+        homeNavigator = homeNavigator,
         onEvent = homeViewModel::onEvent
     )
 
@@ -68,24 +65,20 @@ fun HomeScreen(
 private fun HomeScreenImpl(
     uiState: HomeScreenUiState,
     navigator: DestinationsNavigator,
+    homeNavigator: HomeScreenNavigator,
     onEvent: (event: HomeScreenUiEvent) -> Unit,
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
-    val isInternetAvailable = rememberIsInternetAvailable()
+    val navigateToRandomComparisonGame = {
+        val randomCategory = uiState.comparisonQuizCategories.random()
+        val randomComparisonMode = ComparisonModeByFirst.values().random()
 
-    val multiChoiceCategories = remember {
-        MultiChoiceQuizListUtils.getRecentCategories(
-            recentCategories = uiState.multiChoiceRecentCategories,
-            allCategories = multiChoiceQuestionCategories,
-            isInternetAvailable = isInternetAvailable
-        )
-    }
-
-    val wordleCategory = remember {
-        getRandomWordleCategory(
-            allCategories = getWordleCategories(),
-            isInternetAvailable = isInternetAvailable
+        navigator.navigate(
+            ComparisonQuizScreenDestination(
+                category = randomCategory,
+                comparisonMode = randomComparisonMode
+            )
         )
     }
 
@@ -109,23 +102,35 @@ private fun HomeScreenImpl(
         }
 
         item {
+            HomeGroupTitle(title = stringResource(id = CoreR.string.maze))
+        }
+
+        item {
+            HomeLargeCard(
+                modifier = Modifier.fillParentMaxWidth(),
+                data = HomeCardItem.LargeCard(
+                    title = CoreR.string.quiz_with_random_categories,
+                    icon = CardIcon.Lottie(LottieCompositionSpec.RawRes(CoreR.raw.space)),
+                    onClick = homeNavigator::navigateToMaze,
+                    requireInternetConnection = false,
+                    backgroundPrimary = true
+                )
+            )
+        }
+
+        item {
             HomeGroupTitle(title = stringResource(id = CoreR.string.multi_choice_quiz))
         }
 
-        items(
-            items = multiChoiceCategories,
-            key = { category -> "multichoice_category_${category.id}" }
-        ) { category ->
-            CategoryComponent(
-                modifier = Modifier
-                    .fillParentMaxWidth()
-                    .height(120.dp),
-                title = category.name.asString(),
-                imageUrl = category.image,
-                onClick = {
-                    navigator.navigate(MultiChoiceQuizScreenDestination(category = category.toBaseCategory()))
-                },
-                enabled = isInternetAvailable || !category.requireInternetConnection
+        item {
+            HomeLargeCard(
+                modifier = Modifier.fillParentMaxWidth(),
+                data = HomeCardItem.LargeCard(
+                    title = CoreR.string.quiz_with_random_categories,
+                    icon = CardIcon.Icon(Icons.Rounded.List),
+                    onClick = homeNavigator::navigateToMultiChoiceQuiz,
+                    requireInternetConnection = true
+                )
             )
         }
 
@@ -134,16 +139,14 @@ private fun HomeScreenImpl(
         }
 
         item {
-            CategoryComponent(
-                modifier = Modifier
-                    .fillParentMaxWidth()
-                    .height(120.dp),
-                title = wordleCategory.name.asString(),
-                imageUrl = wordleCategory.image,
-                onClick = {
-                    navigator.navigate(WordleScreenDestination(quizType = wordleCategory.wordleQuizType))
-                },
-                enabled = isInternetAvailable || !wordleCategory.requireInternetConnection
+            HomeLargeCard(
+                modifier = Modifier.fillParentMaxWidth(),
+                data = HomeCardItem.LargeCard(
+                    title = CoreR.string.quiz_with_random_categories,
+                    icon = CardIcon.Icon(Icons.Rounded.Password),
+                    onClick = homeNavigator::navigateToWordleQuiz,
+                    requireInternetConnection = false
+                )
             )
         }
 
@@ -151,25 +154,15 @@ private fun HomeScreenImpl(
             HomeGroupTitle(title = stringResource(id = CoreR.string.comparison_quiz))
         }
 
-        items(
-            items = uiState.comparisonQuizCategories,
-            key = { category -> category.id }
-        ) { category ->
-            CategoryComponent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp),
-                title = category.title,
-                imageUrl = category.imageUrl,
-                onClick = {
-                    navigator.navigate(
-                        ComparisonQuizScreenDestination(
-                            category = category,
-                            comparisonMode = ComparisonModeByFirst.GREATER
-                        )
-                    )
-                },
-                enabled = isInternetAvailable
+        item {
+            HomeLargeCard(
+                modifier = Modifier.fillParentMaxWidth(),
+                data = HomeCardItem.LargeCard(
+                    title = CoreR.string.quiz_with_random_categories,
+                    icon = CardIcon.Icon(Icons.Rounded.Compare),
+                    onClick = navigateToRandomComparisonGame,
+                    requireInternetConnection = true
+                )
             )
         }
     }
@@ -187,6 +180,7 @@ private fun HomeScreenPreview() {
                     multiChoiceRecentCategories = emptyList()
                 ),
                 navigator = EmptyDestinationsNavigator,
+                homeNavigator = EmptyHomeScreenNavigator,
                 onEvent = {}
             )
         }
