@@ -28,7 +28,6 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,7 +45,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -58,11 +56,11 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQues
 import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswers
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
-import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
@@ -80,11 +78,6 @@ fun MultiChoiceQuizResultsScreen(
 
     val initialQuestions = remember(questionSteps) {
         ArrayList(questionSteps.map(MultiChoiceQuestionStep::question))
-    }
-
-    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("MultiChoiceResultsScreen")
     }
 
     MultiChoiceQuizResultsScreenImpl(

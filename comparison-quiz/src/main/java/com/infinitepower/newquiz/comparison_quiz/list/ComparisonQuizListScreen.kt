@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonModeComponent
-import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -57,11 +55,6 @@ fun ComparisonQuizListScreen(
             viewModel.onEvent(ComparisonQuizListScreenUiEvent.SelectMode(mode))
         }
     )
-
-    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("ComparisonQuizListScreen")
-    }
 }
 
 @Composable

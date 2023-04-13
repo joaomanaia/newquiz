@@ -27,7 +27,6 @@ import androidx.navigation.NavController
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
-import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -90,11 +89,6 @@ fun MultiChoiceQuizScreen(
                     else -> {}
                 }
             }
-    }
-
-    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("MultiChoiceScreen")
     }
 
     MultiChoiceQuizScreenImpl(

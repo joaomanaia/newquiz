@@ -22,7 +22,6 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,7 +36,6 @@ import androidx.work.WorkManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -59,11 +57,6 @@ fun LoginScreen(
         onBack = navigator::popBackStack,
         navigateToLoginWithEmail = { navigator.navigate(LoginWithEmailScreenDestination) }
     )
-
-    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("LoginScreen")
-    }
 }
 
 @Composable

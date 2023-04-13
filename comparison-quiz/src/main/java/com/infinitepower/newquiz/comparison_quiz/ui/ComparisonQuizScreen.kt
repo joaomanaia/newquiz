@@ -26,7 +26,6 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +40,6 @@ import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScre
 import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonItem
 import com.infinitepower.newquiz.comparison_quiz.ui.components.GameOverContent
 import com.infinitepower.newquiz.comparison_quiz.ui.components.HelperValueState
-import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -51,9 +49,9 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Keep
 data class ComparisonQuizListScreenNavArg(
@@ -89,11 +87,6 @@ fun ComparisonQuizScreen(
             }
         }
     )
-
-    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("ComparisonQuizScreen")
-    }
 }
 
 

@@ -21,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -37,8 +36,8 @@ import com.patrykandpatryk.vico.compose.component.textComponent
 import com.patrykandpatryk.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatryk.vico.compose.style.ProvideChartStyle
 import com.patrykandpatryk.vico.core.entry.entryModelOf
-import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
@@ -47,11 +46,6 @@ fun ProfileScreen(
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val uiState by profileViewModel.uiState.collectAsStateWithLifecycle()
-
-    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("ProfileScreen")
-    }
 
     if (uiState.loading) {
         Box(
@@ -112,7 +106,7 @@ private fun ProfileScreenImpl(
                     UserMultiChoiceQuizData(
                         totalQuestionsPlayed = multiChoiceGameData.totalQuestionsPlayed,
                         totalCorrectAnswers = multiChoiceGameData.totalCorrectAnswers,
-                        lastQuizTimes = lastQuizTimes.orEmpty()
+                        lastQuizTimes = lastQuizTimes
                     )
                 }
             }

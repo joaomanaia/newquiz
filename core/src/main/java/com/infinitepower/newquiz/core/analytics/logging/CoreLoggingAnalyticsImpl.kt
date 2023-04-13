@@ -22,14 +22,6 @@ class CoreLoggingAnalyticsImpl @Inject constructor(
         firebaseAnalytics.setAnalyticsCollectionEnabled(enabled)
     }
 
-    override fun logScreenView(screenName: String, screenClass: String?) {
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
-            param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-
-            if (screenClass != null) param(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass)
-        }
-    }
-
     override fun logNewLevel(level: Int, diamondsEarned: Int) {
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.EARN_VIRTUAL_CURRENCY) {
             param(FirebaseAnalytics.Param.VIRTUAL_CURRENCY_NAME, "diamonds")
@@ -62,10 +54,6 @@ class CoreLoggingAnalyticsImpl @Inject constructor(
 object LocalCoreLoggingAnalytics : CoreLoggingAnalytics {
     override fun enableLoggingAnalytics(enabled: Boolean) {
         Log.d("CoreLogging", "Eisabled: $enabled - logging analytics")
-    }
-
-    override fun logScreenView(screenName: String, screenClass: String?) {
-        Log.d("CoreLogging", "Screen view, screen name: $screenName, screen class: $screenClass")
     }
 
     override fun logNewLevel(level: Int, diamondsEarned: Int) {

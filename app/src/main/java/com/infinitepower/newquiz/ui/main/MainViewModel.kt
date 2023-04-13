@@ -40,7 +40,10 @@ class MainViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     val consent = DataAnalyticsConsentState.valueOf(strConsent)
 
-                    currentState.copy(dialogConsent = consent)
+                    currentState.copy(
+                        dialogConsent = consent,
+                        consentStateLoading = false
+                    )
                 }
             }.launchIn(viewModelScope)
     }

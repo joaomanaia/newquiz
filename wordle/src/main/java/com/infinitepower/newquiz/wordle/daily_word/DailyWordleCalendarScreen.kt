@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.calendar.CalendarMonthViewImpl
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
@@ -79,11 +78,6 @@ fun DailyWordleCalendarScreen(
                     is NavEvent.ShowSnackBar -> snackBarHostState.showSnackbar(event.message)
                 }
             }
-    }
-
-    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("WordleCalendarScreen")
     }
 }
 

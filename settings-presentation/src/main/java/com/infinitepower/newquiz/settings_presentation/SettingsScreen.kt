@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -61,11 +60,6 @@ fun SettingsScreen(
         onNavigateClick = navigator::navigate,
         onEvent = settingsViewModel::onEvent
     )
-
-    val coreLoggingAnalytics = rememberCoreLoggingAnalytics()
-    LaunchedEffect(key1 = true) {
-        coreLoggingAnalytics.logScreenView("SettingsScreen")
-    }
 
     if (uiState.translationModelState == TranslatorUtil.TranslatorModelState.Downloading) {
         DownloadingTranslatorDialog()
