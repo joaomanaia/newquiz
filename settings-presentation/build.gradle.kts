@@ -94,6 +94,7 @@ dependencies {
     implementation(project(Modules.core))
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
+    implementation(project(Modules.model))
     implementation(project(Modules.translationDynamicFeature))
 }
 

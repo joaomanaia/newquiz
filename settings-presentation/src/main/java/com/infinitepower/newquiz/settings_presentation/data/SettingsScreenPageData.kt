@@ -176,7 +176,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 title = stringResource(id = CoreR.string.analytics),
                 preferenceItems = listOf(
                     Preference.PreferenceItem.SwitchPreference(
-                        request = SettingsCommon.AnalyticsCollection,
+                        request = SettingsCommon.DataAnalyticsCollectionEnabled,
                         title = stringResource(id = CoreR.string.analytics_collection_enabled),
                         onCheckChange = enableLoggingAnalytics
                     )

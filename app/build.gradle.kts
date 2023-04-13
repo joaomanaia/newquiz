@@ -84,6 +84,7 @@ dependencies {
     implementation(AndroidX.appCompat)
     implementation(AndroidX.activity.ktx)
     implementation(AndroidX.lifecycle.runtime.ktx)
+    implementation(AndroidX.lifecycle.runtime.compose)
     implementation(AndroidX.constraintLayout.compose)
     implementation(AndroidX.core.splashscreen)
 
@@ -149,6 +150,8 @@ dependencies {
     implementation(libs.slf4j.simple)
 
     implementation(libs.play.services.oss.licenses)
+
+    implementation(AndroidX.dataStore.preferences)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))

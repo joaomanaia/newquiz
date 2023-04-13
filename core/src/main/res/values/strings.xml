@@ -194,4 +194,22 @@
     <string name="see_less_categories">See less categories</string>
     <string name="clear_recent_categories">Clear recent categories</string>
     <string name="clear_recent_categories_description">Remove all recent categories from the list screen</string>
+    <string name="data_collection_consent">Data Collection Consent</string>
+    <string name="data_collection_consent_description">
+        Thank you for using NewQuiz! To help us improve the app and fix any issues that may arise, we collect certain data from your device. The data we collect includes:\n\n
+
+        \t•   Analytics data: This includes information about how you use the app, such as which features you use most frequently, how long you spend on each page, and which quizzes you complete.\n\n
+
+        \t•   Crash data: If the app crashes while you\'re using it, we collect data about the crash to help us identify and fix the issue.\n\n
+
+        \t•   Performance data: We collect information about how the app performs on your device, such as how quickly pages load and how long it takes to complete quizzes.\n\n
+
+        We take your privacy seriously and only use this data for app improvement purposes. Your data will never be sold or shared with third parties for marketing purposes.\n\n
+
+        By using the NewQuiz, you consent to the collection of this data. If you ever change your mind, you can disable data collection in the app settings.\n\n
+
+        Thank you for your understanding and support!
+    </string>
+    <string name="data_collection_consent_agree">Yes, I consent</string>
+    <string name="data_collection_consent_disagree">No, I do not consent</string>
 </resources>

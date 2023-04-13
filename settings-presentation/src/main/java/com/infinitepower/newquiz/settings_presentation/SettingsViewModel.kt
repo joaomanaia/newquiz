@@ -5,10 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
+import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
+import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
+import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
@@ -30,7 +33,8 @@ class SettingsViewModel @Inject constructor(
     private val translatorUtil: TranslatorUtil,
     private val authUserRepository: AuthUserRepository,
     private val coreLoggingAnalytics: CoreLoggingAnalytics,
-    @MultiChoiceQuestionDataStoreManager private val multiChoiceSettingsDataStoreManager: DataStoreManager
+    @MultiChoiceQuestionDataStoreManager private val multiChoiceSettingsDataStoreManager: DataStoreManager,
+    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
@@ -73,7 +77,7 @@ class SettingsViewModel @Inject constructor(
             is SettingsScreenUiEvent.DownloadTranslationModel -> downloadTranslationModel()
             is SettingsScreenUiEvent.ClearWordleCalendarItems -> clearWordleCalendarItems()
             is SettingsScreenUiEvent.SignOut -> authUserRepository.signOut()
-            is SettingsScreenUiEvent.EnableLoggingAnalytics -> coreLoggingAnalytics.enableLoggingAnalytics(event.enabled)
+            is SettingsScreenUiEvent.EnableLoggingAnalytics -> enableLoggingAnalytics(event.enabled)
             is SettingsScreenUiEvent.ClearMultiChoiceQuizRecentCategories -> cleanMultiChoiceRecentCategoriesItems()
         }
     }
@@ -96,6 +100,21 @@ class SettingsViewModel @Inject constructor(
         multiChoiceSettingsDataStoreManager.editPreference(
             key = MultiChoiceQuestionDataStoreCommon.RecentCategories.key,
             newValue = emptySet()
+        )
+    }
+
+    private fun enableLoggingAnalytics(enabled: Boolean) = viewModelScope.launch(Dispatchers.IO) {
+        coreLoggingAnalytics.enableLoggingAnalytics(enabled)
+
+        val consentState = if (enabled) {
+            DataAnalyticsConsentState.AGREED
+        } else {
+            DataAnalyticsConsentState.DISAGREED
+        }
+
+        settingsDataStoreManager.editPreference(
+            key = SettingsCommon.DataAnalyticsConsent.key,
+            newValue = consentState.name
         )
     }
 }

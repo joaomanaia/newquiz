@@ -22,7 +22,7 @@
         android:isGame="true"
         android:theme="@style/Theme.NewQuiz.Starting">
         <activity
-            android:name="com.infinitepower.newquiz.MainActivity"
+            android:name="com.infinitepower.newquiz.ui.main.MainActivity"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:theme="@style/Theme.NewQuiz.Starting">
