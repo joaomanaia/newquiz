@@ -197,17 +197,11 @@
     <string name="data_collection_consent">Consentimento de coleta de dados</string>
     <string name="data_collection_consent_description">
         Obrigado por usares o NewQuiz! Para ajudar-nos a melhorar a aplicação e corrigir quaisquer problemas que possam surgir, nós coletamos alguns dados do seu dispositivo. Os dados que coletamos incluem:\n\n
-
         \t•   Dados analíticos: incluem informações sobre como você usa a aplicação, como quais recursos você usa com mais frequência, quanto tempo você gasta em cada página e quantas perguntas você conclui.\n\n
-
         \t•   Dados de falha: se a aplicação travar enquanto você o estiver a usar, coletamos dados sobre a falha para nos ajudar a identificar e corrigir o problema.\n\n
-
         \t•   Dados de desempenho: coletamos informações sobre o desempenho da aplicação em seu dispositivo, como a rapidez com que as páginas são carregadas e quanto tempo leva para concluir as perguntas.\n\n
-
         Levamos sua privacidade a sério e usamos esses dados apenas para fins de aprimoramento da aplicação. Seus dados nunca serão vendidos ou compartilhados com terceiros para fins de marketing.\n\n
-
         Ao usar o NewQuiz, você concorda com a coleta desses dados. Se mudar de ideia, você pode desativar a coleta de dados nas configurações do app.\n\n
-
         Obrigado pela sua compreensão e apoio!
     </string>
     <string name="data_collection_consent_agree">Sim, eu concordo</string>
