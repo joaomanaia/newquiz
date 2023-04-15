@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import org.jetbrains.annotations.TestOnly
 import java.util.Locale
 
+@TestOnly
 fun setDeviceLocale(
     context: Context,
     locale: Locale = Locale.ENGLISH
@@ -21,6 +23,7 @@ fun setDeviceLocale(
     }
 }
 
+@TestOnly
 @Composable
 @SuppressLint("ComposableNaming")
 fun setDeviceLocale(

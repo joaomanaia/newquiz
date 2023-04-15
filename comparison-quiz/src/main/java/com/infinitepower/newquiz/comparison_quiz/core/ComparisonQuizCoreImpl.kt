@@ -36,7 +36,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
 
     override fun startGame() {
         _quizData.update { currentData ->
-            currentData.nextQuestion()
+            getNextQuestionData(currentData)
         }
     }
 
@@ -45,17 +45,24 @@ class ComparisonQuizCoreImpl @Inject constructor(
             val currentQuestion = currentData.currentQuestion
 
             if (currentQuestion == null || currentQuestion.isCorrectAnswer(answer, currentData.comparisonMode)) {
-                currentData.nextQuestion()
+                getNextQuestionData(currentData)
             } else {
                 currentData.copy(
-                    isGameOver = true,
-                    currentQuestion = null
+                    currentQuestion = null,
+                    isGameOver = true
                 )
             }
         }
     }
 
-    override fun endGame() {
-        TODO("Not yet implemented")
+    private fun getNextQuestionData(currentData: ComparisonQuizData) = try {
+        currentData.nextQuestion()
+    } catch (e: IllegalStateException) {
+        currentData.copy(
+            currentQuestion = null,
+            isGameOver = true
+        )
     }
+
+    override fun endGame() {}
 }

@@ -92,7 +92,7 @@ fun ComparisonQuizScreen(
 
 @Composable
 @ExperimentalMaterial3Api
-private fun ComparisonQuizScreenImpl(
+fun ComparisonQuizScreenImpl(
     uiState: ComparisonQuizUiState,
     windowSizeClass: WindowSizeClass,
     onBackClick: () -> Unit = {},

@@ -3,6 +3,7 @@ import de.fayard.refreshVersions.core.versionFor
 plugins {
     id("com.android.library")
     kotlin("android")
+    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
 }
 
 android {
@@ -34,16 +35,18 @@ android {
         jvmTarget = ProjectConfig.jvmTargetVersion
         freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
-    packagingOptions {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+        }
     }
 }
 
@@ -58,6 +61,10 @@ dependencies {
     implementation(AndroidX.compose.ui.toolingPreview)
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material3)
+    implementation(AndroidX.compose.material3.windowSizeClass)
+
+    implementation(libs.io.github.raamcosta.compose.destinations.core)
+    ksp(libs.io.github.raamcosta.compose.destinations.ksp)
 
     // Google truth
     implementation(libs.truth)
@@ -71,10 +78,15 @@ dependencies {
 
     implementation(AndroidX.compose.ui.test)
     implementation(AndroidX.compose.ui.testJunit4)
+    debugImplementation(AndroidX.compose.ui.testManifest)
 
     implementation(AndroidX.test.espresso.core)
 
     implementation(project(Modules.core))
+    androidTestImplementation(project(Modules.comparisonQuiz))
+    androidTestImplementation(project(Modules.model))
+    androidTestImplementation(project(Modules.data))
+    androidTestImplementation(project(Modules.domain))
 }
 
 tasks.withType<Test> {

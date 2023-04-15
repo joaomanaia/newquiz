@@ -36,6 +36,13 @@ data class ComparisonQuizCategory(
         return formatType.formatValueToString(value, helperValueSuffix)
     }
 
+    fun getQuestionDescription(
+        comparisonMode: ComparisonModeByFirst
+    ): String = when (comparisonMode) {
+        ComparisonModeByFirst.GREATER -> questionDescription.greater
+        ComparisonModeByFirst.LESSER -> questionDescription.less
+    }
+
     @Keep
     @Serializable
     data class QuestionDescription(

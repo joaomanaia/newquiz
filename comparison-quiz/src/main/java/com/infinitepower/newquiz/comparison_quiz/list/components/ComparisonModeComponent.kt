@@ -33,6 +33,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
 internal fun ComparisonModeComponent(
     modifier: Modifier = Modifier,
     selected: Boolean,
+    enabled: Boolean = true,
     mode: ComparisonModeByFirst,
     onClick: () -> Unit = {}
 ) {
@@ -73,7 +74,9 @@ internal fun ComparisonModeComponent(
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
         color = containerColor,
-        border = border
+        border = border,
+        selected = selected,
+        enabled = enabled
     ) {
         Column(
             modifier = Modifier.padding(spaceMedium)

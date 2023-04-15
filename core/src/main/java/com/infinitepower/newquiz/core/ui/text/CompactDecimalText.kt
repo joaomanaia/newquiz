@@ -4,8 +4,8 @@ import android.icu.text.CompactDecimalFormat
 import android.os.Build
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -55,7 +55,7 @@ private fun Long.compactFormat(): String {
 
 @Composable
 @PreviewNightLight
-fun CompactDecimalTextPreview() {
+private fun CompactDecimalTextPreview() {
     NewQuizTheme {
         Surface {
             CompactDecimalText(

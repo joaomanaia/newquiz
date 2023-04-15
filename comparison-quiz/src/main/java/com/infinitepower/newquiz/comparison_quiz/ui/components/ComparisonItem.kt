@@ -63,7 +63,7 @@ internal fun ComparisonItem(
 enum class HelperValueState { NORMAL, HIDDEN }
 
 @Composable
-private fun ComparisonItem(
+internal fun ComparisonItem(
     modifier: Modifier = Modifier,
     title: String,
     image: Uri,

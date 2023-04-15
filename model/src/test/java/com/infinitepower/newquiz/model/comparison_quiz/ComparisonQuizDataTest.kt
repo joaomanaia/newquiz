@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 internal class ComparisonQuizDataTest {
     @Test
@@ -29,7 +30,7 @@ internal class ComparisonQuizDataTest {
         val quizData = ComparisonQuizData(
             questions = listOf(quizItem1, quizItem2),
             currentQuestion = null,
-            gameDescription = "Which country has more population?",
+            questionDescription = "Which country has more population?",
             comparisonMode = ComparisonModeByFirst.GREATER
         )
 
@@ -44,21 +45,22 @@ internal class ComparisonQuizDataTest {
     }
 
     @Test
-    fun `nextQuestion should return null currentQuestion when questions list is empty`() {
+    fun `nextQuestion should return throw IllegalStateException when questions list is empty`() {
         val quizData = ComparisonQuizData(
             questions = emptyList(),
             currentQuestion = null,
-            gameDescription = "Which country has more population?",
+            questionDescription = "Which country has more population?",
             comparisonMode = ComparisonModeByFirst.GREATER
         )
 
         assertThat(quizData.questions).isEmpty()
         assertThat(quizData.currentQuestion).isNull()
 
-        val nextQuizData = quizData.nextQuestion()
+        val exception = assertThrows<IllegalStateException> {
+            quizData.nextQuestion()
+        }
 
-        assertThat(nextQuizData.questions).isEmpty()
-        assertThat(nextQuizData.currentQuestion).isNull()
+        assertThat(exception).hasMessageThat().isEqualTo("Questions list is empty")
     }
 
     @Test
@@ -88,7 +90,7 @@ internal class ComparisonQuizDataTest {
         val quizData = ComparisonQuizData(
             questions = listOf(quizItem1, quizItem2, quizItem3),
             currentQuestion = null,
-            gameDescription = "Which country has more population?",
+            questionDescription = "Which country has more population?",
             comparisonMode = ComparisonModeByFirst.GREATER
         )
 
@@ -129,7 +131,7 @@ internal class ComparisonQuizDataTest {
         val quizData = ComparisonQuizData(
             questions = listOf(quizItem3),
             currentQuestion = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2),
-            gameDescription = "Which country has more population?",
+            questionDescription = "Which country has more population?",
             comparisonMode = ComparisonModeByFirst.GREATER
         )
 

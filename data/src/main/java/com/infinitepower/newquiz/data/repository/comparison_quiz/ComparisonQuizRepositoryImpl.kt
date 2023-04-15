@@ -61,13 +61,10 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
 
             val questions = entityQuestions.map(ComparisonQuizItemEntity::toComparisonQuizItem)
 
-            val gameDescription = when (comparisonMode) {
-                ComparisonModeByFirst.GREATER -> category.questionDescription.greater
-                ComparisonModeByFirst.LESSER -> category.questionDescription.less
-            }
+            val questionDescription = category.getQuestionDescription(comparisonMode)
 
             val quizData = ComparisonQuizData(
-                gameDescription = gameDescription,
+                questionDescription = questionDescription,
                 questions = questions,
                 comparisonMode = comparisonMode
             )

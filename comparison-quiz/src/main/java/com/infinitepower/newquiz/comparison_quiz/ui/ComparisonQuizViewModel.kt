@@ -38,7 +38,7 @@ class ComparisonQuizViewModel @Inject constructor(
 
                     currentState.copy(
                         currentQuestion = data.currentQuestion,
-                        gameDescription = data.gameDescription,
+                        gameDescription = data.questionDescription,
                         currentPosition = data.currentPosition,
                         isGameOver = data.isGameOver,
                         gameCategory = getCategory()

@@ -3,7 +3,6 @@ package com.infinitepower.newquiz.comparison_quiz.list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
-import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonModeComponent
+import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonModeComponents
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -78,23 +77,10 @@ private fun ComparisonQuizListScreenImpl(
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(spaceMedium))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(spaceMedium)
-                ) {
-                    ComparisonModeComponent(
-                        mode = ComparisonModeByFirst.GREATER,
-                        modifier = Modifier.weight(1f),
-                        selected = uiState.selectedMode == ComparisonModeByFirst.GREATER,
-                        onClick = { onSelectMode(ComparisonModeByFirst.GREATER) }
-                    )
-                    ComparisonModeComponent(
-                        mode = ComparisonModeByFirst.LESSER,
-                        modifier = Modifier.weight(1f),
-                        selected = uiState.selectedMode == ComparisonModeByFirst.LESSER,
-                        onClick = { onSelectMode(ComparisonModeByFirst.LESSER) }
-                    )
-                }
+                ComparisonModeComponents(
+                    modifier = Modifier.fillParentMaxWidth(),
+                    onModeClick = onSelectMode
+                )
             }
         }
 

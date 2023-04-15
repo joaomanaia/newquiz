@@ -93,6 +93,7 @@ dependencies {
 
     implementation(AndroidX.compose.ui)
     implementation(AndroidX.compose.ui.tooling)
+    debugImplementation(AndroidX.compose.ui.testManifest)
     implementation(AndroidX.compose.material.icons.extended)
     implementation(AndroidX.activity.compose)
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
