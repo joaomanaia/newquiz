@@ -134,5 +134,5 @@ jobs:
         with:
           name: artifacts.zip
           path: |
-            app/build/outputs/apk/debug/app-debug.apk
+            app/build/outputs/apk/debug/app-universal-debug.apk
             newquiz_uploads/build/outputs/aar

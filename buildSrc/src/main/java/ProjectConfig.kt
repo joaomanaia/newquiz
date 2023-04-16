@@ -18,4 +18,6 @@ object ProjectConfig {
     val javaVersionCompatibility = JavaVersion.VERSION_17
 
     const val jvmTargetVersion = "17"
+
+    const val jvmToolchainVersion = 17
 }

@@ -50,6 +50,10 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(ProjectConfig.jvmToolchainVersion)
+}
+
 dependencies {
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)

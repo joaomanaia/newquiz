@@ -79,6 +79,20 @@ android {
 
         addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
     }
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("x86", "x86_64", "arm64-v8a", "armeabi-v7a")
+
+            // Generate universal APK
+            isUniversalApk = true
+        }
+    }
+}
+
+kotlin {
+    jvmToolchain(ProjectConfig.jvmToolchainVersion)
 }
 
 dependencies {

@@ -1,6 +1,6 @@
 # New Quiz
 
-[![Version](https://img.shields.io/badge/Version-1.5.2-blueviolet)](https://github.com/joaomanaia/newquiz/releases/tag/1.5.2)
+[![Version](https://img.shields.io/badge/Version-1.5.3-blueviolet)](https://github.com/joaomanaia/newquiz/releases/tag/1.5.3)
 [![Android CI](https://github.com/joaomanaia/newquiz/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/joaomanaia/newquiz/actions/workflows/android.yml)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Translation status](https://hosted.weblate.org/widgets/newquiz/-/android-strings/svg-badge.svg)](https://hosted.weblate.org/engage/newquiz)
@@ -13,7 +13,7 @@ Do you like to challenge your knowledge? So NewQuiz is the ideal game for you.
 
 New quiz is optimized to material you, the theme of new quiz will adapt to your background.
 
-![NewQuiz green night](pictures/NewQuiz-Promotion-green.png)
+![NewQuiz green night](pictures/NewQuiz-Promotion-green-night.png)
 
 # Features
 

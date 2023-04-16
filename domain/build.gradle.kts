@@ -40,6 +40,10 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(ProjectConfig.jvmToolchainVersion)
+}
+
 dependencies {
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)

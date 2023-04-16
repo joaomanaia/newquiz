@@ -55,6 +55,10 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(ProjectConfig.jvmToolchainVersion)
+}
+
 dependencies {
     implementation(AndroidX.core.ktx)
 

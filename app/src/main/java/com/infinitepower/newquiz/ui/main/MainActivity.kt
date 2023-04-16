@@ -29,7 +29,6 @@ class MainActivity : ComponentActivity() {
 
         installSplashScreen()
 
-
         setContent {
             NewQuizTheme {
                 val windowSize = calculateWindowSizeClass(activity = this)

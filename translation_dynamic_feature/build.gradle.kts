@@ -55,6 +55,10 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(ProjectConfig.jvmToolchainVersion)
+}
+
 dependencies {
     implementation(project(Modules.core))
 
