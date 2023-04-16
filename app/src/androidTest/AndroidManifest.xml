@@ -7,17 +7,12 @@
         <activity
             android:name="com.infinitepower.newquiz.ui.main.MainActivity"
             android:exported="true"
-            android:hardwareAccelerated="true"
-            android:theme="@style/Theme.NewQuiz.Starting">
+            android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
         </activity>
         <!-- disable firebase provider to get rid of "Default FirebaseApp is not initialized in this process" exceptions -->
         <provider

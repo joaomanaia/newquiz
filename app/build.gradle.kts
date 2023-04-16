@@ -26,6 +26,8 @@ android {
 
         testInstrumentationRunner = ProjectConfig.testInstrumentationRunner
         vectorDrawables.useSupportLibrary = true
+
+        resourceConfigurations += setOf("en", "pt", "fr", "es", "nb")
     }
 
     buildTypes {
