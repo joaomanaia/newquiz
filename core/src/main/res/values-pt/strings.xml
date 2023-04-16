@@ -206,4 +206,10 @@
     </string>
     <string name="data_collection_consent_agree">Sim, eu concordo</string>
     <string name="data_collection_consent_disagree">Não, eu não concordo</string>
+    <string name="general_analytics_enabled">Análises gerais ativadas</string>
+    <string name="general_analytics_description_enabled">Ativa análises gerais, como eventos, por exemplo: início do jogo, etc.</string>
+    <string name="crash_analytics_enabled">Análises de falhas ativadas</string>
+    <string name="crash_analytics_description_enabled">Ativa análises de dados de falhas, como falhas de aplicações e exceções.</string>
+    <string name="performance_monitoring_enabled">Monitoramento de desempenho ativado</string>
+    <string name="performance_monitoring_description_enabled">Ativa o monitoramento de desempenho, como tempo de inicialização da aplicação e outras métricas de desempenho.</string>
 </resources>

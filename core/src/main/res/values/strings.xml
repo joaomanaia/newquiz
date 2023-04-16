@@ -157,8 +157,6 @@
     <string name="animations_enabled">Animations Enabled</string>
     <string name="global_animations_enabled">Global animations enabled</string>
     <string name="wordle_animations_enabled">Wordle animations enabled</string>
-    <string name="analytics">Analytics</string>
-    <string name="analytics_collection_enabled">Analytics collection enabled</string>
     <string name="sort_questions">Sort questions</string>
     <string name="play_with_random_saved_questions">Play quiz with random saved questions</string>
     <string name="play">Play</string>
@@ -194,6 +192,12 @@
     <string name="see_less_categories">See less categories</string>
     <string name="clear_recent_categories">Clear recent categories</string>
     <string name="clear_recent_categories_description">Remove all recent categories from the list screen</string>
+
+    <!-- Analytics -->
+
+    <string name="analytics">Analytics</string>
+    <string name="analytics_collection_enabled">Analytics collection enabled</string>
+
     <string name="data_collection_consent">Data Collection Consent</string>
     <string name="data_collection_consent_description">
         Thank you for using NewQuiz! To help us improve the app and fix any issues that may arise, we collect certain data from your device. The data we collect includes:\n\n
@@ -206,4 +210,13 @@
     </string>
     <string name="data_collection_consent_agree">Yes, I consent</string>
     <string name="data_collection_consent_disagree">No, I do not consent</string>
+
+    <string name="general_analytics_enabled">General analytics enabled</string>
+    <string name="general_analytics_description_enabled">Enables general analytics such as events, example: game starts, etc.</string>
+
+    <string name="crash_analytics_enabled">Crash analytics enabled</string>
+    <string name="crash_analytics_description_enabled">Enables crash data analytics such as app crashes and exceptions.</string>
+
+    <string name="performance_monitoring_enabled">Performance monitoring enabled</string>
+    <string name="performance_monitoring_description_enabled">Enables performance monitoring such as app startup time and other performance metrics.</string>
 </resources>

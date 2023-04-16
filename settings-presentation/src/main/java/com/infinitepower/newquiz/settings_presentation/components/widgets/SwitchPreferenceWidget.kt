@@ -1,28 +1,68 @@
 package com.infinitepower.newquiz.settings_presentation.components.widgets
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
+import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 @Composable
 @ExperimentalMaterial3Api
 internal fun SwitchPreferenceWidget(
     preference: Preference.PreferenceItem.SwitchPreference,
-    value: Boolean,
-    onValueChange: (Boolean) -> Unit
+    checked: Boolean,
+    onCheckChange: (Boolean) -> Unit
 ) {
     val isEnabled = LocalPreferenceEnabledStatus.current && preference.enabled
 
-    TextPreferenceWidget(
-        preference = preference,
-        onClick = { onValueChange(!value) }
+    SwitchPreferenceContainer(
+        checked = checked,
+        isEnabled = isEnabled,
+        isPrimary = preference.primarySwitch
     ) {
-        Switch(
-            checked = value,
-            onCheckedChange = onValueChange,
-            enabled = isEnabled
+        TextPreferenceWidget(
+            preference = preference,
+            onClick = { onCheckChange(!checked) }
+        ) {
+            Switch(
+                checked = checked,
+                onCheckedChange = onCheckChange,
+                enabled = isEnabled
+            )
+        }
+    }
+}
+
+@Composable
+fun SwitchPreferenceContainer(
+    checked: Boolean,
+    isEnabled: Boolean,
+    isPrimary: Boolean,
+    content: @Composable () -> Unit
+) {
+    if (isPrimary) {
+        val containerColor = if (checked) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant
+        }
+
+        val tonalElevation = if (checked && isEnabled) 8.dp else 0.dp
+
+        Surface(
+            color = containerColor,
+            tonalElevation = tonalElevation,
+            shape = MaterialTheme.shapes.extraLarge,
+            modifier = Modifier.padding(MaterialTheme.spacing.medium),
+            content = content
         )
+    } else {
+        content()
     }
 }

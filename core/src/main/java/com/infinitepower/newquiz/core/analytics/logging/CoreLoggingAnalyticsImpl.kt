@@ -18,10 +18,6 @@ private const val TRANSLATOR_DOWNLOADED_USER_PROPERTY = "translator_downloaded"
 class CoreLoggingAnalyticsImpl @Inject constructor(
     private val firebaseAnalytics: FirebaseAnalytics
 ) : CoreLoggingAnalytics {
-    override fun enableLoggingAnalytics(enabled: Boolean) {
-        firebaseAnalytics.setAnalyticsCollectionEnabled(enabled)
-    }
-
     override fun logNewLevel(level: Int, diamondsEarned: Int) {
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.EARN_VIRTUAL_CURRENCY) {
             param(FirebaseAnalytics.Param.VIRTUAL_CURRENCY_NAME, "diamonds")
@@ -52,10 +48,6 @@ class CoreLoggingAnalyticsImpl @Inject constructor(
 }
 
 object LocalCoreLoggingAnalytics : CoreLoggingAnalytics {
-    override fun enableLoggingAnalytics(enabled: Boolean) {
-        Log.d("CoreLogging", "Eisabled: $enabled - logging analytics")
-    }
-
     override fun logNewLevel(level: Int, diamondsEarned: Int) {
         Log.d("CoreLogging", "New level: $level, earned $diamondsEarned diamonds")
     }

@@ -9,9 +9,10 @@ sealed interface SettingsScreenUiEvent {
 
     object ClearWordleCalendarItems : SettingsScreenUiEvent
 
-    data class EnableLoggingAnalytics(
-        val enabled: Boolean
-    ) : SettingsScreenUiEvent
+    data class EnableLoggingAnalytics(val enabled: Boolean) : SettingsScreenUiEvent
+    data class EnableGeneralAnalytics(val enabled: Boolean) : SettingsScreenUiEvent
+    data class EnableCrashlytics(val enabled: Boolean) : SettingsScreenUiEvent
+    data class EnablePerformanceMonitoring(val enabled: Boolean) : SettingsScreenUiEvent
 
     object ClearMultiChoiceQuizRecentCategories : SettingsScreenUiEvent
 }

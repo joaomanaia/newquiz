@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,10 +68,28 @@ class MainViewModel @Inject constructor(
                 newValue = consentState.name
             )
 
+            // Update all data analytics settings
             settingsDataStoreManager.editPreference(
                 key = SettingsCommon.DataAnalyticsCollectionEnabled.key,
                 newValue = agreed
             )
+
+            settingsDataStoreManager.editPreference(
+                key = SettingsCommon.GeneralAnalyticsEnabled.key,
+                newValue = agreed
+            )
+
+            settingsDataStoreManager.editPreference(
+                key = SettingsCommon.CrashlyticsEnabled.key,
+                newValue = agreed
+            )
+
+            settingsDataStoreManager.editPreference(
+                key = SettingsCommon.PerformanceMonitoringEnabled.key,
+                newValue = agreed
+            )
+
+            AnalyticsUtils.enableAll(agreed)
         }
     }
 }

@@ -20,9 +20,16 @@ val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(na
 object SettingsCommon {
     object ShowLoginCard : PreferenceRequest<Boolean>(booleanPreferencesKey("showLoginCard"), true)
 
+    // Data Analytics
     object DataAnalyticsCollectionEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("dataAnalyticsEnabled"), false)
 
     object DataAnalyticsConsent : PreferenceRequest<String>(stringPreferencesKey("dataAnalyticsConsent"), DataAnalyticsConsentState.NONE.name)
+
+    object GeneralAnalyticsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("generalAnalyticsEnabled"), false)
+
+    object CrashlyticsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("crashlyticsEnabled"), false)
+
+    object PerformanceMonitoringEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("performanceMonitoringEnabled"), false)
 
     object MultiChoiceQuizQuestionsSize :
         PreferenceRequest<Int>(intPreferencesKey("quickQuizQuestionsSize"), 5)

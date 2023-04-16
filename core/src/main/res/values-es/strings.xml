@@ -195,19 +195,22 @@
         <item quantity="other">Tienes %1$d diamantes, ¿quieres usar los diamantes para omitir esta pregunta\?</item>
     </plurals>
     <string name="data_collection_consent">Consentimiento para la recogida de datos</string>
-    <string name="data_collection_consent_description">¡Gracias por utilizar NewQuiz! Para ayudarnos a mejorar la aplicación y solucionar cualquier problema que pueda surgir, recopilamos ciertos datos de tu dispositivo. Los datos que recopilamos incluyen
-\n
-\n \t- Datos analíticos: Esto incluye información sobre cómo utiliza la aplicación, como qué funciones utiliza con más frecuencia, cuánto tiempo pasa en cada página y qué cuestionarios completa.
-\n
-\n \t- Datos de bloqueos: Si la aplicación se bloquea mientras la utilizas, recopilamos datos sobre el bloqueo para ayudarnos a identificar y solucionar el problema.
-\n
-\n \t- Datos de rendimiento: Recopilamos información sobre el rendimiento de la aplicación en tu dispositivo, como la rapidez con la que se cargan las páginas y el tiempo que se tarda en completar los cuestionarios.
-\n
-\n Nos tomamos muy en serio tu privacidad y sólo utilizamos estos datos para mejorar la aplicación. Sus datos nunca serán vendidos o compartidos con terceros con fines de marketing.
-\n
-\n Al utilizar NewQuiz, aceptas la recopilación de estos datos. Si alguna vez cambias de opinión, puedes desactivar la recopilación de datos en la configuración de la aplicación.
-\n
-\n ¡Gracias por tu comprensión y apoyo!</string>
+    <string name="data_collection_consent_description">
+        ¡Gracias por utilizar NewQuiz! Para ayudarnos a mejorar la aplicación y solucionar cualquier problema que pueda surgir, recopilamos ciertos datos de tu dispositivo. Los datos que recopilamos incluyen:\n\n
+        \t• Datos analíticos: Esto incluye información sobre cómo utiliza la aplicación, como qué funciones utiliza con más frecuencia, cuánto tiempo pasa en cada página y qué cuestionarios completa.\n\n
+        \t• Datos de bloqueos: Si la aplicación se bloquea mientras la utilizas, recopilamos datos sobre el bloqueo para ayudarnos a identificar y solucionar el problema.\n\n
+        \t• Datos de rendimiento: Recopilamos información sobre el rendimiento de la aplicación en tu dispositivo, como la rapidez con la que se cargan las páginas y el tiempo que se tarda en completar los cuestionarios.\n\n
+        Nos tomamos muy en serio tu privacidad y sólo utilizamos estos datos para mejorar la aplicación. Sus datos nunca serán vendidos o compartidos con terceros con fines de marketing.\n\n
+        Al utilizar NewQuiz, aceptas la recopilación de estos datos. Si alguna vez cambias de opinión, puedes desactivar la recopilación de datos en la configuración de la aplicación.\n\n
+        ¡Gracias por tu comprensión y apoyo!
+    </string>
     <string name="data_collection_consent_agree">Sí, estoy de acuerdo</string>
     <string name="data_collection_consent_disagree">No, no estoy de acuerdo</string>
+    <string name="general_analytics_enabled">Análisis generales habilitados</string>
+    <string name="general_analytics_description_enabled">Permite análisis generales, como eventos, por ejemplo: inicio del juego, etc.</string>
+    <string name="crash_analytics_enabled">Análisis de fallos habilitados</string>
+    <string name="crash_analytics_description_enabled">Permite el análisis de datos de fallos, como los fallos y excepciones de la aplicación.</string>
+    <string name="performance_monitoring_enabled">Monitoreo de rendimiento habilitado</string>
+    <string name="performance_monitoring_description_enabled">Permite el monitoreo de rendimiento, como el tiempo de inicio de la aplicación y otras métricas de rendimiento.</string>
+
 </resources>

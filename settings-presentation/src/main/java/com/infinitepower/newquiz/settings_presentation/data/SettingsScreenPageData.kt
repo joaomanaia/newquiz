@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Analytics
 import androidx.compose.material.icons.rounded.Animation
+import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.ClearAll
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Help
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.ListAlt
+import androidx.compose.material.icons.rounded.MonitorHeart
 import androidx.compose.material.icons.rounded.Password
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.QuestionMark
@@ -29,6 +32,7 @@ import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.AppNameWithLogo
+import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
@@ -175,10 +179,51 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             Preference.PreferenceGroup(
                 title = stringResource(id = CoreR.string.analytics),
                 preferenceItems = listOf(
+                    // Global analytics dependency
                     Preference.PreferenceItem.SwitchPreference(
                         request = SettingsCommon.DataAnalyticsCollectionEnabled,
                         title = stringResource(id = CoreR.string.analytics_collection_enabled),
-                        onCheckChange = enableLoggingAnalytics
+                        onCheckChange = enableLoggingAnalytics,
+                        primarySwitch = true
+                    ),
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.GeneralAnalyticsEnabled,
+                        title = stringResource(id = CoreR.string.general_analytics_enabled),
+                        summary = stringResource(id = CoreR.string.general_analytics_description_enabled),
+                        dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Analytics,
+                                contentDescription = stringResource(id = CoreR.string.general_analytics_enabled)
+                            )
+                        },
+                        onCheckChange = { enabled -> AnalyticsUtils.enableGeneralAnalytics(enabled) }
+                    ),
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.CrashlyticsEnabled,
+                        title = stringResource(id = CoreR.string.crash_analytics_enabled),
+                        summary = stringResource(id = CoreR.string.crash_analytics_description_enabled),
+                        dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.BugReport,
+                                contentDescription = stringResource(id = CoreR.string.crash_analytics_enabled)
+                            )
+                        },
+                        onCheckChange = { enabled -> AnalyticsUtils.enableCrashlytics(enabled) }
+                    ),
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.PerformanceMonitoringEnabled,
+                        title = stringResource(id = CoreR.string.performance_monitoring_enabled),
+                        summary = stringResource(id = CoreR.string.performance_monitoring_description_enabled),
+                        dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.MonitorHeart,
+                                contentDescription = stringResource(id = CoreR.string.performance_monitoring_enabled)
+                            )
+                        },
+                        onCheckChange = { enabled -> AnalyticsUtils.enablePerformanceMonitoring(enabled) }
                     )
                 )
             )

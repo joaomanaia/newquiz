@@ -113,6 +113,7 @@ dependencies {
     implementation(Google.firebase.analyticsKtx.withVersionPlaceholder())
     implementation(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
     implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
+    implementation(Google.firebase.crashlyticsKtx.withVersionPlaceholder())
 
     implementation(libs.lottie.compose)
 

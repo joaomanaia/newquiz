@@ -1,8 +1,6 @@
 package com.infinitepower.newquiz.core.analytics.logging
 
 interface CoreLoggingAnalytics {
-    fun enableLoggingAnalytics(enabled: Boolean)
-
     fun logNewLevel(
         level: Int,
         diamondsEarned: Int

@@ -59,6 +59,11 @@ sealed class Preference {
 
         /**
          * 	A [PreferenceItem] that provides a two-state toggleable option.
+         *
+         * 	@param onCheckChange Called when the switch is toggled, the value is the new state of the switch
+         * 	or the value of the dependency if the switch is disabled
+         * 	@param primarySwitch If true, the switch will be displayed with the primary color in the container
+         * 	and the container will have a tonal elevation and padding.
          */
         data class SwitchPreference(
             val request: PreferenceRequest<Boolean>,
@@ -68,7 +73,9 @@ sealed class Preference {
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
-            val onCheckChange: (newValue: Boolean) -> Unit = {}
+
+            val onCheckChange: (newValue: Boolean) -> Unit = {},
+            val primarySwitch: Boolean = false
         ) : PreferenceItem<Boolean>()
 
         /**
