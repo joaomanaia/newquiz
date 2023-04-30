@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.data.worker
 
+/*
 import android.content.Context
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.test.core.app.ApplicationProvider
@@ -9,8 +10,6 @@ import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.workDataOf
 import com.google.common.truth.Truth.assertThat
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.initialize
 import com.infinitepower.newquiz.data.database.AppDatabase
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
@@ -18,8 +17,10 @@ import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.toEntity
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
+import com.infinitepower.newquiz.model.wordle.WordleWord
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -28,10 +29,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import javax.inject.Inject
 
-/*
 @SmallTest
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class EndGameMazeQuizWorkerTest {
 
     private lateinit var context: Context
@@ -64,14 +65,13 @@ internal class EndGameMazeQuizWorkerTest {
         mazeQuizDao.deleteAll()
 
         val randomMazeItems = listOf(
-            MazeQuiz.MazeItem.Wordle("AAAAA", WordleQuizType.TEXT, mazeSeed = 0)
+            MazeQuiz.MazeItem.Wordle(WordleWord("AAAAA"), WordleQuizType.TEXT, mazeSeed = 0)
         ).map { it.toEntity() }
 
         mazeQuizDao.insertItems(randomMazeItems)
 
         val firstSavedItem = mazeQuizDao.getAllMazeItems().first()
 
-        // Arrange
         val mazeItemId = firstSavedItem.id
 
         val inputData = workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId)

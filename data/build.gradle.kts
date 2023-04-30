@@ -39,6 +39,12 @@ android {
     lint {
         abortOnError = false
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+        }
+    }
 }
 
 kotlin {
@@ -49,10 +55,6 @@ dependencies {
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)
     implementation(Google.android.material)
-
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
-    androidTestImplementation(libs.truth)
 
     testImplementation(Testing.junit4)
     testImplementation(Testing.junit.jupiter)
@@ -66,7 +68,13 @@ dependencies {
     implementation(KotlinX.coroutines.android)
     implementation(KotlinX.coroutines.playServices)
     testImplementation(KotlinX.coroutines.test)
-    androidTestImplementation(KotlinX.coroutines.test)
+
+    androidTestImplementation(AndroidX.compose.ui.testJunit4)
+    androidTestImplementation(AndroidX.test.runner)
+    androidTestImplementation(AndroidX.test.rules)
+    androidTestImplementation(Kotlin.test.junit)
+    androidTestImplementation(Testing.mockK.android)
+    androidTestImplementation(libs.truth)
 
     implementation(Ktor.client.core)
     implementation(Ktor.client.okHttp)

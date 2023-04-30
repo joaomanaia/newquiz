@@ -219,4 +219,31 @@
 
     <string name="performance_monitoring_enabled">Performance monitoring enabled</string>
     <string name="performance_monitoring_description_enabled">Enables performance monitoring such as app startup time and other performance metrics.</string>
+
+    <!-- End Analytics -->
+
+    <!-- Daily Challenge -->
+
+    <plurals name="play_random_multi_choice_quiz_game">
+        <item quantity="one">Play one random multi choice quiz game.</item>
+        <item quantity="other">Play %d random multi choice quiz games.</item>
+    </plurals>
+    <plurals name="end_multi_choice_quiz_game">
+        <item quantity="one">End one multi choice quiz game.</item>
+        <item quantity="other">End %d multi choice quiz games.</item>
+    </plurals>
+    <plurals name="play_multi_choice_quiz_questions">
+        <item quantity="one">Answer one question in multi choice quiz game.</item>
+        <item quantity="other">Answer %d questions in multi choice quiz game.</item>
+    </plurals>
+    <plurals name="get_multi_choice_quiz_answer_correct">
+        <item quantity="one">Get one answer correct in multi choice quiz game.</item>
+        <item quantity="other">Get %d answers correct in multi choice quiz game.</item>
+    </plurals>
+    <plurals name="play_multi_choice_quiz_game_in_category">
+        <item quantity="one">Play one game with category of %2$s in multi choice quiz.</item>
+        <item quantity="other">Play %1$d games with category of %2$s in multi choice quiz.</item>
+    </plurals>
+
+    <!-- End Daily Challenge -->
 </resources>

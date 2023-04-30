@@ -33,6 +33,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1847498910">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="xiaomi Redmi 6A" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1727118826">
           <value>
             <AndroidTestResultsTableState>
@@ -197,6 +210,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="127090996">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="192976003">
           <value>
             <AndroidTestResultsTableState>
@@ -246,6 +272,7 @@
                   <entry key="Duration" value="90" />
                   <entry key="Resizable_Experimental_API_33" value="120" />
                   <entry key="Tests" value="360" />
+                  <entry key="xiaomi Redmi 6A" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -282,6 +309,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="778572249">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="xiaomi Redmi 6A" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="791133722">
           <value>
             <AndroidTestResultsTableState>
@@ -304,6 +344,7 @@
                 <map>
                   <entry key="192.168.1.65:5555" value="120" />
                   <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="adb-RF8T80VY20Y-rjDXOs._adb-tls-connect._tcp" value="120" />
                   <entry key="samsung&#10; SM-A137F" value="120" />
@@ -335,6 +376,32 @@
                   <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
                   <entry key="xiaomi&#10; Redmi 6A" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1282109948">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1400309318">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
+                  <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

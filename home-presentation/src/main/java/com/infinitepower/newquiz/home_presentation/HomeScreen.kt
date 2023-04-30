@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Compare
 import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.Password
@@ -107,6 +108,21 @@ private fun HomeScreenImpl(
                     onClick = homeNavigator::navigateToMaze,
                     requireInternetConnection = false,
                     backgroundPrimary = true
+                )
+            )
+        }
+
+        item {
+            HomeGroupTitle(title = "Daily Challenge")
+        }
+
+        item {
+            HomeLargeCard(
+                modifier = Modifier.fillParentMaxWidth(),
+                data = HomeCardItem.LargeCard(
+                    title = CoreR.string.app_name,
+                    icon = CardIcon.Icon(Icons.Rounded.CalendarMonth),
+                    onClick = homeNavigator::navigateToDailyChallenge
                 )
             )
         }

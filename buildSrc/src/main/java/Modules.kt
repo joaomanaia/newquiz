@@ -12,4 +12,5 @@ object Modules {
     const val mazeQuiz = ":maze-quiz"
     const val comparisonQuiz = ":comparison-quiz"
     const val coreTest = ":core-test"
+    const val dailyChallenge = ":daily_challenge"
 }

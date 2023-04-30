@@ -182,6 +182,7 @@ dependencies {
     implementation(project(Modules.mazeQuiz))
     implementation(project(Modules.translationDynamicFeature))
     implementation(project(Modules.comparisonQuiz))
+    implementation(project(Modules.dailyChallenge))
 }
 
 tasks.withType<Test> {

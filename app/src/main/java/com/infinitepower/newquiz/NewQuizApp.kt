@@ -12,6 +12,7 @@ import com.google.firebase.ktx.initialize
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.infinitepower.newquiz.core.workers.AppStartLoggingAnalyticsWorker
+import com.infinitepower.newquiz.data.worker.daily_challenge.VerifyDailyChallengeWorker
 import com.infinitepower.newquiz.online_services.core.worker.CheckUserDBWorker
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -19,12 +20,14 @@ import javax.inject.Inject
 @HiltAndroidApp
 class NewQuizApp : Application(), Configuration.Provider {
 
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
+    @Inject lateinit var workerFactory: HiltWorkerFactory
 
-    private val workManager by lazy {
-        WorkManager.getInstance(this)
-    }
+    @Inject lateinit var workManager: WorkManager
+
+    override fun getWorkManagerConfiguration() = Configuration.Builder()
+        .setWorkerFactory(workerFactory)
+        .setMinimumLoggingLevel(android.util.Log.INFO)
+        .build()
 
     override fun onCreate() {
         super.onCreate()
@@ -52,17 +55,13 @@ class NewQuizApp : Application(), Configuration.Provider {
         remoteConfig.fetchAndActivate()
     }
 
-    override fun getWorkManagerConfiguration() = Configuration.Builder()
-        .setWorkerFactory(workerFactory)
-        .build()
-
     private fun createWorkers() {
+        VerifyDailyChallengeWorker.enqueueUniquePeriodicWork(workManager)
+
         val appStartLoggingAnalyticsWorker = OneTimeWorkRequestBuilder<AppStartLoggingAnalyticsWorker>().build()
         val checkUserDBWorker = OneTimeWorkRequestBuilder<CheckUserDBWorker>().build()
 
-        workManager
-            .beginWith(appStartLoggingAnalyticsWorker)
-            .then(checkUserDBWorker)
-            .enqueue()
+        workManager.enqueue(appStartLoggingAnalyticsWorker)
+        workManager.enqueue(checkUserDBWorker)
     }
 }

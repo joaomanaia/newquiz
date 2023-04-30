@@ -105,6 +105,7 @@ dependencies {
     implementation(project(Modules.domain))
     implementation(project(Modules.onlineServices))
     implementation(project(Modules.comparisonQuiz))
+    implementation(project(Modules.dailyChallenge))
 }
 
 ksp {

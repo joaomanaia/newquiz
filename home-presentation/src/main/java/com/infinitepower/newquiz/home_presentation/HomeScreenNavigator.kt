@@ -10,6 +10,8 @@ interface HomeScreenNavigator {
     )
 
     fun navigateToWordleQuiz()
+
+    fun navigateToDailyChallenge()
 }
 
 object EmptyHomeScreenNavigator : HomeScreenNavigator {
@@ -23,5 +25,9 @@ object EmptyHomeScreenNavigator : HomeScreenNavigator {
 
     override fun navigateToWordleQuiz() {
         println("Navigating to wordle quiz")
+    }
+
+    override fun navigateToDailyChallenge() {
+        println("Navigating to daily challenge")
     }
 }
