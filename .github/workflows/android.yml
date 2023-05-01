@@ -47,7 +47,7 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Run unit tests
-        uses: gradle/gradle-build-action@v2.3.3
+        uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: >
             testDebugUnitTest
@@ -87,7 +87,7 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Lint sources
-        uses: gradle/gradle-build-action@v2.3.3
+        uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: lint --stacktrace
 
@@ -125,7 +125,7 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Assemble debug APKs
-        uses: gradle/gradle-build-action@v2.3.3
+        uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: assembleDebug
 

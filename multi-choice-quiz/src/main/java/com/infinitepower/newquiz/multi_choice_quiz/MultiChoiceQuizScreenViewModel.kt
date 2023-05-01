@@ -215,10 +215,7 @@ class QuizScreenViewModel @Inject constructor(
                 GameEvent.MultiChoice.PlayRandomQuiz
             }
 
-            UpdateGlobalEventDataWorker.enqueueWork(
-                workManager = workManager,
-                event = event
-            )
+            UpdateGlobalEventDataWorker.enqueueWork(workManager = workManager, event)
 
             // Log game start
             multiChoiceQuizLoggingAnalytics.logGameStart(
@@ -254,14 +251,6 @@ class QuizScreenViewModel @Inject constructor(
                             set(nextIndex, step)
                         }
 
-                    // Update play question for global event data
-                    viewModelScope.launch(Dispatchers.IO) {
-                        UpdateGlobalEventDataWorker.enqueueWork(
-                            workManager = workManager,
-                            event = GameEvent.MultiChoice.PlayQuestions
-                        )
-                    }
-
                     currentState.copy(
                         questionSteps = newSteps,
                         currentQuestionIndex = nextIndex
@@ -296,14 +285,18 @@ class QuizScreenViewModel @Inject constructor(
                         val questionCorrect =
                             currentState.selectedAnswer isCorrect currentQuestionStep.question
 
-                        if (questionCorrect) {
-                            // Update question correct for global event data
-                            viewModelScope.launch(Dispatchers.IO) {
-                                UpdateGlobalEventDataWorker.enqueueWork(
-                                    workManager = workManager,
-                                    event = GameEvent.MultiChoice.GetAnswersCorrect
-                                )
+                        // Update play question and get answers correct for global event data
+                        viewModelScope.launch(Dispatchers.IO) {
+                            val events = if (questionCorrect) {
+                                arrayOf(GameEvent.MultiChoice.PlayQuestions, GameEvent.MultiChoice.GetAnswersCorrect)
+                            } else {
+                                arrayOf(GameEvent.MultiChoice.PlayQuestions)
                             }
+
+                            UpdateGlobalEventDataWorker.enqueueWork(
+                                workManager = workManager,
+                                event = events
+                            )
                         }
 
                         val completedQuestionStep = currentQuestionStep.changeToCompleted(
@@ -361,7 +354,7 @@ class QuizScreenViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 UpdateGlobalEventDataWorker.enqueueWork(
                     workManager = workManager,
-                    event = GameEvent.MultiChoice.EndQuiz
+                    GameEvent.MultiChoice.EndQuiz
                 )
 
                 if (mazeItemId != null) {

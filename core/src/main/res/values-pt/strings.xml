@@ -237,4 +237,29 @@
         <item quantity="other">Jogue %1$d jogos na categoria de %2$s no jogo de escolha múltipla.</item>
         <item quantity="many">Jogue %1$d jogos na categoria de %2$s no jogo de escolha múltipla.</item>
     </plurals>
+    <plurals name="get_wordle_word_correct">
+        <item quantity="one">Acertar %d palavra no jogo Wordle.</item>
+        <item quantity="other">Acertar %d palavras no jogo Wordle.</item>
+        <item quantity="many">Acertar %d palavras no jogo Wordle.</item>
+    </plurals>
+    <plurals name="play_wordle_game_in_category">
+        <item quantity="one">Jogar um jogo com a categoria %2$s no jogo Wordle.</item>
+        <item quantity="other">Jogar %1$d jogos com a categoria %2$s no jogo Wordle.</item>
+        <item quantity="many">Jogar %1$d jogos com a categoria %2$s no jogo Wordle.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_category">
+        <item quantity="one">Jogar um jogo com a categoria %2$s no jogo de comparação.</item>
+        <item quantity="other">Jogar %1$d jogos com a categoria %2$s no jogo de comparação.</item>
+        <item quantity="many">Jogar %1$d jogos com a categoria %2$s no jogo de comparação.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_and_get_score">
+        <item quantity="one">Jogar um jogo e obter uma pontuação de %2$d no jogo de comparação.</item>
+        <item quantity="other">Jogar %1$d jogos e obter uma pontuação de %2$d no jogo de comparação.</item>
+        <item quantity="many">Jogar %1$d jogos e obter uma pontuação de %2$d no jogo de comparação.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_comparison_mode">
+        <item quantity="one">Jogar um jogo no modo %2$s no jogo de comparação.</item>
+        <item quantity="other">Jogar %1$d jogos no modo %2$s no jogo de comparação.</item>
+        <item quantity="many">Jogar %1$d jogos no modo %2$s no jogo de comparação.</item>
+    </plurals>
 </resources>

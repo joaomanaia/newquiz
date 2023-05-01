@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -39,9 +38,7 @@ fun DailyChallengeScreen(
         uiState = uiState,
         onBackClick = destinationsNavigator::popBackStack,
         onEvent = viewModel::onEvent,
-        dailyChallengeScreenNavigator = dailyChallengeScreenNavigator,
-        test = viewModel::test,
-        test2 = viewModel::test2
+        dailyChallengeScreenNavigator = dailyChallengeScreenNavigator
     )
 }
 
@@ -51,9 +48,7 @@ private fun DailyChallengeScreen(
     uiState: DailyChallengeScreenUiState,
     onBackClick: () -> Unit = {},
     onEvent: (event: DailyChallengeScreenUiEvent) -> Unit = {},
-    dailyChallengeScreenNavigator: DailyChallengeScreenNavigator,
-    test: () -> Unit = {},
-    test2: () -> Unit = {}
+    dailyChallengeScreenNavigator: DailyChallengeScreenNavigator
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -77,18 +72,6 @@ private fun DailyChallengeScreen(
             contentPadding = PaddingValues(spaceMedium),
             verticalArrangement = Arrangement.spacedBy(spaceMedium)
         ) {
-            item {
-                Button(onClick = test) {
-                    Text(text = "TEST - Clear tasks")
-                }
-            }
-
-            item {
-                Button(onClick = test2) {
-                    Text(text = "TEST - Make tasks")
-                }
-            }
-
             items(
                 items = uiState.tasks,
                 key = { task -> task.id }

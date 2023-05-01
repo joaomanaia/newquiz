@@ -1,7 +1,5 @@
 package com.infinitepower.newquiz.data.repository.comparison_quiz
 
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.common.BaseApiUrls
 import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
@@ -33,13 +31,7 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
     private val client: HttpClient,
     @ComparisonQuizDataStoreManager private val settingsDataStoreManager: DataStoreManager
 ) : ComparisonQuizRepository {
-    private val remoteConfig = Firebase.remoteConfig
-
-    override fun getCategories(): List<ComparisonQuizCategory> {
-        val categoriesStr = remoteConfig.getString("comparison_quiz_categories")
-
-        return Json.decodeFromString(categoriesStr)
-    }
+    override fun getCategories(): List<ComparisonQuizCategory> = ComparisonQuizCategoriesData.getCategories()
 
     override suspend fun getQuizData(
         category: ComparisonQuizCategory,

@@ -3,10 +3,14 @@ package com.infinitepower.newquiz.wordle.util.worker
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.util.kotlin.toLong
+import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
+import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.daily.CalendarItemState
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
@@ -22,11 +26,13 @@ import kotlinx.datetime.toLocalDate
 class WordleEndGameWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val wordleLoggingAnalytics: WordleLoggingAnalytics,
     private val dailyWordleRepository: DailyWordleRepository,
     private val onlineServicesCore: OnlineServicesCore,
     private val userRepository: UserRepository,
-    private val wordleXpRepository: WordleXpRepository
+    private val wordleXpRepository: WordleXpRepository,
+    private val wordleLoggingAnalytics: WordleLoggingAnalytics,
+    private val mazeLoggingAnalytics: MazeLoggingAnalytics,
+    private val workManager: WorkManager
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -48,6 +54,13 @@ class WordleEndGameWorker @AssistedInject constructor(
         val day = inputData.getString(INPUT_DAY)
         val mazeItemId = inputData.getString(INPUT_MAZE_TEM_ID)
 
+        if (isLastRowCorrect) {
+            UpdateGlobalEventDataWorker.enqueueWork(
+                workManager = workManager,
+                GameEvent.Wordle.GetWordCorrect
+            )
+        }
+
         wordleLoggingAnalytics.logGameEnd(
             wordLength = word.length,
             maxRows = rowLimit,
@@ -57,6 +70,10 @@ class WordleEndGameWorker @AssistedInject constructor(
             day = day,
             mazeItemId = mazeItemId?.toIntOrNull()
         )
+
+        if (mazeItemId != null) {
+            mazeLoggingAnalytics.logMazeItemPlayed(isLastRowCorrect)
+        }
 
         if (day != null) {
             saveDailyItemToCalendar(

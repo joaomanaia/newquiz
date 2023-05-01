@@ -244,6 +244,26 @@
         <item quantity="one">Play one game with category of %2$s in multi choice quiz.</item>
         <item quantity="other">Play %1$d games with category of %2$s in multi choice quiz.</item>
     </plurals>
+    <plurals name="get_wordle_word_correct">
+        <item quantity="one">Get one word correct in wordle game.</item>
+        <item quantity="other">Get %d words correct in wordle game.</item>
+    </plurals>
+    <plurals name="play_wordle_game_in_category">
+        <item quantity="one">Play one game with category of %2$s in wordle game.</item>
+        <item quantity="other">Play %1$d games with category of %2$s in wordle game.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_category">
+        <item quantity="one">Play one game with category of %2$s in comparison quiz.</item>
+        <item quantity="other">Play %1$d games with category of %2$s in comparison quiz.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_and_get_score">
+        <item quantity="one">Play one game and get a score of %2$d in comparison quiz.</item>
+        <item quantity="other">Play %1$d games and get a score of %2$d in comparison quiz.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_comparison_mode">
+        <item quantity="one">Play one game with %2$s mode in comparison quiz.</item>
+        <item quantity="other">Play %1$d games with %2$s mode in comparison quiz.</item>
+    </plurals>
 
     <!-- End Daily Challenge -->
 </resources>

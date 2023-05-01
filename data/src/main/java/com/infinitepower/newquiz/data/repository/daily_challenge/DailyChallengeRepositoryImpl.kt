@@ -1,20 +1,19 @@
 package com.infinitepower.newquiz.data.repository.daily_challenge
 
-import android.content.Context
+import android.util.Log
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.repository.daily_challenge.util.getTitle
 import com.infinitepower.newquiz.data.util.mappers.toDomain
 import com.infinitepower.newquiz.data.util.mappers.toEntity
+import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeDao
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 import com.infinitepower.newquiz.model.global_event.GameEvent
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.random.Random
@@ -23,7 +22,7 @@ import kotlin.time.Duration.Companion.days
 @Singleton
 class DailyChallengeRepositoryImpl @Inject constructor(
     private val dailyChallengeDao: DailyChallengeDao,
-    @ApplicationContext private val context: Context
+    private val comparisonQuizRepository: ComparisonQuizRepository
 ) : DailyChallengeRepository {
     override fun getAvailableTasksFlow(): Flow<List<DailyChallengeTask>> = dailyChallengeDao
         .getAllTasksFlow()
@@ -32,12 +31,12 @@ class DailyChallengeRepositoryImpl @Inject constructor(
 
             tasks
                 .filter { task -> task.startDate <= now && task.endDate >= now }
-                .map { entity -> entity.toDomain(context) }
+                .map { task -> task.toDomain(comparisonQuizRepository.getCategories()) }
         }.catch { e -> e.printStackTrace() }
 
     override suspend fun getAllTasks(): List<DailyChallengeTask> = dailyChallengeDao
         .getAllTasks()
-        .map { entity -> entity.toDomain(context) }
+        .map { task -> task.toDomain(comparisonQuizRepository.getCategories()) }
 
     override suspend fun getAvailableTasks(): List<DailyChallengeTask> {
         val now = Clock.System.now().toEpochMilliseconds()
@@ -45,7 +44,7 @@ class DailyChallengeRepositoryImpl @Inject constructor(
         return dailyChallengeDao
             .getAllTasks()
             .filter { task -> task.startDate <= now && task.endDate >= now }
-            .map { entity -> entity.toDomain(context) }
+            .map { task -> task.toDomain(comparisonQuizRepository.getCategories()) }
     }
 
     override suspend fun checkAndGenerateTasksIfNeeded(
@@ -66,22 +65,30 @@ class DailyChallengeRepositoryImpl @Inject constructor(
         random: Random = Random
     ) {
         val now = Clock.System.now()
+        val dateRange = now.rangeTo(now + 1.days)
+
+        val comparisonQuizCategories = comparisonQuizRepository.getCategories()
 
         val types = GameEvent.getRandomEvents(
             count = tasksToGenerate,
             multiChoiceCategories = multiChoiceQuestionCategories,
+            comparisonQuizCategories = comparisonQuizCategories,
             random = random
         )
 
         val newTasks = types.map { type ->
             val maxValue = type.valueRange.toList().random()
 
-            createDailyChallengeTask(
-                context = context,
+            DailyChallengeTask(
+                id = random.nextInt(),
+                diamondsReward = 1u,
+                experienceReward = 1u,
+                isClaimed = false,
+                dateRange = dateRange,
+                currentValue = 0u,
                 maxValue = maxValue,
-                type = type,
-                now = now,
-                random = random
+                event = type,
+                title = type.getTitle(maxValue.toInt(), comparisonQuizCategories)
             )
         }.map(DailyChallengeTask::toEntity)
 
@@ -92,14 +99,9 @@ class DailyChallengeRepositoryImpl @Inject constructor(
         return getAvailableTasks().all(DailyChallengeTask::isExpired)
     }
 
-    private suspend fun checkIfWeeklyTaskIsExpired(): Boolean {
-        val weeklyTask = getAvailableTasks().filter(DailyChallengeTask::isWeekly)
-
-        return weeklyTask.all(DailyChallengeTask::isExpired)
-    }
-
     override suspend fun completeTaskStep(taskType: GameEvent) {
-        val task = dailyChallengeDao.getTaskByType(taskType.key)?.toDomain(context)
+        Log.d("Test", "completeTaskStep: ${taskType.key}")
+        val task = dailyChallengeDao.getTaskByType(taskType.key)?.toDomain(comparisonQuizRepository.getCategories())
             ?: throw NullPointerException("Task not found.")
 
         // Check if the task is expired
@@ -122,7 +124,7 @@ class DailyChallengeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun claimTask(taskType: GameEvent) {
-        val task = dailyChallengeDao.getTaskByType(taskType.key)?.toDomain(context)
+        val task = dailyChallengeDao.getTaskByType(taskType.key)?.toDomain(comparisonQuizRepository.getCategories())
             ?: throw NullPointerException("Task not found.")
 
         // Check if the task is expired
@@ -148,22 +150,3 @@ class DailyChallengeRepositoryImpl @Inject constructor(
         dailyChallengeDao.deleteAll()
     }
 }
-
-internal fun createDailyChallengeTask(
-    context: Context,
-    maxValue: UInt = 10u,
-    type: GameEvent,
-    now: Instant = Clock.System.now(),
-    dateRange: ClosedRange<Instant> = (now - 1.days).rangeTo(now + 1.days),
-    random: Random = Random
-): DailyChallengeTask = DailyChallengeTask(
-    id = random.nextInt(),
-    diamondsReward = 1u,
-    experienceReward = 1u,
-    isClaimed = false,
-    dateRange = dateRange,
-    currentValue = 0u,
-    maxValue = maxValue,
-    event = type,
-    title = type.getTitle(maxValue.toInt(), context)
-)

@@ -2,9 +2,6 @@ package com.infinitepower.newquiz.daily_challenge
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import com.infinitepower.newquiz.data.worker.daily_challenge.VerifyDailyChallengeWorker
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DailyChallengeScreenViewModel @Inject constructor(
-    private val dailyChallengeRepository: DailyChallengeRepository,
-    private val workManager: WorkManager
+    private val dailyChallengeRepository: DailyChallengeRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(DailyChallengeScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -44,20 +40,6 @@ class DailyChallengeScreenViewModel @Inject constructor(
     private fun claimTask(taskType: GameEvent) {
         viewModelScope.launch(Dispatchers.IO) {
             dailyChallengeRepository.claimTask(taskType)
-        }
-    }
-
-    fun test() {
-        viewModelScope.launch(Dispatchers.IO) {
-            dailyChallengeRepository.resetTasks()
-        }
-    }
-
-    fun test2() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val r = OneTimeWorkRequestBuilder<VerifyDailyChallengeWorker>().build()
-
-            workManager.enqueue(r)
         }
     }
 }

@@ -3,14 +3,18 @@ package com.infinitepower.newquiz.core.navigation
 import androidx.navigation.NavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.daily_challenge.DailyChallengeScreenNavigator
 import com.infinitepower.newquiz.daily_challenge.destinations.DailyChallengeScreenDestination
 import com.infinitepower.newquiz.home_presentation.HomeScreenNavigator
 import com.infinitepower.newquiz.maze_quiz.MazeScreenNavigator
 import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.saved_questions.SavedQuestionsScreenNavigator
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
@@ -31,6 +35,17 @@ class CommonNavGraphNavigator(
 
     override fun navigateToWordleQuiz() {
         navController.navigate(WordleScreenDestination())
+    }
+
+    override fun navigateToWordleQuiz(type: WordleQuizType) {
+        navController.navigate(WordleScreenDestination(quizType = type))
+    }
+
+    override fun navigateToComparisonQuiz(
+        category: ComparisonQuizCategory,
+        mode: ComparisonModeByFirst
+    ) {
+        navController.navigate(ComparisonQuizScreenDestination(category, mode))
     }
 
     override fun navigateToMultiChoiceQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {

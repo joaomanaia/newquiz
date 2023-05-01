@@ -1,49 +1,50 @@
 package com.infinitepower.newquiz.data.daily_challenge
 
 import android.content.Context
-import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.data.database.AppDatabase
-import com.infinitepower.newquiz.data.repository.daily_challenge.DailyChallengeRepositoryImpl
 import com.infinitepower.newquiz.data.repository.daily_challenge.util.getTitle
 import com.infinitepower.newquiz.data.util.mappers.toEntity
+import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeDao
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 import com.infinitepower.newquiz.model.global_event.GameEvent
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.Assert.assertThrows
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
 import kotlin.time.Duration.Companion.days
 
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class DailyChallengeRepositoryImplTest {
+
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
     private lateinit var context: Context
 
-    private lateinit var dailyChallengeDao: DailyChallengeDao
-    private lateinit var dailyChallengeRepository: DailyChallengeRepository
+    @Inject lateinit var dailyChallengeDao: DailyChallengeDao
+
+    @Inject lateinit var dailyChallengeRepository: DailyChallengeRepository
+
+    @Inject lateinit var comparisonQuizRepository: ComparisonQuizRepository
 
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().context
 
-        val appDatabase = Room
-            .inMemoryDatabaseBuilder(context, AppDatabase::class.java)
-            .build()
-
-        dailyChallengeDao = appDatabase.dailyChallengeDao()
-
-        dailyChallengeRepository = DailyChallengeRepositoryImpl(
-            dailyChallengeDao = dailyChallengeDao,
-            context = context
-        )
+        hiltRule.inject()
     }
 
     @Test
@@ -62,7 +63,7 @@ class DailyChallengeRepositoryImplTest {
                 currentValue = 0u, // Not completed
                 maxValue = 1u,
                 event = type1,
-                title = type1.getTitle(1, context)
+                title = type1.getTitle(1, comparisonQuizRepository.getCategories())
             )
         )
 
@@ -87,7 +88,7 @@ class DailyChallengeRepositoryImplTest {
             currentValue = 0u, // Not completed
             maxValue = 1u,
             event = type1,
-            title = type1.getTitle(1, context)
+            title = type1.getTitle(1, comparisonQuizRepository.getCategories())
         )
 
         val initialTasks = setOf(task1)
@@ -106,9 +107,12 @@ class DailyChallengeRepositoryImplTest {
         assertThat(newTasks).isNotEmpty()
         assertThat(newTasks).hasSize(2)
 
+        val nowVerify = Clock.System.now()
+
         // Check that the new tasks are not expired
         newTasks.forEach { task ->
-            assertThat(task.dateRange.contains(now)).isTrue()
+            assertThat(nowVerify).isAtLeast(task.dateRange.start)
+            assertThat(nowVerify).isAtMost(task.dateRange.endInclusive)
 
             println(task)
         }
@@ -116,8 +120,6 @@ class DailyChallengeRepositoryImplTest {
 
     @Test
     fun test_checkAndGenerateTasks_shouldGenerateNewTasks_whenInitialTasksAreEmpty() = runTest {
-        val now = Clock.System.now()
-
         val initialTasks = emptySet<DailyChallengeTask>()
 
         dailyChallengeRepository.checkAndGenerateTasksIfNeeded(tasksToGenerate = 2)
@@ -131,6 +133,8 @@ class DailyChallengeRepositoryImplTest {
 
         assertThat(newTasks).isNotEmpty()
         assertThat(newTasks).hasSize(2)
+
+        val now = Clock.System.now()
 
         // Check that the new tasks are not expired
         newTasks.forEach { task ->
@@ -156,7 +160,7 @@ class DailyChallengeRepositoryImplTest {
                 currentValue = 0u, // Not completed
                 maxValue = 1u,
                 event = GameEvent.MultiChoice.PlayQuestions,
-                title = GameEvent.MultiChoice.PlayQuestions.getTitle(1, context)
+                title = GameEvent.MultiChoice.PlayQuestions.getTitle(1, comparisonQuizRepository.getCategories())
             ),
             DailyChallengeTask(
                 id = 2,
@@ -167,7 +171,7 @@ class DailyChallengeRepositoryImplTest {
                 currentValue = 0u, // Not completed
                 maxValue = 1u,
                 event = GameEvent.MultiChoice.GetAnswersCorrect,
-                title = GameEvent.MultiChoice.GetAnswersCorrect.getTitle(1, context)
+                title = GameEvent.MultiChoice.GetAnswersCorrect.getTitle(1, comparisonQuizRepository.getCategories())
             )
         )
 
@@ -212,7 +216,7 @@ class DailyChallengeRepositoryImplTest {
             currentValue = 0u, // Not completed
             maxValue = 1u,
             event = GameEvent.MultiChoice.PlayQuestions,
-            title = GameEvent.MultiChoice.PlayQuestions.getTitle(1, context)
+            title = GameEvent.MultiChoice.PlayQuestions.getTitle(1, comparisonQuizRepository.getCategories())
         )
 
         runTest { dailyChallengeDao.insertAll(task1.toEntity()) }
@@ -241,7 +245,7 @@ class DailyChallengeRepositoryImplTest {
             currentValue = 0u, // Not completed
             maxValue = 1u,
             event = GameEvent.MultiChoice.PlayQuestions,
-            title = GameEvent.MultiChoice.PlayQuestions.getTitle(1, context)
+            title = GameEvent.MultiChoice.PlayQuestions.getTitle(1, comparisonQuizRepository.getCategories())
         )
 
         runTest { dailyChallengeDao.insertAll(task1.toEntity()) }

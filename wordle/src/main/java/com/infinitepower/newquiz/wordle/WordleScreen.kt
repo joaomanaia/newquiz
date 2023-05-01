@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.data.util.translation.getWordleTitle
 import com.infinitepower.newquiz.model.wordle.WordleChar
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
@@ -101,11 +102,7 @@ private fun WordleScreenImpl(
         mutableStateOf(false)
     }
 
-    val screenTitle = when (uiState.wordleQuizType) {
-        WordleQuizType.NUMBER -> stringResource(id = CoreR.string.guess_the_number)
-        WordleQuizType.MATH_FORMULA -> stringResource(id = CoreR.string.guess_math_formula)
-        else -> stringResource(id = CoreR.string.wordle)
-    }
+    val screenTitle = uiState.wordleQuizType.getWordleTitle()
 
     val rowLayout = remember(windowSizeClass) {
         windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
@@ -128,9 +125,7 @@ private fun WordleScreenImpl(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = {
-                    Text(text = screenTitle)
-                },
+                title = { Text(text = screenTitle.asString()) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(

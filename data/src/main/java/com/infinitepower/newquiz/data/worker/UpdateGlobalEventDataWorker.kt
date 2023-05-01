@@ -26,34 +26,35 @@ class UpdateGlobalEventDataWorker @AssistedInject constructor(
     private val dailyChallengeRepository: DailyChallengeRepository
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
-        private const val EVENT_KEY = "event_key"
+        private const val EVENTS_KEY = "events_key"
 
         fun enqueueWork(
             workManager: WorkManager,
-            event: GameEvent
+            vararg event: GameEvent
         ): Operation {
+            val eventsKey = event.map { it.key }.toTypedArray()
+
             val workRequest = OneTimeWorkRequestBuilder<UpdateGlobalEventDataWorker>()
-                .setInputData(
-                    workDataOf(
-                        EVENT_KEY to event.key
-                    )
-                ).build()
+                .setInputData(workDataOf(EVENTS_KEY to eventsKey))
+                .build()
 
             return workManager.enqueue(workRequest)
         }
     }
 
     override suspend fun doWork(): Result {
-        val eventKey = inputData.getString(EVENT_KEY) ?: return Result.failure()
-
-        // Get the event from the key.
-        val event = GameEvent.fromKey(eventKey)
+        val eventsKey = inputData.getStringArray(EVENTS_KEY) ?: return Result.failure()
 
         // Update daily challenge task data.
-        try {
-            dailyChallengeRepository.completeTaskStep(event)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        eventsKey.forEach { eventKey ->
+            // Get the event from the key.
+            try {
+                val event = GameEvent.fromKey(eventKey)
+
+                dailyChallengeRepository.completeTaskStep(event)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         return Result.success()
