@@ -1,8 +1,6 @@
 package com.infinitepower.newquiz
 
 import android.app.Application
-import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.Configuration
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.firebase.appcheck.FirebaseAppCheck
@@ -18,15 +16,9 @@ import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
-class NewQuizApp : Application(), Configuration.Provider {
-
-    @Inject lateinit var workerFactory: HiltWorkerFactory
+class NewQuizApp : Application() {
 
     @Inject lateinit var workManager: WorkManager
-
-    override fun getWorkManagerConfiguration() = Configuration.Builder()
-        .setWorkerFactory(workerFactory)
-        .build()
 
     override fun onCreate() {
         super.onCreate()

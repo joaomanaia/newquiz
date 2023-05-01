@@ -58,6 +58,10 @@
                 android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />
+
+            <meta-data
+                android:name="com.infinitepower.newquiz.initializer.WorkManagerInitializer"
+                android:value="androidx.startup" />
         </provider>
 
         <!-- Turn off firebase analytics automatically data collection -->
