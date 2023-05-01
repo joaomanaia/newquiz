@@ -121,6 +121,8 @@ class DailyChallengeRepositoryImpl @Inject constructor(
 
         // Update the tasks set
         dailyChallengeDao.update(newTaskEntity)
+
+        // TODO: Update user db with the data
     }
 
     override suspend fun claimTask(taskType: GameEvent) {

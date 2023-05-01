@@ -170,6 +170,8 @@ dependencies {
 
     implementation(AndroidX.dataStore.preferences)
 
+    implementation(AndroidX.startup.runtime)
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
     implementation(project(Modules.homePresentation))
