@@ -111,6 +111,8 @@ dependencies {
     implementation(Ktor.client.okHttp)
     implementation(Ktor.client.serialization)
 
+    implementation(AndroidX.work.runtimeKtx)
+
     implementation(libs.lottie.compose)
 
     implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())

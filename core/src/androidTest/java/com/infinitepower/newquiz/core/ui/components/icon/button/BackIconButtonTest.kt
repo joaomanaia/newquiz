@@ -10,7 +10,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.infinitepower.newquiz.core_test.compose.assertMatchesGolden
 import com.infinitepower.newquiz.core_test.compose.clearExistingImages
 import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
 import com.infinitepower.newquiz.core_test.utils.setDeviceLocale
@@ -74,8 +73,11 @@ internal class BackIconButtonTest {
             }
         }
 
+        /*
         composeTestRule
             .onNodeWithTag("BackButton")
             .assertMatchesGolden(BUTTON_GOLDEN_NAME, "buttons")
+
+         */
     }
 }

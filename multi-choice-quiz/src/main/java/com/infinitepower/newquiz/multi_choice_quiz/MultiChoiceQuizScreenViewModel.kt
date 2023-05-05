@@ -15,6 +15,7 @@ import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
@@ -22,6 +23,7 @@ import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
 import com.infinitepower.newquiz.domain.use_case.question.IsQuestionSavedUseCase
 import com.infinitepower.newquiz.model.RemainingTime
+import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
@@ -205,11 +207,23 @@ class QuizScreenViewModel @Inject constructor(
             currentState.copy(questionSteps = questionSteps)
         }
 
-        multiChoiceQuizLoggingAnalytics.logGameStart(
-            questionsSize = questionSteps.size,
-            category = category,
-            difficulty = difficulty
-        )
+        viewModelScope.launch(Dispatchers.IO) {
+            // Update global event data, for daily challenge and achievements
+            val event = if (category.hasCategory) {
+                GameEvent.MultiChoice.PlayQuizWithCategory(category.key)
+            } else {
+                GameEvent.MultiChoice.PlayRandomQuiz
+            }
+
+            UpdateGlobalEventDataWorker.enqueueWork(workManager = workManager, event)
+
+            // Log game start
+            multiChoiceQuizLoggingAnalytics.logGameStart(
+                questionsSize = questionSteps.size,
+                category = category,
+                difficulty = difficulty
+            )
+        }
 
         nextQuestion()
     }
@@ -271,6 +285,20 @@ class QuizScreenViewModel @Inject constructor(
                         val questionCorrect =
                             currentState.selectedAnswer isCorrect currentQuestionStep.question
 
+                        // Update play question and get answers correct for global event data
+                        viewModelScope.launch(Dispatchers.IO) {
+                            val events = if (questionCorrect) {
+                                arrayOf(GameEvent.MultiChoice.PlayQuestions, GameEvent.MultiChoice.GetAnswersCorrect)
+                            } else {
+                                arrayOf(GameEvent.MultiChoice.PlayQuestions)
+                            }
+
+                            UpdateGlobalEventDataWorker.enqueueWork(
+                                workManager = workManager,
+                                event = events
+                            )
+                        }
+
                         val completedQuestionStep = currentQuestionStep.changeToCompleted(
                             questionCorrect,
                             currentState.selectedAnswer,
@@ -322,8 +350,16 @@ class QuizScreenViewModel @Inject constructor(
                 .get<String?>(MultiChoiceQuizScreenNavArg::mazeItemId.name)
                 ?.toIntOrNull()
 
-            if (mazeItemId != null) {
-                mazeLoggingAnalytics.logMazeItemPlayed(allCorrect)
+            // Update end quiz for global event data
+            viewModelScope.launch(Dispatchers.IO) {
+                UpdateGlobalEventDataWorker.enqueueWork(
+                    workManager = workManager,
+                    GameEvent.MultiChoice.EndQuiz
+                )
+
+                if (mazeItemId != null) {
+                    mazeLoggingAnalytics.logMazeItemPlayed(allCorrect)
+                }
             }
 
             if (mazeItemId != null && allCorrect) {

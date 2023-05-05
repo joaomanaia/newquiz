@@ -30,6 +30,9 @@ internal fun ExpandedContainer(
     navController: NavController,
     navigationItems: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
+    showLoginCard: Boolean,
+    onSignInClick: () -> Unit,
+    onSignDismissClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
@@ -49,7 +52,10 @@ internal fun ExpandedContainer(
                 items = navigationItems,
                 onItemClick = { item ->
                     navController.navigate(item.direction)
-                }
+                },
+                onSignInClick = onSignInClick,
+                onSignDismissClick = onSignDismissClick,
+                showLoginCard = showLoginCard
             )
         }
     ) {
@@ -84,7 +90,10 @@ private fun MediumContainerPreview() {
                     Text(text = "NewQuiz")
                 },
                 navigationItems = navigationItems,
-                selectedItem = selectedItem
+                selectedItem = selectedItem,
+                onSignInClick = {},
+                onSignDismissClick = {},
+                showLoginCard = true
             )
         }
     }

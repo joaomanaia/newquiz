@@ -36,6 +36,14 @@ class MainViewModel @Inject constructor(
             }.launchIn(viewModelScope)
 
         settingsDataStoreManager
+            .getPreferenceFlow(SettingsCommon.ShowLoginCard)
+            .onEach { showLoginCard ->
+                _uiState.update { currentState ->
+                    currentState.copy(settingsShowLoginCard = showLoginCard)
+                }
+            }.launchIn(viewModelScope)
+
+        settingsDataStoreManager
             .getPreferenceFlow(SettingsCommon.DataAnalyticsConsent)
             .onEach { strConsent ->
                 _uiState.update { currentState ->
@@ -52,6 +60,11 @@ class MainViewModel @Inject constructor(
     fun onEvent(event: MainScreenUiEvent) {
         when (event) {
             is MainScreenUiEvent.OnAgreeDisagreeClick -> updateDataConsent(event.agreed)
+            is MainScreenUiEvent.DismissLoginCard -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    settingsDataStoreManager.editPreference(SettingsCommon.ShowLoginCard.key, false)
+                }
+            }
         }
     }
 

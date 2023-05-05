@@ -14,6 +14,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- disable firebase provider to get rid of "Default FirebaseApp is not initialized in this process" exceptions -->
         <provider
             android:authorities="${applicationId}.firebaseperfprovider"

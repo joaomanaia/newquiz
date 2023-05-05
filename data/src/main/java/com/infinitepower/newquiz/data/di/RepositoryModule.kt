@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.data.di
 
 import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizRepositoryImpl
+import com.infinitepower.newquiz.data.repository.daily_challenge.DailyChallengeRepositoryImpl
 import com.infinitepower.newquiz.data.repository.math_quiz.MathQuizCoreRepositoryImpl
 import com.infinitepower.newquiz.data.repository.maze_quiz.MazeQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepositoryImpl
@@ -14,6 +15,7 @@ import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionRep
 import com.infinitepower.newquiz.data.repository.wordle.WordleRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.daily.DailyWordleRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepository
@@ -72,4 +74,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindComparisonQuizRepository(comparisonQuizRepository: ComparisonQuizRepositoryImpl): ComparisonQuizRepository
+
+    @Binds
+    abstract fun bindDailyChallengeRepository(dailyChallengeRepository: DailyChallengeRepositoryImpl): DailyChallengeRepository
 }

@@ -3,11 +3,14 @@ package com.infinitepower.newquiz.comparison_quiz.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.game.ComparisonQuizInitialData
+import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.global_event.GameEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +25,8 @@ import javax.inject.Inject
 class ComparisonQuizViewModel @Inject constructor(
     private val comparisonQuizCore: ComparisonQuizCore,
     private val savedStateHandle: SavedStateHandle,
-    private val comparisonQuizRepository: ComparisonQuizRepository
+    private val comparisonQuizRepository: ComparisonQuizRepository,
+    private val workManager: WorkManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ComparisonQuizUiState())
     val uiState = _uiState.asStateFlow()
@@ -34,6 +38,15 @@ class ComparisonQuizViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     if (data.currentPosition > currentState.highestPosition) {
                         comparisonQuizRepository.saveHighestPosition(data.currentPosition)
+                    }
+
+                    if (data.isGameOver) {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            UpdateGlobalEventDataWorker.enqueueWork(
+                                workManager = workManager,
+                                GameEvent.ComparisonQuiz.PlayAndGetScore(data.currentPosition)
+                            )
+                        }
                     }
 
                     currentState.copy(
@@ -62,6 +75,14 @@ class ComparisonQuizViewModel @Inject constructor(
                     comparisonMode = getComparisonMode()
                 )
             )
+
+            launch {
+                UpdateGlobalEventDataWorker.enqueueWork(
+                    workManager = workManager,
+                    GameEvent.ComparisonQuiz.PlayWithComparisonMode(getComparisonMode()),
+                    GameEvent.ComparisonQuiz.PlayQuizWithCategory(getCategory().id)
+                )
+            }
         }
     }
 

@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
+import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
-import com.infinitepower.newquiz.wordle.util.worker.WordleEndGameWorker
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
+import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
@@ -22,9 +22,14 @@ import com.infinitepower.newquiz.model.wordle.itemsToString
 import com.infinitepower.newquiz.wordle.util.word.containsAllLastRevealedHints
 import com.infinitepower.newquiz.wordle.util.word.getKeysDisabled
 import com.infinitepower.newquiz.wordle.util.word.verifyFromWord
+import com.infinitepower.newquiz.wordle.util.worker.WordleEndGameWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,7 +40,6 @@ class WordleScreenViewModel @Inject constructor(
     private val wordleRepository: WordleRepository,
     private val savedStateHandle: SavedStateHandle,
     private val wordleLoggingAnalytics: WordleLoggingAnalytics,
-    private val mazeLoggingAnalytics: MazeLoggingAnalytics,
     private val workManager: WorkManager
 ) : ViewModel() {
     private var _uiState = MutableStateFlow(WordleScreenUiState())
@@ -109,8 +113,6 @@ class WordleScreenViewModel @Inject constructor(
         wordleRepository
             .generateRandomWord(quizType)
             .collect { res ->
-                Log.d(TAG, "Word: ${res.data}")
-
                 if (res is Resource.Loading) {
                     _uiState.update { currentState ->
                         currentState.copy(loading = true)
@@ -135,6 +137,8 @@ class WordleScreenViewModel @Inject constructor(
         textHelper: String? = null,
         day: String? = null
     ) {
+        Log.d(TAG, "Word: $word")
+
         val rows = List(1) {
             emptyRowItem(size = word.length)
         }
@@ -144,7 +148,15 @@ class WordleScreenViewModel @Inject constructor(
 
         val mazeItemId = savedStateHandle.get<String?>(WordleScreenNavArgs::mazeItemId.name)
 
-        wordleLoggingAnalytics.logGameStart(word.length, rowLimit, quizType.name, day, mazeItemId?.toIntOrNull())
+        viewModelScope.launch(Dispatchers.IO) {
+            UpdateGlobalEventDataWorker.enqueueWork(
+                workManager = workManager,
+                GameEvent.Wordle.PlayWordWithCategory(quizType)
+            )
+
+            wordleLoggingAnalytics.logGameStart(word.length, rowLimit, quizType.name, day, mazeItemId?.toIntOrNull())
+        }
+
 
         _uiState.update { currentState ->
             currentState.copy(
@@ -295,10 +307,6 @@ class WordleScreenViewModel @Inject constructor(
                 )
             ).build()
 
-        if (mazeItemId != null) {
-            mazeLoggingAnalytics.logMazeItemPlayed(isLastRowCorrect)
-        }
-
         if (mazeItemId != null && isLastRowCorrect) {
             // Runs the end game maze worker if is maze game mode and the question is correct
             val endGameMazeQuizWorkerRequest = OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
@@ -306,8 +314,8 @@ class WordleScreenViewModel @Inject constructor(
                 .build()
 
             workManager
-                .beginWith(endGameMazeQuizWorkerRequest)
-                .then(wordleEndGameWorkRequest)
+                .beginWith(wordleEndGameWorkRequest)
+                .then(endGameMazeQuizWorkerRequest)
                 .enqueue()
         } else {
             workManager.enqueue(wordleEndGameWorkRequest)

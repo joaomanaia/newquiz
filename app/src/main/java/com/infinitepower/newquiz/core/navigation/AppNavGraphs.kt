@@ -8,15 +8,15 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizListScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
-import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
-import com.infinitepower.newquiz.home_presentation.destinations.LoginScreenDestination
-import com.infinitepower.newquiz.home_presentation.destinations.LoginWithEmailScreenDestination
+import com.infinitepower.newquiz.daily_challenge.destinations.DailyChallengeScreenDestination
 import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.SavedMultiChoiceQuestionsScreenDestination
-import com.infinitepower.newquiz.online_services.ui.profile.destinations.ProfileScreenDestination
+import com.infinitepower.newquiz.online_services.ui.destinations.LoginScreenDestination
+import com.infinitepower.newquiz.online_services.ui.destinations.LoginWithEmailScreenDestination
+import com.infinitepower.newquiz.online_services.ui.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.ui.navigation.NavigationContainer
 import com.infinitepower.newquiz.wordle.destinations.DailyWordleCalendarScreenDestination
@@ -24,6 +24,7 @@ import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
+import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.scope.DestinationScopeWithNoDependencies
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.spec.NavGraphSpec
@@ -42,10 +43,11 @@ internal data class NavGraph(
 internal object AppNavGraphs {
     val mainNavGraph = NavGraph(
         route = "main_nav_graph",
-        startRoute = HomeScreenDestination,
+        startRoute = MultiChoiceQuizListScreenDestination,
         destinations = listOf(
-            HomeScreenDestination,
             MultiChoiceQuizScreenDestination,
+            MultiChoiceQuizListScreenDestination,
+            MultiChoiceQuizResultsScreenDestination,
             SettingsScreenDestination,
             SavedMultiChoiceQuestionsScreenDestination,
             WordleScreenDestination,
@@ -53,12 +55,11 @@ internal object AppNavGraphs {
             DailyWordleCalendarScreenDestination,
             LoginScreenDestination,
             LoginWithEmailScreenDestination,
-            MultiChoiceQuizResultsScreenDestination,
-            MultiChoiceQuizListScreenDestination,
             ProfileScreenDestination,
             MazeScreenDestination,
             ComparisonQuizScreenDestination,
-            ComparisonQuizListScreenDestination
+            ComparisonQuizListScreenDestination,
+            DailyChallengeScreenDestination
         )
     )
 }
@@ -73,12 +74,17 @@ internal fun AppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     windowSizeClass: WindowSizeClass,
-    signedIn: Boolean
+    signedIn: Boolean,
+    showLoginCard: Boolean,
+    onSignDismissClick: () -> Unit
 ) {
     NavigationContainer(
         navController = navController,
         windowWidthSize = windowSizeClass.widthSizeClass,
-        isSignedIn = signedIn
+        isSignedIn = signedIn,
+        showLoginCard = showLoginCard,
+        onSignInClick = { navController.navigate(LoginScreenDestination) },
+        onSignDismissClick = onSignDismissClick
     ) { innerPadding ->
         DestinationsNavHost(
             navGraph = AppNavGraphs.mainNavGraph,

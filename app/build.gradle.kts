@@ -170,9 +170,10 @@ dependencies {
 
     implementation(AndroidX.dataStore.preferences)
 
+    implementation(AndroidX.startup.runtime)
+
     implementation(project(Modules.core))
     implementation(project(Modules.model))
-    implementation(project(Modules.homePresentation))
     implementation(project(Modules.multiChoicequiz))
     implementation(project(Modules.settingsPresentation))
     implementation(project(Modules.wordle))
@@ -182,6 +183,7 @@ dependencies {
     implementation(project(Modules.mazeQuiz))
     implementation(project(Modules.translationDynamicFeature))
     implementation(project(Modules.comparisonQuiz))
+    implementation(project(Modules.dailyChallenge))
 }
 
 tasks.withType<Test> {

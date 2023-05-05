@@ -126,7 +126,7 @@
     </plurals>
     <string name="skip">Saltar</string>
     <string name="save">Guardar</string>
-    <string name="save_you_progress_description">Guarda o teu progresso, compra skips e vê a tua posição no ranking ao fazer login!</string>
+    <string name="save_you_progress_description">Guarda o teu progresso, usa skips e vê a tua posição no ranking ao fazer login!</string>
     <string name="dismiss">Dispensar</string>
     <string name="sign_in">Login</string>
     <string name="show_login_card">Mostrar o cartão de login</string>
@@ -212,4 +212,55 @@
     <string name="crash_analytics_description_enabled">Ativa análises de dados de falhas, como falhas de aplicações e exceções.</string>
     <string name="performance_monitoring_enabled">Monitoramento de desempenho ativado</string>
     <string name="performance_monitoring_description_enabled">Ativa o monitoramento de desempenho, como tempo de inicialização da aplicação e outras métricas de desempenho.</string>
+    <plurals name="play_random_multi_choice_quiz_game">
+        <item quantity="one">Jogue %d jogo de escolha multipla aleatório.</item>
+        <item quantity="other">Jogue %d jogos de escolha múltipla aleatórios.</item>
+        <item quantity="many">Jogue %d jogos de escolha múltipla aleatórios.</item>
+    </plurals>
+    <plurals name="end_multi_choice_quiz_game">
+        <item quantity="one">Termine %d jogo de escolha multipla aleatório.</item>
+        <item quantity="other">Termine %d jogos de escolha múltipla aleatórios.</item>
+        <item quantity="many">Termine %d jogos de escolha múltipla aleatórios.</item>
+    </plurals>
+    <plurals name="play_multi_choice_quiz_questions">
+        <item quantity="one">Responda a %d pergunta no jogo de escolha múltipla.</item>
+        <item quantity="other">Responda a %d perguntas no jogo de escolha múltipla.</item>
+        <item quantity="many">Responda a %d perguntas no jogo de escolha múltipla.</item>
+    </plurals>
+    <plurals name="get_multi_choice_quiz_answer_correct">
+        <item quantity="one">Obtenha %d resposta correta no jogo de escolha múltipla.</item>
+        <item quantity="other">Obtenha %d respostas corretas no jogo de escolha múltipla.</item>
+        <item quantity="many">Obtenha %d respostas corretas no jogo de escolha múltipla.</item>
+    </plurals>
+    <plurals name="play_multi_choice_quiz_game_in_category">
+        <item quantity="one">Jogue um jogo na categoria de %2$s no jogo de escolha múltipla.</item>
+        <item quantity="other">Jogue %1$d jogos na categoria de %2$s no jogo de escolha múltipla.</item>
+        <item quantity="many">Jogue %1$d jogos na categoria de %2$s no jogo de escolha múltipla.</item>
+    </plurals>
+    <plurals name="get_wordle_word_correct">
+        <item quantity="one">Acertar %d palavra no jogo Wordle.</item>
+        <item quantity="other">Acertar %d palavras no jogo Wordle.</item>
+        <item quantity="many">Acertar %d palavras no jogo Wordle.</item>
+    </plurals>
+    <plurals name="play_wordle_game_in_category">
+        <item quantity="one">Jogar um jogo com a categoria %2$s no jogo Wordle.</item>
+        <item quantity="other">Jogar %1$d jogos com a categoria %2$s no jogo Wordle.</item>
+        <item quantity="many">Jogar %1$d jogos com a categoria %2$s no jogo Wordle.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_category">
+        <item quantity="one">Jogar um jogo com a categoria %2$s no jogo de comparação.</item>
+        <item quantity="other">Jogar %1$d jogos com a categoria %2$s no jogo de comparação.</item>
+        <item quantity="many">Jogar %1$d jogos com a categoria %2$s no jogo de comparação.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_and_get_score">
+        <item quantity="one">Jogar um jogo e obter uma pontuação de %2$d no jogo de comparação.</item>
+        <item quantity="other">Jogar %1$d jogos e obter uma pontuação de %2$d no jogo de comparação.</item>
+        <item quantity="many">Jogar %1$d jogos e obter uma pontuação de %2$d no jogo de comparação.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_comparison_mode">
+        <item quantity="one">Jogar um jogo no modo %2$s no jogo de comparação.</item>
+        <item quantity="other">Jogar %1$d jogos no modo %2$s no jogo de comparação.</item>
+        <item quantity="many">Jogar %1$d jogos no modo %2$s no jogo de comparação.</item>
+    </plurals>
+    <string name="daily_challenge">Desafio Diário</string>
 </resources>
