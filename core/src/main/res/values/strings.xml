@@ -121,7 +121,7 @@
     </plurals>
     <string name="skip">Skip</string>
     <string name="save">Save</string>
-    <string name="save_you_progress_description">Save your progress, buy skips and see leaderboard by signing in!</string>
+    <string name="save_you_progress_description">Save your progress, use skips and see leaderboard by signing in!</string>
     <string name="dismiss">Dismiss</string>
     <string name="sign_in">Sign in</string>
     <string name="show_login_card">Show login card</string>
@@ -223,7 +223,7 @@
     <!-- End Analytics -->
 
     <!-- Daily Challenge -->
-
+    <string name="daily_challenge">Daily Challenge</string>
     <plurals name="play_random_multi_choice_quiz_game">
         <item quantity="one">Play one random multi choice quiz game.</item>
         <item quantity="other">Play %d random multi choice quiz games.</item>

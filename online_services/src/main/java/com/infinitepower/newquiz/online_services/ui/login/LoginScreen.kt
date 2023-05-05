@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.home_presentation.login
+package com.infinitepower.newquiz.online_services.ui.login
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement
@@ -40,9 +40,9 @@ import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.AppLogo
-import com.infinitepower.newquiz.home_presentation.destinations.LoginWithEmailScreenDestination
 import com.infinitepower.newquiz.online_services.core.util.isGooglePlayServicesAvailable
 import com.infinitepower.newquiz.online_services.core.worker.CheckUserDBWorker
+import com.infinitepower.newquiz.online_services.ui.destinations.LoginWithEmailScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 

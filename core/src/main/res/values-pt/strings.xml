@@ -126,7 +126,7 @@
     </plurals>
     <string name="skip">Saltar</string>
     <string name="save">Guardar</string>
-    <string name="save_you_progress_description">Guarda o teu progresso, compra skips e vê a tua posição no ranking ao fazer login!</string>
+    <string name="save_you_progress_description">Guarda o teu progresso, usa skips e vê a tua posição no ranking ao fazer login!</string>
     <string name="dismiss">Dispensar</string>
     <string name="sign_in">Login</string>
     <string name="show_login_card">Mostrar o cartão de login</string>
@@ -233,7 +233,7 @@
         <item quantity="many">Obtenha %d respostas corretas no jogo de escolha múltipla.</item>
     </plurals>
     <plurals name="play_multi_choice_quiz_game_in_category">
-        <item quantity="one">Jogue um jogo na categoria de %s$2 no jogo de escolha múltipla.</item>
+        <item quantity="one">Jogue um jogo na categoria de %2$s no jogo de escolha múltipla.</item>
         <item quantity="other">Jogue %1$d jogos na categoria de %2$s no jogo de escolha múltipla.</item>
         <item quantity="many">Jogue %1$d jogos na categoria de %2$s no jogo de escolha múltipla.</item>
     </plurals>
@@ -262,4 +262,5 @@
         <item quantity="other">Jogar %1$d jogos no modo %2$s no jogo de comparação.</item>
         <item quantity="many">Jogar %1$d jogos no modo %2$s no jogo de comparação.</item>
     </plurals>
+    <string name="daily_challenge">Desafio Diário</string>
 </resources>

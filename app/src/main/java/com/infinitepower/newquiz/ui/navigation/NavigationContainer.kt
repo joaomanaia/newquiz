@@ -3,11 +3,12 @@ package com.infinitepower.newquiz.ui.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Compare
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.ListAlt
+import androidx.compose.material.icons.rounded.NewReleases
 import androidx.compose.material.icons.rounded.Password
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Today
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -20,21 +21,16 @@ import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.navigation.NavDrawerItemGroup
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.navigation.ScreenType
-import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
+import com.infinitepower.newquiz.daily_challenge.destinations.DailyChallengeScreenDestination
+import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
-import com.infinitepower.newquiz.online_services.ui.profile.destinations.ProfileScreenDestination
+import com.infinitepower.newquiz.online_services.ui.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 
 internal val navigationItems = listOf(
-    NavigationItem.Item(
-        text = R.string.home,
-        icon = Icons.Rounded.Home,
-        direction = HomeScreenDestination,
-        primary = true
-    ),
     NavigationItem.Item(
         text = R.string.multi_choice_quiz,
         icon = Icons.Rounded.ListAlt,
@@ -53,6 +49,18 @@ internal val navigationItems = listOf(
         direction = ComparisonQuizListScreenDestination,
         primary = true
     ),
+    NavigationItem.Item(
+        text = R.string.maze,
+        icon = Icons.Rounded.NewReleases,
+        direction = MazeScreenDestination,
+        screenType = ScreenType.NAVIGATION_HIDDEN
+    ),
+    NavigationItem.Item(
+        text = R.string.daily_challenge,
+        icon = Icons.Rounded.Today,
+        direction = DailyChallengeScreenDestination,
+        screenType = ScreenType.NAVIGATION_HIDDEN
+    ),
     NavigationItem.Label(
         text = R.string.online,
         group = NavDrawerItemGroup("online")
@@ -68,7 +76,7 @@ internal val navigationItems = listOf(
         text = R.string.settings,
         icon = Icons.Rounded.Settings,
         direction = SettingsScreenDestination(),
-        screenType = ScreenType.GAME
+        screenType = ScreenType.NAVIGATION_HIDDEN
     )
 )
 
@@ -82,11 +90,16 @@ internal fun NavigationContainer(
     navController: NavController,
     windowWidthSize: WindowWidthSizeClass,
     isSignedIn: Boolean,
+    showLoginCard: Boolean,
+    onSignInClick: () -> Unit,
+    onSignDismissClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val destination by navController.currentDestinationAsState()
 
     val selectedItem = remember(destination) { getNavigationItemBy(destination) }
+
+    val navigationVisible = selectedItem != null && selectedItem.screenType == ScreenType.NORMAL
 
     val items = remember(isSignedIn) {
         if (isSignedIn) {
@@ -96,26 +109,45 @@ internal fun NavigationContainer(
         }
     }
 
-    val navigationVisible = selectedItem != null && selectedItem.screenType == ScreenType.NORMAL
+    val primaryItems = remember(items) {
+        items
+            .filterIsInstance<NavigationItem.Item>()
+            .filter { it.primary }
+    }
+
+    val otherItems = remember(items, primaryItems) {
+        items - primaryItems.toSet()
+    }
 
     if (navigationVisible) {
         when (windowWidthSize) {
             WindowWidthSizeClass.Compact -> CompactContainer(
                 navController = navController,
-                navigationItems = items,
+                primaryItems = primaryItems,
+                navDrawerItems = otherItems,
                 selectedItem = selectedItem,
+                onSignInClick = onSignInClick,
+                onSignDismissClick = onSignDismissClick,
+                showLoginCard = showLoginCard,
                 content = content
             )
             WindowWidthSizeClass.Medium -> MediumContainer(
                 navController = navController,
-                navigationItems = items,
+                primaryItems = primaryItems,
+                navDrawerItems = otherItems,
                 selectedItem = selectedItem,
+                onSignInClick = onSignInClick,
+                onSignDismissClick = onSignDismissClick,
+                showLoginCard = showLoginCard,
                 content = content
             )
             WindowWidthSizeClass.Expanded -> ExpandedContainer(
                 navController = navController,
                 navigationItems = items,
                 selectedItem = selectedItem,
+                onSignInClick = onSignInClick,
+                onSignDismissClick = onSignDismissClick,
+                showLoginCard = showLoginCard,
                 content = content
             )
         }

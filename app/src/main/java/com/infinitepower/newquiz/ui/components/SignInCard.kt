@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.home_presentation.components
+package com.infinitepower.newquiz.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 internal fun SignInCard(
@@ -35,7 +35,7 @@ internal fun SignInCard(
             modifier = Modifier.padding(spaceMedium),
         ) {
             Text(
-                text = stringResource(id = R.string.save_you_progress_description),
+                text = stringResource(id = CoreR.string.save_you_progress_description),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -46,10 +46,10 @@ internal fun SignInCard(
                 horizontalArrangement = Arrangement.spacedBy(spaceMedium)
             ) {
                 TextButton(onClick = onDismissClick) {
-                    Text(text = stringResource(id = R.string.dismiss))
+                    Text(text = stringResource(id = CoreR.string.dismiss))
                 }
                 FilledTonalButton(onClick = onSignInClick) {
-                    Text(text = stringResource(id = R.string.sign_in))
+                    Text(text = stringResource(id = CoreR.string.sign_in))
                 }
             }
         }

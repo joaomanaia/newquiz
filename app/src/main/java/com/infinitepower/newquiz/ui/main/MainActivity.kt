@@ -44,7 +44,9 @@ class MainActivity : ComponentActivity() {
                         navController = rememberNavController(),
                         modifier = Modifier.fillMaxSize(),
                         windowSizeClass = windowSize,
-                        signedIn = uiState.signedIn
+                        signedIn = uiState.signedIn,
+                        showLoginCard = uiState.showLoginCard,
+                        onSignDismissClick = { mainViewModel.onEvent(MainScreenUiEvent.DismissLoginCard) }
                     )
 
                     if (uiState.dialogConsent == DataAnalyticsConsentState.NONE && !uiState.consentStateLoading) {

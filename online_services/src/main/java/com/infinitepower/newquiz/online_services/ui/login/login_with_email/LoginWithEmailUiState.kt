@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.home_presentation.login.login_with_email
+package com.infinitepower.newquiz.online_services.ui.login.login_with_email
 
 import android.util.Patterns
 import androidx.annotation.Keep

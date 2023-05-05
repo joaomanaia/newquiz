@@ -35,7 +35,7 @@ enum class ScreenType {
     NORMAL,
 
     /** When using this type all navigation items will be invisible and have no top bar */
-    GAME
+    NAVIGATION_HIDDEN
 }
 
 @JvmInline

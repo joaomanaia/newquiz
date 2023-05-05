@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.home_presentation.login.login_with_email
+package com.infinitepower.newquiz.online_services.ui.login.login_with_email
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,10 +30,9 @@ import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
-import com.infinitepower.newquiz.home_presentation.destinations.HomeScreenDestination
-import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
@@ -46,9 +45,7 @@ fun LoginWithEmailScreen(
 
     LaunchedEffect(key1 = uiState.loginCompleted) {
         if (uiState.loginCompleted) {
-            navigator.navigate(HomeScreenDestination) {
-                popUpTo(HomeScreenDestination.route) { inclusive = true }
-            }
+            navigator.popBackStack()
         }
     }
 

@@ -7,7 +7,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.*
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
+import androidx.compose.material3.PermanentDrawerSheet
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,6 +24,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.ui.components.SignInCard
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @ExperimentalMaterial3Api
@@ -23,7 +34,10 @@ internal fun NavigationDrawerContent(
     permanent: Boolean = false,
     items: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
-    onItemClick: (item: NavigationItem.Item) -> Unit
+    showLoginCard: Boolean,
+    onItemClick: (item: NavigationItem.Item) -> Unit,
+    onSignInClick: () -> Unit,
+    onSignDismissClick: () -> Unit
 ) {
     NavigationDrawerContainer(
         modifier = modifier,
@@ -32,7 +46,10 @@ internal fun NavigationDrawerContent(
         NavigationDrawerContent(
             items = items,
             selectedItem = selectedItem,
-            onItemClick = onItemClick
+            onItemClick = onItemClick,
+            onSignInClick = onSignInClick,
+            onSignDismissClick = onSignDismissClick,
+            showLoginCard = showLoginCard
         )
     }
 }
@@ -63,14 +80,34 @@ private fun NavigationDrawerContent(
     modifier: Modifier = Modifier,
     items: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
-    onItemClick: (item: NavigationItem.Item) -> Unit
+    showLoginCard: Boolean,
+    onItemClick: (item: NavigationItem.Item) -> Unit,
+    onSignInClick: () -> Unit,
+    onSignDismissClick: () -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
         contentPadding = NavigationDrawerItemDefaults.ItemPadding
     ) {
         item {
-            NavigationDrawerHeader()
+            Column(
+                modifier = Modifier.padding(vertical = MaterialTheme.spacing.large)
+            ) {
+                Text(
+                    text = stringResource(id = CoreR.string.app_name),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
+        }
+
+        if (showLoginCard) {
+            item {
+                SignInCard(
+                    onSignInClick = onSignInClick,
+                    onDismissClick = onSignDismissClick
+                )
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+            }
         }
 
         itemsIndexed(items = items) { index, item ->
@@ -127,20 +164,6 @@ private fun NavDrawerIconWithBadge(
         ) {
             icon()
         }
-    }
-}
-
-@Composable
-private fun NavigationDrawerHeader() {
-    Column(
-        modifier = Modifier.padding(vertical = MaterialTheme.spacing.large)
-    ) {
-        Text(
-            text = "NewQuiz",
-            style = MaterialTheme.typography.headlineSmall
-        )
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall))
-        Text(text = "Increase you knowledge by playing NewQuiz!")
     }
 }
 

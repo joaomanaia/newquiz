@@ -76,6 +76,7 @@ dependencies {
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material)
     implementation(AndroidX.compose.material3)
+    implementation(AndroidX.compose.material3.windowSizeClass)
     implementation(AndroidX.compose.material.icons.extended)
 
     implementation(Google.dagger.hilt.android)
@@ -96,6 +97,8 @@ dependencies {
     implementation(Firebase.cloudFirestoreKtx)
     implementation(Firebase.remoteConfigKtx)
     implementation(Firebase.authenticationKtx)
+
+    implementation(libs.firebase.ui.auth)
 
     implementation(COIL.compose)
 

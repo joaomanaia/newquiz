@@ -174,7 +174,6 @@ dependencies {
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))
-    implementation(project(Modules.homePresentation))
     implementation(project(Modules.multiChoicequiz))
     implementation(project(Modules.settingsPresentation))
     implementation(project(Modules.wordle))

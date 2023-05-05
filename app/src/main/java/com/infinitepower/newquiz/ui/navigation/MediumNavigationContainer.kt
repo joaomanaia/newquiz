@@ -21,7 +21,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -41,9 +40,13 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterial3Api
 internal fun MediumContainer(
     navController: NavController,
-    navigationItems: List<NavigationItem>,
+    primaryItems: List<NavigationItem.Item>,
+    navDrawerItems: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    showLoginCard: Boolean,
+    onSignInClick: () -> Unit,
+    onSignDismissClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -51,12 +54,6 @@ internal fun MediumContainer(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
         rememberTopAppBarState()
     )
-
-    val primaryItems = remember(key1 = navigationItems) {
-        navigationItems
-            .filterIsInstance<NavigationItem.Item>()
-            .filter { it.primary }
-    }
 
     val text = selectedItem?.text?.let { id ->
         stringResource(id = id)
@@ -69,11 +66,14 @@ internal fun MediumContainer(
                 modifier = Modifier.fillMaxHeight(),
                 permanent = false,
                 selectedItem = selectedItem,
-                items = navigationItems,
+                items = navDrawerItems,
                 onItemClick = { item ->
                     scope.launch { drawerState.close() }
                     navController.navigate(item.direction)
-                }
+                },
+                onSignInClick = onSignInClick,
+                onSignDismissClick = onSignDismissClick,
+                showLoginCard = showLoginCard
             )
         }
     ) {
@@ -137,8 +137,12 @@ private fun MediumContainerPreview() {
                 content = {
                     Text(text = "NewQuiz")
                 },
-                navigationItems = navigationItems,
-                selectedItem = selectedItem
+                primaryItems = navigationItems.filterIsInstance<NavigationItem.Item>(),
+                navDrawerItems = navigationItems,
+                selectedItem = selectedItem,
+                onSignInClick = {},
+                onSignDismissClick = {},
+                showLoginCard = true
             )
         }
     }

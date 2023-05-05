@@ -6,6 +6,10 @@ import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 @Keep
 data class MainScreenUiState(
     val signedIn: Boolean = false,
+    val settingsShowLoginCard: Boolean = false,
     val dialogConsent: DataAnalyticsConsentState = DataAnalyticsConsentState.NONE,
     val consentStateLoading: Boolean = true
-)
+) {
+    val showLoginCard: Boolean
+        get() = settingsShowLoginCard && !signedIn
+}
