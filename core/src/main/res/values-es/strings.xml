@@ -109,7 +109,7 @@
     <string name="skip_question_q">¿Skip Pregunta?</string>
     <string name="skip">Saltar</string>
     <string name="save">Ahorrar</string>
-    <string name="save_you_progress_description">¡Guarde su progreso, compre omitas y vea la clasificación iniciando sesión!</string>
+    <string name="save_you_progress_description">¡Guarda tu progreso, usa saltos y verás la tabla de clasificación iniciando sesión!</string>
     <string name="dismiss">Descartar</string>
     <string name="sign_in">Registrarse</string>
     <string name="show_login_card">Mostrar tarjeta de inicio de sesión</string>
@@ -212,5 +212,55 @@
     <string name="crash_analytics_description_enabled">Permite el análisis de datos de fallos, como los fallos y excepciones de la aplicación.</string>
     <string name="performance_monitoring_enabled">Monitoreo de rendimiento habilitado</string>
     <string name="performance_monitoring_description_enabled">Permite el monitoreo de rendimiento, como el tiempo de inicio de la aplicación y otras métricas de rendimiento.</string>
-
+    <string name="daily_challenge">Desafío diario</string>
+    <plurals name="play_random_multi_choice_quiz_game">
+        <item quantity="one">Juega a un juego de preguntas y respuestas aleatorio.</item>
+        <item quantity="many">Juega a %d juegos de preguntas y respuestas aleatorias.</item>
+        <item quantity="other">Juega a %d juegos de preguntas y respuestas aleatorias.</item>
+    </plurals>
+    <plurals name="end_multi_choice_quiz_game">
+        <item quantity="one">Termina un juego de preguntas de opción múltiple.</item>
+        <item quantity="many">Termina %d juegos de preguntas de opciones múltiples.</item>
+        <item quantity="other">Termina %d juegos de preguntas de opciones múltiples.</item>
+    </plurals>
+    <plurals name="play_multi_choice_quiz_questions">
+        <item quantity="one">Responde una pregunta en un juego de preguntas de opciones múltiples.</item>
+        <item quantity="many">Responde %d preguntas en un juego de preguntas de opciones múltiples.</item>
+        <item quantity="other">Responde %d preguntas en un juego de preguntas de opciones múltiples.</item>
+    </plurals>
+    <plurals name="get_wordle_word_correct">
+        <item quantity="one">Consigue una palabra correcta en el juego de Wordle.</item>
+        <item quantity="many">Consigue %d palabras correctas en el juego de Wordle.</item>
+        <item quantity="other">Consigue %d palabras correctas en el juego de Wordle.</item>
+    </plurals>
+    <plurals name="play_wordle_game_in_category">
+        <item quantity="one">Juega un juego con la categoría de %2$s en Wordle Game.</item>
+        <item quantity="many">Juega %1$d juegos con la categoría de %2$s en Wordle Game.</item>
+        <item quantity="other">Juega %1$d juegos con la categoría de %2$s en Wordle Game.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_and_get_score">
+        <item quantity="one">Juega una partida y consigue una puntuación de %2$d en la prueba comparativa.</item>
+        <item quantity="many">Juega a %1$d juegos y consigue una puntuación de %2$d en la prueba comparativa.</item>
+        <item quantity="other">Juega a %1$d juegos y consigue una puntuación de %2$d en la prueba comparativa.</item>
+    </plurals>
+    <plurals name="play_multi_choice_quiz_game_in_category">
+        <item quantity="one">Juega un juego con la categoría de %2$s en un cuestionario de opciones múltiples.</item>
+        <item quantity="many">Juega %1$d juegos con la categoría de %2$s en el cuestionario de opciones múltiples.</item>
+        <item quantity="other">Juega %1$d juegos con la categoría de %2$s en el cuestionario de opciones múltiples.</item>
+    </plurals>
+    <plurals name="get_multi_choice_quiz_answer_correct">
+        <item quantity="one">Obten una respuesta correcta en el juego de preguntas de opción múltiple.</item>
+        <item quantity="many">Obten %d respuestas correctas en el juego de preguntas de opciones múltiples.</item>
+        <item quantity="other">Obten %d respuestas correctas en el juego de preguntas de opciones múltiples.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_category">
+        <item quantity="one">Juega un juego con la categoría de %2$s en el cuestionario de comparación.</item>
+        <item quantity="many">Juega %1$d juegos con la categoría de %2$s en el cuestionario de comparación.</item>
+        <item quantity="other">Juega %1$d juegos con la categoría de %2$s en el cuestionario de comparación.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_comparison_mode">
+        <item quantity="one">Juega una partida con el modo %2$s en la prueba comparativa.</item>
+        <item quantity="many">Juega %1$d partidas con el modo %2$s en la prueba comparativa.</item>
+        <item quantity="other">Juega %1$d partidas con el modo %2$s en la prueba comparativa.</item>
+    </plurals>
 </resources>
