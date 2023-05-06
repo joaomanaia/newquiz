@@ -59,8 +59,22 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
 
+            <!-- WorkManager Initializer-->
             <meta-data
                 android:name="com.infinitepower.newquiz.initializer.WorkManagerInitializer"
+                android:value="androidx.startup" />
+
+            <meta-data
+                android:name="com.infinitepower.newquiz.initializer.EnqueueStartWorksInitializer"
+                android:value="androidx.startup" />
+
+            <!-- Firebase Initializer-->
+            <meta-data
+                android:name="com.infinitepower.newquiz.initializer.firebase.CoreFirebaseInitializer"
+                android:value="androidx.startup" />
+
+            <meta-data
+                android:name="com.infinitepower.newquiz.initializer.firebase.FirebaseRemoteConfigInitializer"
                 android:value="androidx.startup" />
         </provider>
 

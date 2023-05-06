@@ -14,6 +14,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import androidx.work.testing.SynchronousExecutor
+import androidx.work.testing.WorkManagerTestInitHelper
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.comparison_quiz.core.ComparisonQuizCoreImpl
 import com.infinitepower.newquiz.comparison_quiz.data.comparison_quiz.FakeComparisonQuizRepositoryImpl
@@ -48,6 +53,8 @@ internal class ComparisonQuizScreenTest {
     private lateinit var comparisonQuizCore: ComparisonQuizCore
 
     private lateinit var viewModel: ComparisonQuizViewModel
+
+    private lateinit var workManager: WorkManager
 
     private val comparisonMode by lazy { ComparisonModeByFirst.GREATER }
 
@@ -94,6 +101,17 @@ internal class ComparisonQuizScreenTest {
 
         comparisonQuizCore = ComparisonQuizCoreImpl(comparisonQuizRepository)
 
+        val context = InstrumentationRegistry.getInstrumentation().context
+        val config = Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .setExecutor(SynchronousExecutor())
+            .build()
+
+        // Initialize WorkManager for instrumentation tests.
+        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
+
+        workManager = WorkManager.getInstance(context)
+
         viewModel = ComparisonQuizViewModel(
             comparisonQuizCore = comparisonQuizCore,
             savedStateHandle = SavedStateHandle(
@@ -102,7 +120,8 @@ internal class ComparisonQuizScreenTest {
                     ComparisonQuizListScreenNavArg::category.name to category
                 )
             ),
-            comparisonQuizRepository = comparisonQuizRepository
+            comparisonQuizRepository = comparisonQuizRepository,
+            workManager = workManager
         )
 
         composeTestRule.setContent {

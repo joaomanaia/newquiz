@@ -112,6 +112,7 @@ dependencies {
     implementation(Ktor.client.serialization)
 
     implementation(AndroidX.work.runtimeKtx)
+    androidTestImplementation(AndroidX.work.testing)
 
     implementation(libs.lottie.compose)
 

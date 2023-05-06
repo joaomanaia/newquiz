@@ -160,7 +160,6 @@ dependencies {
     implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
     implementation(Google.firebase.crashlyticsKtx.withVersionPlaceholder())
     implementation(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
-    implementation(libs.firebase.appcheck.safetynet)
 
     implementation(KotlinX.datetime)
 

@@ -3,6 +3,8 @@ package com.infinitepower.newquiz.online_services.core.worker
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -20,6 +22,13 @@ class CheckUserDBWorker @AssistedInject constructor(
     private val authUserRepository: AuthUserRepository
 ) : CoroutineWorker(appContext, workerParams) {
     private val remoteConfig by lazy { Firebase.remoteConfig }
+
+    companion object {
+        fun enqueue(workManager: WorkManager) {
+            val checkUserDBWorker = OneTimeWorkRequestBuilder<CheckUserDBWorker>().build()
+            workManager.enqueue(checkUserDBWorker)
+        }
+    }
 
     override suspend fun doWork(): Result {
         // Check if user is signed in
