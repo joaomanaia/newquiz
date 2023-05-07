@@ -83,9 +83,9 @@ dependencies {
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(Testing.junit.jupiter)
     androidTestImplementation(AndroidX.test.runner)
-
     androidTestImplementation(AndroidX.compose.ui.test)
     androidTestImplementation(AndroidX.compose.ui.testJunit4)
+    debugApi(AndroidX.tracing.ktx)
 
     debugImplementation(AndroidX.compose.ui.testManifest)
 
