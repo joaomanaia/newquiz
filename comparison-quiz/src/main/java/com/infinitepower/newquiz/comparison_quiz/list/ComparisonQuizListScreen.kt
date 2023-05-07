@@ -79,7 +79,8 @@ private fun ComparisonQuizListScreenImpl(
                 Spacer(modifier = Modifier.height(spaceMedium))
                 ComparisonModeComponents(
                     modifier = Modifier.fillParentMaxWidth(),
-                    onModeClick = onSelectMode
+                    onModeClick = onSelectMode,
+                    selectedMode = uiState.selectedMode
                 )
             }
         }
