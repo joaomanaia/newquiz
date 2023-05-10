@@ -307,18 +307,15 @@ class WordleScreenViewModel @Inject constructor(
                 )
             ).build()
 
+        workManager.enqueue(wordleEndGameWorkRequest)
+
         if (mazeItemId != null && isLastRowCorrect) {
             // Runs the end game maze worker if is maze game mode and the question is correct
             val endGameMazeQuizWorkerRequest = OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
                 .setInputData(workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId.toIntOrNull()))
                 .build()
 
-            workManager
-                .beginWith(wordleEndGameWorkRequest)
-                .then(endGameMazeQuizWorkerRequest)
-                .enqueue()
-        } else {
-            workManager.enqueue(wordleEndGameWorkRequest)
+            workManager.enqueue(endGameMazeQuizWorkerRequest)
         }
     }
 
