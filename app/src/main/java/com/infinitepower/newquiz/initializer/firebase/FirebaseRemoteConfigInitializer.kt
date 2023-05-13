@@ -8,10 +8,19 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.infinitepower.newquiz.BuildConfig
 import com.infinitepower.newquiz.R
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-@Suppress("unused")
+@Module
+@InstallIn(SingletonComponent::class)
 object FirebaseRemoteConfigInitializer : Initializer<FirebaseRemoteConfig> {
-    override fun create(context: Context): FirebaseRemoteConfig {
+    @Provides
+    @Singleton
+    override fun create(@ApplicationContext context: Context): FirebaseRemoteConfig {
         val firebaseApp = Firebase.app
         val remoteConfig = FirebaseRemoteConfig.getInstance(firebaseApp)
 

@@ -4,15 +4,12 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.google.firebase.firestore.FieldValue
 import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
-import com.infinitepower.newquiz.core.common.database.DatabaseCommon
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.countCorrectQuestions
 import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
 import com.infinitepower.newquiz.online_services.domain.game.xp.MultiChoiceQuizXPRepository
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
-import com.infinitepower.newquiz.online_services.model.user.User
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.serialization.decodeFromString
@@ -50,11 +47,11 @@ class MultiChoiceQuizEndGameWorker @AssistedInject constructor(
 
             val averageQuizTime = questionSteps.getAverageQuizTime()
 
-            userRepository.updateLocalUserNewXP(
-                newXp = randomXP.toLong(),
+            userRepository.updateLocalUser(
+                newXp = randomXP.toULong(),
                 averageQuizTime = averageQuizTime,
-                totalQuestionsPlayed = questionSteps.count().toLong(),
-                totalCorrectAnswers = questionSteps.countCorrectQuestions().toLong()
+                totalQuestionsPlayed = questionSteps.count().toULong(),
+                totalCorrectAnswers = questionSteps.countCorrectQuestions().toULong()
             )
         }
 

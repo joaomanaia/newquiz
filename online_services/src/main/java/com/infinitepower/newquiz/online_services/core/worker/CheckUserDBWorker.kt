@@ -50,7 +50,7 @@ class CheckUserDBWorker @AssistedInject constructor(
             data = UserEntity.UserData(diamonds = initialDiamonds.toInt())
         )
 
-        userApi.createUserDB(newUser)
+        userApi.createUser(newUser)
 
         return Result.success()
     }

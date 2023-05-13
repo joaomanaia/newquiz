@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import com.infinitepower.newquiz.core.common.DEFAULT_USER_PHOTO
 
 @Keep
-data class UserEntity(
+data class  UserEntity(
     val uid: String? = null,
     val info: UserInfo? = UserInfo(),
     val data: UserData? = UserData()
@@ -38,22 +38,22 @@ data class UserEntity(
 }
 
 internal fun UserEntity.toUser(): User = User(
-    uid = uid,
+    uid = uid ?: throw NullPointerException("User id is null"),
     info = User.UserInfo(
         fullName = info?.fullName ?: "NewQuiz User",
         imageUrl = info?.imageUrl ?: DEFAULT_USER_PHOTO
     ),
     data = User.UserData(
-        totalXp = data?.totalXp ?: 0,
-        diamonds = data?.diamonds ?: 0,
+        totalXp = data?.totalXp?.toULong() ?: 0u,
+        diamonds = data?.diamonds?.toUInt() ?: 0u,
         multiChoiceQuizData = User.UserData.MultiChoiceQuizData(
-            totalQuestionsPlayed = data?.multiChoiceQuizData?.totalQuestionsPlayed ?: 0,
-            totalCorrectAnswers = data?.multiChoiceQuizData?.totalCorrectAnswers ?: 0,
+            totalQuestionsPlayed = data?.multiChoiceQuizData?.totalQuestionsPlayed?.toULong() ?: 0u,
+            totalCorrectAnswers = data?.multiChoiceQuizData?.totalCorrectAnswers?.toULong() ?: 0u,
             lastQuizTimes = data?.multiChoiceQuizData?.lastQuizTimes ?: emptyList(),
         ),
         wordleData = User.UserData.WordleData(
-            wordsPlayed = data?.wordleData?.wordsPlayed ?: 0,
-            wordsCorrect = data?.wordleData?.wordsCorrect ?: 0
+            wordsPlayed = data?.wordleData?.wordsPlayed?.toULong() ?: 0u,
+            wordsCorrect = data?.wordleData?.wordsCorrect?.toULong() ?: 0u
         )
     )
 )

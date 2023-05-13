@@ -7,7 +7,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
-import com.infinitepower.newquiz.core.util.kotlin.toLong
+import com.infinitepower.newquiz.core.util.kotlin.toULong
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.model.global_event.GameEvent
@@ -90,10 +90,10 @@ class WordleEndGameWorker @AssistedInject constructor(
                 wordleXpRepository.generateRandomXP(currentRowPosition)
             } else 0
 
-            userRepository.updateLocalUserNewXPWordle(
-                newXp = newXp.toLong(),
-                wordsPlayed = 1,
-                wordsCorrect = isLastRowCorrect.toLong()
+            userRepository.updateLocalUser(
+                newXp = newXp.toULong(),
+                wordsPlayed = 1uL,
+                wordsCorrect = isLastRowCorrect.toULong()
             )
         }
 

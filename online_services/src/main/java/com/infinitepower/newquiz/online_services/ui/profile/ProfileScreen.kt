@@ -99,25 +99,21 @@ private fun ProfileScreenImpl(
                 )
             }
 
-            if (multiChoiceGameData != null) {
-                val lastQuizTimes = user.data.multiChoiceQuizData.lastQuizTimes
+            val lastQuizTimes = user.data.multiChoiceQuizData.lastQuizTimes
 
-                item {
-                    UserMultiChoiceQuizData(
-                        totalQuestionsPlayed = multiChoiceGameData.totalQuestionsPlayed,
-                        totalCorrectAnswers = multiChoiceGameData.totalCorrectAnswers,
-                        lastQuizTimes = lastQuizTimes
-                    )
-                }
+            item {
+                UserMultiChoiceQuizData(
+                    totalQuestionsPlayed = multiChoiceGameData.totalQuestionsPlayed,
+                    totalCorrectAnswers = multiChoiceGameData.totalCorrectAnswers,
+                    lastQuizTimes = lastQuizTimes
+                )
             }
 
-            if (wordleData != null) {
-                item {
-                    UserWordleData(
-                        totalWordsPlayed = wordleData.wordsPlayed ,
-                        totalCorrectWords = wordleData.wordsCorrect,
-                    )
-                }
+            item {
+                UserWordleData(
+                    totalWordsPlayed = wordleData.wordsPlayed,
+                    totalCorrectWords = wordleData.wordsCorrect,
+                )
             }
         }
     }
@@ -125,8 +121,8 @@ private fun ProfileScreenImpl(
 
 @Composable
 fun UserMultiChoiceQuizData(
-    totalQuestionsPlayed: Long,
-    totalCorrectAnswers: Long,
+    totalQuestionsPlayed: ULong,
+    totalCorrectAnswers: ULong,
     lastQuizTimes: List<Double> = listOf(5.0, 15.0, 10.0, 20.0, 10.0)
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
@@ -183,8 +179,8 @@ fun UserMultiChoiceQuizData(
 
 @Composable
 fun UserWordleData(
-    totalWordsPlayed: Long,
-    totalCorrectWords: Long
+    totalWordsPlayed: ULong,
+    totalCorrectWords: ULong
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -213,9 +209,9 @@ fun UserWordleData(
 
 @Composable
 fun UserXpRow(
-    level: Int,
-    totalXp: Long,
-    requiredXP: Long
+    level: UInt,
+    totalXp: ULong,
+    requiredXP: ULong
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -229,7 +225,7 @@ fun UserXpRow(
             horizontalArrangement = Arrangement.spacedBy(spaceMedium)
         ) {
             ProfileCard(
-                title = level,
+                title = level.toULong(),
                 description = stringResource(id = CoreR.string.level),
                 modifier = Modifier.weight(1f)
             )
@@ -289,20 +285,19 @@ private fun UserInfoContent(
 @PreviewNightLight
 @OptIn(ExperimentalMaterial3Api::class)
 private fun ProfileScreenPreview() {
-    val uiState by remember {
-        val user = User(
+    val uiState = ProfileScreenUiState(
+        user = User(
+            uid = "a",
             info = User.UserInfo(fullName = "NewQuiz"),
             data = User.UserData(
-                totalXp = 2361,
+                totalXp = 2361u,
                 multiChoiceQuizData = User.UserData.MultiChoiceQuizData(
-                    totalQuestionsPlayed = 23,
-                    totalCorrectAnswers = 14
+                    totalQuestionsPlayed = 23u,
+                    totalCorrectAnswers = 14u
                 )
             )
         )
-
-        mutableStateOf(ProfileScreenUiState(user = user))
-    }
+    )
 
     NewQuizTheme {
         uiState.user?.let { user ->

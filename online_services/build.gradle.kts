@@ -67,6 +67,7 @@ dependencies {
     testImplementation(Testing.junit.jupiter)
     testImplementation(Testing.mockK)
     testImplementation(libs.truth)
+    testImplementation(KotlinX.coroutines.test)
 
     implementation(KotlinX.datetime)
     implementation(KotlinX.coroutines.playServices)

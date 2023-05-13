@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package com.infinitepower.newquiz.data.di
 
 import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizRepositoryImpl
@@ -12,6 +13,7 @@ import com.infinitepower.newquiz.data.repository.multi_choice_quiz.MultiChoiceQu
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepositoryImpl
 import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionApiImpl
 import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionRepositoryImpl
+import com.infinitepower.newquiz.data.repository.remote_config.FirebaseRemoteConfigApiImpl
 import com.infinitepower.newquiz.data.repository.wordle.WordleRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.daily.DailyWordleRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
@@ -28,6 +30,7 @@ import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionA
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -77,4 +80,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindDailyChallengeRepository(dailyChallengeRepository: DailyChallengeRepositoryImpl): DailyChallengeRepository
+
+    @Binds
+    abstract fun bindRemoteConfigApi(impl: FirebaseRemoteConfigApiImpl): RemoteConfigApi
 }

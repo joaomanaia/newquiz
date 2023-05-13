@@ -1,8 +1,9 @@
+@file:Suppress("unused")
 package com.infinitepower.newquiz.online_services.di
 
 import com.infinitepower.newquiz.online_services.core.login.LoginCore
 import com.infinitepower.newquiz.online_services.core.login.LoginCoreImpl
-import com.infinitepower.newquiz.online_services.data.UserApiImpl
+import com.infinitepower.newquiz.online_services.data.FirestoreUserApiImpl
 import com.infinitepower.newquiz.online_services.data.UserRepositoryImpl
 import com.infinitepower.newquiz.online_services.data.game.xp.MultiChoiceQuizXPRepositoryImpl
 import com.infinitepower.newquiz.online_services.data.game.xp.WordleXpRepositoryImpl
@@ -22,7 +23,7 @@ abstract class RepositoryModule {
     abstract fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
 
     @Binds
-    internal abstract fun bindUserApi(userApiImpl: UserApiImpl): UserApi
+    internal abstract fun bindUserApi(userApiImpl: FirestoreUserApiImpl): UserApi
 
     @Binds
     abstract fun bindMultiChoiceQuizXPRepository(multiChoiceQuizXPRepositoryImpl: MultiChoiceQuizXPRepositoryImpl): MultiChoiceQuizXPRepository

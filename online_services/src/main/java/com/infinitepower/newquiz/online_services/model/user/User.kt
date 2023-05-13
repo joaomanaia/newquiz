@@ -2,13 +2,17 @@ package com.infinitepower.newquiz.online_services.model.user
 
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.core.common.DEFAULT_USER_PHOTO
-import kotlin.math.*
+import com.infinitepower.newquiz.core.util.kotlin.div
+import com.infinitepower.newquiz.core.util.kotlin.pow
+import com.infinitepower.newquiz.core.util.kotlin.roundToUInt
+import kotlin.math.floor
+import kotlin.math.sqrt
 
 class UserNotLoggedInException : NullPointerException("User is not logged in")
 
 @Keep
 data class User(
-    val uid: String? = null,
+    val uid: String,
     val info: UserInfo = UserInfo(),
     val data: UserData = UserData()
 ) {
@@ -20,57 +24,62 @@ data class User(
 
     @Keep
     data class UserData(
-        val totalXp: Long = 0,
-        val diamonds: Int = 0,
-        val multiChoiceQuizData: MultiChoiceQuizData? = MultiChoiceQuizData(),
-        val wordleData: WordleData? = WordleData()
+        val totalXp: ULong = 0u,
+        val diamonds: UInt = 0u,
+        val multiChoiceQuizData: MultiChoiceQuizData = MultiChoiceQuizData(),
+        val wordleData: WordleData = WordleData()
     ) {
         @Keep
         data class MultiChoiceQuizData(
-            val totalQuestionsPlayed: Long = 0,
-            val totalCorrectAnswers: Long = 0,
+            val totalQuestionsPlayed: ULong = 0u,
+            val totalCorrectAnswers: ULong = 0u,
             val lastQuizTimes: List<Double> = emptyList()
         )
 
         @Keep
         data class WordleData(
-            val wordsPlayed: Long = 0,
-            val wordsCorrect: Long = 0
+            val wordsPlayed: ULong = 0u,
+            val wordsCorrect: ULong = 0u
         )
     }
 
-    val totalXp: Long
+    init {
+        require(uid.isNotBlank()) { "User uid is blank" }
+
+        // Verify user info fields
+        require(info.fullName.isNotBlank()) { "Full name is blank" }
+        require(info.imageUrl.isNotBlank()) { "Image url is blank" }
+    }
+
+    val totalXp: ULong
         get() = data.totalXp
 
-    val level: Int
-        get() = floor(sqrt(totalXp / 100.0)).roundToInt()
+    val level: UInt
+        get() = floor(sqrt(totalXp / 100.0)).roundToUInt()
 
     val averageQuizTime: Double
-        get() = data.multiChoiceQuizData?.lastQuizTimes?.average() ?: 0.0
+        get() = data.multiChoiceQuizData.lastQuizTimes.average()
 
-    fun getNextLevelXp(): Long {
-        val nextLevel = level + 1
-        val nextLevelXP = nextLevel.pow(2) * 100
+    fun getNextLevelXp(): UInt {
+        val nextLevel = level + 1u
 
-        return nextLevelXP.roundToLong()
+        return nextLevel.pow(2) * 100u
     }
 
     fun getLevelProgress(): Float {
-        return totalXp.toFloat() / getNextLevelXp()
+        return totalXp / getNextLevelXp().toFloat()
     }
 
-    fun getRequiredXP(): Long = getNextLevelXp() - totalXp
+    fun getRequiredXP(): ULong = getNextLevelXp() - totalXp
 
-    private infix fun Int.pow(n: Int): Double = toDouble().pow(n)
-
-    fun isNewLevel(newXp: Long): Boolean {
+    fun isNewLevel(newXp: ULong): Boolean {
         val newTotalXP = totalXp + newXp
         val newUser = copy(data = UserData(totalXp = newTotalXP))
 
         return newUser.level > level
     }
 
-    fun getLevelAfter(newXp: Long): Int {
+    fun getLevelAfter(newXp: ULong): UInt {
         val newTotalXP = totalXp + newXp
         val newUser = copy(data = UserData(totalXp = newTotalXP))
 
@@ -85,16 +94,16 @@ internal fun User.toUserEntity(): UserEntity = UserEntity(
         imageUrl = info.imageUrl
     ),
     data = UserEntity.UserData(
-        totalXp = data.totalXp,
-        diamonds = data.diamonds,
+        totalXp = data.totalXp.toLong(),
+        diamonds = data.diamonds.toInt(),
         multiChoiceQuizData = UserEntity.UserData.MultiChoiceQuizData(
-            totalQuestionsPlayed = data.multiChoiceQuizData?.totalQuestionsPlayed,
-            totalCorrectAnswers = data.multiChoiceQuizData?.totalCorrectAnswers,
-            lastQuizTimes = data.multiChoiceQuizData?.lastQuizTimes,
+            totalQuestionsPlayed = data.multiChoiceQuizData.totalQuestionsPlayed.toLong(),
+            totalCorrectAnswers = data.multiChoiceQuizData.totalCorrectAnswers.toLong(),
+            lastQuizTimes = data.multiChoiceQuizData.lastQuizTimes,
         ),
         wordleData = UserEntity.UserData.WordleData(
-            wordsPlayed = data.wordleData?.wordsPlayed,
-            wordsCorrect = data.wordleData?.wordsCorrect
+            wordsPlayed = data.wordleData.wordsPlayed.toLong(),
+            wordsCorrect = data.wordleData.wordsCorrect.toLong()
         )
     )
 )

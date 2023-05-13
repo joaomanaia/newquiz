@@ -7,20 +7,20 @@ interface UserRepository {
 
     suspend fun getLocalUser(): User?
 
-    suspend fun createUserDB(user: User)
+    suspend fun createUser(user: User)
 
-    suspend fun updateLocalUserNewXPWordle(
-        newXp: Long,
-        wordsPlayed: Long,
-        wordsCorrect: Long
+    suspend fun updateLocalUser(
+        newXp: ULong,
+        wordsPlayed: ULong,
+        wordsCorrect: ULong
     )
 
-    suspend fun updateLocalUserNewXP(
-        newXp: Long,
+    suspend fun updateLocalUser(
+        newXp: ULong,
         averageQuizTime: Double,
-        totalQuestionsPlayed: Long,
-        totalCorrectAnswers: Long
+        totalQuestionsPlayed: ULong,
+        totalCorrectAnswers: ULong
     )
 
-    suspend fun updateLocalUserDiamonds(n: Int)
+    suspend fun addLocalUserDiamonds(diamonds: Int)
 }

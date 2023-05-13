@@ -36,7 +36,7 @@ internal fun ProfileCard(
 @Composable
 internal fun ProfileCard(
     modifier: Modifier = Modifier,
-    title: Number,
+    title: ULong,
     description: String
 ) {
     ProfileCard(

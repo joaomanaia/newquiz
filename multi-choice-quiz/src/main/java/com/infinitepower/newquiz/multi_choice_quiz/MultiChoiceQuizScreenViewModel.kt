@@ -146,7 +146,7 @@ class QuizScreenViewModel @Inject constructor(
             currentState.copy(userDiamonds = -1)
         }
 
-        userRepository.updateLocalUserDiamonds(-1)
+        userRepository.addLocalUserDiamonds(-1)
 
         coreLoggingAnalytics.logSpendDiamonds(1, "skip_multichoicequestion")
     }
@@ -401,7 +401,7 @@ class QuizScreenViewModel @Inject constructor(
         }
 
         _uiState.update { currentState ->
-            currentState.copy(userDiamonds = user.data.diamonds)
+            currentState.copy(userDiamonds = user.data.diamonds.toInt())
         }
     }
 }
