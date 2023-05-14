@@ -18,6 +18,8 @@ interface DailyChallengeRepository {
 
     suspend fun getAvailableTasks(): List<DailyChallengeTask>
 
+    fun getClaimableTasksCountFlow(): Flow<Int>
+
     /**
      * Checks if the daily tasks are expired and generates new ones if needed.
      * Will be generated unique types of tasks.

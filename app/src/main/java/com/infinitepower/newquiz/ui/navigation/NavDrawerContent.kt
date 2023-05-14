@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -123,46 +122,25 @@ private fun NavigationDrawerContent(
                 }
                 is NavigationItem.Item -> {
                     NavigationDrawerItem(
-                        icon = {
-                            NavDrawerIconWithBadge(
-                                item = item,
-                                icon = {
-                                    Icon(item.icon, contentDescription = text)
-                                }
-                            )
-                        },
+                        icon = { Icon(item.icon, contentDescription = text) },
                         label = { Text(text = text) },
                         selected = item == selectedItem,
-                        onClick = { onItemClick(item) }
+                        onClick = { onItemClick(item) },
+                        badge = if (item.badge != null && item.badge.value > 0) {
+                            {
+                                Badge {
+                                    Text(
+                                        text = item.badge.value.toString(),
+                                        modifier = Modifier.semantics {
+                                            contentDescription = item.badge.description
+                                        }
+                                    )
+                                }
+                            }
+                        } else null
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-@ExperimentalMaterial3Api
-private fun NavDrawerIconWithBadge(
-    item: NavigationItem.Item,
-    icon: @Composable () -> Unit
-) {
-    if (item.badge == null) {
-        icon()
-    } else {
-        BadgedBox(
-            badge = {
-                Badge {
-                    Text(
-                        text = item.badge.value.toString(),
-                        modifier = Modifier.semantics {
-                            contentDescription = item.badge.description
-                        }
-                    )
-                }
-            }
-        ) {
-            icon()
         }
     }
 }

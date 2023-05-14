@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizListScreenDestination
 import com.infinitepower.newquiz.core.R
+import com.infinitepower.newquiz.core.navigation.NavDrawerBadgeItem
 import com.infinitepower.newquiz.core.navigation.NavDrawerItemGroup
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.navigation.ScreenType
@@ -30,7 +31,9 @@ import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 
-internal val navigationItems = listOf(
+internal fun getNavigationItems(
+    dailyChallengeClaimCount: Int = 0
+) = listOf(
     NavigationItem.Item(
         text = R.string.multi_choice_quiz,
         icon = Icons.Rounded.ListAlt,
@@ -59,7 +62,11 @@ internal val navigationItems = listOf(
         text = R.string.daily_challenge,
         icon = Icons.Rounded.Today,
         direction = DailyChallengeScreenDestination,
-        screenType = ScreenType.NAVIGATION_HIDDEN
+        screenType = ScreenType.NAVIGATION_HIDDEN,
+        badge = NavDrawerBadgeItem(
+            value = dailyChallengeClaimCount,
+            description = "Daily challenge claim count"
+        )
     ),
     NavigationItem.Label(
         text = R.string.online,
@@ -80,7 +87,10 @@ internal val navigationItems = listOf(
     )
 )
 
-private fun getNavigationItemBy(route: DestinationSpec<*>?) = navigationItems
+private fun getNavigationItemBy(
+    route: DestinationSpec<*>?,
+    dailyChallengeClaimCount: Int = 0
+) = getNavigationItems(dailyChallengeClaimCount)
     .filterIsInstance<NavigationItem.Item>()
     .find { item -> item.direction == route }
 
@@ -91,6 +101,7 @@ internal fun NavigationContainer(
     windowWidthSize: WindowWidthSizeClass,
     isSignedIn: Boolean,
     showLoginCard: Boolean,
+    dailyChallengeClaimCount: Int,
     onSignInClick: () -> Unit,
     onSignDismissClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
@@ -101,11 +112,11 @@ internal fun NavigationContainer(
 
     val navigationVisible = selectedItem != null && selectedItem.screenType == ScreenType.NORMAL
 
-    val items = remember(isSignedIn) {
+    val items = remember(isSignedIn, dailyChallengeClaimCount) {
         if (isSignedIn) {
-            navigationItems
+            getNavigationItems(dailyChallengeClaimCount)
         } else {
-            navigationItems.filterNot { it.group == NavDrawerItemGroup("online") }
+            getNavigationItems(dailyChallengeClaimCount).filterNot { it.group == NavDrawerItemGroup("online") }
         }
     }
 

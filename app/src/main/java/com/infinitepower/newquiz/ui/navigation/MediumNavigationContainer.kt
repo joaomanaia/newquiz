@@ -126,7 +126,7 @@ internal fun MediumContainer(
 @PreviewMediumNightLight
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MediumContainerPreview() {
-    val selectedItem = navigationItems
+    val selectedItem = getNavigationItems(5)
         .filterIsInstance<NavigationItem.Item>()
         .firstOrNull()
 
@@ -137,8 +137,8 @@ private fun MediumContainerPreview() {
                 content = {
                     Text(text = "NewQuiz")
                 },
-                primaryItems = navigationItems.filterIsInstance<NavigationItem.Item>(),
-                navDrawerItems = navigationItems,
+                primaryItems = getNavigationItems().filterIsInstance<NavigationItem.Item>(),
+                navDrawerItems = getNavigationItems(),
                 selectedItem = selectedItem,
                 onSignInClick = {},
                 onSignDismissClick = {},

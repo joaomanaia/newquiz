@@ -78,7 +78,7 @@ internal fun ExpandedContainer(
 @PreviewExpandedNightLight
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MediumContainerPreview() {
-    val selectedItem = navigationItems
+    val selectedItem = getNavigationItems()
         .filterIsInstance<NavigationItem.Item>()
         .firstOrNull()
 
@@ -89,7 +89,7 @@ private fun MediumContainerPreview() {
                 content = {
                     Text(text = "NewQuiz")
                 },
-                navigationItems = navigationItems,
+                navigationItems = getNavigationItems(),
                 selectedItem = selectedItem,
                 onSignInClick = {},
                 onSignDismissClick = {},

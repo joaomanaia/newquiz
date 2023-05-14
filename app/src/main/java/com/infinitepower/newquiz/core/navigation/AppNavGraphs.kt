@@ -76,6 +76,7 @@ internal fun AppNavigation(
     windowSizeClass: WindowSizeClass,
     signedIn: Boolean,
     showLoginCard: Boolean,
+    dailyChallengeClaimCount: Int,
     onSignDismissClick: () -> Unit
 ) {
     NavigationContainer(
@@ -84,7 +85,8 @@ internal fun AppNavigation(
         isSignedIn = signedIn,
         showLoginCard = showLoginCard,
         onSignInClick = { navController.navigate(LoginScreenDestination) },
-        onSignDismissClick = onSignDismissClick
+        onSignDismissClick = onSignDismissClick,
+        dailyChallengeClaimCount = dailyChallengeClaimCount
     ) { innerPadding ->
         DestinationsNavHost(
             navGraph = AppNavGraphs.mainNavGraph,

@@ -123,7 +123,7 @@ internal fun CompactContainer(
 @PreviewNightLight
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CompactContainerPreview() {
-    val selectedItem = navigationItems
+    val selectedItem = getNavigationItems()
         .filterIsInstance<NavigationItem.Item>()
         .firstOrNull()
 
@@ -134,8 +134,8 @@ private fun CompactContainerPreview() {
                 content = {
                     Text(text = "NewQuiz")
                 },
-                primaryItems = navigationItems.filterIsInstance<NavigationItem.Item>(),
-                navDrawerItems = navigationItems,
+                primaryItems = getNavigationItems().filterIsInstance<NavigationItem.Item>(),
+                navDrawerItems = getNavigationItems(),
                 selectedItem = selectedItem,
                 onSignInClick = {},
                 onSignDismissClick = {},

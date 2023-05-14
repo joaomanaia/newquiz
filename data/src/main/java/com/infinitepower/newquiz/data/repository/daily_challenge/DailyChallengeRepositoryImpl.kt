@@ -47,6 +47,10 @@ class DailyChallengeRepositoryImpl @Inject constructor(
             .map { task -> task.toDomain(comparisonQuizRepository.getCategories()) }
     }
 
+    override fun getClaimableTasksCountFlow(): Flow<Int> = getAvailableTasksFlow().map { tasks ->
+        tasks.count { task -> task.isClaimable() }
+    }
+
     override suspend fun checkAndGenerateTasksIfNeeded(
         tasksToGenerate: Int,
         random: Random

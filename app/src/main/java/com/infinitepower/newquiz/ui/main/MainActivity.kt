@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                         windowSizeClass = windowSize,
                         signedIn = uiState.signedIn,
                         showLoginCard = uiState.showLoginCard,
+                        dailyChallengeClaimCount = uiState.dailyChallengeClaimableCount,
                         onSignDismissClick = { mainViewModel.onEvent(MainScreenUiEvent.DismissLoginCard) }
                     )
 

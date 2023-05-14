@@ -6,6 +6,7 @@ import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
+import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val authUserRepository: AuthUserRepository,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
+    private val dailyChallengeRepository: DailyChallengeRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MainScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -53,6 +55,14 @@ class MainViewModel @Inject constructor(
                         dialogConsent = consent,
                         consentStateLoading = false
                     )
+                }
+            }.launchIn(viewModelScope)
+
+        dailyChallengeRepository
+            .getClaimableTasksCountFlow()
+            .onEach { count ->
+                _uiState.update { currentState ->
+                    currentState.copy(dailyChallengeClaimableCount = count)
                 }
             }.launchIn(viewModelScope)
     }
