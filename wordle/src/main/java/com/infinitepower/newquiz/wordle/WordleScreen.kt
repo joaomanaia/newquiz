@@ -35,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.animationsEnabled
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.data.util.translation.getWordleTitle
 import com.infinitepower.newquiz.model.wordle.WordleChar
@@ -120,6 +121,8 @@ private fun WordleScreenImpl(
             scrollState.animateScrollToItem(uiState.rows.lastIndex)
         }
     }
+
+    val wordleAnimationsEnabled = MaterialTheme.animationsEnabled.wordle
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -213,7 +216,7 @@ private fun WordleScreenImpl(
                         isLetterHintsEnabled = uiState.isLetterHintEnabled,
                         modifier = Modifier.testTag(WordleScreenTestTags.WORDLE_ROW),
                         isPreview = !isCurrentRow,
-                        animationEnabled = uiState.animationsEnabled
+                        animationEnabled = wordleAnimationsEnabled
                     )
                 }
             },

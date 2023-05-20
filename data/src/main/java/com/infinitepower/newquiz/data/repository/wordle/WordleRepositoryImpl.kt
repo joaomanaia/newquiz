@@ -135,11 +135,6 @@ class WordleRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun animationsEnabled(): Boolean {
-        return settingsDataStoreManager.getPreference(SettingsCommon.GlobalAnimationsEnabled)
-                && settingsDataStoreManager.getPreference(SettingsCommon.WordleAnimationsEnabled)
-    }
-
     override suspend fun getWordleMaxRows(defaultMaxRow: Int?): Int {
         if (defaultMaxRow == null) {
             // If is row limited return row limit value else return int max value

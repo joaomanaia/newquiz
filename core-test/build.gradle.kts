@@ -3,6 +3,7 @@ import de.fayard.refreshVersions.core.versionFor
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
     id("com.google.devtools.ksp") version "1.8.10-1.0.9"
 }
 
@@ -66,6 +67,15 @@ dependencies {
     implementation(AndroidX.activity.compose)
     implementation(AndroidX.compose.material3)
     implementation(AndroidX.compose.material3.windowSizeClass)
+
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.compiler)
+    kapt(AndroidX.hilt.compiler)
+    implementation(AndroidX.hilt.navigationCompose)
+    implementation(Google.dagger.hilt.android.testing)
+    implementation(AndroidX.hilt.work)
+
+    implementation(AndroidX.work.testing)
 
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.io.github.raamcosta.compose.destinations.ksp)

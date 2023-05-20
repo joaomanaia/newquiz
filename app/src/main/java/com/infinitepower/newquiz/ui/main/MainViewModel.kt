@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.core.theme.AnimationsEnabled
 import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
@@ -13,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -65,6 +67,20 @@ class MainViewModel @Inject constructor(
                     currentState.copy(dailyChallengeClaimableCount = count)
                 }
             }.launchIn(viewModelScope)
+
+        combine(
+            settingsDataStoreManager.getPreferenceFlow(SettingsCommon.GlobalAnimationsEnabled),
+            settingsDataStoreManager.getPreferenceFlow(SettingsCommon.WordleAnimationsEnabled),
+        ) { globalAnimationsEnabled, wordleAnimationsEnabled ->
+            AnimationsEnabled(
+                global = globalAnimationsEnabled,
+                wordle = wordleAnimationsEnabled && globalAnimationsEnabled
+            )
+        }.onEach { animationsEnabled ->
+            _uiState.update { currentState ->
+                currentState.copy(animationsEnabled = animationsEnabled)
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: MainScreenUiEvent) {

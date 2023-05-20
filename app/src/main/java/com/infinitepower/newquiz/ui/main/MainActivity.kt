@@ -30,12 +30,14 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         setContent {
-            NewQuizTheme {
+            val mainViewModel = hiltViewModel<MainViewModel>()
+
+            val uiState by mainViewModel.uiState.collectAsStateWithLifecycle()
+
+            NewQuizTheme(
+                animationsEnabled = uiState.animationsEnabled
+            ) {
                 val windowSize = calculateWindowSizeClass(activity = this)
-
-                val mainViewModel = hiltViewModel<MainViewModel>()
-
-                val uiState by mainViewModel.uiState.collectAsStateWithLifecycle()
 
                 Surface(
                     color = MaterialTheme.colorScheme.background

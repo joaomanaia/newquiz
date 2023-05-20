@@ -70,12 +70,6 @@ class WordleScreenViewModel @Inject constructor(
                 }
             }.launchIn(viewModelScope)
 
-        viewModelScope.launch(Dispatchers.IO) {
-            _uiState.update { currentState ->
-                currentState.copy(animationsEnabled = wordleRepository.animationsEnabled())
-            }
-        }
-
         generateGame()
     }
 

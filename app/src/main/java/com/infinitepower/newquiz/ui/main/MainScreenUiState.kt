@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.ui.main
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.core.theme.AnimationsEnabled
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 
 @Keep
@@ -10,6 +11,7 @@ data class MainScreenUiState(
     val dialogConsent: DataAnalyticsConsentState = DataAnalyticsConsentState.NONE,
     val consentStateLoading: Boolean = true,
     val dailyChallengeClaimableCount: Int = 0,
+    val animationsEnabled: AnimationsEnabled = AnimationsEnabled()
 ) {
     val showLoginCard: Boolean
         get() = settingsShowLoginCard && !signedIn
