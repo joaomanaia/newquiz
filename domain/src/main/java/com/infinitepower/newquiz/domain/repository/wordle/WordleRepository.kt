@@ -6,7 +6,7 @@ import com.infinitepower.newquiz.model.wordle.WordleWord
 import kotlin.random.Random
 
 interface WordleRepository {
-    suspend fun getAllWords(random: Random = Random): Set<String>
+    suspend fun getAllWords(): Set<String>
 
     fun generateRandomWord(
         quizType: WordleQuizType,

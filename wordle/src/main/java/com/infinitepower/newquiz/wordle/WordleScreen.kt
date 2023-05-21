@@ -55,7 +55,6 @@ import com.infinitepower.newquiz.core.R as CoreR
 data class WordleScreenNavArgs(
     val rowLimit: Int = Int.MAX_VALUE,
     val word: String? = null,
-    val date: String? = null,
     val quizType: WordleQuizType = WordleQuizType.TEXT,
     val mazeItemId: String? = null,
     val textHelper: String? = null
@@ -244,13 +243,11 @@ private fun WordleScreenImpl(
                         horizontalArrangement = Arrangement.spacedBy(spaceMedium),
                         modifier = Modifier.padding(spaceMedium)
                     ) {
-                        if (uiState.day == null) {
-                            OutlinedButton(
-                                onClick = { onEvent(WordleScreenUiEvent.OnPlayAgainClick) },
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                Text(text = stringResource(id = CoreR.string.play_again))
-                            }
+                        OutlinedButton(
+                            onClick = { onEvent(WordleScreenUiEvent.OnPlayAgainClick) },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = stringResource(id = CoreR.string.play_again))
                         }
 
                         Button(

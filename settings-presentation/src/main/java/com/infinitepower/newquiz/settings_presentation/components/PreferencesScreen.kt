@@ -80,7 +80,6 @@ internal fun PreferencesScreen(
                 cleanRecentCategories = { onEvent(SettingsScreenUiEvent.ClearMultiChoiceQuizRecentCategories) }
             )
             is SettingsScreenPageData.Wordle -> page.items(
-                clearWordleCalendarItems = { onEvent(SettingsScreenUiEvent.ClearWordleCalendarItems) },
                 onChangeWordleLang = coreLoggingAnalytics::setWordleLangUserProperty
             )
             is SettingsScreenPageData.User -> page.items(

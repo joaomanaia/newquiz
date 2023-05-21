@@ -6,7 +6,6 @@ import com.infinitepower.newquiz.data.database.AppDatabase
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeDao
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsDao
-import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -34,12 +33,6 @@ object TestDatabaseModule {
     fun provideSavedQuestionsDao(
         appDatabase: AppDatabase
     ): SavedMultiChoiceQuestionsDao = appDatabase.savedQuestionsDao()
-
-    @Provides
-    @Singleton
-    fun provideDailyWordleDao(
-        appDatabase: AppDatabase
-    ): DailyWordleDao = appDatabase.dailyWordleDao()
 
     @Provides
     @Singleton

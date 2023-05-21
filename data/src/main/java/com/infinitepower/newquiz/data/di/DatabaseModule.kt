@@ -6,7 +6,6 @@ import com.infinitepower.newquiz.data.database.AppDatabase
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeDao
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsDao
-import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +23,7 @@ object DatabaseModule {
     ): AppDatabase = Room.databaseBuilder(
         applicationContext,
         AppDatabase::class.java,
-        "app-database"
+        AppDatabase.DATABASE_NAME
     ).build()
 
     @Provides
@@ -32,12 +31,6 @@ object DatabaseModule {
     fun provideSavedQuestionsDao(
         appDatabase: AppDatabase
     ): SavedMultiChoiceQuestionsDao = appDatabase.savedQuestionsDao()
-
-    @Provides
-    @Singleton
-    fun provideDailyWordleDao(
-        appDatabase: AppDatabase
-    ): DailyWordleDao = appDatabase.dailyWordleDao()
 
     @Provides
     @Singleton

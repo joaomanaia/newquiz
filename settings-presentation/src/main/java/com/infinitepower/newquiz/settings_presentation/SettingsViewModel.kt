@@ -10,7 +10,6 @@ import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
-import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
@@ -29,7 +28,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val dailyWordleRepository: DailyWordleRepository,
     private val translatorUtil: TranslatorUtil,
     private val authUserRepository: AuthUserRepository,
     @MultiChoiceQuestionDataStoreManager private val multiChoiceSettingsDataStoreManager: DataStoreManager,
@@ -74,7 +72,6 @@ class SettingsViewModel @Inject constructor(
                 translatorUtil.deleteModel()
             }
             is SettingsScreenUiEvent.DownloadTranslationModel -> downloadTranslationModel()
-            is SettingsScreenUiEvent.ClearWordleCalendarItems -> clearWordleCalendarItems()
             is SettingsScreenUiEvent.SignOut -> authUserRepository.signOut()
             is SettingsScreenUiEvent.EnableLoggingAnalytics -> enableLoggingAnalytics(event.enabled)
             is SettingsScreenUiEvent.EnableGeneralAnalytics -> {}
@@ -82,10 +79,6 @@ class SettingsViewModel @Inject constructor(
             is SettingsScreenUiEvent.EnablePerformanceMonitoring -> {}
             is SettingsScreenUiEvent.ClearMultiChoiceQuizRecentCategories -> cleanMultiChoiceRecentCategoriesItems()
         }
-    }
-
-    private fun clearWordleCalendarItems() = viewModelScope.launch(Dispatchers.IO)  {
-        dailyWordleRepository.clearAllCalendarItems()
     }
 
     private fun downloadTranslationModel() = viewModelScope.launch(Dispatchers.IO)  {

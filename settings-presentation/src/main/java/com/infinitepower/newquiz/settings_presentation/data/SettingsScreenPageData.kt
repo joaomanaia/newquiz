@@ -297,7 +297,6 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         @Composable
         @ReadOnlyComposable
         fun items(
-            clearWordleCalendarItems: () -> Unit,
             onChangeWordleLang: (newLang: String) -> Unit
         ) = listOf(
             Preference.PreferenceItem.SwitchPreference(
@@ -346,16 +345,6 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         summary = stringResource(id = CoreR.string.wordle_infinite_row_limit_value),
                         valueRange = 2..30,
                         dependency = listOf(SettingsCommon.WordleInfiniteRowsLimited)
-                    )
-                )
-            ),
-            Preference.PreferenceGroup(
-                title = stringResource(id = CoreR.string.wordle_daily),
-                preferenceItems = listOf(
-                    Preference.PreferenceItem.TextPreference(
-                        title = stringResource(id = CoreR.string.clean_calendar_data),
-                        summary = stringResource(id = CoreR.string.clean_saved_calendar_wins_losses),
-                        onClick = clearWordleCalendarItems
                     )
                 )
             )

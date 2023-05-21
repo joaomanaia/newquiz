@@ -89,7 +89,6 @@ class WordleScreenViewModel @Inject constructor(
 
     private fun generateGame() = viewModelScope.launch(Dispatchers.IO) {
         val initialWord = savedStateHandle.get<String?>(WordleScreenNavArgs::word.name)
-        val date = savedStateHandle.get<String?>(WordleScreenNavArgs::date.name)
         val textHelper = savedStateHandle.get<String?>(WordleScreenNavArgs::textHelper.name)
 
         val quizType = savedStateHandle
@@ -99,7 +98,7 @@ class WordleScreenViewModel @Inject constructor(
         // Checks if saved state has an initial word.
         // If has, generate the rows with the word, if not create a new word.
         if (initialWord != null) {
-            generateRows(initialWord, quizType, textHelper, date)
+            generateRows(initialWord, quizType, textHelper)
             return@launch
         }
 
@@ -127,8 +126,7 @@ class WordleScreenViewModel @Inject constructor(
     private suspend fun generateRows(
         word: String,
         quizType: WordleQuizType,
-        textHelper: String? = null,
-        day: String? = null
+        textHelper: String? = null
     ) {
         Log.d(TAG, "Word: $word")
 
@@ -147,7 +145,7 @@ class WordleScreenViewModel @Inject constructor(
                 GameEvent.Wordle.PlayWordWithCategory(quizType)
             )
 
-            wordleLoggingAnalytics.logGameStart(word.length, rowLimit, quizType.name, day, mazeItemId?.toIntOrNull())
+            wordleLoggingAnalytics.logGameStart(word.length, rowLimit, quizType.name, mazeItemId?.toIntOrNull())
         }
 
 
@@ -158,7 +156,6 @@ class WordleScreenViewModel @Inject constructor(
                 rowLimit = rowLimit,
                 rows = rows,
                 currentRowPosition = 0,
-                day = day,
                 keysDisabled = emptySet(),
                 errorMessage = null,
                 wordleQuizType = quizType,
@@ -295,7 +292,6 @@ class WordleScreenViewModel @Inject constructor(
                     WordleEndGameWorker.INPUT_CURRENT_ROW_POSITION to currentState.currentRowPosition,
                     WordleEndGameWorker.INPUT_IS_LAST_ROW_CORRECT to isLastRowCorrect,
                     WordleEndGameWorker.INPUT_QUIZ_TYPE to currentState.wordleQuizType?.name,
-                    WordleEndGameWorker.INPUT_DAY to currentState.day,
                     WordleEndGameWorker.INPUT_MAZE_TEM_ID to mazeItemId
                 )
             ).build()

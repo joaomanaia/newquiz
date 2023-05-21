@@ -7,8 +7,6 @@ sealed interface SettingsScreenUiEvent {
 
     object SignOut : SettingsScreenUiEvent
 
-    object ClearWordleCalendarItems : SettingsScreenUiEvent
-
     data class EnableLoggingAnalytics(val enabled: Boolean) : SettingsScreenUiEvent
     data class EnableGeneralAnalytics(val enabled: Boolean) : SettingsScreenUiEvent
     data class EnableCrashlytics(val enabled: Boolean) : SettingsScreenUiEvent

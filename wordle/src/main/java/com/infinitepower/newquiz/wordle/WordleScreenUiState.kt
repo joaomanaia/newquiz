@@ -12,7 +12,6 @@ data class WordleScreenUiState(
     val rows: List<WordleRowItem> = emptyList(),
     val currentRowPosition: Int = -1,
     val keysDisabled: Set<Char> = emptySet(),
-    val day: String? = null,
     val isColorBlindEnabled: Boolean = false,
     val isLetterHintEnabled: Boolean = false,
     val isHardModeEnabled: Boolean = false,

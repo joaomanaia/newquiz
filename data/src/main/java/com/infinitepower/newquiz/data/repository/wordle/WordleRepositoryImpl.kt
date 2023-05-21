@@ -5,7 +5,7 @@ import androidx.core.text.isDigitsOnly
 import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
-import com.infinitepower.newquiz.core.common.dataStore.infiniteWordleSupportedLang
+import com.infinitepower.newquiz.core.common.dataStore.textWordleSupportedLang
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
@@ -30,12 +30,10 @@ class WordleRepositoryImpl @Inject constructor(
 ) : WordleRepository {
     private val baseNumbers by lazy { 0..9 }
 
-    override suspend fun getAllWords(
-        random: Random
-    ): Set<String> = withContext(Dispatchers.IO) {
+    override suspend fun getAllWords(): Set<String> = withContext(Dispatchers.IO) {
         val quizLanguage = settingsDataStoreManager.getPreference(SettingsCommon.InfiniteWordleQuizLanguage)
 
-        val listRawId = infiniteWordleSupportedLang.find { lang ->
+        val listRawId = textWordleSupportedLang.find { lang ->
             lang.key == quizLanguage
         }?.rawListId ?: throw NullPointerException("Wordle language not found")
 
@@ -48,7 +46,6 @@ class WordleRepositoryImpl @Inject constructor(
                 .split("\r\n", "\n")
                 .filter { it.length == 5 }
                 .map { it.uppercase().trim() }
-                .shuffled(random)
                 .toSet()
         } catch (e: Exception) {
             throw e
@@ -82,7 +79,8 @@ class WordleRepositoryImpl @Inject constructor(
     }
 
     override suspend fun generateRandomTextWord(random: Random): WordleWord {
-        val allWords = getAllWords(random)
+        val allWords = getAllWords().shuffled(random)
+
         return WordleWord(allWords.random(random))
     }
 

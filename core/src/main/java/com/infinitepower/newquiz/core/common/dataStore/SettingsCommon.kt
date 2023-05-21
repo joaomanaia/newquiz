@@ -72,7 +72,7 @@ data class SettingsWordleLang(
     @RawRes val rawListId: Int
 )
 
-val infiniteWordleSupportedLang = listOf(
+val textWordleSupportedLang = listOf(
     SettingsWordleLang(
         key = "en",
         languageId = R.string.english,
@@ -97,6 +97,6 @@ val infiniteWordleSupportedLang = listOf(
 
 private fun getInfiniteWordleDefaultLang(): String {
     val localeLanguage = Locale.getDefault().language
-    val langKeys = infiniteWordleSupportedLang.map { it.key }
+    val langKeys = textWordleSupportedLang.map { it.key }
     return if (localeLanguage in langKeys) localeLanguage else "en"
 }

@@ -19,7 +19,6 @@ import com.infinitepower.newquiz.online_services.ui.destinations.LoginWithEmailS
 import com.infinitepower.newquiz.online_services.ui.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.ui.navigation.NavigationContainer
-import com.infinitepower.newquiz.wordle.destinations.DailyWordleCalendarScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -52,7 +51,6 @@ internal object AppNavGraphs {
             SavedMultiChoiceQuestionsScreenDestination,
             WordleScreenDestination,
             WordleListScreenDestination,
-            DailyWordleCalendarScreenDestination,
             LoginScreenDestination,
             LoginWithEmailScreenDestination,
             ProfileScreenDestination,

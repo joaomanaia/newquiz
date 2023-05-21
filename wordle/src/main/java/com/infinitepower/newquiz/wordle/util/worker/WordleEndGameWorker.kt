@@ -9,24 +9,18 @@ import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytic
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.util.kotlin.toULong
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
-import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
-import com.infinitepower.newquiz.model.wordle.daily.CalendarItemState
-import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
 import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
 import com.infinitepower.newquiz.online_services.domain.game.xp.WordleXpRepository
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toLocalDate
 
 @HiltWorker
 class WordleEndGameWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val dailyWordleRepository: DailyWordleRepository,
     private val onlineServicesCore: OnlineServicesCore,
     private val userRepository: UserRepository,
     private val wordleXpRepository: WordleXpRepository,
@@ -41,7 +35,6 @@ class WordleEndGameWorker @AssistedInject constructor(
         const val INPUT_CURRENT_ROW_POSITION = "current_row_position"
         const val INPUT_IS_LAST_ROW_CORRECT = "is_last_row_correct"
         const val INPUT_QUIZ_TYPE = "quiz_type"
-        const val INPUT_DAY = "day"
         const val INPUT_MAZE_TEM_ID = "maze_item_id"
     }
 
@@ -51,7 +44,6 @@ class WordleEndGameWorker @AssistedInject constructor(
         val currentRowPosition = inputData.getInt(INPUT_CURRENT_ROW_POSITION, 0)
         val isLastRowCorrect = inputData.getBoolean(INPUT_IS_LAST_ROW_CORRECT, false)
         val quizType = inputData.getString(INPUT_QUIZ_TYPE) ?: WordleQuizType.TEXT.name
-        val day = inputData.getString(INPUT_DAY)
         val mazeItemId = inputData.getString(INPUT_MAZE_TEM_ID)
 
         if (isLastRowCorrect) {
@@ -67,22 +59,11 @@ class WordleEndGameWorker @AssistedInject constructor(
             lastRow = currentRowPosition,
             lastRowCorrect = isLastRowCorrect,
             quizType = quizType,
-            day = day,
             mazeItemId = mazeItemId?.toIntOrNull()
         )
 
         if (mazeItemId != null) {
             mazeLoggingAnalytics.logMazeItemPlayed(isLastRowCorrect)
-        }
-
-        if (day != null) {
-            saveDailyItemToCalendar(
-                day = day.toLocalDate(),
-                isCorrect = isLastRowCorrect,
-                wordLength = word.length
-            )
-
-            wordleLoggingAnalytics.logDailyWordleItemComplete(word.length, day, isLastRowCorrect)
         }
 
         if (onlineServicesCore.connectionAvailable()) {
@@ -98,19 +79,5 @@ class WordleEndGameWorker @AssistedInject constructor(
         }
 
         return Result.success()
-    }
-
-    private suspend fun saveDailyItemToCalendar(
-        day: LocalDate,
-        isCorrect: Boolean,
-        wordLength: Int
-    ) {
-        val item = WordleDailyCalendarItem(
-            date = day,
-            state = CalendarItemState.stateByGameWin(isCorrect),
-            wordSize = wordLength
-        )
-
-        dailyWordleRepository.insertCalendarItem(item)
     }
 }
