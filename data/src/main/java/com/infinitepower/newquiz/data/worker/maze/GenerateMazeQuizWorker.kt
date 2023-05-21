@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
@@ -17,6 +15,7 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRep
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
@@ -41,10 +40,9 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
     private val mazeLoggingAnalytics: MazeLoggingAnalytics,
     private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository,
-    private val countryCapitalFlagsQuizRepository: CountryCapitalFlagsQuizRepository
+    private val countryCapitalFlagsQuizRepository: CountryCapitalFlagsQuizRepository,
+    private val remoteConfigApi: RemoteConfigApi
 ) : CoroutineWorker(appContext, workerParams) {
-    private val remoteConfig by lazy { Firebase.remoteConfig }
-
     companion object {
         const val INPUT_SEED = "INPUT_SEED"
         const val INPUT_QUESTION_SIZE = "INPUT_QUESTION_SIZE"
@@ -72,9 +70,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val seed = inputData.getInt(INPUT_SEED, Random.nextInt())
 
-        val remoteConfigQuestionSize = remoteConfig
-            .getLong("maze_quiz_generated_questions")
-            .toInt()
+        val remoteConfigQuestionSize = remoteConfigApi.getInt("maze_quiz_generated_questions")
 
         val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, remoteConfigQuestionSize)
 

@@ -1,11 +1,10 @@
 package com.infinitepower.newquiz.data.repository.wordle.daily
 
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleDao
 import com.infinitepower.newquiz.domain.repository.wordle.daily.DailyWordleRepository
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyCalendarItem
 import com.infinitepower.newquiz.model.wordle.daily.WordleDailyItem
 import kotlinx.coroutines.flow.emitAll
@@ -21,7 +20,8 @@ import javax.inject.Singleton
 
 @Singleton
 class DailyWordleRepositoryImpl @Inject constructor(
-    private val dailyWordleDao: DailyWordleDao
+    private val dailyWordleDao: DailyWordleDao,
+    private val remoteConfigApi: RemoteConfigApi
 ) : DailyWordleRepository {
     override suspend fun getAllCalendarItems(): List<WordleDailyCalendarItem> =
         dailyWordleDao.getAllCalendarItems()
@@ -67,9 +67,7 @@ class DailyWordleRepositoryImpl @Inject constructor(
         try {
             emit(Resource.Loading())
 
-            val remoteConfig = Firebase.remoteConfig
-
-            val itemsStr = remoteConfig.getString("wordle_daily_words")
+            val itemsStr = remoteConfigApi.getString("wordle_daily_words")
             val items: List<WordleDailyItem> = Json.decodeFromString(itemsStr)
 
             val words = items.filter { item ->
@@ -91,9 +89,7 @@ class DailyWordleRepositoryImpl @Inject constructor(
         try {
             emit(Resource.Loading())
 
-            val remoteConfig = Firebase.remoteConfig
-
-            val itemsStr = remoteConfig.getString("wordle_daily_words")
+            val itemsStr = remoteConfigApi.getString("wordle_daily_words")
             val items: List<WordleDailyItem> = Json.decodeFromString(itemsStr)
 
             val words = items.find { item ->

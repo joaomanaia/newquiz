@@ -8,6 +8,4 @@ sealed class WordleScreenUiEvent {
     object VerifyRow : WordleScreenUiEvent()
 
     object OnPlayAgainClick : WordleScreenUiEvent()
-
-    object OnUserAdRewardedRow : WordleScreenUiEvent()
 }

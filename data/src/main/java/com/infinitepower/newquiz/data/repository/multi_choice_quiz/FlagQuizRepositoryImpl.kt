@@ -1,13 +1,10 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
 import android.content.Context
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.util.android.resources.readRawJson
-import com.infinitepower.newquiz.core.util.base_urls.getFlagBaseUrl
 import com.infinitepower.newquiz.data.R
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
@@ -21,10 +18,9 @@ import kotlin.random.Random
 
 @Singleton
 class FlagQuizRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val remoteConfigApi: RemoteConfigApi
 ) : FlagQuizRepository {
-    private val remoteConfig = Firebase.remoteConfig
-
     override suspend fun getRandomQuestions(
         amount: Int,
         category: MultiChoiceBaseCategory.Flag,
@@ -42,13 +38,15 @@ class FlagQuizRepositoryImpl @Inject constructor(
             .shuffled(random)
             .take(amount)
             .map { country ->
-                country.toQuestion(allCountriesName, remoteConfig, random)
+                val flagUrl = remoteConfigApi.getFlagUrl(country.code)
+
+                country.toQuestion(allCountriesName, flagUrl, random)
             }
     }
 
     private fun CountryFlagQuizBaseItem.toQuestion(
         allCountriesName: List<String>,
-        remoteConfig: FirebaseRemoteConfig,
+        flagUrl: String,
         random: Random = Random
     ): MultiChoiceQuestion {
         val answerCountries = allCountriesName.shuffled(random).take(3) + name
@@ -57,7 +55,7 @@ class FlagQuizRepositoryImpl @Inject constructor(
         return MultiChoiceQuestion(
             id = random.nextInt(),
             description = "What is the country of this flag?",
-            imageUrl = remoteConfig.getFlagBaseUrl(code),
+            imageUrl = flagUrl,
             answers = answers,
             correctAns = answers.indexOf(name),
             category = MultiChoiceBaseCategory.Flag,

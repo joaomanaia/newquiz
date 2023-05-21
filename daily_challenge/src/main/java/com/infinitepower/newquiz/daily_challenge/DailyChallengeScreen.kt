@@ -86,7 +86,9 @@ private fun DailyChallengeScreen(
                     isClaimed = task.isClaimed,
                     modifier = Modifier.fillParentMaxWidth(),
                     onClaimClick = { onEvent(DailyChallengeScreenUiEvent.OnClaimTaskClick(task.event)) },
-                    onCardClick = { dailyChallengeScreenNavigator.navigateWithGameEvent(task.event) }
+                    onCardClick = {
+                        dailyChallengeScreenNavigator.navigateWithGameEvent(task.event, uiState.comparisonQuizCategories)
+                    }
                 )
             }
         }

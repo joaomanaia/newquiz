@@ -1,8 +1,7 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
@@ -13,13 +12,12 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
-import java.security.SecureRandom
 import kotlin.random.Random
 
 @Singleton
-class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
-    private val remoteConfig = Firebase.remoteConfig
-
+class LogoQuizRepositoryImpl @Inject constructor(
+    private val remoteConfigApi: RemoteConfigApi
+) : LogoQuizRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
         category: MultiChoiceBaseCategory.Logo,
@@ -40,7 +38,7 @@ class LogoQuizRepositoryImpl @Inject constructor() : LogoQuizRepository {
     }
 
     private fun getRemoteConfigAllLogos(): List<LogoQuizBaseItem> {
-        val allLogosQuizStr = remoteConfig.getString("all_logos_quiz")
+        val allLogosQuizStr = remoteConfigApi.getString("all_logos_quiz")
         return Json.decodeFromString(allLogosQuizStr)
     }
 

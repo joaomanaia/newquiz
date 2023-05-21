@@ -1,10 +1,7 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.infinitepower.newquiz.core.util.base_urls.getFlagBaseUrl
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepository
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
@@ -20,20 +17,20 @@ import javax.inject.Singleton
 import kotlin.random.Random
 
 private fun CountryQuizBaseItem.toCountryQuizItem(
-    remoteConfig: FirebaseRemoteConfig
+    flagUrl: String
 ) = CountryQuizItem(
     countryCode = countryCode,
     countryName = countryName,
     capital = capital,
     continent = Continent.fromName(continent),
     difficulty = QuestionDifficulty.from(difficulty),
-    flagUrl = remoteConfig.getFlagBaseUrl(countryCode)
+    flagUrl = flagUrl
 )
 
 @Singleton
-class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor() : CountryCapitalFlagsQuizRepository {
-    private val remoteConfig = Firebase.remoteConfig
-
+class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor(
+    private val remoteConfigApi: RemoteConfigApi
+) : CountryCapitalFlagsQuizRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
         category: MultiChoiceBaseCategory.CountryCapitalFlags,
@@ -41,7 +38,11 @@ class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor() : CountryCapit
         random: Random
     ): List<MultiChoiceQuestion> {
         val allBaseCountries = getRemoteConfigAllCountries()
-        val allCountries = allBaseCountries.map { it.toCountryQuizItem(remoteConfig) }
+        val allCountries = allBaseCountries.map { item ->
+            val flagUrl = remoteConfigApi.getFlagUrl(item.countryCode)
+
+            item.toCountryQuizItem(flagUrl)
+        }
 
         return allCountries
             .sortedBy { it.countryName }
@@ -51,7 +52,7 @@ class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor() : CountryCapit
     }
 
     private fun getRemoteConfigAllCountries(): List<CountryQuizBaseItem> {
-        val allLogosQuizStr = remoteConfig.getString("countries_and_capitals")
+        val allLogosQuizStr = remoteConfigApi.getString("countries_and_capitals")
         return Json.decodeFromString(allLogosQuizStr)
     }
 

@@ -30,8 +30,6 @@ interface WordleRepository {
         defaultMaxRow: Int? = null
     ): Int
 
-    fun getAdRewardRowsToAdd(): Int
-
     fun validateWord(
         word: String,
         quizType: WordleQuizType

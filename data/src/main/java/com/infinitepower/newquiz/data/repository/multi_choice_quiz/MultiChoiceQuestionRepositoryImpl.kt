@@ -1,8 +1,5 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.perf.ktx.trace
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
@@ -46,19 +43,17 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
         difficulty: String?,
         random: Random
     ): List<MultiChoiceQuestion> = withContext(Dispatchers.IO) {
-        trace(name = "GetOpenTDBQuestions") {
-            val openTDBResults = getOpenTDBResponse(amount, category, difficulty).results
+        val openTDBResults = getOpenTDBResponse(amount, category, difficulty).results
 
-            val questions = openTDBResults.map { result ->
-                async(Dispatchers.IO) {
-                    result
-                        .decodeResultToQuestionEntity(id = random.nextInt())
-                        .toQuestion()
-                }
+        val questions = openTDBResults.map { result ->
+            async(Dispatchers.IO) {
+                result
+                    .decodeResultToQuestionEntity(id = random.nextInt())
+                    .toQuestion()
             }
-
-            questions.awaitAll()
         }
+
+        questions.awaitAll()
     }
 
     private suspend fun getOpenTDBResponse(
@@ -110,17 +105,5 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
             key = MultiChoiceQuestionDataStoreCommon.RecentCategories.key,
             newValue = newCategoriesIds
         )
-    }
-
-    override fun isFlagQuizInCategories(): Boolean {
-        return Firebase.remoteConfig.getBoolean("show_flag_quiz_in_categories")
-    }
-
-    override fun isCountryCapitalFlagQuizInCategories(): Boolean {
-        return Firebase.remoteConfig.getBoolean("show_country_capital_flag_quiz_in_categories")
-    }
-
-    override fun isLogoQuizInCategories(): Boolean {
-        return Firebase.remoteConfig.getBoolean("show_logo_quiz_in_categories")
     }
 }

@@ -12,6 +12,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizData
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import com.infinitepower.newquiz.model.comparison_quiz.toComparisonQuizItem
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.request
@@ -29,9 +30,20 @@ import javax.inject.Singleton
 @Singleton
 class ComparisonQuizRepositoryImpl @Inject constructor(
     private val client: HttpClient,
-    @ComparisonQuizDataStoreManager private val settingsDataStoreManager: DataStoreManager
+    @ComparisonQuizDataStoreManager private val settingsDataStoreManager: DataStoreManager,
+    private val remoteConfigApi: RemoteConfigApi
 ) : ComparisonQuizRepository {
-    override fun getCategories(): List<ComparisonQuizCategory> = ComparisonQuizCategoriesData.getCategories()
+    private val categoriesCache: MutableList<ComparisonQuizCategory> = mutableListOf()
+
+    override fun getCategories(): List<ComparisonQuizCategory> {
+        if (categoriesCache.isEmpty()) {
+            val categoriesStr = remoteConfigApi.getString("comparison_quiz_categories")
+
+            categoriesCache.addAll(Json.decodeFromString(categoriesStr))
+        }
+
+        return categoriesCache
+    }
 
     override suspend fun getQuizData(
         category: ComparisonQuizCategory,

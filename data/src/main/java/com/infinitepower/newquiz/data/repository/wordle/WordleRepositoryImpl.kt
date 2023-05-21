@@ -2,8 +2,6 @@ package com.infinitepower.newquiz.data.repository.wordle
 
 import android.content.Context
 import androidx.core.text.isDigitsOnly
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
@@ -145,12 +143,6 @@ class WordleRepositoryImpl @Inject constructor(
         }
 
         return defaultMaxRow
-    }
-
-    override fun getAdRewardRowsToAdd(): Int {
-        val remoteConfig = Firebase.remoteConfig
-
-        return remoteConfig.getLong("wordle_ad_row_reward_amount").toInt()
     }
 
     override fun validateWord(word: String, quizType: WordleQuizType): Boolean {
