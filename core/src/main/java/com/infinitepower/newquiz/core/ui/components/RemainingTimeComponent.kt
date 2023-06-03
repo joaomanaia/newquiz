@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.multi_choice_quiz.components
+package com.infinitepower.newquiz.core.ui.components
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.core.animateFloatAsState
@@ -24,7 +24,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.model.RemainingTime
 
 @Composable
-internal fun RemainingTimeComponent(
+fun RemainingTimeComponent(
     modifier: Modifier = Modifier,
     remainingTime: RemainingTime,
     maxTimeMillis: Long,

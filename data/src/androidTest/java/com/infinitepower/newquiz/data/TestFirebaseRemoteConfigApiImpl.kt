@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.wordle.data.repository.remote_config
+package com.infinitepower.newquiz.data
 
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import javax.inject.Inject

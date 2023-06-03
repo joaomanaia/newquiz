@@ -17,7 +17,7 @@ class FakeWordleRepository @Inject constructor() : WordleRepository {
 
     private val allWords = setOf("TEST")
 
-    override suspend fun getAllWords(random: Random): Set<String> = allWords.shuffled(random).toSet()
+    override suspend fun getAllWords(): Set<String> = allWords.shuffled().toSet()
 
     override fun generateRandomWord(
         quizType: WordleQuizType,
@@ -64,6 +64,5 @@ class FakeWordleRepository @Inject constructor() : WordleRepository {
 
     override suspend fun getWordleMaxRows(defaultMaxRow: Int?): Int = defaultMaxRow ?: Int.MAX_VALUE
 
-    override fun getAdRewardRowsToAdd(): Int = 1
     override fun validateWord(word: String, quizType: WordleQuizType): Boolean = true
 }

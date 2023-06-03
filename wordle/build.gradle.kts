@@ -104,6 +104,7 @@ dependencies {
     implementation(KotlinX.datetime)
 
     implementation(AndroidX.work.runtimeKtx)
+    androidTestImplementation(AndroidX.work.testing)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))

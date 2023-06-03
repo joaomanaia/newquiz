@@ -176,6 +176,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-484137">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="6634519">
           <value>
             <AndroidTestResultsTableState>
@@ -388,6 +401,7 @@
                 <map>
                   <entry key="192.168.1.65:5555" value="120" />
                   <entry key="Duration" value="90" />
+                  <entry key="Resizable_Experimental_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="xiaomi&#10; Redmi 6A" value="120" />
                 </map>

@@ -18,12 +18,7 @@
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="com.infinitepower.newquiz.core_test.initializer.TestWorkManagerInitializer"
-                android:value="androidx.startup" />
-        </provider>
+            tools:node="remove" />
 
         <!-- disable firebase provider to get rid of "Default FirebaseApp is not initialized in this process" exceptions -->
         <provider

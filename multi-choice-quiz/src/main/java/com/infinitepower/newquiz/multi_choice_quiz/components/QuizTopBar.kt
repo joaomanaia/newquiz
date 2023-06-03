@@ -26,10 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.components.RemainingTimeComponent
+import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.model.RemainingTime
 import com.infinitepower.newquiz.multi_choice_quiz.MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS
 import com.infinitepower.newquiz.core.R as CoreR

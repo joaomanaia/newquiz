@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.multi_choice_quiz.components
+package com.infinitepower.newquiz.core.ui.components
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule

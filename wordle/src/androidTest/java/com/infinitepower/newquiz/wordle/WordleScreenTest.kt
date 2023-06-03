@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.wordle
 
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -13,9 +14,13 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.WorkManager
+import androidx.work.testing.SynchronousExecutor
+import androidx.work.testing.WorkManagerTestInitHelper
 import com.infinitepower.newquiz.core.analytics.logging.wordle.LocalWordleLoggingAnalyticsImpl
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -46,12 +51,26 @@ class WordleScreenTest {
     @Inject
     lateinit var wordleRepository: WordleRepository
 
+
     @Inject
-    lateinit var workManager: WorkManager
+    lateinit var workerFactory: HiltWorkerFactory
+
+    private lateinit var workManager: WorkManager
 
     @Before
     fun setup() {
         hiltRule.inject()
+
+        val context = InstrumentationRegistry.getInstrumentation().context
+
+        val workConfig = androidx.work.Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .setExecutor(SynchronousExecutor())
+            .build()
+
+        WorkManagerTestInitHelper.initializeTestWorkManager(context, workConfig)
+        workManager = WorkManager.getInstance(context)
 
         composeRule.setContent {
             val configuration = LocalConfiguration.current

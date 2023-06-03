@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.data.di
 
 import com.infinitepower.newquiz.data.FakeComparisonQuizRepositoryImpl
+import com.infinitepower.newquiz.data.TestFirebaseRemoteConfigApiImpl
 import com.infinitepower.newquiz.data.repository.daily_challenge.DailyChallengeRepositoryImpl
 import com.infinitepower.newquiz.data.repository.math_quiz.MathQuizCoreRepositoryImpl
 import com.infinitepower.newquiz.data.repository.maze_quiz.MazeQuizRepositoryImpl
@@ -26,6 +27,7 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_quest
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionApi
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent
@@ -75,4 +77,7 @@ abstract class TestRepositoryModule {
 
     @Binds
     abstract fun bindDailyChallengeRepository(dailyChallengeRepository: DailyChallengeRepositoryImpl): DailyChallengeRepository
+
+    @Binds
+    abstract fun bindRemoteConfigApi(impl: TestFirebaseRemoteConfigApiImpl): RemoteConfigApi
 }
