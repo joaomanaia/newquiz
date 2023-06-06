@@ -44,8 +44,9 @@ import com.infinitepower.newquiz.multi_choice_quiz.components.dialog.SkipQuestio
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
+import kotlin.time.Duration.Companion.seconds
 
-internal const val MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS = 30000L
+internal val MULTI_CHOICE_QUIZ_COUNTDOWN_TIME = 30.seconds
 
 @Keep
 data class MultiChoiceQuizScreenNavArg(

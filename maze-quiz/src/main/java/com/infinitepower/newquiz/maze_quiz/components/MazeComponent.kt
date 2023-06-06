@@ -29,13 +29,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.infinitepower.newquiz.core.analytics.logging.maze.rememberMazeLoggingAnalytics
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
-import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.MazePoint
+import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.generateMazePointsBottomToTop
 import com.infinitepower.newquiz.model.maze.isInsideCircle
 import com.infinitepower.newquiz.model.maze.isItemPlayed
@@ -55,8 +54,6 @@ internal fun MazeComponent(
     val localDensity = LocalDensity.current
     val spaceLarge = MaterialTheme.spacing.large
 
-    val mazeLoggingAnalytics = rememberMazeLoggingAnalytics()
-
     BoxWithConstraints(
         modifier = modifier.height(2000.dp)
     ) {
@@ -71,10 +68,7 @@ internal fun MazeComponent(
             modifier = Modifier.fillMaxWidth(),
             items = items,
             startPoint = startPoint,
-            onClick = { index ->
-                mazeLoggingAnalytics.logMazeItemClick(index)
-                onItemClick(items[index])
-            }
+            onClick = { index -> onItemClick(items[index]) }
         )
     }
 }

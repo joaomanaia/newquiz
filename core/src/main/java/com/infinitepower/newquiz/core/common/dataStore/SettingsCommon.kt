@@ -63,6 +63,7 @@ object SettingsCommon {
 
     object GlobalAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("animations_enabled"), true)
     object WordleAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("wordle_animations_enabled"), true)
+    object MultiChoiceAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("multi_choice_animations_enabled"), true)
 }
 
 @Keep

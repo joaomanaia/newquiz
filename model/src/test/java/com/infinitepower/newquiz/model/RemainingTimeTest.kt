@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 internal class RemainingTimeTest {
     @Test
@@ -53,10 +53,10 @@ internal class RemainingTimeTest {
     @Test
     fun `getRemainingPercent returns the remaining percentage of the time`() {
         val duration = 10.seconds
-        val maxTime = 50000L
+        val maxTime = 50.seconds
         val remainingTime = RemainingTime(duration)
 
-        assertThat(remainingTime.getRemainingPercent(maxTime)).isEqualTo(0.2f)
+        assertThat(remainingTime.getRemainingPercent(maxTime)).isEqualTo(0.2)
     }
 
     @Test
@@ -64,13 +64,13 @@ internal class RemainingTimeTest {
         val duration = 5.minutes + 10.seconds
         val remainingTime = RemainingTime(duration)
 
-        assertThat(remainingTime.minuteSecondFormatted()).isEqualTo("5:10")
+        assertThat(remainingTime.toMinuteSecondFormatted()).isEqualTo("5:10")
     }
 
     @Test
     fun `getElapsedSeconds returns the elapsed seconds from the max time`() {
         val duration = 10.seconds
-        val maxTime = 60000L
+        val maxTime = 60.seconds
         val remainingTime = RemainingTime(duration)
 
         val result = remainingTime.getElapsedSeconds(maxTime)

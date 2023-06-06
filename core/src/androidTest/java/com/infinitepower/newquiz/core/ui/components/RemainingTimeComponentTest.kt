@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.core.ui.components
 
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertRangeInfoEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -19,47 +21,62 @@ class RemainingTimeComponentTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun testWithRemainingTime() {
-        val maxTime = 72.seconds
+    fun testInitialState() {
+        val maxTime = 30.seconds
+        val remainingTime = RemainingTime(30.seconds)
 
-        val remainingTime = RemainingTime(maxTime)
-        val showProgressIndicator = true
-
+        // Render the RemainingTimeComponent
         composeTestRule.setContent {
             RemainingTimeComponent(
                 remainingTime = remainingTime,
-                maxTimeMillis = maxTime.inWholeMilliseconds,
-                showProgressIndicator = showProgressIndicator
+                maxTime = maxTime
             )
         }
 
-        composeTestRule
-            .onNodeWithText("1:12")
-            .assertExists()
-            .assertIsDisplayed()
-
+        // Assert that the progress indicator is shown
         composeTestRule
             .onNodeWithTag(RemainingTimeComponentTestTags.PROGRESS_INDICATOR)
-            .assertExists()
+            .assertIsDisplayed()
+            .assertRangeInfoEquals(
+                ProgressBarRangeInfo(
+                    current = 1f,
+                    range = 0f..1f
+                )
+            )
+
+        // Assert that the remaining time text is displayed without animation
+        composeTestRule
+            .onNodeWithText("30")
             .assertIsDisplayed()
     }
 
     @Test
-    fun testWithoutProgressIndicator() {
-        val remainingTime = RemainingTime(60.seconds)
-        val maxTimeMillis = 60000L
-        val showProgressIndicator = false
+    fun testWarningState() {
+        val maxTime = 30.seconds
+        val remainingTime = RemainingTime(5.seconds)
 
+        // Render the RemainingTimeComponent
         composeTestRule.setContent {
             RemainingTimeComponent(
                 remainingTime = remainingTime,
-                maxTimeMillis = maxTimeMillis,
-                showProgressIndicator = showProgressIndicator
+                maxTime = maxTime
             )
         }
 
+        // Assert that the progress indicator is shown
         composeTestRule
             .onNodeWithTag(RemainingTimeComponentTestTags.PROGRESS_INDICATOR)
-            .assertDoesNotExist()
+            .assertIsDisplayed()
+            .assertRangeInfoEquals(
+                ProgressBarRangeInfo(
+                    current = remainingTime.getRemainingPercent(maxTime).toFloat(),
+                    range = 0f..1f
+                )
+            )
+
+        // Assert that the remaining time text is displayed without animation
+        composeTestRule
+            .onNodeWithText("5")
+            .assertIsDisplayed()
     }
 }

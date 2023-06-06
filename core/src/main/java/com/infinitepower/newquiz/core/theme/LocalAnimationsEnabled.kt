@@ -9,7 +9,8 @@ import androidx.compose.runtime.compositionLocalOf
 @Keep
 data class AnimationsEnabled(
     val global: Boolean = true,
-    val wordle: Boolean = true
+    val wordle: Boolean = true,
+    val multiChoice: Boolean = true
 )
 
 val LocalAnimationsEnabled = compositionLocalOf { AnimationsEnabled() }

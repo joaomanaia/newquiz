@@ -278,7 +278,7 @@ class QuizScreenViewModel @Inject constructor(
                     val currentQuestionStep = currentState.currentQuestionStep
 
                     val questionTime = currentState.remainingTime.getElapsedSeconds(
-                        MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS
+                        MULTI_CHOICE_QUIZ_COUNTDOWN_TIME
                     )
 
                     if (currentQuestionStep != null) {

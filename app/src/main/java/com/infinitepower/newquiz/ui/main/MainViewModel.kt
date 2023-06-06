@@ -71,10 +71,12 @@ class MainViewModel @Inject constructor(
         combine(
             settingsDataStoreManager.getPreferenceFlow(SettingsCommon.GlobalAnimationsEnabled),
             settingsDataStoreManager.getPreferenceFlow(SettingsCommon.WordleAnimationsEnabled),
-        ) { globalAnimationsEnabled, wordleAnimationsEnabled ->
+            settingsDataStoreManager.getPreferenceFlow(SettingsCommon.MultiChoiceAnimationsEnabled),
+        ) { globalAnimationsEnabled, wordleAnimationsEnabled, multiChoiceAnimationsEnabled ->
             AnimationsEnabled(
                 global = globalAnimationsEnabled,
-                wordle = wordleAnimationsEnabled && globalAnimationsEnabled
+                wordle = wordleAnimationsEnabled && globalAnimationsEnabled,
+                multiChoice = multiChoiceAnimationsEnabled && globalAnimationsEnabled
             )
         }.onEach { animationsEnabled ->
             _uiState.update { currentState ->

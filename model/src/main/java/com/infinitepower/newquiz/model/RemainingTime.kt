@@ -23,16 +23,18 @@ value class RemainingTime constructor(val value: Duration) {
         require(value >= Duration.ZERO) { "RemainingTime value must be greater than 0" }
     }
 
+    fun isZero(): Boolean = value == Duration.ZERO
+
     /**
      * @return the remaining percentage of the time.
      * @param maxTime in milliseconds
      */
-    fun getRemainingPercent(maxTime: Long): Float = value.inWholeMilliseconds.toFloat() / maxTime
+    fun getRemainingPercent(maxTime: Duration): Double = value / maxTime
 
     /**
      * @return the remaining time in minute:second format.
      */
-    fun minuteSecondFormatted(): String {
+    fun toMinuteSecondFormatted(): String {
         val minutes = value.inWholeMinutes
         val seconds = value.inWholeSeconds % 60
         return if (minutes == 0L) seconds.toString() else "$minutes:$seconds"
@@ -42,6 +44,5 @@ value class RemainingTime constructor(val value: Duration) {
      * Returns the elapsed seconds from the max time.
      * @param maxTime in milliseconds
      */
-    fun getElapsedSeconds(maxTime: Long): Long =
-        maxTime.milliseconds.inWholeSeconds - value.inWholeSeconds
+    fun getElapsedSeconds(maxTime: Duration): Long = maxTime.inWholeSeconds - value.inWholeSeconds
 }

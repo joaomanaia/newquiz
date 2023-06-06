@@ -172,8 +172,15 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     Preference.PreferenceItem.SwitchPreference(
                         request = SettingsCommon.WordleAnimationsEnabled,
                         title = stringResource(id = CoreR.string.wordle_animations_enabled),
+                        summary = stringResource(id = CoreR.string.wordle_animations_enabled_description),
                         dependency = listOf(SettingsCommon.GlobalAnimationsEnabled)
                     ),
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.MultiChoiceAnimationsEnabled,
+                        title = stringResource(id = CoreR.string.multi_choice_animations_enabled),
+                        summary = stringResource(id = CoreR.string.multi_choice_animations_enabled_description),
+                        dependency = listOf(SettingsCommon.GlobalAnimationsEnabled)
+                    )
                 )
             ),
             Preference.PreferenceGroup(

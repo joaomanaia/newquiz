@@ -80,7 +80,7 @@ internal fun SelectableDifficultyRow(
 private fun CardDifficultyPreview() {
     val (selectedItem, setSelectedItem) = remember {
         // When null, difficulty will be random
-        mutableStateOf<QuestionDifficulty?>(null)
+        mutableStateOf<QuestionDifficulty?>(QuestionDifficulty.Easy)
     }
 
     NewQuizTheme {

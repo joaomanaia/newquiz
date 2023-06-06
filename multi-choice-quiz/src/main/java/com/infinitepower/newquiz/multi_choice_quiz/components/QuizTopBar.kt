@@ -28,11 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.animationsEnabled
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.RemainingTimeComponent
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.model.RemainingTime
-import com.infinitepower.newquiz.multi_choice_quiz.MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS
+import com.infinitepower.newquiz.multi_choice_quiz.MULTI_CHOICE_QUIZ_COUNTDOWN_TIME
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
@@ -53,11 +54,14 @@ internal fun QuizTopBar(
         modifier = modifier,
         backButtonContent = { BackIconButton(onClick = onBackClick) },
         remainingTimerContent = {
-            RemainingTimeComponent(
-                remainingTime = remainingTime,
-                maxTimeMillis = MULTI_CHOICE_QUIZ_COUNTDOWN_IN_MILLIS,
-                showProgressIndicator = progressIndicatorVisible
-            )
+            if (!remainingTime.isZero()) {
+                RemainingTimeComponent(
+                    remainingTime = remainingTime,
+                    maxTime = MULTI_CHOICE_QUIZ_COUNTDOWN_TIME,
+                    showProgressIndicator = progressIndicatorVisible,
+                    animationsEnabled = MaterialTheme.animationsEnabled.multiChoice
+                )
+            }
         },
         onSkipClick = onSkipClick,
         onSaveClick = onSaveClick,

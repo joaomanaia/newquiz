@@ -155,8 +155,13 @@
     <string name="about_and_help">About and Help</string>
     <string name="animations">Animations</string>
     <string name="animations_enabled">Animations Enabled</string>
+
     <string name="global_animations_enabled">Global animations enabled</string>
     <string name="wordle_animations_enabled">Wordle animations enabled</string>
+    <string name="wordle_animations_enabled_description">Enable animations for wordle game mode.</string>
+    <string name="multi_choice_animations_enabled">Multi choice animations enabled</string>
+    <string name="multi_choice_animations_enabled_description">Enable animations for multi choice game mode.</string>
+
     <string name="sort_questions">Sort questions</string>
     <string name="play_with_random_saved_questions">Play quiz with random saved questions</string>
     <string name="play">Play</string>

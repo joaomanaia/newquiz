@@ -3,7 +3,6 @@ package com.infinitepower.newquiz.model.maze
 import androidx.annotation.Keep
 import androidx.compose.ui.geometry.Offset
 import kotlin.math.pow
-import kotlin.math.sin
 
 @Keep
 data class MazePoint(
@@ -15,10 +14,22 @@ data class MazePoint(
 
 fun Offset.toMazePoint(): MazePoint = MazePoint(x, y)
 
+/**
+ * Checks if this point is inside the circle defined by [center] and [radius], using the
+ * Pythagorean theorem.
+ *
+ * @param center the center point of the circle
+ * @param radius the radius of the circle
+ * @return true if this point is inside the circle defined by [center] and [radius]
+ */
 fun MazePoint.isInsideCircle(
-    circlePoint: MazePoint,
+    center: MazePoint,
     radius: Float
-): Boolean = (circlePoint.x - x).pow(2) + (circlePoint.y - y).pow(2) <= radius.pow(2)
+): Boolean {
+    val dx = x - center.x
+    val dy = y - center.y
+    return dx.pow(2) + dy.pow(2) <= radius.pow(2)
+}
 
 /**
  * Creates a maze like this:

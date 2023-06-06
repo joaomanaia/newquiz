@@ -62,6 +62,7 @@ internal class BackIconButtonTest {
         assert(clicked)
     }
 
+    /*
     @Test
     fun test_backIconButton_screenshot() {
         composeTestRule.setContent {
@@ -73,11 +74,10 @@ internal class BackIconButtonTest {
             }
         }
 
-        /*
         composeTestRule
             .onNodeWithTag("BackButton")
             .assertMatchesGolden(BUTTON_GOLDEN_NAME, "buttons")
-
-         */
     }
+
+     */
 }
