@@ -18,10 +18,10 @@ sealed interface GameCore <QuizData, InitializationData> {
      * Initializes and starts the game with the given initial data.
      * This method should be called only once.
      *
-     * @param initialData The initial data required to set up the game.
+     * @param initializationData The initial data required to set up the game.
      *
      */
-    suspend fun initializeGame(initialData: InitializationData)
+    suspend fun initializeGame(initializationData: InitializationData)
 
     /**
      * Starts the game.

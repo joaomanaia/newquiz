@@ -6,10 +6,9 @@ import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.ComparisonQuizDataStoreCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.ComparisonQuizDataStoreManager
-import com.infinitepower.newquiz.core.game.ComparisonQuizData
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import com.infinitepower.newquiz.model.comparison_quiz.toComparisonQuizItem
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
@@ -45,10 +44,9 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
         return categoriesCache
     }
 
-    override suspend fun getQuizData(
-        category: ComparisonQuizCategory,
-        comparisonMode: ComparisonMode
-    ): FlowResource<ComparisonQuizData> = flow {
+    override fun getQuestions(
+        category: ComparisonQuizCategory
+    ): FlowResource<List<ComparisonQuizItem>> = flow {
         try {
             emit(Resource.Loading())
 
@@ -65,15 +63,7 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
 
             val questions = entityQuestions.map(ComparisonQuizItemEntity::toComparisonQuizItem)
 
-            val questionDescription = category.getQuestionDescription(comparisonMode)
-
-            val quizData = ComparisonQuizData(
-                questionDescription = questionDescription,
-                questions = questions,
-                comparisonMode = comparisonMode
-            )
-
-            emit(Resource.Success(quizData))
+            emit(Resource.Success(questions))
         } catch (e: Exception) {
             e.printStackTrace()
             emit(Resource.Error(e.localizedMessage ?: "An unknown error occurred while fetching comparison quiz data"))

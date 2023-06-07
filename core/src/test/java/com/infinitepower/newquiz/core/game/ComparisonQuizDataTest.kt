@@ -29,7 +29,7 @@ class ComparisonQuizDataTest {
             value = 5.0
         )
 
-        val quizData = ComparisonQuizData(
+        val quizData = ComparisonQuizCore.QuizData(
             questions = listOf(quizItem1, quizItem2),
             currentQuestion = null,
             questionDescription = "Which country has more population?",
@@ -48,7 +48,7 @@ class ComparisonQuizDataTest {
 
     @Test
     fun `nextQuestion should return throw IllegalStateException when questions list is empty`() {
-        val quizData = ComparisonQuizData(
+        val quizData = ComparisonQuizCore.QuizData(
             questions = emptyList(),
             currentQuestion = null,
             questionDescription = "Which country has more population?",
@@ -89,7 +89,7 @@ class ComparisonQuizDataTest {
             value = 8.0
         )
 
-        val quizData = ComparisonQuizData(
+        val quizData = ComparisonQuizCore.QuizData(
             questions = listOf(quizItem1, quizItem2, quizItem3),
             currentQuestion = null,
             questionDescription = "Which country has more population?",
@@ -130,7 +130,7 @@ class ComparisonQuizDataTest {
             value = 8.0
         )
 
-        val quizData = ComparisonQuizData(
+        val quizData = ComparisonQuizCore.QuizData(
             questions = listOf(quizItem3),
             currentQuestion = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2),
             questionDescription = "Which country has more population?",

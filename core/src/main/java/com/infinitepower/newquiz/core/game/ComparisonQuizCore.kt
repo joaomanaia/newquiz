@@ -9,99 +9,99 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 /**
  * Represents the core functionality of a comparison quiz.
  */
-interface ComparisonQuizCore : GameCore<ComparisonQuizData, ComparisonQuizInitialData> {
+interface ComparisonQuizCore : GameCore<ComparisonQuizCore.QuizData, ComparisonQuizCore.InitializationData> {
     /**
      * Handles the click event on an answer in the comparison quiz.
      *
      * @param answer The selected answer.
      */
     fun onAnswerClicked(answer: ComparisonQuizItem)
-}
 
-/**
- * Represents the data structure for a comparison quiz used in the [ComparisonQuizCore].
- *
- * @property questions The list of comparison quiz items.
- * @property questionDescription The description of the quiz question.
- * @property currentQuestion The current question in the quiz.
- * @property comparisonMode The comparison mode for the quiz.
- * @property currentPosition The current position in the quiz.
- * @property isGameOver A flag indicating if the game is over.
- */
-@Keep
-data class ComparisonQuizData(
-    val questions: List<ComparisonQuizItem> = emptyList(),
-    val questionDescription: String? = null,
-    val currentQuestion: ComparisonQuizCurrentQuestion? = null,
-    val comparisonMode: ComparisonMode = ComparisonMode.GREATER,
-    val currentPosition: Int = 0,
-    val isGameOver: Boolean = false
-) {
     /**
-     * Returns the next question and updates the current question.
+     * Represents the data structure for a comparison quiz used in the [ComparisonQuizCore].
      *
-     * If the current question is null, it means it is a new game and the function will
-     * retrieve the first two questions from the questions list and remove them from the list.
-     *
-     * If the current question is not null, it means it is not a new game and the function will
-     * retrieve the first question from the questions list and remove it from the list.
-     *
-     * @param checkHighestPosition Function to check if the current position is the highest.
-     * @return The next question.
-     * @throws IllegalStateException If the questions list is empty.
-     * @throws IllegalStateException If the questions list has less than two items.
+     * @property questions The list of comparison quiz items.
+     * @property questionDescription The description of the quiz question.
+     * @property currentQuestion The current question in the quiz.
+     * @property comparisonMode The comparison mode for the quiz.
+     * @property currentPosition The current position in the quiz.
+     * @property isGameOver A flag indicating if the game is over.
      */
-    fun getNextQuestion(
-        checkHighestPosition: () -> Unit = {}
-    ): ComparisonQuizData {
-        if (questions.isEmpty()) {
-            throw IllegalStateException("Questions list is empty")
-        }
-
-        val newQuestions = questions.toMutableList()
-
-        // Checks if is new game, if so, gets the two first questions
-        // And then removes from the questions list
-        val newCurrentQuestion = if (currentQuestion == null) {
-            // Check if there is at least two questions
-            if (newQuestions.size < 2) {
-                throw IllegalStateException("Questions list has less than two items")
+    @Keep
+    data class QuizData(
+        val questions: List<ComparisonQuizItem> = emptyList(),
+        val questionDescription: String? = null,
+        val currentQuestion: ComparisonQuizCurrentQuestion? = null,
+        val comparisonMode: ComparisonMode = ComparisonMode.GREATER,
+        val currentPosition: Int = 0,
+        val isGameOver: Boolean = false
+    ) {
+        /**
+         * Returns the next question and updates the current question.
+         *
+         * If the current question is null, it means it is a new game and the function will
+         * retrieve the first two questions from the questions list and remove them from the list.
+         *
+         * If the current question is not null, it means it is not a new game and the function will
+         * retrieve the first question from the questions list and remove it from the list.
+         *
+         * @param checkHighestPosition Function to check if the current position is the highest.
+         * @return The next question.
+         * @throws IllegalStateException If the questions list is empty.
+         * @throws IllegalStateException If the questions list has less than two items.
+         */
+        fun getNextQuestion(
+            checkHighestPosition: () -> Unit = {}
+        ): QuizData {
+            if (questions.isEmpty()) {
+                throw IllegalStateException("Questions list is empty")
             }
 
-            val firstQuestion = newQuestions.first()
-            val secondQuestion = newQuestions[1]
+            val newQuestions = questions.toMutableList()
 
-            newQuestions.removeFirst()
-            newQuestions.removeAt(0)
-
-            ComparisonQuizCurrentQuestion(firstQuestion to secondQuestion)
-        } else {
-            // If is not a new game, gets the first question from the questions list
+            // Checks if is new game, if so, gets the two first questions
             // And then removes from the questions list
-            val firstQuestion = newQuestions.first()
-            newQuestions.removeFirst()
+            val newCurrentQuestion = if (currentQuestion == null) {
+                // Check if there is at least two questions
+                if (newQuestions.size < 2) {
+                    throw IllegalStateException("Questions list has less than two items")
+                }
 
-            currentQuestion.nextQuestion(firstQuestion)
+                val firstQuestion = newQuestions.first()
+                val secondQuestion = newQuestions[1]
+
+                newQuestions.removeFirst()
+                newQuestions.removeAt(0)
+
+                ComparisonQuizCurrentQuestion(firstQuestion to secondQuestion)
+            } else {
+                // If is not a new game, gets the first question from the questions list
+                // And then removes from the questions list
+                val firstQuestion = newQuestions.first()
+                newQuestions.removeFirst()
+
+                currentQuestion.nextQuestion(firstQuestion)
+            }
+
+            checkHighestPosition()
+
+            return copy(
+                questions = newQuestions,
+                currentQuestion = newCurrentQuestion,
+                currentPosition = currentPosition + 1
+            )
         }
-
-        checkHighestPosition()
-
-        return copy(
-            questions = newQuestions,
-            currentQuestion = newCurrentQuestion,
-            currentPosition = currentPosition + 1
-        )
     }
-}
 
-/**
- * Represents the initial data for the [ComparisonQuizCore].
- *
- * @property category The category of the comparison quiz.
- * @property comparisonMode The comparison mode for the quiz.
- */
-@Keep
-data class ComparisonQuizInitialData(
-    val category: ComparisonQuizCategory,
-    val comparisonMode: ComparisonMode
-)
+    /**
+     * Represents the initial data for the [ComparisonQuizCore].
+     *
+     * @property category The category of the comparison quiz.
+     * @property comparisonMode The comparison mode for the quiz.
+     */
+    @Keep
+    data class InitializationData(
+        val category: ComparisonQuizCategory,
+        val comparisonMode: ComparisonMode
+    )
+}

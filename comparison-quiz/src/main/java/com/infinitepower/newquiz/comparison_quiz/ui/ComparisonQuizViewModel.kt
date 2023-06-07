@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
-import com.infinitepower.newquiz.core.game.ComparisonQuizInitialData
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
@@ -70,7 +69,7 @@ class ComparisonQuizViewModel @Inject constructor(
         // Start game
         viewModelScope.launch(Dispatchers.IO) {
             comparisonQuizCore.initializeGame(
-                initialData = ComparisonQuizInitialData(
+                initializationData = ComparisonQuizCore.InitializationData(
                     category = getCategory(),
                     comparisonMode = getComparisonMode()
                 )

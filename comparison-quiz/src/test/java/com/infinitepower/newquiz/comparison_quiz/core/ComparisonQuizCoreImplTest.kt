@@ -3,15 +3,13 @@ package com.infinitepower.newquiz.comparison_quiz.core
 import android.net.Uri
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.common.Resource
-import com.infinitepower.newquiz.core.game.ComparisonQuizData
-import com.infinitepower.newquiz.core.game.ComparisonQuizInitialData
+import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -32,7 +30,7 @@ internal class ComparisonQuizCoreImplTest {
 
     @Test
     fun `initializeGame should emit correct data`() = runTest {
-        val initialData = ComparisonQuizInitialData(
+        val initialData = ComparisonQuizCore.InitializationData(
             category = ComparisonQuizCategory(
                 id = "id",
                 title = "title",
@@ -75,11 +73,9 @@ internal class ComparisonQuizCoreImplTest {
             )
         )
 
-        val expectedData = ComparisonQuizData(questions = expectedQuestions)
-
-        coEvery {
-            comparisonQuizRepository.getQuizData(category = initialData.category, comparisonMode = initialData.comparisonMode)
-        } returns flowOf(Resource.Success(expectedData))
+        every {
+            comparisonQuizRepository.getQuestions(category = initialData.category)
+        } returns flowOf(Resource.Success(expectedQuestions))
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -98,7 +94,7 @@ internal class ComparisonQuizCoreImplTest {
 
     @Test
     fun `onAnswerClicked should check the correct answer and move to the next question`() = runTest {
-        val initialData = ComparisonQuizInitialData(
+        val initialData = ComparisonQuizCore.InitializationData(
             category = ComparisonQuizCategory(
                 id = "id",
                 title = "title",
@@ -141,14 +137,9 @@ internal class ComparisonQuizCoreImplTest {
             )
         )
 
-        val expectedData = ComparisonQuizData(
-            questions = expectedQuestions,
-            comparisonMode = initialData.comparisonMode
-        )
-
-        coEvery {
-            comparisonQuizRepository.getQuizData(category = initialData.category, comparisonMode = initialData.comparisonMode)
-        } returns flowOf(Resource.Success(expectedData))
+        every {
+            comparisonQuizRepository.getQuestions(category = initialData.category)
+        } returns flowOf(Resource.Success(expectedQuestions))
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -187,7 +178,7 @@ internal class ComparisonQuizCoreImplTest {
     // Test when the user gets the answer wrong
     @Test
     fun `onAnswerClicked should check the wrong answer and move to the next question`() = runTest {
-        val initialData = ComparisonQuizInitialData(
+        val initialData = ComparisonQuizCore.InitializationData(
             category = ComparisonQuizCategory(
                 id = "id",
                 title = "title",
@@ -230,17 +221,9 @@ internal class ComparisonQuizCoreImplTest {
             )
         )
 
-        val expectedData = ComparisonQuizData(
-            questions = expectedQuestions,
-            comparisonMode = initialData.comparisonMode
-        )
-
-        coEvery {
-            comparisonQuizRepository.getQuizData(
-                category = initialData.category,
-                comparisonMode = initialData.comparisonMode
-            )
-        } returns flowOf(Resource.Success(expectedData))
+        every {
+            comparisonQuizRepository.getQuestions(category = initialData.category)
+        } returns flowOf(Resource.Success(expectedQuestions))
 
         // Loads the initial data and starts the game
         // This will also set the current question

@@ -1,8 +1,8 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
-import com.infinitepower.newquiz.core.game.ComparisonQuizData
-import com.infinitepower.newquiz.core.game.ComparisonQuizInitialData
+import com.infinitepower.newquiz.core.game.ComparisonQuizCore.InitializationData
+import com.infinitepower.newquiz.core.game.ComparisonQuizCore.QuizData
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,18 +18,29 @@ import javax.inject.Inject
 class ComparisonQuizCoreImpl @Inject constructor(
     private val comparisonQuizRepository: ComparisonQuizRepository
 ) : ComparisonQuizCore {
-    private val _quizData = MutableStateFlow(ComparisonQuizData())
+    private val _quizData = MutableStateFlow(QuizData())
     override val quizDataFlow = _quizData.asStateFlow()
 
-    override suspend fun initializeGame(initialData: ComparisonQuizInitialData) {
-        comparisonQuizRepository.getQuizData(
-            category = initialData.category,
-            comparisonMode = initialData.comparisonMode
+    override suspend fun initializeGame(initializationData: InitializationData) {
+        comparisonQuizRepository.getQuestions(
+            category = initializationData.category
         ).collect { res ->
             when {
-                res.isLoading() -> _quizData.emit(ComparisonQuizData())
-                res.isSuccess() && res.data != null -> _quizData.emit(res.data!!)
-                res.isError() -> _quizData.emit(ComparisonQuizData(isGameOver = true))
+                res.isLoading() -> _quizData.emit(QuizData())
+                res.isSuccess() && res.data != null && res.data?.isNotEmpty() == true -> {
+                    val category = initializationData.category
+                    val comparisonMode = initializationData.comparisonMode
+                    val questionDescription = category.getQuestionDescription(comparisonMode)
+
+                    val quizData = QuizData(
+                        questions = res.data.orEmpty(),
+                        comparisonMode = comparisonMode,
+                        questionDescription = questionDescription
+                    )
+
+                    _quizData.emit(quizData)
+                }
+                res.isError() -> _quizData.emit(QuizData(isGameOver = true))
             }
         }
 
@@ -57,7 +68,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
         }
     }
 
-    private fun getNextQuestionData(currentData: ComparisonQuizData) = try {
+    private fun getNextQuestionData(currentData: QuizData) = try {
         currentData.getNextQuestion()
     } catch (e: IllegalStateException) {
         currentData.copy(
