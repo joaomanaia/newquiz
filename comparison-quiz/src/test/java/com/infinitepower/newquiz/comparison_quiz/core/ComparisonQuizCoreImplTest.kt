@@ -3,12 +3,12 @@ package com.infinitepower.newquiz.comparison_quiz.core
 import android.net.Uri
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.core.game.ComparisonQuizData
 import com.infinitepower.newquiz.core.game.ComparisonQuizInitialData
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizData
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import io.mockk.coEvery
@@ -31,7 +31,7 @@ internal class ComparisonQuizCoreImplTest {
     private val comparisonQuizCoreImpl = ComparisonQuizCoreImpl(comparisonQuizRepository)
 
     @Test
-    fun `loadInitialData should emit correct questions`() = runTest {
+    fun `initializeGame should emit correct data`() = runTest {
         val initialData = ComparisonQuizInitialData(
             category = ComparisonQuizCategory(
                 id = "id",
@@ -49,60 +49,7 @@ internal class ComparisonQuizCoreImplTest {
                     logo = "logo"
                 )
             ),
-            comparisonMode = ComparisonModeByFirst.GREATER
-        )
-
-        // Mock Uri.parse() to return a mock Uri
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
-
-        val expectedData = ComparisonQuizData(
-            questions = listOf(
-                ComparisonQuizItem(
-                    title = "Question 1",
-                    value = 1.0,
-                    imgUri = uriMock
-                ),
-                ComparisonQuizItem(
-                    title = "Question 2",
-                    value = 2.0,
-                    imgUri = uriMock
-                ),
-            )
-        )
-
-        coEvery {
-            comparisonQuizRepository.getQuizData(category = initialData.category, comparisonMode = initialData.comparisonMode)
-        } returns flowOf(Resource.Success(expectedData))
-
-        comparisonQuizCoreImpl.loadInitialData(initialData)
-
-        val quizData = comparisonQuizCoreImpl.quizData.first()
-        assertThat(quizData.questions).containsAnyIn(expectedData.questions)
-        assertThat(quizData.currentQuestion).isNull()
-    }
-
-    @Test
-    fun `loadAndStartGame should emit correct data`() = runTest {
-        val initialData = ComparisonQuizInitialData(
-            category = ComparisonQuizCategory(
-                id = "id",
-                title = "title",
-                description = "description",
-                imageUrl = "imageUrl",
-                questionDescription = ComparisonQuizCategory.QuestionDescription(
-                    greater = "greater",
-                    less = "less"
-                ),
-                formatType = ComparisonQuizFormatType.Number,
-                helperValueSuffix = "helperValueSuffix",
-                dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
-                    text = "text",
-                    logo = "logo"
-                )
-            ),
-            comparisonMode = ComparisonModeByFirst.GREATER
+            comparisonMode = ComparisonMode.GREATER
         )
 
         // Mock Uri.parse() to return a mock Uri
@@ -134,9 +81,9 @@ internal class ComparisonQuizCoreImplTest {
             comparisonQuizRepository.getQuizData(category = initialData.category, comparisonMode = initialData.comparisonMode)
         } returns flowOf(Resource.Success(expectedData))
 
-        comparisonQuizCoreImpl.loadAndStartGame(initialData)
+        comparisonQuizCoreImpl.initializeGame(initialData)
 
-        val quizData = comparisonQuizCoreImpl.quizData.first()
+        val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
         assertThat(quizData.comparisonMode).isEqualTo(initialData.comparisonMode)
         assertThat(quizData.questions).contains(expectedQuestions[2])
 
@@ -168,7 +115,7 @@ internal class ComparisonQuizCoreImplTest {
                     logo = "logo"
                 )
             ),
-            comparisonMode = ComparisonModeByFirst.LESSER
+            comparisonMode = ComparisonMode.LESSER
         )
 
         // Mock Uri.parse() to return a mock Uri
@@ -203,10 +150,10 @@ internal class ComparisonQuizCoreImplTest {
             comparisonQuizRepository.getQuizData(category = initialData.category, comparisonMode = initialData.comparisonMode)
         } returns flowOf(Resource.Success(expectedData))
 
-        comparisonQuizCoreImpl.loadAndStartGame(initialData)
+        comparisonQuizCoreImpl.initializeGame(initialData)
 
         // verify current question
-        val quizData = comparisonQuizCoreImpl.quizData.first()
+        val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
         val currentQuestion = quizData.currentQuestion
 
         assertThat(quizData.comparisonMode).isEqualTo(initialData.comparisonMode)
@@ -224,7 +171,7 @@ internal class ComparisonQuizCoreImplTest {
         // verify answer
         comparisonQuizCoreImpl.onAnswerClicked(currentQuestion.questions.first)
 
-        val newQuizData = comparisonQuizCoreImpl.quizData.first()
+        val newQuizData = comparisonQuizCoreImpl.quizDataFlow.first()
         val newCurrentQuestion = newQuizData.currentQuestion
 
         assertThat(newQuizData.isGameOver).isFalse()
@@ -257,7 +204,7 @@ internal class ComparisonQuizCoreImplTest {
                     logo = "logo"
                 )
             ),
-            comparisonMode = ComparisonModeByFirst.LESSER
+            comparisonMode = ComparisonMode.LESSER
         )
 
         // Mock Uri.parse() to return a mock Uri
@@ -298,10 +245,10 @@ internal class ComparisonQuizCoreImplTest {
         // Loads the initial data and starts the game
         // This will also set the current question
         // The answer will be wrong
-        comparisonQuizCoreImpl.loadAndStartGame(initialData)
+        comparisonQuizCoreImpl.initializeGame(initialData)
 
         // Get the current data and question
-        val quizData = comparisonQuizCoreImpl.quizData.first()
+        val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
         val currentQuestion = quizData.currentQuestion
 
         // Check if comparison mode is correct
@@ -320,7 +267,7 @@ internal class ComparisonQuizCoreImplTest {
         // verify answer
         comparisonQuizCoreImpl.onAnswerClicked(currentQuestion.questions.second)
 
-        val newQuizData = comparisonQuizCoreImpl.quizData.first()
+        val newQuizData = comparisonQuizCoreImpl.quizDataFlow.first()
         val newCurrentQuestion = newQuizData.currentQuestion
 
         assertThat(newCurrentQuestion).isNull()

@@ -3,18 +3,33 @@ package com.infinitepower.newquiz.core.game
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * The game core of all games.
- * It is responsible for loading the initial data and starting the game.
- * @param QuizDataT The type of the quiz data that is used in the implementation of the game.
+ * Represents the core functionality of a game, providing the basic structure and operations.
+ *
+ * @param QuizData The data type representing the quiz-specific information.
+ * @param InitializationData The data type representing the initialization parameters for the game.
  */
-sealed interface GameCore <QuizDataT, InitialDataT> {
-    val quizData: StateFlow<QuizDataT>
+sealed interface GameCore <QuizData, InitializationData> {
+    /**
+     * A [StateFlow] that emits the current quiz data.
+     */
+    val quizDataFlow: StateFlow<QuizData>
 
-    suspend fun loadAndStartGame(initialData: InitialDataT)
+    /**
+     * Initializes and starts the game with the given initial data.
+     * This method should be called only once.
+     *
+     * @param initialData The initial data required to set up the game.
+     *
+     */
+    suspend fun initializeGame(initialData: InitializationData)
 
-    suspend fun loadInitialData(initialData: InitialDataT)
-
+    /**
+     * Starts the game.
+     */
     fun startGame()
 
+    /**
+     * Ends the game.
+     */
     fun endGame()
 }

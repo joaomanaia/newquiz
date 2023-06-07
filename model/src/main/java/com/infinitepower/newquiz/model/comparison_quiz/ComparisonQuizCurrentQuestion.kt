@@ -23,16 +23,16 @@ value class ComparisonQuizCurrentQuestion(
      * @param answer The user selected answer to check.
      * @param mode Mode of comparison.
      * @return True if the [answer] is the correct answer for the [mode].
-     * @see ComparisonModeByFirst
+     * @see ComparisonMode
      * @see ComparisonQuizItem
      */
     fun isCorrectAnswer(
         answer: ComparisonQuizItem,
-        mode: ComparisonModeByFirst
+        mode: ComparisonMode
     ): Boolean {
         val correctValue = when (mode) {
-            ComparisonModeByFirst.GREATER -> maxOf(questions.first.value, questions.second.value)
-            ComparisonModeByFirst.LESSER -> minOf(questions.first.value, questions.second.value)
+            ComparisonMode.GREATER -> maxOf(questions.first.value, questions.second.value)
+            ComparisonMode.LESSER -> minOf(questions.first.value, questions.second.value)
         }
 
         return answer.value == correctValue

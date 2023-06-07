@@ -6,7 +6,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.daily_challenge.DailyChallengeScreenNavigator
 import com.infinitepower.newquiz.maze_quiz.MazeScreenNavigator
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
@@ -31,7 +31,7 @@ class CommonNavGraphNavigator(
 
     override fun navigateToComparisonQuiz(
         category: ComparisonQuizCategory,
-        mode: ComparisonModeByFirst
+        mode: ComparisonMode
     ) {
         navController.navigate(ComparisonQuizScreenDestination(category, mode))
     }

@@ -44,7 +44,7 @@ import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
@@ -56,7 +56,7 @@ import com.infinitepower.newquiz.core.R as CoreR
 @Keep
 data class ComparisonQuizListScreenNavArg(
     val category: ComparisonQuizCategory,
-    val comparisonMode: ComparisonModeByFirst = ComparisonModeByFirst.GREATER
+    val comparisonMode: ComparisonMode = ComparisonMode.GREATER
 )
 
 @Composable

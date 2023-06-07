@@ -22,7 +22,7 @@ internal class ComparisonQuizCategoryTest {
             dataSourceAttribution = null
         )
 
-        val description = category.getQuestionDescription(ComparisonModeByFirst.GREATER)
+        val description = category.getQuestionDescription(ComparisonMode.GREATER)
         assertThat(description).isEqualTo("Which is greater?")
     }
 
@@ -44,7 +44,7 @@ internal class ComparisonQuizCategoryTest {
             dataSourceAttribution = null
         )
 
-        val description = category.getQuestionDescription(ComparisonModeByFirst.LESSER)
+        val description = category.getQuestionDescription(ComparisonMode.LESSER)
         assertThat(description).isEqualTo("Which is less?")
     }
 }

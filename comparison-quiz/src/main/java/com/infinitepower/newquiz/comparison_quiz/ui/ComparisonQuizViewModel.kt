@@ -8,7 +8,7 @@ import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.game.ComparisonQuizInitialData
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +33,7 @@ class ComparisonQuizViewModel @Inject constructor(
 
     init {
         comparisonQuizCore
-            .quizData
+            .quizDataFlow
             .onEach { data ->
                 _uiState.update { currentState ->
                     if (data.currentPosition > currentState.highestPosition) {
@@ -69,7 +69,7 @@ class ComparisonQuizViewModel @Inject constructor(
 
         // Start game
         viewModelScope.launch(Dispatchers.IO) {
-            comparisonQuizCore.loadAndStartGame(
+            comparisonQuizCore.initializeGame(
                 initialData = ComparisonQuizInitialData(
                     category = getCategory(),
                     comparisonMode = getComparisonMode()
@@ -100,9 +100,9 @@ class ComparisonQuizViewModel @Inject constructor(
             ?: throw IllegalArgumentException("Category is null")
     }
 
-    fun getComparisonMode(): ComparisonModeByFirst {
+    fun getComparisonMode(): ComparisonMode {
         return savedStateHandle
-            .get<ComparisonModeByFirst>(ComparisonQuizListScreenNavArg::comparisonMode.name)
+            .get<ComparisonMode>(ComparisonQuizListScreenNavArg::comparisonMode.name)
             ?: throw IllegalArgumentException("Comparison mode is null")
     }
 }

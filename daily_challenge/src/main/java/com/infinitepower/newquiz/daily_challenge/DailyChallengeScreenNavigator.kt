@@ -1,6 +1,6 @@
 package com.infinitepower.newquiz.daily_challenge
 
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
@@ -65,6 +65,6 @@ interface DailyChallengeScreenNavigator {
 
     fun navigateToComparisonQuiz(
         category: ComparisonQuizCategory,
-        mode: ComparisonModeByFirst = ComparisonModeByFirst.values().random()
+        mode: ComparisonMode = ComparisonMode.values().random()
     )
 }

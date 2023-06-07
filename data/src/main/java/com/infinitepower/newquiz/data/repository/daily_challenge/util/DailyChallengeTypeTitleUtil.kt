@@ -3,7 +3,7 @@ package com.infinitepower.newquiz.data.repository.daily_challenge.util
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.util.translation.getWordleTitle
 import com.infinitepower.newquiz.model.UiText
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.core.R as CoreR
@@ -80,7 +80,7 @@ fun GameEvent.getTitle(
             score
         )
         is GameEvent.ComparisonQuiz.PlayWithComparisonMode -> {
-            val modeName = if (mode == ComparisonModeByFirst.GREATER) {
+            val modeName = if (mode == ComparisonMode.GREATER) {
                 UiText.StringResource(CoreR.string.greater)
             } else {
                 UiText.StringResource(CoreR.string.lesser)

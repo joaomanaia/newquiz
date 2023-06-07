@@ -12,13 +12,13 @@ import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 
 @Composable
 internal fun ComparisonModeComponents(
     modifier: Modifier = Modifier,
-    selectedMode: ComparisonModeByFirst = ComparisonModeByFirst.GREATER,
-    onModeClick: (mode: ComparisonModeByFirst) -> Unit = {}
+    selectedMode: ComparisonMode = ComparisonMode.GREATER,
+    onModeClick: (mode: ComparisonMode) -> Unit = {}
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -27,16 +27,16 @@ internal fun ComparisonModeComponents(
         horizontalArrangement = Arrangement.spacedBy(spaceMedium)
     ) {
         ComparisonModeComponent(
-            mode = ComparisonModeByFirst.GREATER,
+            mode = ComparisonMode.GREATER,
             modifier = Modifier.weight(1f),
-            selected = selectedMode == ComparisonModeByFirst.GREATER,
-            onClick = { onModeClick(ComparisonModeByFirst.GREATER) }
+            selected = selectedMode == ComparisonMode.GREATER,
+            onClick = { onModeClick(ComparisonMode.GREATER) }
         )
         ComparisonModeComponent(
-            mode = ComparisonModeByFirst.LESSER,
+            mode = ComparisonMode.LESSER,
             modifier = Modifier.weight(1f),
-            selected = selectedMode == ComparisonModeByFirst.LESSER,
-            onClick = { onModeClick(ComparisonModeByFirst.LESSER) }
+            selected = selectedMode == ComparisonMode.LESSER,
+            onClick = { onModeClick(ComparisonMode.LESSER) }
         )
     }
 }

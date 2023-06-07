@@ -6,10 +6,10 @@ import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.ComparisonQuizDataStoreCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.ComparisonQuizDataStoreManager
+import com.infinitepower.newquiz.core.game.ComparisonQuizData
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizData
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import com.infinitepower.newquiz.model.comparison_quiz.toComparisonQuizItem
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
@@ -47,7 +47,7 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
 
     override suspend fun getQuizData(
         category: ComparisonQuizCategory,
-        comparisonMode: ComparisonModeByFirst
+        comparisonMode: ComparisonMode
     ): FlowResource<ComparisonQuizData> = flow {
         try {
             emit(Resource.Loading())

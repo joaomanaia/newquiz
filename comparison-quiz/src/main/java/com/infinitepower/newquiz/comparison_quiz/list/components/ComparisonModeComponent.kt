@@ -27,24 +27,24 @@ import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLigh
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 
 @Composable
 internal fun ComparisonModeComponent(
     modifier: Modifier = Modifier,
     selected: Boolean,
     enabled: Boolean = true,
-    mode: ComparisonModeByFirst,
+    mode: ComparisonMode,
     onClick: () -> Unit = {}
 ) {
     val title = when (mode) {
-        ComparisonModeByFirst.GREATER -> stringResource(id = R.string.greater)
-        ComparisonModeByFirst.LESSER -> stringResource(id = R.string.lesser)
+        ComparisonMode.GREATER -> stringResource(id = R.string.greater)
+        ComparisonMode.LESSER -> stringResource(id = R.string.lesser)
     }
 
     val icon = when (mode) {
-        ComparisonModeByFirst.GREATER -> Icons.Rounded.ChevronRight
-        ComparisonModeByFirst.LESSER -> Icons.Rounded.ChevronLeft
+        ComparisonMode.GREATER -> Icons.Rounded.ChevronRight
+        ComparisonMode.LESSER -> Icons.Rounded.ChevronLeft
     }
 
     val containerColor = if (selected) {
@@ -117,7 +117,7 @@ private fun ComparisonModeComponentPreview(
                 modifier = Modifier
                     .padding(16.dp)
                     .width(120.dp),
-                mode = ComparisonModeByFirst.GREATER,
+                mode = ComparisonMode.GREATER,
                 onClick = {},
                 selected = selected
             )

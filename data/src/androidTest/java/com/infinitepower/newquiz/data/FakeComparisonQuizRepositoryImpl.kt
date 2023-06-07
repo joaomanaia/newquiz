@@ -1,10 +1,10 @@
 package com.infinitepower.newquiz.data
 
 import com.infinitepower.newquiz.core.common.FlowResource
+import com.infinitepower.newquiz.core.game.ComparisonQuizData
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizData
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
@@ -30,7 +30,7 @@ class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRep
 
     override suspend fun getQuizData(
         category: ComparisonQuizCategory,
-        comparisonMode: ComparisonModeByFirst
+        comparisonMode: ComparisonMode
     ): FlowResource<ComparisonQuizData> {
         return emptyFlow()
     }

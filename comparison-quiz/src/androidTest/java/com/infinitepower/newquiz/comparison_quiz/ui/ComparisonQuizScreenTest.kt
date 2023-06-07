@@ -26,7 +26,7 @@ import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
 import com.infinitepower.newquiz.core_test.utils.setDeviceLocale
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
@@ -56,7 +56,7 @@ internal class ComparisonQuizScreenTest {
 
     private lateinit var workManager: WorkManager
 
-    private val comparisonMode by lazy { ComparisonModeByFirst.GREATER }
+    private val comparisonMode by lazy { ComparisonMode.GREATER }
 
     private val category by lazy {
         ComparisonQuizCategory(

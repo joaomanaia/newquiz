@@ -26,7 +26,7 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
 import com.infinitepower.newquiz.core_test.utils.setDeviceLocale
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,7 +45,7 @@ internal class ComparisonModeComponentsTest {
             NewQuizTestTheme {
                 ComparisonModeComponents(
                     modifier = Modifier.fillMaxWidth(),
-                    selectedMode = ComparisonModeByFirst.GREATER
+                    selectedMode = ComparisonMode.GREATER
                 )
             }
         }
@@ -85,7 +85,7 @@ internal class ComparisonModeComponentsTest {
             NewQuizTestTheme {
                 ComparisonModeComponents(
                     modifier = Modifier.fillMaxWidth(),
-                    selectedMode = ComparisonModeByFirst.LESSER
+                    selectedMode = ComparisonMode.LESSER
                 )
             }
         }
@@ -127,7 +127,7 @@ internal class ComparisonModeComponentsTest {
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag("ComparisonModeComponents"),
-                    selectedMode = ComparisonModeByFirst.GREATER
+                    selectedMode = ComparisonMode.GREATER
                 )
             }
         }
@@ -156,7 +156,7 @@ internal class ComparisonModeComponentsTest {
 
     @Test
     fun onModeClick_greater_onClick_when_otherModeIsSelected() {
-        var selectedMode by mutableStateOf(ComparisonModeByFirst.GREATER)
+        var selectedMode by mutableStateOf(ComparisonMode.GREATER)
 
         componentRule.setContent {
             ComparisonModeComponents(
@@ -189,12 +189,12 @@ internal class ComparisonModeComponentsTest {
 
         // Verify that the onModeClick callback is called with the correct mode.
         assertThat(selectedMode).isNotNull()
-        assertThat(selectedMode).isEqualTo(ComparisonModeByFirst.LESSER)
+        assertThat(selectedMode).isEqualTo(ComparisonMode.LESSER)
     }
 
     @Test
     fun onModeClick_greater_onClick_when_sameModeIsSelected() {
-        var selectedMode by mutableStateOf(ComparisonModeByFirst.GREATER)
+        var selectedMode by mutableStateOf(ComparisonMode.GREATER)
 
         componentRule.setContent {
             ComparisonModeComponents(
@@ -227,6 +227,6 @@ internal class ComparisonModeComponentsTest {
 
         // Verify that the onModeClick callback is called with the correct mode.
         assertThat(selectedMode).isNotNull()
-        assertThat(selectedMode).isEqualTo(ComparisonModeByFirst.GREATER)
+        assertThat(selectedMode).isEqualTo(ComparisonMode.GREATER)
     }
 }

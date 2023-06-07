@@ -18,7 +18,7 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
 import com.infinitepower.newquiz.core_test.utils.setDeviceLocale
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,7 +37,7 @@ internal class ComparisonModeComponentTest {
             NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = true,
-                    mode = ComparisonModeByFirst.GREATER
+                    mode = ComparisonMode.GREATER
                 )
             }
         }
@@ -63,7 +63,7 @@ internal class ComparisonModeComponentTest {
             NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = true,
-                    mode = ComparisonModeByFirst.LESSER
+                    mode = ComparisonMode.LESSER
                 )
             }
         }
@@ -92,7 +92,7 @@ internal class ComparisonModeComponentTest {
                 ComparisonModeComponent(
                     selected = true,
                     enabled = true,
-                    mode = ComparisonModeByFirst.LESSER,
+                    mode = ComparisonMode.LESSER,
                     onClick = { clicked = true },
                     modifier = Modifier.testTag("ComparisonModeComponent")
                 )
@@ -122,7 +122,7 @@ internal class ComparisonModeComponentTest {
                 ComparisonModeComponent(
                     selected = true,
                     enabled = false,
-                    mode = ComparisonModeByFirst.LESSER,
+                    mode = ComparisonMode.LESSER,
                     onClick = { clicked = true },
                     modifier = Modifier.testTag("ComparisonModeComponent")
                 )
@@ -148,7 +148,7 @@ internal class ComparisonModeComponentTest {
             NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = true,
-                    mode = ComparisonModeByFirst.LESSER,
+                    mode = ComparisonMode.LESSER,
                     modifier = Modifier.testTag("ComparisonModeComponent")
                 )
             }
@@ -168,7 +168,7 @@ internal class ComparisonModeComponentTest {
             NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = false,
-                    mode = ComparisonModeByFirst.LESSER,
+                    mode = ComparisonMode.LESSER,
                     modifier = Modifier.testTag("ComparisonModeComponent")
                 )
             }

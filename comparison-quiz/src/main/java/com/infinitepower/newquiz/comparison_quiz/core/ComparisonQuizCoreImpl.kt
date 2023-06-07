@@ -1,27 +1,27 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
+import com.infinitepower.newquiz.core.game.ComparisonQuizData
 import com.infinitepower.newquiz.core.game.ComparisonQuizInitialData
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizData
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
+/**
+ * Represents the implementation of the [ComparisonQuizCore] interface.
+ *
+ * @param comparisonQuizRepository The repository for retrieving comparison quiz data.
+ */
 class ComparisonQuizCoreImpl @Inject constructor(
     private val comparisonQuizRepository: ComparisonQuizRepository
 ) : ComparisonQuizCore {
     private val _quizData = MutableStateFlow(ComparisonQuizData())
-    override val quizData = _quizData.asStateFlow()
+    override val quizDataFlow = _quizData.asStateFlow()
 
-    override suspend fun loadAndStartGame(initialData: ComparisonQuizInitialData) {
-        loadInitialData(initialData)
-        startGame()
-    }
-
-    override suspend fun loadInitialData(initialData: ComparisonQuizInitialData) {
+    override suspend fun initializeGame(initialData: ComparisonQuizInitialData) {
         comparisonQuizRepository.getQuizData(
             category = initialData.category,
             comparisonMode = initialData.comparisonMode
@@ -32,6 +32,8 @@ class ComparisonQuizCoreImpl @Inject constructor(
                 res.isError() -> _quizData.emit(ComparisonQuizData(isGameOver = true))
             }
         }
+
+        startGame()
     }
 
     override fun startGame() {
@@ -56,7 +58,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
     }
 
     private fun getNextQuestionData(currentData: ComparisonQuizData) = try {
-        currentData.nextQuestion()
+        currentData.getNextQuestion()
     } catch (e: IllegalStateException) {
         currentData.copy(
             currentQuestion = null,

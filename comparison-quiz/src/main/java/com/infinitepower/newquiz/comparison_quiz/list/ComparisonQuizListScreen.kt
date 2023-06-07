@@ -25,7 +25,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
 import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.ramcosta.composedestinations.annotation.Destination
@@ -60,7 +60,7 @@ fun ComparisonQuizListScreen(
 private fun ComparisonQuizListScreenImpl(
     uiState: ComparisonQuizListScreenUiState,
     onCategoryClick: (category: ComparisonQuizCategory) -> Unit,
-    onSelectMode: (mode: ComparisonModeByFirst) -> Unit
+    onSelectMode: (mode: ComparisonMode) -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
     

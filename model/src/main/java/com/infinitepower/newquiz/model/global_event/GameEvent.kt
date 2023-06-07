@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.model.global_event
 
 import androidx.annotation.Keep
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonModeByFirst
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
@@ -50,7 +50,7 @@ sealed class GameEvent(
                 key.startsWith(ComparisonQuiz.PlayWithComparisonMode.KEY_PREFIX) -> {
                     val modeId = key.substringAfter(ComparisonQuiz.PlayWithComparisonMode.KEY_PREFIX)
 
-                    ComparisonQuiz.PlayWithComparisonMode(ComparisonModeByFirst.valueOf(modeId))
+                    ComparisonQuiz.PlayWithComparisonMode(ComparisonMode.valueOf(modeId))
                 }
                 // Comparison quiz play and get score
                 key.startsWith(ComparisonQuiz.PlayAndGetScore.KEY_PREFIX) -> {
@@ -83,7 +83,7 @@ sealed class GameEvent(
             )
 
             val comparisonPlayWithMode = ComparisonQuiz.PlayWithComparisonMode(
-                mode = ComparisonModeByFirst.values().random(random)
+                mode = ComparisonMode.values().random(random)
             )
 
             val comparisonPlayAndGetScore = ComparisonQuiz.PlayAndGetScore(
@@ -191,7 +191,7 @@ sealed class GameEvent(
 
         @Keep
         data class PlayWithComparisonMode(
-            val mode: ComparisonModeByFirst
+            val mode: ComparisonMode
         ) : ComparisonQuiz(
             key = "$KEY_PREFIX${mode.name}",
             taskValueRange = 1u..5u

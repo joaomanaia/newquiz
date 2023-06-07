@@ -37,10 +37,10 @@ data class ComparisonQuizCategory(
     }
 
     fun getQuestionDescription(
-        comparisonMode: ComparisonModeByFirst
+        comparisonMode: ComparisonMode
     ): String = when (comparisonMode) {
-        ComparisonModeByFirst.GREATER -> questionDescription.greater
-        ComparisonModeByFirst.LESSER -> questionDescription.less
+        ComparisonMode.GREATER -> questionDescription.greater
+        ComparisonMode.LESSER -> questionDescription.less
     }
 
     @Keep

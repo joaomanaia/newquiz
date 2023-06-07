@@ -1,14 +1,16 @@
-package com.infinitepower.newquiz.model.comparison_quiz
+package com.infinitepower.newquiz.core.game
 
 import android.net.Uri
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
-internal class ComparisonQuizDataTest {
+class ComparisonQuizDataTest {
     @Test
     fun `nextQuestion should return a new ComparisonQuizData object with a new current question`() {
         mockkStatic(Uri::class)
@@ -31,13 +33,13 @@ internal class ComparisonQuizDataTest {
             questions = listOf(quizItem1, quizItem2),
             currentQuestion = null,
             questionDescription = "Which country has more population?",
-            comparisonMode = ComparisonModeByFirst.GREATER
+            comparisonMode = ComparisonMode.GREATER
         )
 
         assertThat(quizData.questions).containsExactly(quizItem1, quizItem2)
         assertThat(quizData.currentQuestion).isNull()
 
-        val nextQuizData = quizData.nextQuestion()
+        val nextQuizData = quizData.getNextQuestion()
 
         assertThat(nextQuizData.questions).containsNoneOf(quizItem1, quizItem2)
         assertThat(nextQuizData.questions).isEmpty()
@@ -50,14 +52,14 @@ internal class ComparisonQuizDataTest {
             questions = emptyList(),
             currentQuestion = null,
             questionDescription = "Which country has more population?",
-            comparisonMode = ComparisonModeByFirst.GREATER
+            comparisonMode = ComparisonMode.GREATER
         )
 
         assertThat(quizData.questions).isEmpty()
         assertThat(quizData.currentQuestion).isNull()
 
-        val exception = assertThrows<IllegalStateException> {
-            quizData.nextQuestion()
+        val exception = org.junit.jupiter.api.assertThrows<IllegalStateException> {
+            quizData.getNextQuestion()
         }
 
         assertThat(exception).hasMessageThat().isEqualTo("Questions list is empty")
@@ -91,13 +93,13 @@ internal class ComparisonQuizDataTest {
             questions = listOf(quizItem1, quizItem2, quizItem3),
             currentQuestion = null,
             questionDescription = "Which country has more population?",
-            comparisonMode = ComparisonModeByFirst.GREATER
+            comparisonMode = ComparisonMode.GREATER
         )
 
         assertThat(quizData.questions).containsExactly(quizItem1, quizItem2, quizItem3)
         assertThat(quizData.currentQuestion).isNull()
 
-        val nextQuizData = quizData.nextQuestion()
+        val nextQuizData = quizData.getNextQuestion()
 
         assertThat(nextQuizData.questions).containsExactly(quizItem3)
         assertThat(nextQuizData.questions).containsNoneOf(quizItem1, quizItem2)
@@ -132,7 +134,7 @@ internal class ComparisonQuizDataTest {
             questions = listOf(quizItem3),
             currentQuestion = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2),
             questionDescription = "Which country has more population?",
-            comparisonMode = ComparisonModeByFirst.GREATER
+            comparisonMode = ComparisonMode.GREATER
         )
 
         assertThat(quizData.questions).containsExactly(quizItem3)
@@ -140,7 +142,7 @@ internal class ComparisonQuizDataTest {
         assertThat(quizData.currentQuestion?.questions?.first).isEqualTo(quizItem1)
         assertThat(quizData.currentQuestion?.questions?.second).isEqualTo(quizItem2)
 
-        val nextQuizData = quizData.nextQuestion()
+        val nextQuizData = quizData.getNextQuestion()
 
         assertThat(nextQuizData.questions).isEmpty()
         assertThat(nextQuizData.questions).containsNoneOf(quizItem1, quizItem2, quizItem3)
