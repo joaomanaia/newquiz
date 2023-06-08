@@ -2,9 +2,7 @@ package com.infinitepower.newquiz.comparison_quiz.data.comparison_quiz
 
 import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
-import com.infinitepower.newquiz.core.game.ComparisonQuizData
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,24 +27,15 @@ class FakeComparisonQuizRepositoryImpl(
         categories.addAll(initialCategories)
     }
 
-    override suspend fun getQuizData(
-        category: ComparisonQuizCategory,
-        comparisonMode: ComparisonMode
-    ): FlowResource<ComparisonQuizData> = flow {
-        try {
-            emit(Resource.Loading())
+    override fun getQuestions(category: ComparisonQuizCategory): FlowResource<List<ComparisonQuizItem>> {
+        return flow {
+            try {
+                emit(Resource.Loading())
 
-            val questionDescription = category.getQuestionDescription(comparisonMode)
-
-            val quizData = ComparisonQuizData(
-                questions = questions,
-                comparisonMode = comparisonMode,
-                questionDescription = questionDescription
-            )
-
-            emit(Resource.Success(quizData))
-        } catch (e: Exception) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error has occurred"))
+                emit(Resource.Success(initialQuestions))
+            } catch (e: Exception) {
+                emit(Resource.Error(e.localizedMessage ?: "An unexpected error has occurred"))
+            }
         }
     }
 

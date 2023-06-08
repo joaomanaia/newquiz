@@ -1,8 +1,7 @@
-package com.infinitepower.newquiz.test_core
+package com.infinitepower.newquiz.core_test
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

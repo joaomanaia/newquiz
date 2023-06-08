@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.multi_choice_quiz.components
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,7 +17,6 @@ import org.junit.runner.RunWith
 
 @SmallTest
 @RunWith(AndroidJUnit4::class)
-@OptIn(ExperimentalMaterial3Api::class)
 class CardQuestionOptionTest {
     @get:Rule
     val composeTestRule = createComposeRule()
