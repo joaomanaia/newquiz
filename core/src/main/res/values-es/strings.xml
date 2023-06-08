@@ -263,4 +263,7 @@
         <item quantity="many">Juega %1$d partidas con el modo %2$s en la prueba comparativa.</item>
         <item quantity="other">Juega %1$d partidas con el modo %2$s en la prueba comparativa.</item>
     </plurals>
+    <string name="wordle_animations_enabled_description">Habilita las animaciones para el modo de juego Wordle.</string>
+    <string name="multi_choice_animations_enabled">Animaciones de opción múltiple habilitadas</string>
+    <string name="multi_choice_animations_enabled_description">Habilitar las animaciones para el modo de juego multielección.</string>
 </resources>
