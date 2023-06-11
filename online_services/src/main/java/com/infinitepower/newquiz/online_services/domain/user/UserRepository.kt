@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.online_services.domain.user
 
 import com.infinitepower.newquiz.online_services.model.user.User
+import com.infinitepower.newquiz.online_services.model.user.UserNotLoggedInException
 
 interface UserRepository {
     suspend fun getUserByUid(uid: String): User?
@@ -23,4 +24,10 @@ interface UserRepository {
     )
 
     suspend fun addLocalUserDiamonds(diamonds: Int)
+
+    suspend fun getLocalUserDiamonds(): UInt {
+        val localUser = getLocalUser() ?: throw UserNotLoggedInException()
+
+        return localUser.data.diamonds
+    }
 }

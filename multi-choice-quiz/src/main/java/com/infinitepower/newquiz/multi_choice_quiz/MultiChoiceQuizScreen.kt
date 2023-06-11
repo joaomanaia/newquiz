@@ -30,6 +30,7 @@ import coil.decode.SvgDecoder
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.ui.components.skip_question.SkipQuestionDialog
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
@@ -39,8 +40,6 @@ import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswer
 import com.infinitepower.newquiz.multi_choice_quiz.components.MultiChoiceQuizContainer
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizTopBar
-import com.infinitepower.newquiz.multi_choice_quiz.components.dialog.NoDiamondsDialog
-import com.infinitepower.newquiz.multi_choice_quiz.components.dialog.SkipQuestionDialog
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
@@ -99,15 +98,13 @@ fun MultiChoiceQuizScreen(
         onEvent = viewModel::onEvent
     )
 
-    if (uiState.userDiamonds == 0) {
-        NoDiamondsDialog { viewModel.onEvent(MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds) }
-    } else if (uiState.userDiamonds > 0) {
-        SkipQuestionDialog(
-            userDiamonds = uiState.userDiamonds,
-            onSkipClick = { viewModel.onEvent(MultiChoiceQuizScreenUiEvent.SkipQuestion) },
-            onDismissClick = { viewModel.onEvent(MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds) }
-        )
-    }
+    SkipQuestionDialog(
+        userDiamonds = uiState.userDiamonds,
+        skipCost = 1,
+        loading = uiState.userDiamondsLoading,
+        onSkipClick = { viewModel.onEvent(MultiChoiceQuizScreenUiEvent.SkipQuestion) },
+        onDismissClick = { viewModel.onEvent(MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds) }
+    )
 }
 
 @Composable

@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,6 +45,8 @@ import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
+import com.infinitepower.newquiz.core.ui.components.skip_question.SkipIconButton
+import com.infinitepower.newquiz.core.ui.components.skip_question.SkipQuestionDialog
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
@@ -75,10 +78,13 @@ fun ComparisonQuizScreen(
         onEvent = viewModel::onEvent,
         onBackClick = navigator::popBackStack,
         onPlayAgainClick = {
+            val category = uiState.gameCategory ?: return@ComparisonQuizScreenImpl
+            val comparisonMode = uiState.comparisonMode ?: return@ComparisonQuizScreenImpl
+
             navigator.navigate(
                 ComparisonQuizScreenDestination(
-                    category = viewModel.getCategory(),
-                    comparisonMode = viewModel.getComparisonMode()
+                    category = category,
+                    comparisonMode = comparisonMode
                 )
             ) {
                 popUpTo(ComparisonQuizScreenDestination.route) {
@@ -112,10 +118,13 @@ fun ComparisonQuizScreenImpl(
                 highestPosition = uiState.highestPosition,
                 verticalContent = verticalContent,
                 onBackClick = onBackClick,
+                gameCategory = uiState.gameCategory,
+                isSignedIn = uiState.isSignedIn,
                 onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) },
-                gameCategory = uiState.gameCategory
+                onSkipClick = { onEvent(ComparisonQuizUiEvent.ShowSkipQuestionDialog) },
             )
         }
+
         uiState.isGameOver -> {
             GameOverContent(
                 scorePosition = uiState.currentPosition,
@@ -124,6 +133,7 @@ fun ComparisonQuizScreenImpl(
                 onPlayAgainClick = onPlayAgainClick
             )
         }
+
         else -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -133,6 +143,14 @@ fun ComparisonQuizScreenImpl(
             }
         }
     }
+
+    SkipQuestionDialog(
+        userDiamonds = uiState.userDiamonds,
+        skipCost = uiState.skipCost.toInt(),
+        loading = uiState.userDiamondsLoading,
+        onSkipClick = { onEvent(ComparisonQuizUiEvent.SkipQuestion) },
+        onDismissClick = { onEvent(ComparisonQuizUiEvent.DismissSkipQuestionDialog) }
+    )
 }
 
 @Composable
@@ -144,8 +162,10 @@ private fun ComparisonQuizContent(
     questionPosition: Int,
     highestPosition: Int,
     verticalContent: Boolean,
+    isSignedIn: Boolean,
     onBackClick: () -> Unit,
-    onAnswerClick: (ComparisonQuizItem) -> Unit
+    onAnswerClick: (ComparisonQuizItem) -> Unit,
+    onSkipClick: () -> Unit
 ) {
     val attributionText = gameCategory.dataSourceAttribution?.text
 
@@ -156,6 +176,8 @@ private fun ComparisonQuizContent(
             Text(
                 text = gameDescription,
                 style = MaterialTheme.typography.bodyLarge,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
         },
         firstQuestionContent = {
@@ -184,6 +206,11 @@ private fun ComparisonQuizContent(
             )
         },
         backIconContent = { BackIconButton(onClick = onBackClick) },
+        skipButtonContent = {
+            if (isSignedIn) {
+                SkipIconButton(onClick = onSkipClick)
+            }
+        },
         attributionText = attributionText?.let { text ->
             {
                 Text(
@@ -204,7 +231,8 @@ fun ComparisonQuizContainer(
     firstQuestionContent: @Composable BoxScope.() -> Unit,
     secondQuestionContent: @Composable BoxScope.() -> Unit,
     midContent: @Composable () -> Unit,
-    attributionText: (@Composable () -> Unit)? = null
+    attributionText: (@Composable () -> Unit)? = null,
+    skipButtonContent: (@Composable () -> Unit)? = null
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
@@ -221,6 +249,10 @@ fun ComparisonQuizContainer(
                 backIconContent()
                 Spacer(modifier = Modifier.width(spaceMedium))
                 descriptionContent()
+                if (skipButtonContent != null) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    skipButtonContent()
+                }
             }
             Spacer(modifier = Modifier.height(spaceMedium))
             Box(
@@ -255,6 +287,10 @@ fun ComparisonQuizContainer(
                 backIconContent()
                 Spacer(modifier = Modifier.width(spaceMedium))
                 descriptionContent()
+                if (skipButtonContent != null) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    skipButtonContent()
+                }
             }
             Spacer(modifier = Modifier.height(spaceMedium))
             Row(
@@ -399,7 +435,8 @@ private fun ComparisonQuizScreenPreview() {
                             text = "Data from NewQuiz"
                         ),
                         formatType = ComparisonQuizFormatType.Number
-                    )
+                    ),
+                    isSignedIn = true
                 ),
                 windowSizeClass = windowSizeClass
             )

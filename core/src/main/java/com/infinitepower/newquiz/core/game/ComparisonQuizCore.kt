@@ -9,7 +9,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 /**
  * Represents the core functionality of a comparison quiz.
  */
-interface ComparisonQuizCore : GameCore<ComparisonQuizCore.QuizData, ComparisonQuizCore.InitializationData> {
+interface ComparisonQuizCore : GameCore<ComparisonQuizCore.QuizData, ComparisonQuizCore.InitializationData>, SkipGame {
     /**
      * Handles the click event on an answer in the comparison quiz.
      *
@@ -45,14 +45,11 @@ interface ComparisonQuizCore : GameCore<ComparisonQuizCore.QuizData, ComparisonQ
          * If the current question is not null, it means it is not a new game and the function will
          * retrieve the first question from the questions list and remove it from the list.
          *
-         * @param checkHighestPosition Function to check if the current position is the highest.
          * @return The next question.
          * @throws IllegalStateException If the questions list is empty.
          * @throws IllegalStateException If the questions list has less than two items.
          */
-        fun getNextQuestion(
-            checkHighestPosition: () -> Unit = {}
-        ): QuizData {
+        fun getNextQuestion(): QuizData {
             if (questions.isEmpty()) {
                 throw IllegalStateException("Questions list is empty")
             }
@@ -82,8 +79,6 @@ interface ComparisonQuizCore : GameCore<ComparisonQuizCore.QuizData, ComparisonQ
 
                 currentQuestion.nextQuestion(firstQuestion)
             }
-
-            checkHighestPosition()
 
             return copy(
                 questions = newQuestions,

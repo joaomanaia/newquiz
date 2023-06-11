@@ -26,11 +26,15 @@ import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
 import com.infinitepower.newquiz.core_test.utils.setDeviceLocale
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -49,6 +53,9 @@ internal class ComparisonQuizScreenTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private lateinit var comparisonQuizRepository: ComparisonQuizRepository
+
+    private val authUserRepository = mockk<AuthUserRepository>(relaxed = true)
+    private val userRepository = mockk<UserRepository>(relaxed = true)
 
     private lateinit var comparisonQuizCore: ComparisonQuizCore
 
@@ -99,7 +106,12 @@ internal class ComparisonQuizScreenTest {
             initialCategories = listOf(category)
         )
 
-        comparisonQuizCore = ComparisonQuizCoreImpl(comparisonQuizRepository)
+        every { authUserRepository.isSignedIn } returns false
+
+        comparisonQuizCore = ComparisonQuizCoreImpl(
+            comparisonQuizRepository = comparisonQuizRepository,
+            userRepository = userRepository
+        )
 
         val context = InstrumentationRegistry.getInstrumentation().context
         val config = Configuration.Builder()
@@ -121,7 +133,9 @@ internal class ComparisonQuizScreenTest {
                 )
             ),
             comparisonQuizRepository = comparisonQuizRepository,
-            workManager = workManager
+            workManager = workManager,
+            authUserRepository = authUserRepository,
+            userRepository = userRepository
         )
 
         composeTestRule.setContent {

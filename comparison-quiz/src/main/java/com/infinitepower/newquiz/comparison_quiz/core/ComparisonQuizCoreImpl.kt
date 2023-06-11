@@ -5,6 +5,7 @@ import com.infinitepower.newquiz.core.game.ComparisonQuizCore.InitializationData
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.QuizData
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,7 +17,8 @@ import javax.inject.Inject
  * @param comparisonQuizRepository The repository for retrieving comparison quiz data.
  */
 class ComparisonQuizCoreImpl @Inject constructor(
-    private val comparisonQuizRepository: ComparisonQuizRepository
+    private val comparisonQuizRepository: ComparisonQuizRepository,
+    private val userRepository: UserRepository
 ) : ComparisonQuizCore {
     private val _quizData = MutableStateFlow(QuizData())
     override val quizDataFlow = _quizData.asStateFlow()
@@ -78,4 +80,22 @@ class ComparisonQuizCoreImpl @Inject constructor(
     }
 
     override fun endGame() {}
+
+    override val skipCost: UInt
+        get() = 1u
+
+    override suspend fun getUserSkips(): UInt = userRepository.getLocalUserDiamonds()
+
+    override suspend fun skip() {
+        // Check if the user has enough diamonds to skip the question
+        if (!canSkip()) {
+            throw RuntimeException("You don't have enough diamonds to skip this question")
+        }
+
+        // Update the user's diamond count
+        userRepository.addLocalUserDiamonds(-skipCost.toInt())
+
+        // Update the quiz data to the next question
+        _quizData.update(this::getNextQuestionData)
+    }
 }

@@ -87,7 +87,10 @@ class QuizScreenViewModel @Inject constructor(
             is MultiChoiceQuizScreenUiEvent.GetUserSkipQuestionDiamonds -> getUserDiamonds()
             is MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds -> {
                 _uiState.update { currentState ->
-                    currentState.copy(userDiamonds = -1)
+                    currentState.copy(
+                        userDiamonds = -1,
+                        userDiamondsLoading = false
+                    )
                 }
             }
 
@@ -393,6 +396,10 @@ class QuizScreenViewModel @Inject constructor(
     }
 
     private fun getUserDiamonds() = viewModelScope.launch(Dispatchers.IO) {
+        _uiState.update { currentState ->
+            currentState.copy(userDiamondsLoading = true)
+        }
+
         val user = try {
             userRepository.getLocalUser() ?: throw NullPointerException()
         } catch (e: Exception) {
@@ -401,7 +408,10 @@ class QuizScreenViewModel @Inject constructor(
         }
 
         _uiState.update { currentState ->
-            currentState.copy(userDiamonds = user.data.diamonds.toInt())
+            currentState.copy(
+                userDiamonds = user.data.diamonds.toInt(),
+                userDiamondsLoading = false
+            )
         }
     }
 }

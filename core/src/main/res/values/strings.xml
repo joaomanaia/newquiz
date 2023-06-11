@@ -115,10 +115,10 @@
     <string name="no_diamonds">No diamonds</string>
     <string name="skip_question_q">Skip question?</string>
     <plurals name="you_have_n_diamonds_skip_question_q">
-        <item quantity="zero">You don\'t have diamonds to skip this question!</item>
-        <item quantity="one">You have %1$d diamond, do you want to use the diamond to skip this question?</item>
-        <item quantity="other">You have %1$d diamonds, do you want to use one diamond to skip this question?</item>
+        <item quantity="one">You have one diamond, do you want to use the diamond to skip this question?</item>
+        <item quantity="other">You have %1$d diamonds, do you want to use %2$d diamonds to skip this question?</item>
     </plurals>
+    <string name="no_diamonds_to_skip_question_description">You don\'t have diamonds to skip this question!</string>
     <string name="skip">Skip</string>
     <string name="save">Save</string>
     <string name="save_you_progress_description">Save your progress, use skips and see leaderboard by signing in!</string>

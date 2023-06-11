@@ -120,7 +120,6 @@
     <string name="no_diamonds">Sem diamantes</string>
     <string name="skip_question_q">Saltar pergunta?</string>
     <plurals name="you_have_n_diamonds_skip_question_q" tools:ignore="MissingQuantity,UnusedQuantity">
-        <item quantity="zero">Não tens diamantes para saltar esta pergunta!</item>
         <item quantity="one">Tens %1$d diamante disponível, queres usar o diamante para saltar esta pergunta?</item>
         <item quantity="other">Tens %1$d diamantes disponíveis, queres usar um diamante para saltar esta pergunta?</item>
     </plurals>

@@ -8,4 +8,10 @@ interface ComparisonQuizUiEvent {
     data class OnAnswerClick(
         val item: ComparisonQuizItem
     ) : ComparisonQuizUiEvent
+
+    object ShowSkipQuestionDialog : ComparisonQuizUiEvent
+
+    object DismissSkipQuestionDialog : ComparisonQuizUiEvent
+
+    object SkipQuestion : ComparisonQuizUiEvent
 }
