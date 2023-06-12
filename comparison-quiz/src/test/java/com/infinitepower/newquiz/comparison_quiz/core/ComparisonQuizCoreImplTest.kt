@@ -10,23 +10,32 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 /**
  * Unit tests for [ComparisonQuizCoreImpl].
  */
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class ComparisonQuizCoreImplTest {
     private val comparisonQuizRepository = mockk<ComparisonQuizRepository>()
+    private val userRepository = mockk<UserRepository>()
 
-    private val comparisonQuizCoreImpl = ComparisonQuizCoreImpl(comparisonQuizRepository)
+    private lateinit var comparisonQuizCoreImpl: ComparisonQuizCoreImpl
+
+    @BeforeEach
+    fun setup() {
+        comparisonQuizCoreImpl = ComparisonQuizCoreImpl(
+            comparisonQuizRepository = comparisonQuizRepository,
+            userRepository = userRepository
+        )
+    }
 
     @Test
     fun `initializeGame should emit correct data`() = runTest {
