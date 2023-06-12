@@ -68,13 +68,13 @@
     <string name="animals">Animais</string>
     <string name="vehicles">Veículos</string>
     <string name="entertainment_comics">Comédia</string>
-    <string name="science_gadgets">Gadgets</string>
+    <string name="science_gadgets">Dispositivos</string>
     <string name="entertainment_japanese_anime_and_manga">Animação japonesa e Manga</string>
     <string name="entertainment_cartoon_and_animations">Cartoon e animações</string>
     <string name="categories">Categorias</string>
     <plurals name="n_questions_available" tools:ignore="MissingQuantity,UnusedQuantity">
-        <item quantity="zero">Sem perguntas disponíveis</item>
         <item quantity="one">%1$s pergunta disponível</item>
+        <item quantity="many">%1$s perguntas disponíveis</item>
         <item quantity="other">%1$s perguntas disponíveis</item>
     </plurals>
     <string name="see_all">Ver tudo</string>
@@ -114,14 +114,15 @@
     <string name="photo_of_s">Foto de %1$s</string>
     <string name="morning">Manhã</string>
     <string name="afternoon">Tarde</string>
-    <string name="evening">Tarde</string>
+    <string name="evening">Início da noite</string>
     <string name="night">Noite</string>
     <string name="good_day_text">Boa %1$s, \n</string>
     <string name="no_diamonds">Sem diamantes</string>
     <string name="skip_question_q">Saltar pergunta?</string>
     <plurals name="you_have_n_diamonds_skip_question_q" tools:ignore="MissingQuantity,UnusedQuantity">
-        <item quantity="one">Tens %1$d diamante disponível, queres usar o diamante para saltar esta pergunta?</item>
-        <item quantity="other">Tens %1$d diamantes disponíveis, queres usar um diamante para saltar esta pergunta?</item>
+        <item quantity="one">Tens %1$d diamante disponível, queres usar o diamante para saltar esta pergunta\?</item>
+        <item quantity="many">Tens %1$d diamantes disponíveis, queres usar %2$d diamantes para saltar esta pergunta\?</item>
+        <item quantity="other">Tens %1$d diamantes disponíveis, queres usar %2$d diamantes para saltar esta pergunta\?</item>
     </plurals>
     <string name="skip">Saltar</string>
     <string name="save">Guardar</string>
@@ -262,4 +263,8 @@
         <item quantity="many">Jogar %1$d jogos no modo %2$s no jogo de comparação.</item>
     </plurals>
     <string name="daily_challenge">Desafio Diário</string>
+    <string name="no_diamonds_to_skip_question_description">Não tens diamantes para saltar esta pergunta!</string>
+    <string name="wordle_animations_enabled_description">Ativa as animações para o jogo wordle.</string>
+    <string name="multi_choice_animations_enabled">Animações ativas para o jogo de escolha multipla</string>
+    <string name="multi_choice_animations_enabled_description">Ativa as animações para o jogo de escolha multipla.</string>
 </resources>
