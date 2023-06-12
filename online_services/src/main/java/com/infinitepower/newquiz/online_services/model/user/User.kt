@@ -25,7 +25,7 @@ data class User(
     @Keep
     data class UserData(
         val totalXp: ULong = 0u,
-        val diamonds: UInt = 0u,
+        val diamonds: Int = 0,
         val multiChoiceQuizData: MultiChoiceQuizData = MultiChoiceQuizData(),
         val wordleData: WordleData = WordleData()
     ) {
@@ -95,7 +95,7 @@ internal fun User.toUserEntity(): UserEntity = UserEntity(
     ),
     data = UserEntity.UserData(
         totalXp = data.totalXp.toLong(),
-        diamonds = data.diamonds.toInt(),
+        diamonds = data.diamonds,
         multiChoiceQuizData = UserEntity.UserData.MultiChoiceQuizData(
             totalQuestionsPlayed = data.multiChoiceQuizData.totalQuestionsPlayed.toLong(),
             totalCorrectAnswers = data.multiChoiceQuizData.totalCorrectAnswers.toLong(),

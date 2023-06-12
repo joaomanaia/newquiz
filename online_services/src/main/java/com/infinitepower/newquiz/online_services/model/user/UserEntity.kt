@@ -45,7 +45,7 @@ internal fun UserEntity.toUser(): User = User(
     ),
     data = User.UserData(
         totalXp = data?.totalXp?.toULong() ?: 0u,
-        diamonds = data?.diamonds?.toUInt() ?: 0u,
+        diamonds = data?.diamonds ?: 0,
         multiChoiceQuizData = User.UserData.MultiChoiceQuizData(
             totalQuestionsPlayed = data?.multiChoiceQuizData?.totalQuestionsPlayed?.toULong() ?: 0u,
             totalCorrectAnswers = data?.multiChoiceQuizData?.totalCorrectAnswers?.toULong() ?: 0u,

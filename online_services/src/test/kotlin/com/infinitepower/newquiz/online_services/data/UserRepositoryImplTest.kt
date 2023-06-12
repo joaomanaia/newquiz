@@ -10,14 +10,12 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
 /**
  * Tests for [UserRepositoryImpl]
  */
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class UserRepositoryImplTest {
     private val authUserRepository = mockk<AuthUserRepository>()
     private val userApi = mockk<UserApi>()
@@ -32,7 +30,7 @@ internal class UserRepositoryImplTest {
     private val testUser = User(
         uid = "a",
         data = User.UserData(
-            diamonds = 50u,
+            diamonds = 50,
             totalXp = 0uL,
             multiChoiceQuizData = User.UserData.MultiChoiceQuizData(
                 totalQuestionsPlayed = 0uL,
@@ -75,7 +73,7 @@ internal class UserRepositoryImplTest {
 
         userRepository.createUser(testUser)
 
-        assertThat(testUser.data.diamonds).isIn(0u..100u)
+        assertThat(testUser.data.diamonds).isIn(0..100)
         assertThat(testUser.data.totalXp).isEqualTo(0uL)
         assertThat(testUser.data.multiChoiceQuizData.totalQuestionsPlayed).isEqualTo(0uL)
         assertThat(testUser.data.multiChoiceQuizData.totalCorrectAnswers).isEqualTo(0uL)

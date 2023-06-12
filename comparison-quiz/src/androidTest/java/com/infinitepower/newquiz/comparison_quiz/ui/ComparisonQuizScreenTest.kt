@@ -31,6 +31,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import io.mockk.every
@@ -56,6 +57,7 @@ internal class ComparisonQuizScreenTest {
 
     private val authUserRepository = mockk<AuthUserRepository>(relaxed = true)
     private val userRepository = mockk<UserRepository>(relaxed = true)
+    private val remoteConfigApi = mockk<RemoteConfigApi>(relaxed = true)
 
     private lateinit var comparisonQuizCore: ComparisonQuizCore
 
@@ -110,7 +112,8 @@ internal class ComparisonQuizScreenTest {
 
         comparisonQuizCore = ComparisonQuizCoreImpl(
             comparisonQuizRepository = comparisonQuizRepository,
-            userRepository = userRepository
+            userRepository = userRepository,
+            remoteConfigApi = remoteConfigApi
         )
 
         val context = InstrumentationRegistry.getInstrumentation().context

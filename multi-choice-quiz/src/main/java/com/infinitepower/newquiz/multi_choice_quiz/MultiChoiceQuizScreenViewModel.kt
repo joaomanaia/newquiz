@@ -409,7 +409,7 @@ class QuizScreenViewModel @Inject constructor(
 
         _uiState.update { currentState ->
             currentState.copy(
-                userDiamonds = user.data.diamonds.toInt(),
+                userDiamonds = user.data.diamonds,
                 userDiamondsLoading = false
             )
         }

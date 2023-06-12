@@ -5,6 +5,7 @@ import com.infinitepower.newquiz.core.game.ComparisonQuizCore.InitializationData
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.QuizData
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +19,8 @@ import javax.inject.Inject
  */
 class ComparisonQuizCoreImpl @Inject constructor(
     private val comparisonQuizRepository: ComparisonQuizRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val remoteConfigApi: RemoteConfigApi
 ) : ComparisonQuizCore {
     private val _quizData = MutableStateFlow(QuizData())
     override val quizDataFlow = _quizData.asStateFlow()
@@ -79,12 +81,14 @@ class ComparisonQuizCoreImpl @Inject constructor(
         )
     }
 
-    override fun endGame() {}
+    override fun endGame() {
+        //TODO: Implement this
+    }
 
     override val skipCost: UInt
-        get() = 1u
+        get() = remoteConfigApi.getLong("comparison_quiz_skip_cost").toUInt()
 
-    override suspend fun getUserSkips(): UInt = userRepository.getLocalUserDiamonds()
+    override suspend fun getUserSkips(): UInt = userRepository.getLocalUserDiamonds().toUInt()
 
     override suspend fun skip() {
         // Check if the user has enough diamonds to skip the question

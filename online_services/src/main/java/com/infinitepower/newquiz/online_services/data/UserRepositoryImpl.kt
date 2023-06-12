@@ -32,7 +32,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun createUser(user: User) {
         // Check if the data is valid
-        require(user.data.diamonds in 0u..100u) { "Diamonds must be between 0 and 100" }
+        require(user.data.diamonds in 0..100) { "Diamonds must be between 0 and 100" }
         require(user.data.totalXp == 0uL) { "Total XP must be 0" }
         require(user.data.multiChoiceQuizData.totalQuestionsPlayed == 0uL) { "Total questions played must be 0" }
         require(user.data.multiChoiceQuizData.totalCorrectAnswers == 0uL) { "Total correct answers must be 0" }

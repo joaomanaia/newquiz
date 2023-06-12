@@ -25,7 +25,7 @@ interface UserRepository {
 
     suspend fun addLocalUserDiamonds(diamonds: Int)
 
-    suspend fun getLocalUserDiamonds(): UInt {
+    suspend fun getLocalUserDiamonds(): Int {
         val localUser = getLocalUser() ?: throw UserNotLoggedInException()
 
         return localUser.data.diamonds
