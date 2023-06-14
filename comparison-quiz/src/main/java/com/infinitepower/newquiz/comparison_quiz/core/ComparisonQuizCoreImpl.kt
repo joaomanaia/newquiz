@@ -61,6 +61,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
         _quizData.update { currentData ->
             val currentQuestion = currentData.currentQuestion
 
+            // If the current question is null or the answer is correct, get the next question
             if (currentQuestion == null || currentQuestion.isCorrectAnswer(answer, currentData.comparisonMode)) {
                 getNextQuestionData(currentData)
             } else {
@@ -82,7 +83,12 @@ class ComparisonQuizCoreImpl @Inject constructor(
     }
 
     override fun endGame() {
-        //TODO: Implement this
+        _quizData.update { currentData ->
+            currentData.copy(
+                currentQuestion = null,
+                isGameOver = true
+            )
+        }
     }
 
     override val skipCost: UInt

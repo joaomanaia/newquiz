@@ -49,30 +49,8 @@ internal class ComparisonQuizCoreImplTest {
 
     @Test
     fun `initializeGame should emit correct data`() = runTest {
-        val initialData = ComparisonQuizCore.InitializationData(
-            category = ComparisonQuizCategory(
-                id = "id",
-                title = "title",
-                description = "description",
-                imageUrl = "imageUrl",
-                questionDescription = ComparisonQuizCategory.QuestionDescription(
-                    greater = "greater",
-                    less = "less"
-                ),
-                formatType = ComparisonQuizFormatType.Number,
-                helperValueSuffix = "helperValueSuffix",
-                dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
-                    text = "text",
-                    logo = "logo"
-                )
-            ),
-            comparisonMode = ComparisonMode.GREATER
-        )
-
-        // Mock Uri.parse() to return a mock Uri
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
+        val initialData = getInitializationData()
+        val uriMock = getUriMock()
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -112,31 +90,26 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
+    fun `initializeGame should end game when error in data request`() = runTest {
+        val initialData = getInitializationData()
+
+        every {
+            comparisonQuizRepository.getQuestions(category = initialData.category)
+        } returns flowOf(Resource.Error("error"))
+
+        comparisonQuizCoreImpl.initializeGame(initialData)
+
+        val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
+        assertThat(quizData.isGameOver).isTrue()
+        assertThat(quizData.currentQuestion).isNull()
+    }
+
+    @Test
     fun `onAnswerClicked should check the correct answer and move to the next question`() = runTest {
-        val initialData = ComparisonQuizCore.InitializationData(
-            category = ComparisonQuizCategory(
-                id = "id",
-                title = "title",
-                description = "description",
-                imageUrl = "imageUrl",
-                questionDescription = ComparisonQuizCategory.QuestionDescription(
-                    greater = "greater",
-                    less = "less"
-                ),
-                formatType = ComparisonQuizFormatType.Number,
-                helperValueSuffix = "helperValueSuffix",
-                dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
-                    text = "text",
-                    logo = "logo"
-                )
-            ),
+        val initialData = getInitializationData(
             comparisonMode = ComparisonMode.LESSER
         )
-
-        // Mock Uri.parse() to return a mock Uri
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
+        val uriMock = getUriMock()
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -197,30 +170,10 @@ internal class ComparisonQuizCoreImplTest {
     // Test when the user gets the answer wrong
     @Test
     fun `onAnswerClicked should check the wrong answer and move to the next question`() = runTest {
-        val initialData = ComparisonQuizCore.InitializationData(
-            category = ComparisonQuizCategory(
-                id = "id",
-                title = "title",
-                description = "description",
-                imageUrl = "imageUrl",
-                questionDescription = ComparisonQuizCategory.QuestionDescription(
-                    greater = "greater",
-                    less = "less"
-                ),
-                formatType = ComparisonQuizFormatType.Number,
-                helperValueSuffix = "helperValueSuffix",
-                dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
-                    text = "text",
-                    logo = "logo"
-                )
-            ),
+        val initialData = getInitializationData(
             comparisonMode = ComparisonMode.LESSER
         )
-
-        // Mock Uri.parse() to return a mock Uri
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
+        val uriMock = getUriMock()
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -277,6 +230,100 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
+    fun `onAnswerClicked should end the game when no more questions is remaining`() = runTest {
+        val initialData = getInitializationData()
+        val uriMock = getUriMock()
+
+        val expectedQuestions = listOf(
+            ComparisonQuizItem(
+                title = "Question 1",
+                value = 1.0,
+                imgUri = uriMock
+            ),
+            ComparisonQuizItem(
+                title = "Question 2",
+                value = 2.0,
+                imgUri = uriMock
+            )
+        )
+
+        every {
+            comparisonQuizRepository.getQuestions(category = initialData.category)
+        } returns flowOf(Resource.Success(expectedQuestions))
+
+        comparisonQuizCoreImpl.initializeGame(initialData)
+
+        val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
+        assertThat(quizData.questions).isEmpty()
+
+        val expectedCurrentQuestion = ComparisonQuizCurrentQuestion(
+            questions = expectedQuestions[0] to expectedQuestions[1]
+        )
+
+        val currentQuestion = quizData.currentQuestion
+
+        // verify current question
+        assertThat(currentQuestion).isNotNull()
+        assertThat(currentQuestion).isEqualTo(expectedCurrentQuestion)
+        require(currentQuestion != null)
+
+        comparisonQuizCoreImpl.onAnswerClicked(currentQuestion.questions.second)
+
+        val newQuizData = comparisonQuizCoreImpl.quizDataFlow.first()
+        val newCurrentQuestion = newQuizData.currentQuestion
+
+        assertThat(newCurrentQuestion).isNull()
+        assertThat(newQuizData.isGameOver).isTrue()
+    }
+
+    @Test
+    fun `endGame() should end the game`() = runTest {
+        val initialData = getInitializationData()
+        val uriMock = getUriMock()
+
+        val expectedQuestions = listOf(
+            ComparisonQuizItem(
+                title = "Question 1",
+                value = 1.0,
+                imgUri = uriMock
+            ),
+            ComparisonQuizItem(
+                title = "Question 2",
+                value = 2.0,
+                imgUri = uriMock
+            )
+        )
+
+        every {
+            comparisonQuizRepository.getQuestions(category = initialData.category)
+        } returns flowOf(Resource.Success(expectedQuestions))
+
+        comparisonQuizCoreImpl.initializeGame(initialData)
+
+        val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
+        assertThat(quizData.questions).isEmpty()
+
+        val expectedCurrentQuestion = ComparisonQuizCurrentQuestion(
+            questions = expectedQuestions[0] to expectedQuestions[1]
+        )
+
+        val currentQuestion = quizData.currentQuestion
+
+        // verify current question
+        assertThat(currentQuestion).isNotNull()
+        assertThat(currentQuestion).isEqualTo(expectedCurrentQuestion)
+        require(currentQuestion != null)
+
+        comparisonQuizCoreImpl.endGame()
+
+        val newQuizData = comparisonQuizCoreImpl.quizDataFlow.first()
+        val newCurrentQuestion = newQuizData.currentQuestion
+
+        assertThat(newCurrentQuestion).isNull()
+        assertThat(newQuizData.isGameOver).isTrue()
+    }
+
+    @Test
     fun `canSkip should return true when user has enough diamonds`() = runTest {
         val skipCost = 10u
         val userDiamonds = 15
@@ -319,34 +366,13 @@ internal class ComparisonQuizCoreImplTest {
         val skipCost = 1u
         val userDiamonds = 10
 
-        val initialData = ComparisonQuizCore.InitializationData(
-            category = ComparisonQuizCategory(
-                id = "id",
-                title = "title",
-                description = "description",
-                imageUrl = "imageUrl",
-                questionDescription = ComparisonQuizCategory.QuestionDescription(
-                    greater = "greater",
-                    less = "less"
-                ),
-                formatType = ComparisonQuizFormatType.Number,
-                helperValueSuffix = "helperValueSuffix",
-                dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
-                    text = "text",
-                    logo = "logo"
-                )
-            ),
-            comparisonMode = ComparisonMode.GREATER
-        )
+        val initialData = getInitializationData()
 
         every { remoteConfigApi.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
         coEvery { userRepository.addLocalUserDiamonds(-skipCost.toInt()) } just runs
 
-        // Mock Uri.parse() to return a mock Uri
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
+        val uriMock = getUriMock()
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -415,5 +441,36 @@ internal class ComparisonQuizCoreImplTest {
         coVerify(exactly = 1) { userRepository.getLocalUserDiamonds() }
         coVerify(exactly = 0) { userRepository.addLocalUserDiamonds(any()) }
         confirmVerified(remoteConfigApi, userRepository)
+    }
+
+    private fun getInitializationData(
+        comparisonMode: ComparisonMode = ComparisonMode.GREATER
+    ) = ComparisonQuizCore.InitializationData(
+        category = ComparisonQuizCategory(
+            id = "id",
+            title = "title",
+            description = "description",
+            imageUrl = "imageUrl",
+            questionDescription = ComparisonQuizCategory.QuestionDescription(
+                greater = "greater",
+                less = "less"
+            ),
+            formatType = ComparisonQuizFormatType.Number,
+            helperValueSuffix = "helperValueSuffix",
+            dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
+                text = "text",
+                logo = "logo"
+            )
+        ),
+        comparisonMode = comparisonMode
+    )
+
+    private fun getUriMock(): Uri {
+        // Mock Uri.parse() to return a mock Uri
+        mockkStatic(Uri::class)
+        val uriMock = mockk<Uri>()
+        every { Uri.parse("test/path") } returns uriMock
+
+        return uriMock
     }
 }
