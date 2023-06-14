@@ -190,9 +190,9 @@
         <item quantity="other">%1$s preguntas disponibles</item>
     </plurals>
     <plurals name="you_have_n_diamonds_skip_question_q">
-        <item quantity="one">Tienes %1$d diamante, ¿quieres usar el diamante para omitir esta pregunta\?</item>
-        <item quantity="many">Tienes %1$d diamantes, ¿quieres usar los diamantes para omitir esta pregunta\?</item>
-        <item quantity="other">Tienes %1$d diamantes, ¿quieres usar los diamantes para omitir esta pregunta\?</item>
+        <item quantity="one">Tienes un diamante, ¿quieres usar el diamante para saltarte esta pregunta\?</item>
+        <item quantity="many">Tienes %1$d diamantes, ¿quieres usar %2$d diamantes para saltarte esta pregunta\?</item>
+        <item quantity="other">Tienes %1$d diamantes, ¿quieres usar %2$d diamantes para saltarte esta pregunta\?</item>
     </plurals>
     <string name="data_collection_consent">Consentimiento para la recogida de datos</string>
     <string name="data_collection_consent_description">
@@ -266,4 +266,5 @@
     <string name="wordle_animations_enabled_description">Habilita las animaciones para el modo de juego Wordle.</string>
     <string name="multi_choice_animations_enabled">Animaciones de opción múltiple habilitadas</string>
     <string name="multi_choice_animations_enabled_description">Habilitar las animaciones para el modo de juego multielección.</string>
+    <string name="no_diamonds_to_skip_question_description">¡No tienes diamantes para saltarte esta pregunta!</string>
 </resources>
