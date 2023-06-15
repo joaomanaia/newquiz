@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.infinitepower.newquiz.core.common.dataStore.comparisonQuizDataStore
-import com.infinitepower.newquiz.core.common.dataStore.multiChoiceCategoriesDataStore
+import com.infinitepower.newquiz.core.common.dataStore.recentCategoriesDataStore
 import com.infinitepower.newquiz.core.common.dataStore.settingsDataStore
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
@@ -34,22 +34,6 @@ object DataStoreModule {
         @SettingsDataStore dataStore: DataStore<Preferences>
     ): DataStoreManager = DataStoreManagerImpl(dataStore)
 
-    // Multi choice question data store
-
-    @Provides
-    @Singleton
-    @MultiChoiceQuestionDataStore
-    fun provideMultiChoiceQuestionDatastore(
-        @ApplicationContext context: Context
-    ): DataStore<Preferences> = context.multiChoiceCategoriesDataStore
-
-    @Provides
-    @Singleton
-    @MultiChoiceQuestionDataStoreManager
-    fun provideMultiChoiceQuestionStoreManager(
-        @MultiChoiceQuestionDataStore dataStore: DataStore<Preferences>
-    ): DataStoreManager = DataStoreManagerImpl(dataStore)
-
     // Comparison quiz data store
 
     @Provides
@@ -65,6 +49,22 @@ object DataStoreModule {
     fun provideComparisonQuizStoreManager(
         @ComparisonQuizDataStore dataStore: DataStore<Preferences>
     ): DataStoreManager = DataStoreManagerImpl(dataStore)
+
+    // Recent categories data store
+
+    @Provides
+    @Singleton
+    @RecentCategoriesDataStore
+    fun provideRecentCategoriesDatastore(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> = context.recentCategoriesDataStore
+
+    @Provides
+    @Singleton
+    @RecentCategoriesDataStoreManager
+    fun provideRecentCategoriesStoreManager(
+        @RecentCategoriesDataStore dataStore: DataStore<Preferences>
+    ): DataStoreManager = DataStoreManagerImpl(dataStore)
 }
 
 // Settings data store
@@ -76,16 +76,6 @@ annotation class SettingsDataStore
 @Retention(AnnotationRetention.RUNTIME)
 annotation class SettingsDataStoreManager
 
-// Multi choice question data store
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class MultiChoiceQuestionDataStore
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class MultiChoiceQuestionDataStoreManager
-
 // Comparison quiz data store
 
 @Qualifier
@@ -95,3 +85,13 @@ annotation class ComparisonQuizDataStore
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ComparisonQuizDataStoreManager
+
+// Recent categories data store
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class RecentCategoriesDataStore
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class RecentCategoriesDataStoreManager

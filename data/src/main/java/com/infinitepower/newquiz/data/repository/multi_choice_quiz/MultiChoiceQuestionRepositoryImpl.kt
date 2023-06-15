@@ -1,12 +1,8 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
-import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
-import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.opentdb.OpenTDBQuestionResponse
 import com.infinitepower.newquiz.model.multi_choice_quiz.toQuestion
@@ -21,10 +17,7 @@ import io.ktor.http.HttpMethod
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,8 +27,7 @@ private const val OPENTDB_API_URL = "https://opentdb.com/api.php"
 
 @Singleton
 class MultiChoiceQuestionRepositoryImpl @Inject constructor(
-    private val client: HttpClient,
-    @MultiChoiceQuestionDataStoreManager private val settingsDataStoreManager: DataStoreManager
+    private val client: HttpClient
 ) : MultiChoiceQuestionRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
@@ -77,33 +69,5 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
         }
         val textResponse = response.bodyAsText()
         return Json.decodeFromString(textResponse)
-    }
-
-    override fun getRecentCategories(): Flow<List<MultiChoiceCategory>> =
-        settingsDataStoreManager
-            .getPreferenceFlow(MultiChoiceQuestionDataStoreCommon.RecentCategories)
-            .map { recentCategories ->
-                multiChoiceQuestionCategories.filter { it.key in recentCategories }
-            }
-
-    override suspend fun addCategoryToRecent(category: MultiChoiceBaseCategory) {
-        val recentCategories = settingsDataStoreManager.getPreference(MultiChoiceQuestionDataStoreCommon.RecentCategories)
-
-        val newCategoriesIds = recentCategories
-            .toMutableSet()
-            .apply {
-                // If the category to add is in the recent it's not necessary
-                // to add the category, so return
-                if (category.key in this) return
-
-                if (size >= 3) remove(last())
-
-                add(category.key)
-            }.toSet()
-
-        settingsDataStoreManager.editPreference(
-            key = MultiChoiceQuestionDataStoreCommon.RecentCategories.key,
-            newValue = newCategoriesIds
-        )
     }
 }

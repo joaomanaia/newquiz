@@ -3,12 +3,11 @@ package com.infinitepower.newquiz.settings_presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.infinitepower.newquiz.core.common.dataStore.MultiChoiceQuestionDataStoreCommon
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
-import com.infinitepower.newquiz.core.di.MultiChoiceQuestionDataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
+import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
@@ -30,8 +29,8 @@ class SettingsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val translatorUtil: TranslatorUtil,
     private val authUserRepository: AuthUserRepository,
-    @MultiChoiceQuestionDataStoreManager private val multiChoiceSettingsDataStoreManager: DataStoreManager,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
+    private val recentCategoriesRepository: RecentCategoriesRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
@@ -92,10 +91,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun cleanMultiChoiceRecentCategoriesItems() = viewModelScope.launch(Dispatchers.IO) {
-        multiChoiceSettingsDataStoreManager.editPreference(
-            key = MultiChoiceQuestionDataStoreCommon.RecentCategories.key,
-            newValue = emptySet()
-        )
+        recentCategoriesRepository.cleanMultiChoiceCategories()
     }
 
     private fun enableLoggingAnalytics(enabled: Boolean) = viewModelScope.launch(Dispatchers.IO) {

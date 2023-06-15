@@ -17,7 +17,7 @@ import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
-import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
+import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
@@ -48,7 +48,7 @@ class QuizScreenViewModel @Inject constructor(
     private val getRandomQuestionUseCase: GetRandomMultiChoiceQuestionUseCase,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
-    private val multiChoiceQuestionsRepository: MultiChoiceQuestionRepository,
+    private val recentCategoriesRepository: RecentCategoriesRepository,
     private val savedStateHandle: SavedStateHandle,
     private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
     private val translationUtil: TranslatorUtil,
@@ -165,7 +165,7 @@ class QuizScreenViewModel @Inject constructor(
         val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
 
         if (category.hasCategory) {
-            multiChoiceQuestionsRepository.addCategoryToRecent(category)
+            recentCategoriesRepository.addMultiChoiceCategory(category)
         }
 
         getRandomQuestionUseCase(questionSize, category, difficulty).collect { res ->
