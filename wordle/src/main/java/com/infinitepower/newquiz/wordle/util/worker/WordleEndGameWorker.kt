@@ -9,6 +9,7 @@ import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytic
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
 import com.infinitepower.newquiz.core.util.kotlin.toULong
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
+import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
@@ -26,7 +27,8 @@ class WordleEndGameWorker @AssistedInject constructor(
     private val wordleXpRepository: WordleXpRepository,
     private val wordleLoggingAnalytics: WordleLoggingAnalytics,
     private val mazeLoggingAnalytics: MazeLoggingAnalytics,
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val recentCategoriesRepository: RecentCategoriesRepository
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -43,8 +45,10 @@ class WordleEndGameWorker @AssistedInject constructor(
         val rowLimit = inputData.getInt(INPUT_ROW_LIMIT, 0)
         val currentRowPosition = inputData.getInt(INPUT_CURRENT_ROW_POSITION, 0)
         val isLastRowCorrect = inputData.getBoolean(INPUT_IS_LAST_ROW_CORRECT, false)
-        val quizType = inputData.getString(INPUT_QUIZ_TYPE) ?: WordleQuizType.TEXT.name
+        val quizTypeName = inputData.getString(INPUT_QUIZ_TYPE) ?: WordleQuizType.TEXT.name
         val mazeItemId = inputData.getString(INPUT_MAZE_TEM_ID)
+
+        recentCategoriesRepository.addWordleCategory(quizTypeName)
 
         if (isLastRowCorrect) {
             UpdateGlobalEventDataWorker.enqueueWork(
@@ -58,7 +62,7 @@ class WordleEndGameWorker @AssistedInject constructor(
             maxRows = rowLimit,
             lastRow = currentRowPosition,
             lastRowCorrect = isLastRowCorrect,
-            quizType = quizType,
+            quizType = quizTypeName,
             mazeItemId = mazeItemId?.toIntOrNull()
         )
 

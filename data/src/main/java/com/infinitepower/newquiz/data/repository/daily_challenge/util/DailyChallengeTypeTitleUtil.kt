@@ -35,7 +35,7 @@ fun GameEvent.getTitle(
             maxValue
         )
         is GameEvent.MultiChoice.PlayQuizWithCategory -> {
-            val category = multiChoiceQuestionCategories.first { it.key == this.categoryKey }
+            val category = multiChoiceQuestionCategories.first { it.id == this.categoryId }
 
             UiText.PluralStringResource(
                 resId = CoreR.plurals.play_multi_choice_quiz_game_in_category,

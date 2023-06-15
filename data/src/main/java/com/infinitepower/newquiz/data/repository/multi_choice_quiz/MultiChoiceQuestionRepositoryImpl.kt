@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -58,8 +57,7 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
             parameter("encode", "base64")
             parameter("amount", amount)
             if (category.hasCategory) {
-                val categoryDB = multiChoiceQuestionCategories.find { it.key == category.categoryKey }
-                if (categoryDB != null) parameter("category", categoryDB.id)
+                parameter("category", category.categoryId)
             }
             if (difficulty != null) parameter("difficulty", difficulty)
 

@@ -21,14 +21,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
+import com.infinitepower.newquiz.model.BaseCategory
 
-fun LazyListScope.homeCategoriesItems(
+fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
     seeAllCategories: Boolean,
-    recentCategories: List<MultiChoiceCategory>,
-    otherCategories: List<MultiChoiceCategory>,
+    recentCategories: List<T>,
+    otherCategories: List<T>,
     isInternetAvailable: Boolean,
-    onCategoryClick: (MultiChoiceCategory) -> Unit,
+    onCategoryClick: (T) -> Unit,
     onSeeAllCategoriesClick: () -> Unit,
 ) {
     items(

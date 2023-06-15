@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.wordle.di
 import com.infinitepower.newquiz.data.di.RepositoryModule
 import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.daily_challenge.DailyChallengeRepositoryImpl
+import com.infinitepower.newquiz.data.repository.home.RecentCategoriesRepositoryImpl
 import com.infinitepower.newquiz.data.repository.math_quiz.MathQuizCoreRepositoryImpl
 import com.infinitepower.newquiz.data.repository.maze_quiz.MazeQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepositoryImpl
@@ -15,6 +16,7 @@ import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionApi
 import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
+import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepository
@@ -81,4 +83,7 @@ abstract class TestRepositoryModule {
 
     @Binds
     abstract fun bindRemoteConfigApi(impl: TestFirebaseRemoteConfigApiImpl): RemoteConfigApi
+
+    @Binds
+    abstract fun bindRecentCategoriesRepository(impl: RecentCategoriesRepositoryImpl): RecentCategoriesRepository
 }

@@ -22,8 +22,8 @@ interface DailyChallengeScreenNavigator {
 
             // Navigate to multi choice quiz with category
             is GameEvent.MultiChoice.PlayQuizWithCategory -> {
-                val categoryKey = event.categoryKey
-                val category = MultiChoiceBaseCategory.fromKey(categoryKey)
+                val categoryKey = event.categoryId
+                val category = MultiChoiceBaseCategory.fromId(categoryKey)
 
                 navigateToMultiChoiceQuiz(category)
             }

@@ -9,10 +9,7 @@ data class MultiChoiceCategory(
     override val id: String,
     override val name: UiText,
     override val image: Any,
-    override val requireInternetConnection: Boolean = true,
-
-    // The key to use in the MultiChoiceBaseCategory
-    val key: String
+    override val requireInternetConnection: Boolean = true
 ) : BaseCategory
 
-fun MultiChoiceCategory.toBaseCategory() = MultiChoiceBaseCategory.fromKey(key)
+fun MultiChoiceCategory.toBaseCategory() = MultiChoiceBaseCategory.fromId(id)

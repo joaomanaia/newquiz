@@ -3,9 +3,7 @@ package com.infinitepower.newquiz.wordle.list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,15 +11,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
 import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
+import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeLargeCard
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
@@ -37,9 +39,13 @@ import com.infinitepower.newquiz.core.R as CoreR
 @Destination
 @OptIn(ExperimentalMaterial3Api::class)
 fun WordleListScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    homeViewModel: WordleListScreenViewModel = hiltViewModel()
 ) {
+    val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
+
     WordleListScreenImpl(
+        uiState = uiState,
         navigateToWordleQuiz = { wordleQuizType ->
             navigator.navigate(WordleScreenDestination(quizType = wordleQuizType))
         }
@@ -49,13 +55,14 @@ fun WordleListScreen(
 @Composable
 @ExperimentalMaterial3Api
 private fun WordleListScreenImpl(
+    uiState: WordleListUiState,
     navigateToWordleQuiz: (wordleQuizType: WordleQuizType) -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
     val isInternetAvailable = rememberIsInternetAvailable()
 
-    val categories = remember { WordleCategories.allCategories }
+    var seeAllCategories by remember { mutableStateOf(false) }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -78,7 +85,7 @@ private fun WordleListScreenImpl(
                     icon = CardIcon.Icon(Icons.Rounded.QuestionMark),
                     backgroundPrimary = true,
                     onClick = {
-                        val randomCategory = WordleCategories.random(categories, isInternetAvailable)
+                        val randomCategory = WordleCategories.random(isInternetAvailable)
                         navigateToWordleQuiz(randomCategory.wordleQuizType)
                     }
                 )
@@ -92,20 +99,14 @@ private fun WordleListScreenImpl(
             )
         }
 
-        items(
-            items = categories,
-            key = { category -> category.id }
-        ) { category ->
-            CategoryComponent(
-                modifier = Modifier
-                    .fillParentMaxWidth()
-                    .height(120.dp),
-                title = category.name.asString(),
-                imageUrl = category.image,
-                onClick = { navigateToWordleQuiz(category.wordleQuizType) },
-                enabled = isInternetAvailable || !category.requireInternetConnection
-            )
-        }
+        homeCategoriesItems(
+            seeAllCategories = seeAllCategories,
+            recentCategories = uiState.homeCategories.recentCategories,
+            otherCategories = uiState.homeCategories.otherCategories,
+            isInternetAvailable = isInternetAvailable,
+            onCategoryClick = { category -> navigateToWordleQuiz(category.wordleQuizType) },
+            onSeeAllCategoriesClick = { seeAllCategories = !seeAllCategories }
+        )
     }
 }
 
@@ -116,6 +117,7 @@ private fun WordleListScreenPreview() {
     NewQuizTheme {
         Surface {
             WordleListScreenImpl(
+                uiState = WordleListUiState(),
                 navigateToWordleQuiz = {}
             )
         }

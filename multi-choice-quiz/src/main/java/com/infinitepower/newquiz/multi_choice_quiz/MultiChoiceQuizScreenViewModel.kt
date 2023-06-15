@@ -213,7 +213,7 @@ class QuizScreenViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             // Update global event data, for daily challenge and achievements
             val event = if (category.hasCategory) {
-                GameEvent.MultiChoice.PlayQuizWithCategory(category.key)
+                GameEvent.MultiChoice.PlayQuizWithCategory(category.id)
             } else {
                 GameEvent.MultiChoice.PlayRandomQuiz
             }

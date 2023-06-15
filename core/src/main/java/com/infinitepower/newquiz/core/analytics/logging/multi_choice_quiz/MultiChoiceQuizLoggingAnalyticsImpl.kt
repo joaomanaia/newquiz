@@ -53,7 +53,7 @@ class MultiChoiceQuizLoggingAnalyticsImpl @Inject constructor(
 
     override fun logCategoryClicked(category: MultiChoiceBaseCategory) {
         firebaseAnalytics.logEvent(EVENT_CATEGORY_CLICKED) {
-            param(PARAM_ID, category.key)
+            param(PARAM_ID, category.id)
         }
     }
 

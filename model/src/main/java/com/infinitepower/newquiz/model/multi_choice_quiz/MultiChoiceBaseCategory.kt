@@ -10,23 +10,23 @@ import kotlinx.serialization.encoding.Encoder
 
 @Serializable(with = MultiChoiceBaseCategorySerializer::class)
 sealed class MultiChoiceBaseCategory(
-    val key: String,
+    val id: String,
 ) : java.io.Serializable {
     companion object {
-        fun fromKey(key: String) = when (key) {
-            Logo.key -> Logo
-            Flag.key -> Flag
-            GuessMathSolution.key -> GuessMathSolution
-            NumberTrivia.key -> NumberTrivia
-            CountryCapitalFlags.key -> CountryCapitalFlags
-            else -> Normal(key)
+        fun fromId(id: String) = when (id) {
+            Logo.id -> Logo
+            Flag.id -> Flag
+            GuessMathSolution.id -> GuessMathSolution
+            NumberTrivia.id -> NumberTrivia
+            CountryCapitalFlags.id -> CountryCapitalFlags
+            else -> Normal(id)
         }
     }
 
-    override fun toString(): String = key
+    override fun toString(): String = id
 
     val hasCategory: Boolean
-        get() = key.isNotBlank() && key != "random"
+        get() = id.isNotBlank() && id != "random"
 
     /**
      * Random multi choice category using [Normal] class
@@ -35,39 +35,39 @@ sealed class MultiChoiceBaseCategory(
 
     /**
      * Normal multi choice type with category
-     * @param categoryKey category to the quiz
+     * @param categoryId category to the quiz
      */
     open class Normal(
-        val categoryKey: String
-    ) : MultiChoiceBaseCategory(key = categoryKey) {
+        val categoryId: String
+    ) : MultiChoiceBaseCategory(id = categoryId) {
         /** Sets multi choice type as no category */
         constructor() : this("random")
 
-        override fun toString(): String = categoryKey
+        override fun toString(): String = categoryId
 
         override fun equals(other: Any?): Boolean {
             if (other !is Normal) return false
 
-            return this.categoryKey == other.categoryKey
+            return this.categoryId == other.categoryId
         }
 
-        override fun hashCode(): Int = categoryKey.hashCode()
+        override fun hashCode(): Int = categoryId.hashCode()
     }
 
     /** Logo multi choice quiz category */
-    object Logo : MultiChoiceBaseCategory(key = "logo")
+    object Logo : MultiChoiceBaseCategory(id = "logo")
 
     /** Flag multi choice quiz category */
-    object Flag : MultiChoiceBaseCategory(key = "flag")
+    object Flag : MultiChoiceBaseCategory(id = "flag")
 
     /** Number trivia multi choice quiz category */
-    object CountryCapitalFlags : MultiChoiceBaseCategory(key = "country_capital_flags")
+    object CountryCapitalFlags : MultiChoiceBaseCategory(id = "country_capital_flags")
 
     /** Guess math solution multi choice quiz category */
-    object GuessMathSolution : MultiChoiceBaseCategory(key = "guess_math_solution")
+    object GuessMathSolution : MultiChoiceBaseCategory(id = "guess_math_solution")
 
     /** Number trivia multi choice quiz category */
-    object NumberTrivia : MultiChoiceBaseCategory(key = "number_trivia")
+    object NumberTrivia : MultiChoiceBaseCategory(id = "number_trivia")
 }
 
 object MultiChoiceBaseCategorySerializer : KSerializer<MultiChoiceBaseCategory> {
@@ -76,7 +76,7 @@ object MultiChoiceBaseCategorySerializer : KSerializer<MultiChoiceBaseCategory> 
     }
 
     override fun deserialize(decoder: Decoder): MultiChoiceBaseCategory {
-        return MultiChoiceBaseCategory.fromKey(decoder.decodeString())
+        return MultiChoiceBaseCategory.fromId(decoder.decodeString())
     }
 
     override val descriptor: SerialDescriptor
