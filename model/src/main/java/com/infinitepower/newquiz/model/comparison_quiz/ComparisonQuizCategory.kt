@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.model.comparison_quiz
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.model.BaseCategory
+import com.infinitepower.newquiz.model.UiText
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -15,23 +17,24 @@ import java.util.Locale
 /**
  * A category of comparison quizzes.
  * @param id The id of the category.
- * @param title The title of the category.
- * @param imageUrl The url of the image of the category.
+ * @param name The title of the category.
+ * @param image The url of the image of the category.
  * @param questionDescription The description of the question.
  * @param helperValueSuffix The suffix of the question value.
  */
 @Keep
 @Serializable
 data class ComparisonQuizCategory(
-    val id: String,
-    val title: String,
+    override val id: String,
+    override val name: UiText,
+    override val image: String,
+    override val requireInternetConnection: Boolean = true,
     val description: String,
-    val imageUrl: String,
     val questionDescription: QuestionDescription,
     val formatType: ComparisonQuizFormatType,
     val helperValueSuffix: String? = null,
     val dataSourceAttribution: DataSourceAttribution? = null
-) : java.io.Serializable {
+) : BaseCategory, java.io.Serializable {
     fun formatValueToString(value: Double): String {
         return formatType.formatValueToString(value, helperValueSuffix)
     }
@@ -59,6 +62,18 @@ data class ComparisonQuizCategory(
         val text: String,
         val logo: String? = null
     ) : java.io.Serializable
+
+    fun toEntity(): ComparisonQuizCategoryEntity = ComparisonQuizCategoryEntity(
+        id = id,
+        name = name.toString(),
+        image = image,
+        requireInternetConnection = requireInternetConnection,
+        description = description,
+        questionDescription = questionDescription,
+        formatType = formatType,
+        helperValueSuffix = helperValueSuffix,
+        dataSourceAttribution = dataSourceAttribution
+    )
 }
 
 @Serializable(with = ComparisonQuizFormatTypeSerializer::class)

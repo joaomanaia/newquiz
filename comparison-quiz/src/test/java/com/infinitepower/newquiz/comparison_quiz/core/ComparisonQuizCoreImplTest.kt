@@ -11,6 +11,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQues
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
+import com.infinitepower.newquiz.model.toUiText
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -448,9 +449,9 @@ internal class ComparisonQuizCoreImplTest {
     ) = ComparisonQuizCore.InitializationData(
         category = ComparisonQuizCategory(
             id = "id",
-            title = "title",
+            name = "title".toUiText(),
             description = "description",
-            imageUrl = "imageUrl",
+            image = "imageUrl",
             questionDescription = ComparisonQuizCategory.QuestionDescription(
                 greater = "greater",
                 less = "less"

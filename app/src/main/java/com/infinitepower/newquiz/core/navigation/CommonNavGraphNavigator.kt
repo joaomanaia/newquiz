@@ -33,7 +33,7 @@ class CommonNavGraphNavigator(
         category: ComparisonQuizCategory,
         mode: ComparisonMode
     ) {
-        navController.navigate(ComparisonQuizScreenDestination(category, mode))
+        navController.navigate(ComparisonQuizScreenDestination(category.toEntity(), mode))
     }
 
     override fun navigateToMultiChoiceQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {

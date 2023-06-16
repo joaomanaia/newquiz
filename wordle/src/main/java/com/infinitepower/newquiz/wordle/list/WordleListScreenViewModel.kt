@@ -1,11 +1,10 @@
-package com.infinitepower.newquiz.multi_choice_quiz.list
+package com.infinitepower.newquiz.wordle.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.network.NetworkStatus
 import com.infinitepower.newquiz.core.network.NetworkStatusTracker
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
-import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,23 +19,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
-class MultiChoiceQuizListScreenViewModel @Inject constructor(
-    private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
+class WordleListScreenViewModel @Inject constructor(
     private val recentCategoriesRepository: RecentCategoriesRepository,
     private val networkStatusTracker: NetworkStatusTracker
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(MultiChoiceQuizListScreenUiState())
+    private val _uiState = MutableStateFlow(WordleListUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
-        savedQuestionsRepository
-            .getFlowQuestions()
-            .onEach { res ->
-                _uiState.update { currentState ->
-                    currentState.copy(savedQuestionsSize = res.size)
-                }
-            }.launchIn(viewModelScope)
-
         val networkStatus = networkStatusTracker
             .networkStatus
             .stateIn(
@@ -47,7 +37,7 @@ class MultiChoiceQuizListScreenViewModel @Inject constructor(
 
         networkStatus
             .flatMapLatest { status ->
-                recentCategoriesRepository.getMultiChoiceCategories(isInternetAvailable = status.isAvailable())
+                recentCategoriesRepository.getWordleCategories(isInternetAvailable = status.isAvailable())
             }.onEach { homeCategories ->
                 _uiState.update { currentState ->
                     currentState.copy(homeCategories = homeCategories)

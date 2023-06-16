@@ -1,21 +1,18 @@
 package com.infinitepower.newquiz.comparison_quiz.list
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
@@ -23,11 +20,14 @@ import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonModeC
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
 import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
+import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
+import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
+import com.infinitepower.newquiz.domain.repository.home.HomeCategories
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.toUiText
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.infinitepower.newquiz.core.R as CoreR
@@ -45,7 +45,7 @@ fun ComparisonQuizListScreen(
         onCategoryClick = { category ->
             navigator.navigate(
                 ComparisonQuizScreenDestination(
-                    category = category,
+                    category = category.toEntity(),
                     comparisonMode = uiState.selectedMode
                 )
             )
@@ -66,10 +66,9 @@ private fun ComparisonQuizListScreenImpl(
     
     val isInternetAvailable = rememberIsInternetAvailable()
 
-    LazyColumn(
-        contentPadding = PaddingValues(spaceMedium),
-        verticalArrangement = Arrangement.spacedBy(spaceMedium)
-    ) {
+    var seeAllCategories by remember { mutableStateOf(false) }
+
+    HomeLazyColumn {
         item {
             Column {
                 Text(
@@ -92,20 +91,14 @@ private fun ComparisonQuizListScreenImpl(
             )
         }
 
-        items(
-            items = uiState.categories,
-            key = { category -> category.id }
-        ) { category ->
-            CategoryComponent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp),
-                title = category.title,
-                imageUrl = category.imageUrl,
-                onClick = { onCategoryClick(category) },
-                enabled = isInternetAvailable
-            )
-        }
+        homeCategoriesItems(
+            seeAllCategories = seeAllCategories,
+            recentCategories = uiState.homeCategories.recentCategories,
+            otherCategories = uiState.homeCategories.otherCategories,
+            isInternetAvailable = isInternetAvailable,
+            onCategoryClick = onCategoryClick,
+            onSeeAllCategoriesClick = { seeAllCategories = !seeAllCategories }
+        )
     }
 }
 
@@ -116,18 +109,21 @@ private fun ComparisonQuizListScreenPreview() {
         Surface {
             ComparisonQuizListScreenImpl(
                 uiState = ComparisonQuizListScreenUiState(
-                    categories = listOf(
-                        ComparisonQuizCategory(
-                            id = "test",
-                            description = "Description",
-                            title = "Title",
-                            imageUrl = "",
-                            questionDescription = ComparisonQuizCategory.QuestionDescription(
-                                greater = "Greater",
-                                less = "Less"
-                            ),
-                            formatType = ComparisonQuizFormatType.Number
-                        )
+                    homeCategories = HomeCategories(
+                        recentCategories = listOf(
+                            ComparisonQuizCategory(
+                                id = "test",
+                                description = "Description",
+                                name = "Title".toUiText(),
+                                image = "",
+                                questionDescription = ComparisonQuizCategory.QuestionDescription(
+                                    greater = "Greater",
+                                    less = "Less"
+                                ),
+                                formatType = ComparisonQuizFormatType.Number
+                            )
+                        ),
+                        otherCategories = emptyList()
                     )
                 ),
                 onCategoryClick = {},

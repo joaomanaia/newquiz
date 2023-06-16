@@ -71,7 +71,7 @@ sealed class GameEvent(
             random: Random = Random
         ): List<GameEvent> {
             val multiChoicePlayQuizWithCategory = MultiChoice.PlayQuizWithCategory(
-                categoryKey = multiChoiceCategories.random(random).key
+                categoryId = multiChoiceCategories.random(random).id
             )
 
             val wordleWithType = Wordle.PlayWordWithCategory(
@@ -118,9 +118,9 @@ sealed class GameEvent(
 
         @Keep
         data class PlayQuizWithCategory(
-            val categoryKey: String
+            val categoryId: String
         ) : MultiChoice(
-            key = "$KEY_PREFIX$categoryKey",
+            key = "$KEY_PREFIX$categoryId",
             taskValueRange = 1u..5u
         ) {
             companion object {

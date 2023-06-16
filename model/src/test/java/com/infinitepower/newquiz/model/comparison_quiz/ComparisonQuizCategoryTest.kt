@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.model.comparison_quiz
 
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.model.toUiText
 import org.junit.jupiter.api.Test
 
 internal class ComparisonQuizCategoryTest {
@@ -13,9 +14,9 @@ internal class ComparisonQuizCategoryTest {
 
         val category = ComparisonQuizCategory(
             id = "1",
-            title = "Category Title",
+            name = "Category Title".toUiText(),
             description = "Category Description",
-            imageUrl = "https://example.com/image.png",
+            image = "https://example.com/image.png",
             questionDescription = questionDescription,
             formatType = ComparisonQuizFormatType.Number,
             helperValueSuffix = null,
@@ -35,9 +36,9 @@ internal class ComparisonQuizCategoryTest {
 
         val category = ComparisonQuizCategory(
             id = "1",
-            title = "Category Title",
+            name = "Category Title".toUiText(),
             description = "Category Description",
-            imageUrl = "https://example.com/image.png",
+            image = "https://example.com/image.png",
             questionDescription = questionDescription,
             formatType = ComparisonQuizFormatType.Number,
             helperValueSuffix = null,

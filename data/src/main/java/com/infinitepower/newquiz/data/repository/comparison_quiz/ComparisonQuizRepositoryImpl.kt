@@ -8,6 +8,7 @@ import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.ComparisonQuizDataStoreManager
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import com.infinitepower.newquiz.model.comparison_quiz.toComparisonQuizItem
@@ -36,8 +37,10 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
     override fun getCategories(): List<ComparisonQuizCategory> {
         if (categoriesCache.isEmpty()) {
             val categoriesStr = remoteConfigApi.getString("comparison_quiz_categories")
+            val categoriesEntity: List<ComparisonQuizCategoryEntity> = Json.decodeFromString(categoriesStr)
+            val categories = categoriesEntity.map(ComparisonQuizCategoryEntity::toModel)
 
-            categoriesCache.addAll(Json.decodeFromString(categoriesStr))
+            categoriesCache.addAll(categories)
         }
 
         return categoriesCache
