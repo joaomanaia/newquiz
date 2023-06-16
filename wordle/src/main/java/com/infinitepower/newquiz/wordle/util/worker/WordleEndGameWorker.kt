@@ -7,12 +7,12 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
+import com.infinitepower.newquiz.core.network.NetworkStatusTracker
 import com.infinitepower.newquiz.core.util.kotlin.toULong
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
-import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
 import com.infinitepower.newquiz.online_services.domain.game.xp.WordleXpRepository
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import dagger.assisted.Assisted
@@ -22,7 +22,7 @@ import dagger.assisted.AssistedInject
 class WordleEndGameWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val onlineServicesCore: OnlineServicesCore,
+    private val networkStatusTracker: NetworkStatusTracker,
     private val userRepository: UserRepository,
     private val wordleXpRepository: WordleXpRepository,
     private val wordleLoggingAnalytics: WordleLoggingAnalytics,
@@ -70,7 +70,7 @@ class WordleEndGameWorker @AssistedInject constructor(
             mazeLoggingAnalytics.logMazeItemPlayed(isLastRowCorrect)
         }
 
-        if (onlineServicesCore.connectionAvailable()) {
+        if (networkStatusTracker.connectionAvailable()) {
             val newXp = if (isLastRowCorrect) {
                 wordleXpRepository.generateRandomXP(currentRowPosition)
             } else 0

@@ -5,6 +5,7 @@ import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQui
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.model.toUiText
 import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,9 +16,9 @@ class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRep
         return listOf(
             ComparisonQuizCategory(
                 id = "1",
-                title = "Category 1",
+                name = "Category 1".toUiText(),
                 description = "Description 1",
-                imageUrl = "",
+                image = "",
                 questionDescription = ComparisonQuizCategory.QuestionDescription(
                     greater = "Greater",
                     less = "Less"

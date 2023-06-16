@@ -165,7 +165,7 @@ class QuizScreenViewModel @Inject constructor(
         val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
 
         if (category.hasCategory) {
-            recentCategoriesRepository.addMultiChoiceCategory(category)
+            recentCategoriesRepository.addMultiChoiceCategory(category.id)
         }
 
         getRandomQuestionUseCase(questionSize, category, difficulty).collect { res ->

@@ -12,7 +12,6 @@ import com.infinitepower.newquiz.domain.repository.home.HomeCategoriesFlow
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.BaseCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.wordle.WordleCategory
 import kotlinx.coroutines.flow.Flow
@@ -25,37 +24,51 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
     @RecentCategoriesDataStoreManager private val recentCategoriesDataStoreManager: DataStoreManager,
     private val comparisonQuizRepository: ComparisonQuizRepository
 ) : RecentCategoriesRepository {
-    override fun getMultiChoiceCategories(): HomeCategoriesFlow<MultiChoiceCategory> = getHomeCategories(
+    override fun getMultiChoiceCategories(
+        isInternetAvailable: Boolean
+    ): HomeCategoriesFlow<MultiChoiceCategory> = getHomeCategories(
         allCategories = multiChoiceQuestionCategories,
         request = RecentCategoryDataStoreCommon.MultiChoice,
-        isInternetAvailable = true
+        isInternetAvailable = isInternetAvailable
     )
 
-    override fun getWordleCategories(): HomeCategoriesFlow<WordleCategory> = getHomeCategories(
+    override fun getWordleCategories(
+        isInternetAvailable: Boolean
+    ): HomeCategoriesFlow<WordleCategory> = getHomeCategories(
         allCategories = WordleCategories.allCategories,
         request = RecentCategoryDataStoreCommon.Wordle,
-        isInternetAvailable = true
+        isInternetAvailable = isInternetAvailable
     )
 
-    override fun getComparisonCategories(): HomeCategoriesFlow<ComparisonQuizCategory> = getHomeCategories(
+    override fun getComparisonCategories(
+        isInternetAvailable: Boolean
+    ): HomeCategoriesFlow<ComparisonQuizCategory> = getHomeCategories(
         allCategories = comparisonQuizRepository.getCategories(),
         request = RecentCategoryDataStoreCommon.ComparisonQuiz,
-        isInternetAvailable = true
+        isInternetAvailable = isInternetAvailable
     )
+
+    fun <T : BaseCategory> getHomeCategories(
+        allCategories: List<T>,
+        recentCategoriesFlow: Flow<Set<String>>,
+        isInternetAvailable: Boolean
+    ): Flow<HomeCategories<T>> = recentCategoriesFlow.map { recentCategoriesIds ->
+        getHomeBaseCategories(
+            savedRecentCategoriesIds = recentCategoriesIds,
+            allCategories = allCategories,
+            isInternetAvailable = isInternetAvailable
+        )
+    }
 
     private fun <T : BaseCategory> getHomeCategories(
         allCategories: List<T>,
         request: PreferenceRequest<Set<String>>,
         isInternetAvailable: Boolean
-    ): Flow<HomeCategories<T>> = recentCategoriesDataStoreManager
-        .getPreferenceFlow(request)
-        .map { recentCategoriesIds ->
-            getHomeBaseCategories(
-                savedRecentCategoriesIds = recentCategoriesIds,
-                allCategories = allCategories,
-                isInternetAvailable = isInternetAvailable
-            )
-        }
+    ): Flow<HomeCategories<T>> = getHomeCategories(
+        allCategories = allCategories,
+        recentCategoriesFlow = recentCategoriesDataStoreManager.getPreferenceFlow(request),
+        isInternetAvailable = isInternetAvailable
+    )
 
     private fun <T : BaseCategory> getHomeBaseCategories(
         savedRecentCategoriesIds: Set<String>,
@@ -101,13 +114,15 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
             allCategories
                 // If there is no internet, we only show the categories that don't require internet connection
                 .filter { !it.requireInternetConnection || isInternetAvailable }
+                // If there are no categories that don't require internet connection, we use all categories
+                .ifEmpty { allCategories }
                 .shuffled()
                 .take(3)
         }
     }
 
-    override suspend fun addMultiChoiceCategory(category: MultiChoiceBaseCategory) {
-        addCategory(category.id, RecentCategoryDataStoreCommon.MultiChoice)
+    override suspend fun addMultiChoiceCategory(categoryId: String) {
+        addCategory(categoryId, RecentCategoryDataStoreCommon.MultiChoice)
     }
 
     override suspend fun addWordleCategory(categoryId: String) {
@@ -116,21 +131,6 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
 
     override suspend fun addComparisonCategory(categoryId: String) {
         addCategory(categoryId, RecentCategoryDataStoreCommon.ComparisonQuiz)
-    }
-
-    override suspend fun cleanAllSavedCategories() {
-        recentCategoriesDataStoreManager.editPreference(
-            key = RecentCategoryDataStoreCommon.MultiChoice.key,
-            newValue = emptySet()
-        )
-        recentCategoriesDataStoreManager.editPreference(
-            key = RecentCategoryDataStoreCommon.Wordle.key,
-            newValue = emptySet()
-        )
-        recentCategoriesDataStoreManager.editPreference(
-            key = RecentCategoryDataStoreCommon.ComparisonQuiz.key,
-            newValue = emptySet()
-        )
     }
 
     private suspend fun addCategory(
@@ -154,6 +154,21 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
         recentCategoriesDataStoreManager.editPreference(
             key = preferenceRequest.key,
             newValue = newCategoriesIds
+        )
+    }
+
+    override suspend fun cleanAllSavedCategories() {
+        recentCategoriesDataStoreManager.editPreference(
+            key = RecentCategoryDataStoreCommon.MultiChoice.key,
+            newValue = emptySet()
+        )
+        recentCategoriesDataStoreManager.editPreference(
+            key = RecentCategoryDataStoreCommon.Wordle.key,
+            newValue = emptySet()
+        )
+        recentCategoriesDataStoreManager.editPreference(
+            key = RecentCategoryDataStoreCommon.ComparisonQuiz.key,
+            newValue = emptySet()
         )
     }
 }

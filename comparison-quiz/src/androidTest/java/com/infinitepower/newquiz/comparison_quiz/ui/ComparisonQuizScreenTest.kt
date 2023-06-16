@@ -26,12 +26,14 @@ import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
 import com.infinitepower.newquiz.core_test.utils.setDeviceLocale
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
+import com.infinitepower.newquiz.model.toUiText
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import io.mockk.every
@@ -58,6 +60,7 @@ internal class ComparisonQuizScreenTest {
     private val authUserRepository = mockk<AuthUserRepository>(relaxed = true)
     private val userRepository = mockk<UserRepository>(relaxed = true)
     private val remoteConfigApi = mockk<RemoteConfigApi>(relaxed = true)
+    private val recentCategoriesRepository = mockk<RecentCategoriesRepository>(relaxed = true)
 
     private lateinit var comparisonQuizCore: ComparisonQuizCore
 
@@ -70,9 +73,9 @@ internal class ComparisonQuizScreenTest {
     private val category by lazy {
         ComparisonQuizCategory(
             id = "numbers",
-            title = "Numbers",
+            name = "Numbers".toUiText(),
             description = "Numbers description",
-            imageUrl = "",
+            image = "",
             questionDescription = ComparisonQuizCategory.QuestionDescription(
                 greater = "Which number is greater?",
                 less = "Which number is lesser?",
@@ -132,13 +135,14 @@ internal class ComparisonQuizScreenTest {
             savedStateHandle = SavedStateHandle(
                 mapOf(
                     ComparisonQuizListScreenNavArg::comparisonMode.name to comparisonMode,
-                    ComparisonQuizListScreenNavArg::category.name to category
+                    ComparisonQuizListScreenNavArg::category.name to category.toEntity()
                 )
             ),
             comparisonQuizRepository = comparisonQuizRepository,
             workManager = workManager,
             authUserRepository = authUserRepository,
-            userRepository = userRepository
+            userRepository = userRepository,
+            recentCategoriesRepository = recentCategoriesRepository
         )
 
         composeTestRule.setContent {

@@ -5,14 +5,13 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
+import com.infinitepower.newquiz.core.network.NetworkStatusTracker
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.countCorrectQuestions
-import com.infinitepower.newquiz.online_services.core.OnlineServicesCore
 import com.infinitepower.newquiz.online_services.domain.game.xp.MultiChoiceQuizXPRepository
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 @HiltWorker
@@ -22,7 +21,7 @@ class MultiChoiceQuizEndGameWorker @AssistedInject constructor(
     private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
     private val multiChoiceQuizXPRepository: MultiChoiceQuizXPRepository,
     private val userRepository: UserRepository,
-    private val onlineServicesCore: OnlineServicesCore
+    private val networkStatusTracker: NetworkStatusTracker
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -42,7 +41,7 @@ class MultiChoiceQuizEndGameWorker @AssistedInject constructor(
 
         val saveNewXP = inputData.getBoolean(INPUT_SAVE_NEW_XP, true)
 
-        if (onlineServicesCore.connectionAvailable() && saveNewXP) {
+        if (networkStatusTracker.connectionAvailable() && saveNewXP) {
             val randomXP = multiChoiceQuizXPRepository.generateQuestionsRandomXP(questionSteps)
 
             val averageQuizTime = questionSteps.getAverageQuizTime()
