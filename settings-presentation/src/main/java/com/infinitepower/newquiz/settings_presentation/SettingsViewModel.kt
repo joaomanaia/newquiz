@@ -73,10 +73,7 @@ class SettingsViewModel @Inject constructor(
             is SettingsScreenUiEvent.DownloadTranslationModel -> downloadTranslationModel()
             is SettingsScreenUiEvent.SignOut -> authUserRepository.signOut()
             is SettingsScreenUiEvent.EnableLoggingAnalytics -> enableLoggingAnalytics(event.enabled)
-            is SettingsScreenUiEvent.EnableGeneralAnalytics -> {}
-            is SettingsScreenUiEvent.EnableCrashlytics -> {}
-            is SettingsScreenUiEvent.EnablePerformanceMonitoring -> {}
-            is SettingsScreenUiEvent.ClearMultiChoiceQuizRecentCategories -> cleanMultiChoiceRecentCategoriesItems()
+            is SettingsScreenUiEvent.ClearHomeRecentCategories -> clearHomeRecentCategories()
         }
     }
 
@@ -90,8 +87,8 @@ class SettingsViewModel @Inject constructor(
             }
     }
 
-    private fun cleanMultiChoiceRecentCategoriesItems() = viewModelScope.launch(Dispatchers.IO) {
-        recentCategoriesRepository.cleanMultiChoiceCategories()
+    private fun clearHomeRecentCategories() = viewModelScope.launch(Dispatchers.IO) {
+        recentCategoriesRepository.cleanAllSavedCategories()
     }
 
     private fun enableLoggingAnalytics(enabled: Boolean) = viewModelScope.launch(Dispatchers.IO) {

@@ -49,16 +49,18 @@ import com.infinitepower.newquiz.core.ui.components.skip_question.SkipIconButton
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipQuestionDialog
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.model.toUiText
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Keep
 data class ComparisonQuizListScreenNavArg(
-    val category: ComparisonQuizCategory,
+    val category: ComparisonQuizCategoryEntity,
     val comparisonMode: ComparisonMode = ComparisonMode.GREATER
 )
 
@@ -83,7 +85,7 @@ fun ComparisonQuizScreen(
 
             navigator.navigate(
                 ComparisonQuizScreenDestination(
-                    category = category,
+                    category = category.toEntity(),
                     comparisonMode = comparisonMode
                 )
             ) {
@@ -423,9 +425,9 @@ private fun ComparisonQuizScreenPreview() {
                     ),
                     gameDescription = "Which one is more popular?",
                     gameCategory = ComparisonQuizCategory(
-                        title = "Social",
+                        name = "Social".toUiText(),
                         description = "Social media",
-                        imageUrl = "",
+                        image = "",
                         id = "social",
                         questionDescription = ComparisonQuizCategory.QuestionDescription(
                             greater = "Which one is more popular?",

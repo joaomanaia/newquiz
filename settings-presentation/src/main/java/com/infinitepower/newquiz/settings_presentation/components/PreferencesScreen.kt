@@ -71,13 +71,13 @@ internal fun PreferencesScreen(
             is SettingsScreenPageData.General -> page.items(
                 scope = scope,
                 dataStoreManager = dataStoreManager,
-                enableLoggingAnalytics = { onEvent(SettingsScreenUiEvent.EnableLoggingAnalytics(it)) }
+                enableLoggingAnalytics = { onEvent(SettingsScreenUiEvent.EnableLoggingAnalytics(it)) },
+                cleanRecentCategories = { onEvent(SettingsScreenUiEvent.ClearHomeRecentCategories) }
             )
             is SettingsScreenPageData.MultiChoiceQuiz -> page.items(
                 translationModelState = uiState.translationModelState,
                 downloadTranslationModel = { onEvent(SettingsScreenUiEvent.DownloadTranslationModel) },
-                deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) },
-                cleanRecentCategories = { onEvent(SettingsScreenUiEvent.ClearMultiChoiceQuizRecentCategories) }
+                deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) }
             )
             is SettingsScreenPageData.Wordle -> page.items(
                 onChangeWordleLang = coreLoggingAnalytics::setWordleLangUserProperty

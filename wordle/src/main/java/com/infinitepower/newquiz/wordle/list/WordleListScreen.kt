@@ -1,9 +1,5 @@
 package com.infinitepower.newquiz.wordle.list
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,8 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
+import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeLargeCard
@@ -58,21 +54,11 @@ private fun WordleListScreenImpl(
     uiState: WordleListUiState,
     navigateToWordleQuiz: (wordleQuizType: WordleQuizType) -> Unit
 ) {
-    val spaceMedium = MaterialTheme.spacing.medium
-
     val isInternetAvailable = rememberIsInternetAvailable()
 
     var seeAllCategories by remember { mutableStateOf(false) }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(spaceMedium),
-        contentPadding = PaddingValues(
-            start = spaceMedium,
-            end = spaceMedium,
-            bottom = MaterialTheme.spacing.large,
-        )
-    ) {
+    HomeLazyColumn {
         item {
             HomeGroupTitle(title = stringResource(id = CoreR.string.wordle_infinite))
         }

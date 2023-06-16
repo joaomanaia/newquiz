@@ -127,7 +127,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         fun items(
             scope: CoroutineScope,
             dataStoreManager: DataStoreManager,
-            enableLoggingAnalytics: (enabled: Boolean) -> Unit
+            enableLoggingAnalytics: (enabled: Boolean) -> Unit,
+            cleanRecentCategories: () -> Unit
         ) = listOf(
             Preference.PreferenceItem.SwitchPreference(
                 request = SettingsCommon.ShowLoginCard,
@@ -153,6 +154,17 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 enabled = true,
                 onClick = {
                     scope.launch(Dispatchers.IO) { dataStoreManager.clearPreferences() }
+                }
+            ),
+            Preference.PreferenceItem.TextPreference(
+                title = stringResource(id = CoreR.string.clear_recent_categories),
+                summary = stringResource(id = CoreR.string.clear_recent_categories_description),
+                onClick = cleanRecentCategories,
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.ClearAll,
+                        contentDescription = stringResource(id = CoreR.string.clear_recent_categories),
+                    )
                 }
             ),
             Preference.PreferenceGroup(
@@ -246,8 +258,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         fun items(
             translationModelState: TranslatorModelState,
             downloadTranslationModel: () -> Unit,
-            deleteTranslationModel: () -> Unit,
-            cleanRecentCategories: () -> Unit
+            deleteTranslationModel: () -> Unit
         ) = listOf(
             Preference.PreferenceItem.SeekBarPreference(
                 request = SettingsCommon.MultiChoiceQuizQuestionsSize,
@@ -260,17 +271,6 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     )
                 },
                 valueRange = (5..20)
-            ),
-            Preference.PreferenceItem.TextPreference(
-                title = stringResource(id = CoreR.string.clear_recent_categories),
-                summary = stringResource(id = CoreR.string.clear_recent_categories_description),
-                onClick = cleanRecentCategories,
-                icon = {
-                    Icon(
-                        imageVector = Icons.Rounded.ClearAll,
-                        contentDescription = stringResource(id = CoreR.string.clear_recent_categories),
-                    )
-                }
             ),
             Preference.PreferenceGroup(
                 title = stringResource(id = CoreR.string.translation),

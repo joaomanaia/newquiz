@@ -7,9 +7,11 @@ import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +31,8 @@ class ComparisonQuizViewModel @Inject constructor(
     private val comparisonQuizRepository: ComparisonQuizRepository,
     private val workManager: WorkManager,
     private val authUserRepository: AuthUserRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val recentCategoriesRepository: RecentCategoriesRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ComparisonQuizUiState())
     val uiState = _uiState.asStateFlow()
@@ -92,6 +95,8 @@ class ComparisonQuizViewModel @Inject constructor(
             )
 
             launch {
+                recentCategoriesRepository.addComparisonCategory(category.id)
+
                 UpdateGlobalEventDataWorker.enqueueWork(
                     workManager = workManager,
                     GameEvent.ComparisonQuiz.PlayWithComparisonMode(comparisonMode),
@@ -124,9 +129,11 @@ class ComparisonQuizViewModel @Inject constructor(
     }
 
     private fun getCategory(): ComparisonQuizCategory {
-        return savedStateHandle
-            .get<ComparisonQuizCategory>(ComparisonQuizListScreenNavArg::category.name)
+        val categoryEntity = savedStateHandle
+            .get<ComparisonQuizCategoryEntity>(ComparisonQuizListScreenNavArg::category.name)
             ?: throw IllegalArgumentException("Category is null")
+
+        return categoryEntity.toModel()
     }
 
     private fun getComparisonMode(): ComparisonMode {

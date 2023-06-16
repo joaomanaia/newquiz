@@ -1,11 +1,13 @@
 package com.infinitepower.newquiz.comparison_quiz.list
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.domain.repository.home.HomeCategories
+import com.infinitepower.newquiz.domain.repository.home.emptyHomeCategories
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 
 @Keep
 data class ComparisonQuizListScreenUiState(
-    val categories: List<ComparisonQuizCategory> = emptyList(),
+    val homeCategories: HomeCategories<ComparisonQuizCategory> = emptyHomeCategories(),
     val selectedMode: ComparisonMode = ComparisonMode.GREATER
 )

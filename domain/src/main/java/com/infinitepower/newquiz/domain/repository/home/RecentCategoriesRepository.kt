@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.domain.repository.home
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.wordle.WordleCategory
@@ -17,16 +18,20 @@ fun <T> emptyHomeCategories() = HomeCategories<T>(
     otherCategories = emptyList()
 )
 
-interface RecentCategoriesRepository {
-    fun getMultiChoiceCategories(): Flow<HomeCategories<MultiChoiceCategory>>
+typealias HomeCategoriesFlow <T> = Flow<HomeCategories<T>>
 
-    fun getWordleCategories(): Flow<HomeCategories<WordleCategory>>
+interface RecentCategoriesRepository {
+    fun getMultiChoiceCategories(): HomeCategoriesFlow<MultiChoiceCategory>
+
+    fun getWordleCategories(): HomeCategoriesFlow<WordleCategory>
+
+    fun getComparisonCategories(): HomeCategoriesFlow<ComparisonQuizCategory>
 
     suspend fun addMultiChoiceCategory(category: MultiChoiceBaseCategory)
 
     suspend fun addWordleCategory(categoryId: String)
 
-    suspend fun cleanMultiChoiceCategories()
+    suspend fun addComparisonCategory(categoryId: String)
 
-    suspend fun cleanAll()
+    suspend fun cleanAllSavedCategories()
 }

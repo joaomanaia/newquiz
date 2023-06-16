@@ -64,7 +64,9 @@ fun GameEvent.getTitle(
 
         // Comparison quiz
         is GameEvent.ComparisonQuiz.PlayQuizWithCategory -> {
-            val categoryName = comparisonQuizCategories.find { it.id == this.categoryId }?.title.orEmpty()
+            val categoryName = comparisonQuizCategories
+                .find { it.id == this.categoryId }
+                ?.name ?: ""
 
             UiText.PluralStringResource(
                 resId = CoreR.plurals.play_comparison_quiz_game_in_category,

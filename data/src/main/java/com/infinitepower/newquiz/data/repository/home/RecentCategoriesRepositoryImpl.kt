@@ -6,9 +6,12 @@ import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
 import com.infinitepower.newquiz.core.di.RecentCategoriesDataStoreManager
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
+import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.home.HomeCategories
+import com.infinitepower.newquiz.domain.repository.home.HomeCategoriesFlow
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.BaseCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.wordle.WordleCategory
@@ -19,17 +22,24 @@ import javax.inject.Singleton
 
 @Singleton
 class RecentCategoriesRepositoryImpl @Inject constructor(
-    @RecentCategoriesDataStoreManager private val recentCategoriesDataStoreManager: DataStoreManager
+    @RecentCategoriesDataStoreManager private val recentCategoriesDataStoreManager: DataStoreManager,
+    private val comparisonQuizRepository: ComparisonQuizRepository
 ) : RecentCategoriesRepository {
-    override fun getMultiChoiceCategories(): Flow<HomeCategories<MultiChoiceCategory>> = getHomeCategories(
+    override fun getMultiChoiceCategories(): HomeCategoriesFlow<MultiChoiceCategory> = getHomeCategories(
         allCategories = multiChoiceQuestionCategories,
         request = RecentCategoryDataStoreCommon.MultiChoice,
         isInternetAvailable = true
     )
 
-    override fun getWordleCategories(): Flow<HomeCategories<WordleCategory>> = getHomeCategories(
+    override fun getWordleCategories(): HomeCategoriesFlow<WordleCategory> = getHomeCategories(
         allCategories = WordleCategories.allCategories,
         request = RecentCategoryDataStoreCommon.Wordle,
+        isInternetAvailable = true
+    )
+
+    override fun getComparisonCategories(): HomeCategoriesFlow<ComparisonQuizCategory> = getHomeCategories(
+        allCategories = comparisonQuizRepository.getCategories(),
+        request = RecentCategoryDataStoreCommon.ComparisonQuiz,
         isInternetAvailable = true
     )
 
@@ -104,15 +114,23 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
         addCategory(categoryId, RecentCategoryDataStoreCommon.Wordle)
     }
 
-    override suspend fun cleanMultiChoiceCategories() {
+    override suspend fun addComparisonCategory(categoryId: String) {
+        addCategory(categoryId, RecentCategoryDataStoreCommon.ComparisonQuiz)
+    }
+
+    override suspend fun cleanAllSavedCategories() {
         recentCategoriesDataStoreManager.editPreference(
             key = RecentCategoryDataStoreCommon.MultiChoice.key,
             newValue = emptySet()
         )
-    }
-
-    override suspend fun cleanAll() {
-        cleanMultiChoiceCategories()
+        recentCategoriesDataStoreManager.editPreference(
+            key = RecentCategoryDataStoreCommon.Wordle.key,
+            newValue = emptySet()
+        )
+        recentCategoriesDataStoreManager.editPreference(
+            key = RecentCategoryDataStoreCommon.ComparisonQuiz.key,
+            newValue = emptySet()
+        )
     }
 
     private suspend fun addCategory(
