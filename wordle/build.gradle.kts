@@ -99,8 +99,6 @@ dependencies {
     implementation(libs.io.github.raamcosta.compose.destinations.core)
     ksp(libs.io.github.raamcosta.compose.destinations.ksp)
 
-    implementation(Google.accompanist.flowLayout)
-
     implementation(KotlinX.datetime)
 
     implementation(AndroidX.work.runtimeKtx)

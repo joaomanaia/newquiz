@@ -83,7 +83,7 @@ fun WordleScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 private fun WordleScreenImpl(
     uiState: WordleScreenUiState,
     onEvent: (event: WordleScreenUiEvent) -> Unit,

@@ -3,17 +3,19 @@ package com.infinitepower.newquiz.wordle.components
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -25,8 +27,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
-import com.google.accompanist.flowlayout.FlowRow
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -41,6 +41,7 @@ import com.infinitepower.newquiz.model.wordle.WordleQuizType
  * @param onKeyClick a callback to be invoked when a key is clicked
  */
 @Composable
+@ExperimentalLayoutApi
 internal fun WordleKeyBoard(
     modifier: Modifier = Modifier,
     rowLayout: Boolean = false,
@@ -61,9 +62,8 @@ internal fun WordleKeyBoard(
     if (wordleQuizType == WordleQuizType.TEXT) {
         FlowRow(
             modifier = modifier.fillMaxWidth(maxWidth),
-            mainAxisSpacing = spaceSmall,
-            crossAxisSpacing = spaceSmall,
-            mainAxisAlignment = FlowMainAxisAlignment.Center
+            verticalArrangement = Arrangement.spacedBy(spaceSmall),
+            horizontalArrangement = Arrangement.spacedBy(spaceSmall, Alignment.CenterHorizontally)
         ) {
             keys.forEach { key ->
                 WordleKeyboardKey(
@@ -141,7 +141,7 @@ internal object WordleKeyBoardTestingTags {
 
 @Composable
 @AllPreviewsNightLight
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalLayoutApi::class)
 private fun WordKeyBoardPreview() {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -170,7 +170,7 @@ private fun WordKeyBoardPreview() {
 
 @Composable
 @AllPreviewsNightLight
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalLayoutApi::class)
 private fun WordKeyBoardNumbersPreview() {
     val allNumbers = "1234567890"
 
@@ -201,7 +201,7 @@ private fun WordKeyBoardNumbersPreview() {
 
 @Composable
 @AllPreviewsNightLight
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalLayoutApi::class)
 private fun WordKeyBoardMathFormulaPreview() {
     val allNumbers = "1234567890+-*/="
 

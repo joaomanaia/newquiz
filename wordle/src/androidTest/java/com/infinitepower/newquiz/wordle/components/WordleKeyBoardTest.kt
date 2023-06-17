@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.wordle.components
 
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -18,6 +19,7 @@ internal class WordleKeyBoardTest {
     val composeTestRule = createComposeRule()
 
     @Test
+    @OptIn(ExperimentalLayoutApi::class)
     fun testWordleKeyBoard_displayCorrectNumberOfItems() {
         val keys = charArrayOf('a', 'b', 'c')
 
