@@ -46,7 +46,11 @@ class MultiChoiceQuizListScreenViewModel @Inject constructor(
             )
 
         networkStatus
-            .flatMapLatest { status ->
+            .onEach { status ->
+                _uiState.update { currentState ->
+                    currentState.copy(internetConnectionAvailable = status.isAvailable())
+                }
+            }.flatMapLatest { status ->
                 recentCategoriesRepository.getMultiChoiceCategories(isInternetAvailable = status.isAvailable())
             }.onEach { homeCategories ->
                 _uiState.update { currentState ->

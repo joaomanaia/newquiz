@@ -17,7 +17,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
@@ -54,8 +53,6 @@ private fun WordleListScreenImpl(
     uiState: WordleListUiState,
     navigateToWordleQuiz: (wordleQuizType: WordleQuizType) -> Unit
 ) {
-    val isInternetAvailable = rememberIsInternetAvailable()
-
     var seeAllCategories by remember { mutableStateOf(false) }
 
     HomeLazyColumn {
@@ -71,7 +68,7 @@ private fun WordleListScreenImpl(
                     icon = CardIcon.Icon(Icons.Rounded.QuestionMark),
                     backgroundPrimary = true,
                     onClick = {
-                        val randomCategory = WordleCategories.random(isInternetAvailable)
+                        val randomCategory = WordleCategories.random(uiState.internetConnectionAvailable)
                         navigateToWordleQuiz(randomCategory.wordleQuizType)
                     }
                 )
@@ -89,7 +86,7 @@ private fun WordleListScreenImpl(
             seeAllCategories = seeAllCategories,
             recentCategories = uiState.homeCategories.recentCategories,
             otherCategories = uiState.homeCategories.otherCategories,
-            isInternetAvailable = isInternetAvailable,
+            isInternetAvailable = uiState.internetConnectionAvailable,
             onCategoryClick = { category -> navigateToWordleQuiz(category.wordleQuizType) },
             onSeeAllCategoriesClick = { seeAllCategories = !seeAllCategories }
         )

@@ -19,7 +19,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
@@ -58,8 +57,6 @@ private fun MultiChoiceQuizListScreenImpl(
     uiState: MultiChoiceQuizListScreenUiState,
     navigator: DestinationsNavigator
 ) {
-    val isInternetAvailable = rememberIsInternetAvailable()
-
     val questionsAvailableText = pluralStringResource(
         id = CoreR.plurals.n_questions_available,
         count = uiState.savedQuestionsSize,
@@ -88,7 +85,7 @@ private fun MultiChoiceQuizListScreenImpl(
                     onClick = {
                         navigator.navigate(MultiChoiceQuizScreenDestination(difficulty = selectedDifficulty?.id))
                     },
-                    requireInternetConnection = true
+                    enabled = uiState.internetConnectionAvailable
                 )
             )
         }
@@ -118,7 +115,7 @@ private fun MultiChoiceQuizListScreenImpl(
             seeAllCategories = seeAllCategories,
             recentCategories = uiState.homeCategories.recentCategories,
             otherCategories = uiState.homeCategories.otherCategories,
-            isInternetAvailable = isInternetAvailable,
+            isInternetAvailable = uiState.internetConnectionAvailable,
             onCategoryClick = { category ->
                 navigator.navigate(
                     MultiChoiceQuizScreenDestination(

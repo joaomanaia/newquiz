@@ -7,13 +7,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.components.RequireInternetComponent
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 
@@ -27,44 +27,38 @@ fun HomeMediumCard(
 
     val title = stringResource(id = data.title)
 
-    RequireInternetComponent { isInternetAvailable ->
-        // Determine whether the card should be enabled based on the following conditions:
-        // data enabled is true
-        // requireInternetConnection is false, OR
-        // requireInternetConnection is true and isInternetAvailable is also true
-        val isCardEnabled = data.enabled && (!data.requireInternetConnection || isInternetAvailable)
+    val isInspectionMode = LocalInspectionMode.current
 
-        Card(
-            onClick = data.onClick,
-            enabled = isCardEnabled,
-            modifier = modifier
+    Card(
+        onClick = data.onClick,
+        enabled = data.enabled || isInspectionMode,
+        modifier = modifier
+    ) {
+        Row(
+            modifier = Modifier.padding(spaceMedium),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.padding(spaceMedium),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                HomeCardIcon(
-                    icon = data.icon,
-                    contentDescription = title,
-                    modifier = Modifier
-                        .size(75.dp)
-                        .padding(MaterialTheme.spacing.small),
+            HomeCardIcon(
+                icon = data.icon,
+                contentDescription = title,
+                modifier = Modifier
+                    .size(75.dp)
+                    .padding(MaterialTheme.spacing.small),
+            )
+            Spacer(modifier = Modifier.width(spaceMedium))
+            Column {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.width(spaceMedium))
-                Column {
+                if (data.description != null) {
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
                     Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleMedium,
+                        text = data.description,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    if (data.description != null) {
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-                        Text(
-                            text = data.description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
                 }
             }
         }

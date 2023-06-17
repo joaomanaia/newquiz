@@ -36,7 +36,11 @@ class ComparisonQuizListScreenViewModel @Inject constructor(
             )
 
         networkStatus
-            .flatMapLatest { status ->
+            .onEach { status ->
+                _uiState.update { currentState ->
+                    currentState.copy(internetConnectionAvailable = status.isAvailable())
+                }
+            }.flatMapLatest { status ->
                 recentCategoriesRepository.getComparisonCategories(isInternetAvailable = status.isAvailable())
             }.onEach { homeCategories ->
                 _uiState.update { currentState ->

@@ -20,7 +20,6 @@ import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonModeC
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.components.rememberIsInternetAvailable
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.domain.repository.home.HomeCategories
@@ -63,8 +62,6 @@ private fun ComparisonQuizListScreenImpl(
     onSelectMode: (mode: ComparisonMode) -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
-    
-    val isInternetAvailable = rememberIsInternetAvailable()
 
     var seeAllCategories by remember { mutableStateOf(false) }
 
@@ -95,7 +92,7 @@ private fun ComparisonQuizListScreenImpl(
             seeAllCategories = seeAllCategories,
             recentCategories = uiState.homeCategories.recentCategories,
             otherCategories = uiState.homeCategories.otherCategories,
-            isInternetAvailable = isInternetAvailable,
+            isInternetAvailable = uiState.internetConnectionAvailable,
             onCategoryClick = onCategoryClick,
             onSeeAllCategoriesClick = { seeAllCategories = !seeAllCategories }
         )

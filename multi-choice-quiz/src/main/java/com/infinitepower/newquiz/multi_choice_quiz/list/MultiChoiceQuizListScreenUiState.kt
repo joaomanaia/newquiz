@@ -8,5 +8,6 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 @Keep
 data class MultiChoiceQuizListScreenUiState(
     val savedQuestionsSize: Int = 0,
-    val homeCategories: HomeCategories<MultiChoiceCategory> = emptyHomeCategories()
+    val homeCategories: HomeCategories<MultiChoiceCategory> = emptyHomeCategories(),
+    val internetConnectionAvailable: Boolean = true
 )

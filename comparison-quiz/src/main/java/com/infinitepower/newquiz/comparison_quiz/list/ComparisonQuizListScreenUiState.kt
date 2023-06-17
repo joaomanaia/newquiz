@@ -9,5 +9,6 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 @Keep
 data class ComparisonQuizListScreenUiState(
     val homeCategories: HomeCategories<ComparisonQuizCategory> = emptyHomeCategories(),
-    val selectedMode: ComparisonMode = ComparisonMode.GREATER
+    val selectedMode: ComparisonMode = ComparisonMode.GREATER,
+    val internetConnectionAvailable: Boolean = true
 )

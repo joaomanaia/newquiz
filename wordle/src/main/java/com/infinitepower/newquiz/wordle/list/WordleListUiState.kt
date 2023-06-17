@@ -7,5 +7,6 @@ import com.infinitepower.newquiz.model.wordle.WordleCategory
 
 @Keep
 data class WordleListUiState(
-    val homeCategories: HomeCategories<WordleCategory> = emptyHomeCategories()
+    val homeCategories: HomeCategories<WordleCategory> = emptyHomeCategories(),
+    val internetConnectionAvailable: Boolean = true
 )
