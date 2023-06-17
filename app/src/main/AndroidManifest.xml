@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:appCategory="game"
         android:isGame="true"
-        android:theme="@style/Theme.NewQuiz.Starting">
+        android:theme="@style/Theme.NewQuiz.Starting"
+        tools:ignore="UnusedAttribute">
         <activity
             android:name="com.infinitepower.newquiz.ui.main.MainActivity"
             android:exported="true"

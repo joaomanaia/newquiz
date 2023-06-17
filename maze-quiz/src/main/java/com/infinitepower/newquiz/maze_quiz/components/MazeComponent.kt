@@ -15,7 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -111,7 +111,7 @@ private fun MazeComponentImpl(
         heightPx.dp
     }
 
-    var topScroll by remember { mutableStateOf(0f) }
+    var topScroll by remember { mutableFloatStateOf(0f) }
 
     val topY = with(localDensity) {
         abs(mazePoints.lastOrNull()?.y ?: 0f) + 100.dp.toPx()
