@@ -1,15 +1,8 @@
 package com.infinitepower.newquiz.core.ui.components
 
 import androidx.annotation.VisibleForTesting
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -144,6 +137,15 @@ private fun AnimatedRemainingTimeText(
         }
     }
 
+    RemainingTimeText(
+        modifier = modifier,
+        remainingTime = remainingTimeInSeconds.toString(),
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.error
+    )
+
+    /* Crash problem?
+
     AnimatedContent(
         modifier = modifier,
         targetState = remainingTimeInSeconds,
@@ -164,7 +166,6 @@ private fun AnimatedRemainingTimeText(
                 // be displayed out of bounds.
                 SizeTransform(clip = false)
             )
-
         },
         label = "Pulsating remaining time text"
     ) { targetRemainingTime ->
@@ -174,6 +175,8 @@ private fun AnimatedRemainingTimeText(
             color = MaterialTheme.colorScheme.error
         )
     }
+
+     */
 }
 
 @VisibleForTesting

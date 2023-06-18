@@ -1,9 +1,9 @@
 package com.infinitepower.newquiz.core.network
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface NetworkStatusTracker {
-    val networkStatus: Flow<NetworkStatus>
+    val networkStatus: StateFlow<NetworkStatus>
 
     suspend fun connectionAvailable(): Boolean
 }
