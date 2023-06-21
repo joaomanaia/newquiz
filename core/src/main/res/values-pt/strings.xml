@@ -267,4 +267,8 @@
     <string name="wordle_animations_enabled_description">Ativa as animações para o jogo wordle.</string>
     <string name="multi_choice_animations_enabled">Animações ativas para o jogo de escolha multipla</string>
     <string name="multi_choice_animations_enabled_description">Ativa as animações para o jogo de escolha multipla.</string>
+    <string name="quiz_steps_row_container">Container das etapas do quiz</string>
+    <string name="question_n_correct">Pergunta %1$d correta</string>
+    <string name="question_n_incorrect">Pergunta %1$d incorreta</string>
+    <string name="loading_questions">A carregar as perguntas…</string>
 </resources>
