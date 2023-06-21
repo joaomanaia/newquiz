@@ -8,6 +8,7 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.isAllCompleted
 
 @Keep
 data class MultiChoiceQuizScreenUiState(
+    val loading: Boolean = true,
     val questionSteps: List<MultiChoiceQuestionStep> = emptyList(),
     val currentQuestionIndex: Int = -1,
     val selectedAnswer: SelectedAnswer = SelectedAnswer.NONE,

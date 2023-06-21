@@ -46,14 +46,14 @@ internal fun CardQuestionAnswers(
 
     Column(
         modifier = modifier.semantics {
-            contentDescription = "Answers"
+            contentDescription = "Answers container"
         },
         verticalArrangement = Arrangement.spacedBy(spaceSmall)
     ) {
         answers.forEachIndexed { index, answer ->
             CardQuestionAnswer(
                 modifier = Modifier.fillMaxWidth(),
-                description = answer,
+                answer = answer,
                 selected = selectedAnswer.index == index,
                 isResults = isResultsScreen,
                 resultAnswerCorrect = correctAnswer.index == index,
@@ -68,7 +68,7 @@ internal fun CardQuestionAnswers(
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal fun CardQuestionAnswer(
     modifier: Modifier = Modifier,
-    description: String,
+    answer: String,
     selected: Boolean,
     isResults: Boolean = false,
     resultAnswerCorrect: Boolean = false,
@@ -112,7 +112,7 @@ internal fun CardQuestionAnswer(
         enabled = !isResults
     ) {
         Text(
-            text = description,
+            text = answer,
             modifier = Modifier.padding(textPadding),
             style = textStyle,
             color = contentColorAnimated
@@ -253,7 +253,7 @@ private fun CardQuestionOptionPreview(
     NewQuizTheme {
         Surface {
             CardQuestionAnswer(
-                description = "Answer A",
+                answer = "Answer A",
                 selected = selected,
                 onClick = {},
                 modifier = Modifier.padding(16.dp)

@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,9 +33,9 @@ import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.theme.spacing
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun MultiChoiceQuizContainer(
     modifier: Modifier = Modifier,
+    loading: Boolean = false,
     windowSizeClass: WindowSizeClass,
     answerSelected: Boolean,
     topBarContent: @Composable () -> Unit,
@@ -72,26 +72,40 @@ internal fun MultiChoiceQuizContainer(
             }
         }
     ) { innerPadding ->
-        if (verticalContent) {
-            VerticalContent(
-                modifier = Modifier.padding(innerPadding),
-                stepsContent = stepsContent,
-                questionPositionContent = questionPositionContent,
-                questionDescriptionContent = questionDescriptionContent,
-                answersContent = answersContent,
-                questionImageContent = questionImageContent,
-                horizontalFractionSize = horizontalFractionSize
-            )
+        if (loading) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                CircularProgressIndicator()
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+                Text(text = stringResource(id = R.string.loading_questions))
+            }
         } else {
-            HorizontalContent(
-                modifier = Modifier.padding(innerPadding),
-                stepsContent = stepsContent,
-                questionPositionContent = questionPositionContent,
-                questionDescriptionContent = questionDescriptionContent,
-                answersContent = answersContent,
-                questionImageContent = questionImageContent,
-                windowSizeClass = windowSizeClass
-            )
+            if (verticalContent) {
+                VerticalContent(
+                    modifier = Modifier.padding(innerPadding),
+                    stepsContent = stepsContent,
+                    questionPositionContent = questionPositionContent,
+                    questionDescriptionContent = questionDescriptionContent,
+                    answersContent = answersContent,
+                    questionImageContent = questionImageContent,
+                    horizontalFractionSize = horizontalFractionSize
+                )
+            } else {
+                HorizontalContent(
+                    modifier = Modifier.padding(innerPadding),
+                    stepsContent = stepsContent,
+                    questionPositionContent = questionPositionContent,
+                    questionDescriptionContent = questionDescriptionContent,
+                    answersContent = answersContent,
+                    questionImageContent = questionImageContent,
+                    windowSizeClass = windowSizeClass
+                )
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
-import com.infinitepower.newquiz.core_test.utils.setDeviceLocale
+import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import org.junit.Rule
 import org.junit.Test
@@ -40,7 +40,7 @@ internal class ComparisonModeComponentsTest {
     @Test
     fun comparisonModeComponent_greater_shouldBeSelected() {
         componentRule.setContent {
-            setDeviceLocale()
+            setTestDeviceLocale()
 
             NewQuizTestTheme {
                 ComparisonModeComponents(
@@ -80,7 +80,7 @@ internal class ComparisonModeComponentsTest {
     @Test
     fun comparisonModeComponent_lesser_shouldBeSelected() {
         componentRule.setContent {
-            setDeviceLocale()
+            setTestDeviceLocale()
 
             NewQuizTestTheme {
                 ComparisonModeComponents(
@@ -120,7 +120,7 @@ internal class ComparisonModeComponentsTest {
     @Test
     fun row_hasCorrectModifiers() {
         componentRule.setContent {
-            setDeviceLocale()
+            setTestDeviceLocale()
 
             NewQuizTestTheme {
                 ComparisonModeComponents(

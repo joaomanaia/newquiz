@@ -53,6 +53,13 @@ android {
 
         addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+        }
+    }
 }
 
 kotlin {
@@ -67,7 +74,10 @@ dependencies {
 
     testImplementation(Testing.junit.jupiter)
     testImplementation(libs.truth)
+    androidTestImplementation(libs.truth)
     androidTestImplementation(Kotlin.test.junit)
+    androidTestImplementation(Testing.mockK.android)
+    androidTestImplementation(AndroidX.work.testing)
 
     debugImplementation(AndroidX.compose.ui.testManifest)
     implementation(AndroidX.compose.ui.tooling)
@@ -114,6 +124,7 @@ dependencies {
     implementation(project(Modules.data))
     implementation(project(Modules.translationDynamicFeature))
     implementation(project(Modules.onlineServices))
+    androidTestImplementation(project(Modules.coreTest))
 }
 
 tasks.withType<Test> {

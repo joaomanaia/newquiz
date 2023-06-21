@@ -197,6 +197,10 @@
     <string name="see_less_categories">See less categories</string>
     <string name="clear_recent_categories">Clear recent categories</string>
     <string name="clear_recent_categories_description">Remove all recent categories from the list screen</string>
+    <string name="loading_questions">Loading questions…</string>
+    <string name="quiz_steps_row_container">Quiz steps row container</string>
+    <string name="question_n_correct">Question %1$d correct</string>
+    <string name="question_n_incorrect">Question %1$d incorrect</string>
 
     <!-- Analytics -->
 

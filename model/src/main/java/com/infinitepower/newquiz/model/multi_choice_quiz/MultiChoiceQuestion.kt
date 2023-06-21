@@ -3,7 +3,6 @@ package com.infinitepower.newquiz.model.multi_choice_quiz
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.security.SecureRandom
@@ -75,28 +74,22 @@ data class MultiChoiceQuestion(
     }
 }
 
-fun getBasicMultiChoiceQuestion(): MultiChoiceQuestion {
-    val allCategories = listOf(
-        MultiChoiceBaseCategory.Random,
-        MultiChoiceBaseCategory.Logo,
-        MultiChoiceBaseCategory.Flag,
-        MultiChoiceBaseCategory.GuessMathSolution,
-        MultiChoiceBaseCategory.NumberTrivia,
-    )
-
+fun getBasicMultiChoiceQuestion(
+    correctAns: Int = (0..3).random()
+): MultiChoiceQuestion {
     return MultiChoiceQuestion(
         id = SecureRandom().nextInt(),
-        description = "New Social is the best social network?",
+        description = "Question description",
         imageUrl = null,
         answers = listOf(
-            "No",
-            "The Best",
-            "Yes",
-            "The Worst",
+            "Answer 1",
+            "Answer 2",
+            "Answer 3",
+            "Answer 4"
         ),
         lang = QuestionLanguage.EN,
-        category = allCategories.random(),
-        correctAns = (0..3).random(),
+        category = MultiChoiceBaseCategory.Random,
+        correctAns = correctAns,
         type = MultiChoiceQuestionType.MULTIPLE,
         difficulty = QuestionDifficulty.Medium
     )

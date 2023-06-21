@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
@@ -42,7 +41,7 @@ import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizTopBar
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlin.time.Duration.Companion.seconds
 
 internal val MULTI_CHOICE_QUIZ_COUNTDOWN_TIME = 30.seconds
@@ -64,7 +63,7 @@ data class MultiChoiceQuizScreenNavArg(
 )
 @OptIn(ExperimentalMaterial3Api::class)
 fun MultiChoiceQuizScreen(
-    navigator: NavController,
+    navigator: DestinationsNavigator,
     windowSizeClass: WindowSizeClass,
     viewModel: QuizScreenViewModel = hiltViewModel()
 ) {
@@ -77,11 +76,10 @@ fun MultiChoiceQuizScreen(
                 when (event) {
                     is NavEvent.Navigate -> {
                         navigator.navigate(event.direction) {
-                            navigator.currentDestination?.route?.let { route ->
-                                launchSingleTop = true
-                                popUpTo(route) {
-                                    inclusive = true
-                                }
+                            launchSingleTop = true
+
+                            popUpTo(event.direction.route) {
+                                inclusive = true
                             }
                         }
                     }
@@ -108,7 +106,6 @@ fun MultiChoiceQuizScreen(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 private fun MultiChoiceQuizScreenImpl(
     uiState: MultiChoiceQuizScreenUiState,
     windowSizeClass: WindowSizeClass,
@@ -129,6 +126,7 @@ private fun MultiChoiceQuizScreenImpl(
 
     MultiChoiceQuizContainer(
         modifier = Modifier.fillMaxSize(),
+        loading = uiState.loading,
         windowSizeClass = windowSizeClass,
         answerSelected = uiState.selectedAnswer.isSelected,
         onVerifyQuestionClick = { onEvent(MultiChoiceQuizScreenUiEvent.VerifyAnswer) },
@@ -202,7 +200,7 @@ private fun MultiChoiceQuizScreenImpl(
 
 @Composable
 @AllPreviewsNightLight
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 private fun QuizScreenPreview() {
     val questionSteps = listOf(
         MultiChoiceQuestionStep.Completed(

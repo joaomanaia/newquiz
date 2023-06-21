@@ -9,7 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
-import com.infinitepower.newquiz.core_test.utils.setDeviceLocale
+import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,7 +32,7 @@ internal class SkipQuestionDialogTest {
         var dismissClickCalled = false
 
         composeTestRule.setContent {
-            setDeviceLocale()
+            setTestDeviceLocale()
 
             NewQuizTestTheme {
                 SkipQuestionDialog(

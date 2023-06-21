@@ -5,11 +5,13 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 
 @Composable
 fun NewQuizTestTheme(
+    darkTheme: Boolean = false,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     NewQuizTheme(
-        darkTheme = false,
-        dynamicColor = false,
+        darkTheme = darkTheme,
+        dynamicColor = dynamicColor,
         content = content
     )
 }

@@ -1,19 +1,34 @@
 package com.infinitepower.newquiz.multi_choice_quiz.components
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
@@ -21,6 +36,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 internal fun QuizStepViewRow(
@@ -29,8 +45,14 @@ internal fun QuizStepViewRow(
     isResultsScreen: Boolean = false,
     onClick: (index: Int, questionStep: MultiChoiceQuestionStep) -> Unit = { _, _ -> }
 ) {
+    val rowDescription = stringResource(id = CoreR.string.quiz_steps_row_container)
+
     LazyRow(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics {
+                contentDescription = rowDescription
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
         contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium)
@@ -52,8 +74,8 @@ internal fun QuizStepViewRow(
 }
 
 @Composable
-@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 internal fun QuizStepView(
+    modifier: Modifier = Modifier,
     questionStep: MultiChoiceQuestionStep,
     position: Int,
     enabled: Boolean = true,
@@ -64,7 +86,8 @@ internal fun QuizStepView(
             MaterialTheme.colorScheme.tertiary
         } else {
             MaterialTheme.colorScheme.surface
-        }
+        },
+        label = "Step background color"
     )
 
     val stepTextColor by animateColorAsState(
@@ -72,10 +95,12 @@ internal fun QuizStepView(
             MaterialTheme.colorScheme.onTertiary
         } else {
             MaterialTheme.colorScheme.onSurface
-        }
+        },
+        label = "Step text color"
     )
 
-    QuizStepViewImpl(
+    QuizStepView(
+        modifier = modifier,
         questionStep = questionStep,
         position = position,
         stepBackgroundColor = stepBackgroundColor,
@@ -86,9 +111,8 @@ internal fun QuizStepView(
 }
 
 @Composable
-@ExperimentalMaterial3Api
-@ExperimentalAnimationApi
-private fun QuizStepViewImpl(
+internal fun QuizStepView(
+    modifier: Modifier = Modifier,
     questionStep: MultiChoiceQuestionStep,
     position: Int,
     stepBackgroundColor: Color,
@@ -99,7 +123,7 @@ private fun QuizStepViewImpl(
     Surface(
         shape = CircleShape,
         tonalElevation = 8.dp,
-        modifier = Modifier.size(35.dp),
+        modifier = modifier.size(35.dp),
         color = stepBackgroundColor,
         onClick = onClick,
         enabled = enabled
@@ -114,9 +138,14 @@ private fun QuizStepViewImpl(
                 exit = scaleOut()
             ) {
                 val correct = questionStep is MultiChoiceQuestionStep.Completed && questionStep.correct
+
                 Icon(
                     imageVector = if (correct) Icons.Rounded.Check else Icons.Rounded.Close,
-                    contentDescription = "Question $position ${if (correct) "correct" else "wrong"}",
+                    contentDescription = if (correct) {
+                        stringResource(id = CoreR.string.question_n_correct, position)
+                    } else {
+                        stringResource(id = CoreR.string.question_n_incorrect, position)
+                    },
                     modifier = Modifier.size(25.dp),
                     tint = stepTextColor
                 )

@@ -11,8 +11,9 @@ import java.util.Locale
 
 @TestOnly
 @VisibleForTesting
+@Suppress("DEPRECATION")
 @SuppressLint("AppBundleLocaleChanges")
-fun setDeviceLocale(
+fun setTestDeviceLocale(
     context: Context,
     locale: Locale = Locale.ENGLISH
 ) {
@@ -30,8 +31,8 @@ fun setDeviceLocale(
 @Composable
 @VisibleForTesting
 @SuppressLint("ComposableNaming")
-fun setDeviceLocale(
+fun setTestDeviceLocale(
     locale: Locale = Locale.ENGLISH
 ) {
-    setDeviceLocale(LocalContext.current, locale)
+    setTestDeviceLocale(LocalContext.current, locale)
 }

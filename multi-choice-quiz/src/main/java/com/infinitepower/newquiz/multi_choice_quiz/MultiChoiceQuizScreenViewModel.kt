@@ -52,14 +52,14 @@ class QuizScreenViewModel @Inject constructor(
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
     private val recentCategoriesRepository: RecentCategoriesRepository,
     private val savedStateHandle: SavedStateHandle,
-    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
     private val translationUtil: TranslatorUtil,
     private val workManager: WorkManager,
     private val userRepository: UserRepository,
-    private val coreLoggingAnalytics: CoreLoggingAnalytics,
-    private val mazeLoggingAnalytics: MazeLoggingAnalytics,
     private val authUserRepository: AuthUserRepository,
-    private val isQuestionSavedUseCase: IsQuestionSavedUseCase
+    private val isQuestionSavedUseCase: IsQuestionSavedUseCase,
+    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
+    private val coreLoggingAnalytics: CoreLoggingAnalytics,
+    private val mazeLoggingAnalytics: MazeLoggingAnalytics
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -209,7 +209,10 @@ class QuizScreenViewModel @Inject constructor(
             .map { question -> question.toQuestionStep() }
 
         _uiState.update { currentState ->
-            currentState.copy(questionSteps = questionSteps)
+            currentState.copy(
+                questionSteps = questionSteps,
+                loading = false
+            )
         }
 
         viewModelScope.launch(Dispatchers.IO) {
