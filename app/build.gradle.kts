@@ -10,7 +10,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
+    id("com.google.devtools.ksp")
     id("com.google.android.gms.oss-licenses-plugin")
 }
 

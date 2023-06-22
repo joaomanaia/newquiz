@@ -3,9 +3,8 @@ import de.fayard.refreshVersions.core.versionFor
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
     id("kotlinx-serialization")
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
+    id("com.google.devtools.ksp")
 }
 
 android {
