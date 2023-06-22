@@ -267,4 +267,8 @@
     <string name="multi_choice_animations_enabled">Animaciones de opción múltiple habilitadas</string>
     <string name="multi_choice_animations_enabled_description">Habilitar las animaciones para el modo de juego multielección.</string>
     <string name="no_diamonds_to_skip_question_description">¡No tienes diamantes para saltarte esta pregunta!</string>
+    <string name="loading_questions">Cargando preguntas…</string>
+    <string name="quiz_steps_row_container">Contenedor de pasos de Quiz</string>
+    <string name="question_n_correct">%1$d pregunta(s) correcta(s)</string>
+    <string name="question_n_incorrect">%1$d pregunta(s) incorrecta(s)</string>
 </resources>
