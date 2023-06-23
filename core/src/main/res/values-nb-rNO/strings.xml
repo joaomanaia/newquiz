@@ -101,7 +101,7 @@
     <string name="generate">Generer</string>
     <string name="user">Bruker</string>
     <string name="sign_out">Logg ut</string>
-    <string name="n_correct_questions">$1%s riktige spørsmål</string>
+    <string name="n_correct_questions">%1$s riktige spørsmål</string>
     <string name="correct_words">Riktige ord</string>
     <string name="night">Natt</string>
     <string name="hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word">Hint over bokstaven om at den finnes to eller flere ganger i det skjulte ordet</string>

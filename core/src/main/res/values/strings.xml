@@ -86,7 +86,7 @@
     <string name="is_in_the_word_but_in_the_wrong_spot_wordle">" is in the word but in the wrong spot."</string>
     <string name="is_in_the_word_and_in_the_correct_spot_wordle">" is in the word and in the correct spot."</string>
     <string name="results_screen">Results screen</string>
-    <string name="n_correct_questions">$1%s correct questions</string>
+    <string name="n_correct_questions">%1$s correct questions</string>
     <string name="quiz_question_size">Quiz question size</string>
     <string name="translation">Translation</string>
     <string name="translation_enabled">Translation enabled</string>
@@ -155,13 +155,11 @@
     <string name="about_and_help">About and Help</string>
     <string name="animations">Animations</string>
     <string name="animations_enabled">Animations Enabled</string>
-
     <string name="global_animations_enabled">Global animations enabled</string>
     <string name="wordle_animations_enabled">Wordle animations enabled</string>
     <string name="wordle_animations_enabled_description">Enable animations for wordle game mode.</string>
     <string name="multi_choice_animations_enabled">Multi choice animations enabled</string>
     <string name="multi_choice_animations_enabled_description">Enable animations for multi choice game mode.</string>
-
     <string name="sort_questions">Sort questions</string>
     <string name="play_with_random_saved_questions">Play quiz with random saved questions</string>
     <string name="play">Play</string>
@@ -198,15 +196,12 @@
     <string name="clear_recent_categories">Clear recent categories</string>
     <string name="clear_recent_categories_description">Remove all recent categories from the list screen</string>
     <string name="loading_questions">Loading questions…</string>
-    <string name="quiz_steps_row_container">Quiz steps row container</string>
-    <string name="question_n_correct">Question %1$d correct</string>
-    <string name="question_n_incorrect">Question %1$d incorrect</string>
-
+    <string name="quiz_steps_row_container">Quiz steps container</string>
+    <string name="question_n_correct">Question %1$d - Correct</string>
+    <string name="question_n_incorrect">Question %1$d - Incorrect</string>
     <!-- Analytics -->
-
     <string name="analytics">Analytics</string>
     <string name="analytics_collection_enabled">Analytics collection enabled</string>
-
     <string name="data_collection_consent">Data Collection Consent</string>
     <string name="data_collection_consent_description">
         Thank you for using NewQuiz! To help us improve the app and fix any issues that may arise, we collect certain data from your device. The data we collect includes:\n\n
@@ -219,18 +214,13 @@
     </string>
     <string name="data_collection_consent_agree">Yes, I consent</string>
     <string name="data_collection_consent_disagree">No, I do not consent</string>
-
     <string name="general_analytics_enabled">General analytics enabled</string>
     <string name="general_analytics_description_enabled">Enables general analytics such as events, example: game starts, etc.</string>
-
     <string name="crash_analytics_enabled">Crash analytics enabled</string>
     <string name="crash_analytics_description_enabled">Enables crash data analytics such as app crashes and exceptions.</string>
-
     <string name="performance_monitoring_enabled">Performance monitoring enabled</string>
     <string name="performance_monitoring_description_enabled">Enables performance monitoring such as app startup time and other performance metrics.</string>
-
     <!-- End Analytics -->
-
     <!-- Daily Challenge -->
     <string name="daily_challenge">Daily Challenge</string>
     <plurals name="play_random_multi_choice_quiz_game">
@@ -273,6 +263,5 @@
         <item quantity="one">Play one game with %2$s mode in comparison quiz.</item>
         <item quantity="other">Play %1$d games with %2$s mode in comparison quiz.</item>
     </plurals>
-
     <!-- End Daily Challenge -->
 </resources>
