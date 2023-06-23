@@ -58,7 +58,6 @@ import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import com.infinitepower.newquiz.core.R as CoreR
 
@@ -147,7 +146,7 @@ private fun MultiChoiceQuizResultsScreenImpl(
             resultScoreTextContent = {
                 Text(
                     text = stringResource(
-                        id = CoreR.string.results_screen,
+                        id = CoreR.string.n_correct_questions,
                         "${questionSteps.countCorrectQuestions()}/${questionSteps.size}"
                     ),
                     style = MaterialTheme.typography.headlineMedium
