@@ -91,7 +91,7 @@
     <string name="is_in_the_word_but_in_the_wrong_spot_wordle">" está na palavra, mas no lugar errado."</string>
     <string name="is_in_the_word_and_in_the_correct_spot_wordle">" está na palavra e no lugar correto."</string>
     <string name="results_screen">Tela de resultados</string>
-    <string name="n_correct_questions">$1%s perguntas corretas</string>
+    <string name="n_correct_questions">%1$s perguntas corretas</string>
     <string name="quiz_question_size">Quantidade de perguntas do quiz</string>
     <string name="translation">Tradução</string>
     <string name="translation_enabled">Tradução habilitada</string>
@@ -268,7 +268,7 @@
     <string name="multi_choice_animations_enabled">Animações ativas para o jogo de escolha multipla</string>
     <string name="multi_choice_animations_enabled_description">Ativa as animações para o jogo de escolha multipla.</string>
     <string name="quiz_steps_row_container">Container das etapas do quiz</string>
-    <string name="question_n_correct">Pergunta %1$d correta</string>
-    <string name="question_n_incorrect">Pergunta %1$d incorreta</string>
+    <string name="question_n_correct">Pergunta %1$d - Correta</string>
+    <string name="question_n_incorrect">Pergunta %1$d - Incorreta</string>
     <string name="loading_questions">A carregar as perguntas…</string>
 </resources>
