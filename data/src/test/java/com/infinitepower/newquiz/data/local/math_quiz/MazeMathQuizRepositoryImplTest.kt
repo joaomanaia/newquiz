@@ -1,12 +1,12 @@
 package com.infinitepower.newquiz.data.local.math_quiz
 
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.data.local.maze.MazeQuizDao
+import com.infinitepower.newquiz.data.local.maze.MazeQuizItemEntity
 import com.infinitepower.newquiz.data.repository.maze_quiz.MazeQuizRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
-import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.maze.MazeQuiz
-import com.infinitepower.newquiz.model.maze.MazeQuizItemEntity
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord

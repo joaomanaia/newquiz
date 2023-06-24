@@ -1,11 +1,10 @@
-package com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions
+package com.infinitepower.newquiz.data.local.multi_choice_quiz
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

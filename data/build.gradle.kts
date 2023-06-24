@@ -13,7 +13,6 @@ android {
 
     defaultConfig {
         minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
 
         testInstrumentationRunner = "com.infinitepower.newquiz.data.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")

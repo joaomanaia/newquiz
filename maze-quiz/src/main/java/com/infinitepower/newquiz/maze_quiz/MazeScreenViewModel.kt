@@ -8,10 +8,10 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
-import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.data.worker.maze.CleanMazeQuizWorker
 import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.maze.emptyMaze
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

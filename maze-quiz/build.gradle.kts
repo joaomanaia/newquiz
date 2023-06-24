@@ -14,7 +14,6 @@ android {
 
     defaultConfig {
         minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -98,7 +97,6 @@ dependencies {
     implementation(project(Modules.model))
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
-    implementation(project(Modules.wordle))
 }
 
 tasks.withType<Test> {

@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
+import com.infinitepower.newquiz.core.util.asString
 import com.infinitepower.newquiz.daily_challenge.components.DailyChallengeCard
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

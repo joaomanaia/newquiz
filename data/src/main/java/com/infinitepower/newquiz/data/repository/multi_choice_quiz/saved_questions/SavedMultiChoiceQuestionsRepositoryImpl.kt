@@ -1,11 +1,12 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz.saved_questions
 
-import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsDao
+import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.data.local.multi_choice_quiz.SavedMultiChoiceQuestionsDao
+import com.infinitepower.newquiz.data.util.mappers.toEntity
+import com.infinitepower.newquiz.data.util.mappers.toQuestion
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionEntity
 import com.infinitepower.newquiz.model.multi_choice_quiz.saved.SortSavedQuestionsBy
-import com.infinitepower.newquiz.model.multi_choice_quiz.toQuestion
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

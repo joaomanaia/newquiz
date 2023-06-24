@@ -11,12 +11,12 @@ import com.infinitepower.newquiz.data.database.util.converters.ListConverter
 import com.infinitepower.newquiz.data.database.util.converters.LocalDateConverter
 import com.infinitepower.newquiz.data.database.util.converters.MathFormulaConverter
 import com.infinitepower.newquiz.data.database.util.converters.QuestionDifficultyConverter
-import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeDao
-import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
-import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsDao
-import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTaskEntity
-import com.infinitepower.newquiz.model.maze.MazeQuizItemEntity
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.data.local.daily_challenge.DailyChallengeDao
+import com.infinitepower.newquiz.data.local.daily_challenge.DailyChallengeTaskEntity
+import com.infinitepower.newquiz.data.local.maze.MazeQuizDao
+import com.infinitepower.newquiz.data.local.maze.MazeQuizItemEntity
+import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.data.local.multi_choice_quiz.SavedMultiChoiceQuestionsDao
 
 @SuppressLint("all")
 @TypeConverters(

@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.domain.repository.user.auth
 
-import android.net.Uri
 import kotlinx.coroutines.flow.Flow
+import java.net.URI
 
 interface AuthUserRepository {
     val isSignedIn: Boolean
@@ -12,7 +12,7 @@ interface AuthUserRepository {
 
     val name: String?
 
-    val photoUrl: Uri?
+    val photoUrl: URI?
 
     suspend fun refreshAuthUser()
 

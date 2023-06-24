@@ -1,11 +1,10 @@
-package com.infinitepower.newquiz.domain.repository.maze
+package com.infinitepower.newquiz.data.local.maze
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.infinitepower.newquiz.model.maze.MazeQuizItemEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

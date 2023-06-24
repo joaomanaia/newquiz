@@ -1,10 +1,10 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
+import com.infinitepower.newquiz.data.repository.multi_choice_quiz.dto.OpenTDBQuestionResponse
+import com.infinitepower.newquiz.data.util.mappers.toQuestion
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
-import com.infinitepower.newquiz.model.multi_choice_quiz.opentdb.OpenTDBQuestionResponse
-import com.infinitepower.newquiz.model.multi_choice_quiz.toQuestion
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter

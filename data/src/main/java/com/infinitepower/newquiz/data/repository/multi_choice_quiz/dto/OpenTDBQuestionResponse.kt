@@ -1,10 +1,9 @@
-package com.infinitepower.newquiz.model.multi_choice_quiz.opentdb
+package com.infinitepower.newquiz.data.repository.multi_choice_quiz.dto
 
 import androidx.annotation.Keep
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuestionEntity
 import com.infinitepower.newquiz.model.util.base64.base64Decoded
 import kotlinx.serialization.Serializable
-import java.security.SecureRandom
 
 @Keep
 @Serializable
@@ -38,7 +37,7 @@ data class OpenTDBQuestionResponse(
             val correctAnswerIndex = answers.indexOf(correct_answer)
 
             return MultiChoiceQuestionEntity(
-                id = SecureRandom().nextInt(),
+                id = id,
                 description = question,
                 answers = answers,
                 category = category,

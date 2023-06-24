@@ -1,14 +1,15 @@
 package com.infinitepower.newquiz.comparison_quiz.data.comparison_quiz
 
-import com.infinitepower.newquiz.core.common.FlowResource
-import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.model.FlowResource
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+
 class FakeComparisonQuizRepositoryImpl(
     private val initialQuestions: List<ComparisonQuizItem> = emptyList(),
     private val initialCategories: List<ComparisonQuizCategory> = emptyList()

@@ -2,8 +2,6 @@ package com.infinitepower.newquiz.data.repository.wordle
 
 import android.content.Context
 import androidx.core.text.isDigitsOnly
-import com.infinitepower.newquiz.core.common.FlowResource
-import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.common.dataStore.textWordleSupportedLang
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
@@ -11,6 +9,8 @@ import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
+import com.infinitepower.newquiz.model.FlowResource
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord
 import dagger.hilt.android.qualifiers.ApplicationContext

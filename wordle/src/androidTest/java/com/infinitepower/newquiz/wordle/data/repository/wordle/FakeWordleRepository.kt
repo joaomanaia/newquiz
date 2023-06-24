@@ -1,8 +1,8 @@
 package com.infinitepower.newquiz.wordle.data.repository.wordle
 
-import com.infinitepower.newquiz.core.common.FlowResource
-import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
+import com.infinitepower.newquiz.model.FlowResource
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord
 import kotlinx.coroutines.flow.flow

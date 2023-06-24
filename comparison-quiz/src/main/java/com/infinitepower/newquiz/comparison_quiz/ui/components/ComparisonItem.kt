@@ -33,6 +33,7 @@ import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLigh
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.util.toAndroidUri
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 
@@ -52,7 +53,7 @@ internal fun ComparisonItem(
     ComparisonItem(
         modifier = modifier,
         title = item.title,
-        image = item.imgUri,
+        image = item.imgUri.toAndroidUri(),
         helperValue = helperValue,
         helperContentAlignment = helperContentAlignment,
         helperValueState = helperValueState,

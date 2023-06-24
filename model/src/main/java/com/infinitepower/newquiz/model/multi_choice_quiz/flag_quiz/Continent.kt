@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.model.multi_choice_quiz.flag_quiz
 
-import android.util.Log
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,10 +14,7 @@ sealed class Continent(
             NorthAmerica.key -> NorthAmerica
             SouthAmerica.key -> SouthAmerica
             Oceania.key -> Oceania
-            else -> {
-                Log.e("Continent", name)
-                throw IllegalArgumentException()
-            }
+            else -> throw IllegalArgumentException()
         }
     }
 

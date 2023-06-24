@@ -50,7 +50,7 @@ jobs:
         uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: >
-            testDebugUnitTest
+            test
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3

@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.model.daily_challenge
+package com.infinitepower.newquiz.data.local.daily_challenge
 
 import androidx.annotation.Keep
 import androidx.room.Entity

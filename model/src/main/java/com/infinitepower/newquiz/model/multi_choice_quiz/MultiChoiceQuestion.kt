@@ -22,18 +22,6 @@ data class MultiChoiceQuestion(
 ) : java.io.Serializable {
     fun toQuestionStep() = MultiChoiceQuestionStep.NotCurrent(this)
 
-    fun toEntity() = MultiChoiceQuestionEntity(
-        id = id,
-        description = description,
-        imageUrl = imageUrl,
-        answers = answers,
-        lang = lang.name,
-        category = category.toString(),
-        correctAns = correctAns,
-        type = type.name,
-        difficulty = difficulty.toString()
-    )
-
     override fun toString(): String = Json.encodeToString(this)
 
     override fun equals(other: Any?): Boolean {

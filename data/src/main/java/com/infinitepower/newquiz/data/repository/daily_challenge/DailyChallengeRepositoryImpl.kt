@@ -1,12 +1,12 @@
 package com.infinitepower.newquiz.data.repository.daily_challenge
 
 import android.util.Log
+import com.infinitepower.newquiz.data.local.daily_challenge.DailyChallengeDao
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.repository.daily_challenge.util.getTitle
 import com.infinitepower.newquiz.data.util.mappers.toDomain
 import com.infinitepower.newquiz.data.util.mappers.toEntity
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeDao
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 import com.infinitepower.newquiz.model.global_event.GameEvent

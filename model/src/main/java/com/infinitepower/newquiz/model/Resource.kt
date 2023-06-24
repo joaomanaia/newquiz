@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.core.common
+package com.infinitepower.newquiz.model
 
 import kotlinx.coroutines.flow.Flow
 

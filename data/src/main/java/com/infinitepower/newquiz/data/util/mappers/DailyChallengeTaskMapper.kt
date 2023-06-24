@@ -1,9 +1,9 @@
 package com.infinitepower.newquiz.data.util.mappers
 
+import com.infinitepower.newquiz.data.local.daily_challenge.DailyChallengeTaskEntity
 import com.infinitepower.newquiz.data.repository.daily_challenge.util.getTitle
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
-import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTaskEntity
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import kotlinx.datetime.Instant
 

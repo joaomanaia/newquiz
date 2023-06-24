@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.data.repository
 
-import android.net.Uri
 import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.FirebaseUser
@@ -8,11 +7,13 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.infinitepower.newquiz.core.common.DEFAULT_USER_PHOTO
+import com.infinitepower.newquiz.core.util.toJavaURI
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.net.URI
 import java.security.SecureRandom
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -44,8 +45,8 @@ class AuthUserRepositoryImpl @Inject constructor() : AuthUserRepository {
     override val name: String?
         get() = authUser?.displayName
 
-    override val photoUrl: Uri?
-        get() = authUser?.photoUrl
+    override val photoUrl: URI?
+        get() = authUser?.photoUrl?.toJavaURI()
 
     override suspend fun refreshAuthUser() {
         val name = authUser?.displayName ?: "user${SecureRandom().nextInt()}"

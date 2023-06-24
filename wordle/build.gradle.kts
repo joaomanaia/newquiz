@@ -14,7 +14,6 @@ android {
 
     defaultConfig {
         minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
 
         testInstrumentationRunner = "com.infinitepower.newquiz.wordle.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
