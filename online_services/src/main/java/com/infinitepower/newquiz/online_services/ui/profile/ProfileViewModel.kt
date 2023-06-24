@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.online_services.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.online_services.domain.usecase.GetLocalUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

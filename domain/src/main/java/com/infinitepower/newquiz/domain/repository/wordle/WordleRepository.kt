@@ -1,6 +1,6 @@
 package com.infinitepower.newquiz.domain.repository.wordle
 
-import com.infinitepower.newquiz.core.common.FlowResource
+import com.infinitepower.newquiz.model.FlowResource
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord
 import kotlin.random.Random

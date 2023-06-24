@@ -15,6 +15,7 @@ dependencies {
     implementation(AndroidX.annotation)
 
     implementation(KotlinX.serialization.json)
+    implementation(KotlinX.coroutines.core)
     implementation(KotlinX.datetime)
 }
 

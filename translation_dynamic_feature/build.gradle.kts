@@ -61,6 +61,7 @@ kotlin {
 
 dependencies {
     implementation(project(Modules.core))
+    implementation(project(Modules.model))
 
     implementation(AndroidX.core.ktx)
     testImplementation(Testing.junit4)

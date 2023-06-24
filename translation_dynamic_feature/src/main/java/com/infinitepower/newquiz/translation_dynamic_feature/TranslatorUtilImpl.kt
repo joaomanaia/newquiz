@@ -7,8 +7,7 @@ import com.google.mlkit.nl.translate.TranslateRemoteModel
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
-import com.infinitepower.newquiz.core.common.FlowResource
-import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.model.FlowResource
 import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil.TranslatorModelState
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -35,7 +34,7 @@ class TranslatorUtilImpl @Inject constructor() : TranslatorUtil {
     private val manager by lazy { RemoteModelManager.getInstance() }
 
     override suspend fun downloadModel(): FlowResource<TranslatorModelState> = flow {
-        emit(Resource.Loading(TranslatorModelState.Downloading))
+        emit(com.infinitepower.newquiz.model.Resource.Loading(TranslatorModelState.Downloading))
 
         val conditions = DownloadConditions
             .Builder()
@@ -49,13 +48,13 @@ class TranslatorUtilImpl @Inject constructor() : TranslatorUtil {
         } catch (e: Exception) {
             e.printStackTrace()
             emit(
-                Resource.Error(
+                com.infinitepower.newquiz.model.Resource.Error(
                     message = e.localizedMessage ?: "Error while downloading translation model",
                     data = TranslatorModelState.None
                 )
             )
         } finally {
-            emit(Resource.Success(TranslatorModelState.Downloaded))
+            emit(com.infinitepower.newquiz.model.Resource.Success(TranslatorModelState.Downloaded))
         }
     }
 
@@ -69,14 +68,14 @@ class TranslatorUtilImpl @Inject constructor() : TranslatorUtil {
 
     override fun translateAsync(text: String): FlowResource<String> = flow {
         try {
-            emit(Resource.Loading())
+            emit(com.infinitepower.newquiz.model.Resource.Loading())
             if (!isModelDownloaded()) throw RuntimeException("No model downloaded")
 
             val translatedText = translate(text)
-            emit(Resource.Success(translatedText))
+            emit(com.infinitepower.newquiz.model.Resource.Success(translatedText))
         } catch (e: Exception) {
             e.printStackTrace()
-            emit(Resource.Error(e.localizedMessage ?: "Error while translating text"))
+            emit(com.infinitepower.newquiz.model.Resource.Error(e.localizedMessage ?: "Error while translating text"))
         }
     }
 

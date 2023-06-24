@@ -1,6 +1,6 @@
 package com.infinitepower.newquiz.translation_dynamic_feature
 
-import com.infinitepower.newquiz.core.common.FlowResource
+import com.infinitepower.newquiz.model.FlowResource
 
 interface TranslatorUtil {
     suspend fun downloadModel(): FlowResource<TranslatorModelState>

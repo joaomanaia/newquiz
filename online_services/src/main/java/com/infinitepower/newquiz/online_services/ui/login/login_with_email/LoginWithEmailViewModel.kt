@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.online_services.ui.login.login_with_email
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.online_services.core.login.LoginCore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

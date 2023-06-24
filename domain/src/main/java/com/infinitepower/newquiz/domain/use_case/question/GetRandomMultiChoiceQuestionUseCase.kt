@@ -1,20 +1,18 @@
 package com.infinitepower.newquiz.domain.use_case.question
 
-import com.infinitepower.newquiz.core.common.FlowResource
-import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSolutionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
+import com.infinitepower.newquiz.model.FlowResource
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class GetRandomMultiChoiceQuestionUseCase @Inject constructor(
     private val normalQuestionRepository: MultiChoiceQuestionRepository,
     private val flagQuizRepository: FlagQuizRepository,

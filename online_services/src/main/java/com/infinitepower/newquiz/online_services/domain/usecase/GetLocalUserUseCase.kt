@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.online_services.domain.usecase
 
-import com.infinitepower.newquiz.core.common.FlowResource
-import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.model.FlowResource
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.infinitepower.newquiz.online_services.model.user.User
 import kotlinx.coroutines.flow.flow

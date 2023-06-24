@@ -1,6 +1,6 @@
 package com.infinitepower.newquiz.online_services.core.login
 
-import com.infinitepower.newquiz.core.common.FlowResource
+import com.infinitepower.newquiz.model.FlowResource
 
 interface LoginCore {
     fun loginWithEmail(

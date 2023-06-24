@@ -8,11 +8,11 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
-import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleQuizType

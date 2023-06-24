@@ -7,8 +7,8 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.infinitepower.newquiz.core.common.FlowResource
-import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.model.FlowResource
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.online_services.core.worker.CheckUserDBWorker
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await

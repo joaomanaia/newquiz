@@ -1,9 +1,9 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion

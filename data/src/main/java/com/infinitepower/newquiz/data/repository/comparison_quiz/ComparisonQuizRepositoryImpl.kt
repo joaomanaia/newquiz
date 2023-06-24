@@ -1,12 +1,12 @@
 package com.infinitepower.newquiz.data.repository.comparison_quiz
 
 import com.infinitepower.newquiz.core.common.BaseApiUrls
-import com.infinitepower.newquiz.core.common.FlowResource
-import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.ComparisonQuizDataStoreCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.ComparisonQuizDataStoreManager
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.model.FlowResource
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem

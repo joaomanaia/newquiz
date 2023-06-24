@@ -1,6 +1,6 @@
 package com.infinitepower.newquiz.domain.repository.maze
 
-import com.infinitepower.newquiz.core.common.FlowResource
+import com.infinitepower.newquiz.model.FlowResource
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 
 interface MazeQuizRepository {

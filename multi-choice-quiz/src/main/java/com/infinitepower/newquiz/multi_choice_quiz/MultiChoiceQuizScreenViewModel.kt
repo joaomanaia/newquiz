@@ -11,7 +11,6 @@ import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
 import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
-import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
@@ -25,6 +24,7 @@ import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
 import com.infinitepower.newquiz.domain.use_case.question.IsQuestionSavedUseCase
 import com.infinitepower.newquiz.model.RemainingTime
+import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
