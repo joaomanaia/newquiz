@@ -1,31 +1,24 @@
 package com.infinitepower.newquiz.core.game
 
-import android.net.Uri
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkStatic
 import org.junit.jupiter.api.Test
+import java.net.URI
 
 class ComparisonQuizDataTest {
     @Test
     fun `nextQuestion should return a new ComparisonQuizData object with a new current question`() {
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
-
         val quizItem1 = ComparisonQuizItem(
             title = "A",
-            imgUri = uriMock,
+            imgUri = URI(""),
             value = 10.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
-            imgUri = uriMock,
+            imgUri = URI(""),
             value = 5.0
         )
 
@@ -67,25 +60,21 @@ class ComparisonQuizDataTest {
 
     @Test
     fun `test nextQuestion when questions has size of 3`() {
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
-
         val quizItem1 = ComparisonQuizItem(
             title = "A",
-            imgUri = uriMock,
+            imgUri = URI(""),
             value = 10.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
-            imgUri = uriMock,
+            imgUri = URI(""),
             value = 5.0
         )
 
         val quizItem3 = ComparisonQuizItem(
             title = "C",
-            imgUri = uriMock,
+            imgUri = URI(""),
             value = 8.0
         )
 
@@ -108,25 +97,21 @@ class ComparisonQuizDataTest {
 
     @Test
     fun `test nextQuestion when questions has size of 1 and current question is not null`() {
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
-
         val quizItem1 = ComparisonQuizItem(
             title = "A",
-            imgUri = uriMock,
+            imgUri = URI(""),
             value = 10.0
         )
 
         val quizItem2 = ComparisonQuizItem(
             title = "B",
-            imgUri = uriMock,
+            imgUri = URI(""),
             value = 5.0
         )
 
         val quizItem3 = ComparisonQuizItem(
             title = "C",
-            imgUri = uriMock,
+            imgUri = URI(""),
             value = 8.0
         )
 

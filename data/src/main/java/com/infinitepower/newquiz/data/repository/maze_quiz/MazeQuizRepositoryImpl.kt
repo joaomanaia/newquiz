@@ -2,12 +2,12 @@ package com.infinitepower.newquiz.data.repository.maze_quiz
 
 import com.infinitepower.newquiz.core.common.FlowResource
 import com.infinitepower.newquiz.core.common.Resource
+import com.infinitepower.newquiz.data.local.maze.MazeQuizDao
+import com.infinitepower.newquiz.data.local.maze.MazeQuizItemEntity
+import com.infinitepower.newquiz.data.local.maze.toEntity
+import com.infinitepower.newquiz.data.local.maze.toMazeQuizItem
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
-import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
 import com.infinitepower.newquiz.model.maze.MazeQuiz
-import com.infinitepower.newquiz.model.maze.MazeQuizItemEntity
-import com.infinitepower.newquiz.model.maze.toEntity
-import com.infinitepower.newquiz.model.maze.toMazeQuizItem
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map

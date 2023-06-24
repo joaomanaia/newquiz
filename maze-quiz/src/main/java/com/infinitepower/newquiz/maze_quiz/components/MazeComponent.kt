@@ -39,7 +39,6 @@ import com.infinitepower.newquiz.model.maze.generateMazePointsBottomToTop
 import com.infinitepower.newquiz.model.maze.isInsideCircle
 import com.infinitepower.newquiz.model.maze.isItemPlayed
 import com.infinitepower.newquiz.model.maze.isPlayableItem
-import com.infinitepower.newquiz.model.maze.toMazePoint
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord
@@ -250,6 +249,8 @@ private fun getContentColor(
 
     return if (itemPlayed || isPlayItem) colorPrimary else colorSurfaceVariant
 }
+
+private fun Offset.toMazePoint(): MazePoint = MazePoint(x, y)
 
 @Composable
 @PreviewNightLight

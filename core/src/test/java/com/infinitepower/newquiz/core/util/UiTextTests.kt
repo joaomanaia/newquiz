@@ -1,7 +1,9 @@
-package com.infinitepower.newquiz.model
+package com.infinitepower.newquiz.core.util
 
 import android.content.Context
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.model.UiText
+import com.infinitepower.newquiz.model.toUiText
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 

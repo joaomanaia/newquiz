@@ -1,10 +1,9 @@
-package com.infinitepower.newquiz.model.multi_choice_quiz
+package com.infinitepower.newquiz.data.local.multi_choice_quiz
 
 import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlinx.serialization.Serializable
 
 /**
@@ -61,15 +60,3 @@ data class MultiChoiceQuestionEntity(
         return result
     }
 }
-
-fun MultiChoiceQuestionEntity.toQuestion(): MultiChoiceQuestion = MultiChoiceQuestion(
-    id = id,
-    description = description,
-    imageUrl = imageUrl,
-    answers = answers,
-    lang = QuestionLanguage.EN,
-    category = MultiChoiceBaseCategory.fromId(category),
-    correctAns = correctAns,
-    type = MultiChoiceQuestionType.MULTIPLE,
-    difficulty = QuestionDifficulty.from(difficulty)
-)

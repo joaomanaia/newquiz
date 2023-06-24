@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.comparison_quiz.ui
 
-import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
@@ -42,6 +41,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.net.URI
 
 /**
  * Tests for [ComparisonQuizScreen].
@@ -95,17 +95,17 @@ internal class ComparisonQuizScreenTest {
                 ComparisonQuizItem(
                     title = "Question 1",
                     value = 1.0,
-                    imgUri = Uri.EMPTY
+                    imgUri = URI("")
                 ),
                 ComparisonQuizItem(
                     title = "Question 2",
                     value = 2.0,
-                    imgUri = Uri.EMPTY
+                    imgUri = URI("")
                 ),
                 ComparisonQuizItem(
                     title = "Question 3",
                     value = 3.0,
-                    imgUri = Uri.EMPTY
+                    imgUri = URI("")
                 ),
             ),
             initialCategories = listOf(category)

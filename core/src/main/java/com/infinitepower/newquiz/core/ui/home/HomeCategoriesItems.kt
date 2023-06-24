@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
+import com.infinitepower.newquiz.core.util.asString
 import com.infinitepower.newquiz.model.BaseCategory
 
 fun <T : BaseCategory> LazyListScope.homeCategoriesItems(

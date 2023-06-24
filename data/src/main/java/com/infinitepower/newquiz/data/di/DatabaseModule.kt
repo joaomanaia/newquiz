@@ -3,9 +3,9 @@ package com.infinitepower.newquiz.data.di
 import android.content.Context
 import androidx.room.Room
 import com.infinitepower.newquiz.data.database.AppDatabase
-import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeDao
-import com.infinitepower.newquiz.domain.repository.maze.MazeQuizDao
-import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsDao
+import com.infinitepower.newquiz.data.local.daily_challenge.DailyChallengeDao
+import com.infinitepower.newquiz.data.local.maze.MazeQuizDao
+import com.infinitepower.newquiz.data.local.multi_choice_quiz.SavedMultiChoiceQuestionsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

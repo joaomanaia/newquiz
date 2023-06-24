@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.model.maze
 
 import androidx.annotation.Keep
-import androidx.compose.ui.geometry.Offset
 import kotlin.math.pow
 
 @Keep
@@ -11,8 +10,6 @@ data class MazePoint(
 ) {
     override fun toString(): String = "x: $x, y: $y"
 }
-
-fun Offset.toMazePoint(): MazePoint = MazePoint(x, y)
 
 /**
  * Checks if this point is inside the circle defined by [center] and [radius], using the

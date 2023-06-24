@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
-import android.net.Uri
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.common.Resource
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
@@ -19,7 +18,6 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.flow.first
@@ -28,6 +26,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.net.URI
 
 /**
  * Unit tests for [ComparisonQuizCoreImpl].
@@ -466,12 +465,5 @@ internal class ComparisonQuizCoreImplTest {
         comparisonMode = comparisonMode
     )
 
-    private fun getUriMock(): Uri {
-        // Mock Uri.parse() to return a mock Uri
-        mockkStatic(Uri::class)
-        val uriMock = mockk<Uri>()
-        every { Uri.parse("test/path") } returns uriMock
-
-        return uriMock
-    }
+    private fun getUriMock(): URI = URI("test/path")
 }

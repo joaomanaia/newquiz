@@ -1,14 +1,14 @@
 package com.infinitepower.newquiz.model.comparison_quiz
 
-import android.net.Uri
 import androidx.annotation.Keep
 import kotlinx.serialization.Serializable
+import java.net.URI
 
 @Keep
 data class ComparisonQuizItem(
     val title: String,
     val value: Double,
-    val imgUri: Uri
+    val imgUri: URI
 )
 
 @Keep
@@ -23,6 +23,6 @@ fun ComparisonQuizItemEntity.toComparisonQuizItem(): ComparisonQuizItem {
     return ComparisonQuizItem(
         title = title,
         value = value,
-        imgUri = Uri.parse(imgUrl)
+        imgUri = URI.create(imgUrl)
     )
 }

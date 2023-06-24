@@ -1,11 +1,13 @@
-package com.infinitepower.newquiz.model.maze
+package com.infinitepower.newquiz.data.local.maze
 
 import androidx.annotation.Keep
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionEntity
-import com.infinitepower.newquiz.model.multi_choice_quiz.toQuestion
+import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.data.util.mappers.toEntity
+import com.infinitepower.newquiz.data.util.mappers.toQuestion
+import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord

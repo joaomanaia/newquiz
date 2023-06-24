@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.comparison_quiz.ui
 
-import android.net.Uri
 import androidx.annotation.Keep
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +46,7 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipIconButton
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipQuestionDialog
+import com.infinitepower.newquiz.core.util.emptyJavaURI
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
@@ -402,13 +402,13 @@ private fun ComparisonQuizScreenPreview() {
     val question1 = ComparisonQuizItem(
         title = "NewQuiz",
         value = 3245.0,
-        imgUri = Uri.EMPTY
+        imgUri = emptyJavaURI()
     )
 
     val question2 = ComparisonQuizItem(
         title = "NewSocial",
         value = 23445.0,
-        imgUri = Uri.EMPTY
+        imgUri = emptyJavaURI()
     )
 
     val configuration = LocalConfiguration.current
