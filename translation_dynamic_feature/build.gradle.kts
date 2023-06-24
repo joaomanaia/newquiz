@@ -1,18 +1,16 @@
-import de.fayard.refreshVersions.core.versionFor
-
 plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
 }
+
 android {
     namespace = "com.infinitepower.newquiz.translation_dynamic_feature"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
         minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
 
         testInstrumentationRunner = ProjectConfig.testInstrumentationRunner
         consumerProguardFiles("consumer-rules.pro")
@@ -35,21 +33,6 @@ android {
         jvmTarget = ProjectConfig.jvmTargetVersion
         freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
-    }
-    libraryVariants.all {
-        kotlin.sourceSets {
-            getByName(name) {
-                kotlin.srcDir("build/generated/ksp/$name/kotlin")
-            }
-        }
-
-        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
-    }
     lint {
         disable += "DialogFragmentCallbacksDetector"
     }
@@ -60,14 +43,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(Modules.core))
     implementation(project(Modules.model))
-
-    implementation(AndroidX.core.ktx)
-    testImplementation(Testing.junit4)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
-    androidTestImplementation(AndroidX.annotation)
 
     implementation(Google.mlKit.naturalLanguage.translate)
 
@@ -76,7 +52,4 @@ dependencies {
     implementation(Google.dagger.hilt.android)
     kapt(Google.dagger.hilt.compiler)
     kapt(AndroidX.hilt.compiler)
-    implementation(AndroidX.hilt.navigationCompose)
-    androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.compiler)
 }
