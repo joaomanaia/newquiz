@@ -45,11 +45,11 @@ kotlin {
 dependencies {
     implementation(project(Modules.model))
 
-    implementation(Google.mlKit.naturalLanguage.translate)
+    implementation(libs.google.mlKit.translate)
 
-    implementation(KotlinX.Coroutines.playServices)
+    implementation(libs.kotlinx.coroutines.playServices)
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    kapt(AndroidX.hilt.compiler)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.ext.compiler)
 }

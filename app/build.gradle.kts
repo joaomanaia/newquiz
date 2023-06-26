@@ -1,7 +1,7 @@
-import de.fayard.refreshVersions.core.versionFor
+// import de.fayard.refreshVersions.core.versionFor
 
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.android.application)
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
@@ -57,7 +57,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get() // versionFor(AndroidX.compose.compiler)
     }
     packaging {
         resources {
@@ -96,80 +96,71 @@ kotlin {
 }
 
 dependencies {
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.appCompat)
-    implementation(AndroidX.activity.ktx)
-    implementation(AndroidX.lifecycle.runtime.ktx)
-    implementation(AndroidX.lifecycle.runtime.compose)
-    implementation(AndroidX.constraintLayout.compose)
-    implementation(AndroidX.core.splashscreen)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.appcompat)
 
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.constraintlayout.compose)
 
-    implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.ui.tooling)
-    debugImplementation(AndroidX.compose.ui.testManifest)
-    implementation(AndroidX.compose.material.icons.extended)
-    implementation(AndroidX.activity.compose)
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
 
-    testImplementation(Testing.junit4)
-    testImplementation(Testing.junit.jupiter)
-    testImplementation(Kotlin.test.junit)
-    androidTestImplementation(Kotlin.test.junit)
+    implementation(libs.androidx.startup.runtime)
+    implementation(libs.androidx.dataStore.preferences)
 
-    implementation(Google.android.material)
-    implementation(AndroidX.compose.material3)
-    implementation(AndroidX.compose.material3.windowSizeClass)
-    implementation(AndroidX.compose.material)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.material.iconsExtended)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.windowSizeClass)
+    debugImplementation(libs.androidx.compose.ui.testManifest)
+    androidTestImplementation(libs.androidx.compose.ui.test)
 
-    implementation(AndroidX.lifecycle.viewModelCompose)
+    implementation(libs.google.material)
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    kapt(AndroidX.hilt.compiler)
-    implementation(AndroidX.hilt.navigationCompose)
-    androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.compiler)
-    implementation(AndroidX.hilt.work)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.ext.compiler)
+    implementation(libs.hilt.navigationCompose)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
+    implementation(libs.hilt.ext.work)
 
-    testImplementation(KotlinX.coroutines.test)
-    implementation(KotlinX.coroutines.playServices)
+    testImplementation(libs.kotlinx.coroutines.test)
+    implementation(libs.kotlinx.coroutines.playServices)
 
-    implementation(AndroidX.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
 
     implementation(libs.lottie.compose)
 
-    implementation(Ktor.client.core)
-    implementation(Ktor.client.okHttp)
-    implementation(Ktor.client.serialization)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.serialization)
 
-    //debugImplementation(Square.leakCanary.android)
+    implementation(libs.androidx.work.ktx)
+    androidTestImplementation(libs.androidx.work.testing)
 
-    implementation(AndroidX.work.runtimeKtx)
-    androidTestImplementation(AndroidX.work.testing)
+    testImplementation(libs.google.truth)
+    androidTestImplementation(libs.google.truth)
 
-    testImplementation(libs.truth)
-    androidTestImplementation(libs.truth)
+    implementation(libs.compose.destinations.core)
+    ksp(libs.compose.destinations.ksp)
 
-    implementation(libs.io.github.raamcosta.compose.destinations.core)
-    ksp(libs.io.github.raamcosta.compose.destinations.ksp)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.remoteConfig.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.perf.ktx)
 
-    implementation(Google.firebase.analyticsKtx.withVersionPlaceholder())
-    implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
-    implementation(Google.firebase.crashlyticsKtx.withVersionPlaceholder())
-    implementation(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
-
-    implementation(KotlinX.datetime)
+    implementation(libs.kotlinx.datetime)
 
     implementation(libs.slf4j.simple)
 
-    implementation(libs.play.services.oss.licenses)
-
-    implementation(AndroidX.dataStore.preferences)
-
-    implementation(AndroidX.startup.runtime)
+    implementation(libs.google.oss.licenses)
 
     implementation(project(Modules.core))
     implementation(project(Modules.model))

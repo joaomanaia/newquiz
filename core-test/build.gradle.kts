@@ -1,11 +1,10 @@
-import de.fayard.refreshVersions.core.versionFor
+// import de.fayard.refreshVersions.core.versionFor
 
 plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp")
 }
 
 android {
@@ -40,7 +39,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get() // versionFor(AndroidX.compose.compiler)
     }
     packaging {
         resources {
@@ -56,45 +55,36 @@ kotlin {
 }
 
 dependencies {
-    implementation(AndroidX.core.ktx)
+    implementation(libs.androidx.core.ktx)
 
-    implementation(Testing.mockK.android)
-    implementation(Testing.junit.jupiter)
+    implementation(libs.mockk)
+    implementation(libs.junit.jupiter)
 
     // Compose
-    implementation(AndroidX.compose.ui.tooling)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.activity.compose)
-    implementation(AndroidX.compose.material3)
-    implementation(AndroidX.compose.material3.windowSizeClass)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    kapt(AndroidX.hilt.compiler)
-    implementation(AndroidX.hilt.navigationCompose)
-    implementation(Google.dagger.hilt.android.testing)
-    implementation(AndroidX.hilt.work)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.ext.compiler)
+    implementation(libs.hilt.navigationCompose)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
+    implementation(libs.hilt.ext.work)
 
-    implementation(AndroidX.work.testing)
-
-    implementation(libs.io.github.raamcosta.compose.destinations.core)
-    ksp(libs.io.github.raamcosta.compose.destinations.ksp)
+    implementation(libs.androidx.work.ktx)
 
     // Google truth
-    implementation(libs.truth)
+    implementation(libs.google.truth)
 
-    implementation(Kotlin.test.junit)
+    implementation(libs.androidx.test.runner)
+    implementation(libs.androidx.test.rules)
+    implementation(libs.androidx.compose.ui.test)
 
-    implementation(AndroidX.test.runner)
-    implementation(AndroidX.test.rules)
-    implementation(AndroidX.test.ext.junit)
-    implementation(AndroidX.test.runner)
-
-    implementation(AndroidX.compose.ui.test)
-    implementation(AndroidX.compose.ui.testJunit4)
-    debugImplementation(AndroidX.compose.ui.testManifest)
-
-    implementation(AndroidX.test.espresso.core)
+    // implementation(AndroidX.test.espresso.core)
 
     implementation(project(Modules.core))
     androidTestImplementation(project(Modules.comparisonQuiz))

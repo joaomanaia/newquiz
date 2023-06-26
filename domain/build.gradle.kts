@@ -10,8 +10,8 @@ dependencies {
     implementation(project(Modules.model))
 
     implementation(libs.javax.inject)
-    implementation(AndroidX.annotation)
-    implementation(KotlinX.coroutines.core)
+    implementation(libs.androidx.annotation)
+    implementation(libs.kotlinx.coroutines.core)
 
 }
 

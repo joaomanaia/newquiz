@@ -1,4 +1,4 @@
-import de.fayard.refreshVersions.core.versionFor
+// import de.fayard.refreshVersions.core.versionFor
 
 plugins {
     id("com.android.library")
@@ -41,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get() // versionFor(AndroidX.compose.compiler)
     }
     libraryVariants.all {
         kotlin.sourceSets {
@@ -70,70 +70,62 @@ kotlin {
 }
 
 dependencies {
-    testImplementation(Testing.junit.jupiter)
-    testImplementation(libs.truth)
-    testImplementation(Testing.mockK.android)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.mockk)
 
-    androidTestImplementation(libs.truth)
-    androidTestImplementation(Testing.mockK.android)
-    androidTestImplementation(Kotlin.test.junit)
-    androidTestImplementation(AndroidX.test.runner)
-    androidTestImplementation(AndroidX.test.rules)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(Testing.junit.jupiter)
-    androidTestImplementation(AndroidX.test.runner)
-    androidTestImplementation(AndroidX.compose.ui.test)
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
-    debugApi(AndroidX.tracing.ktx)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.mockk)
+    androidTestImplementation(libs.google.truth)
+    androidTestImplementation(libs.androidx.compose.ui.test)
+    debugApi(libs.androidx.tracing.ktx)
 
-    debugImplementation(AndroidX.compose.ui.testManifest)
+    implementation(libs.androidx.core.ktx)
 
-    implementation(AndroidX.core.ktx)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material.iconsExtended)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.constraintlayout.compose)
+    debugImplementation(libs.androidx.compose.ui.testManifest)
 
-    implementation(AndroidX.compose.ui.tooling)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.activity.compose)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.compose.material3)
-    implementation(AndroidX.compose.material.icons.extended)
-    implementation(AndroidX.constraintLayout.compose)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.ext.compiler)
+    implementation(libs.hilt.navigationCompose)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
+    implementation(libs.hilt.ext.work)
 
-    implementation(Google.android.material)
+    implementation(libs.androidx.work.ktx)
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    kapt(AndroidX.hilt.compiler)
-    implementation(AndroidX.hilt.navigationCompose)
-    androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.compiler)
-    implementation(AndroidX.hilt.work)
+    implementation(libs.google.material)
 
-    implementation(AndroidX.work.runtimeKtx)
+    implementation(libs.androidx.dataStore.preferences)
 
-    implementation(Google.android.material)
-
-    implementation(AndroidX.dataStore.preferences)
-
-    implementation(Google.firebase.analyticsKtx.withVersionPlaceholder())
-    implementation(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
-    implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
-    implementation(Google.firebase.crashlyticsKtx.withVersionPlaceholder())
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.remoteConfig.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.perf.ktx)
 
     implementation(libs.lottie.compose)
 
-    implementation(KotlinX.datetime)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization.json)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(KotlinX.serialization.json)
+    implementation(libs.coil.kt.compose)
+    implementation(libs.coil.kt.svg)
 
-    testImplementation(KotlinX.coroutines.test)
+    //implementation("androidx.palette:palette-ktx:_")
 
-    implementation(COIL.compose)
-    implementation(COIL.svg)
-
-    //implementation("androidx.palette:palette-ktx:1.0.0")
-
-    implementation(libs.io.github.raamcosta.compose.destinations.core)
-    ksp(libs.io.github.raamcosta.compose.destinations.ksp)
+    implementation(libs.compose.destinations.core)
+    ksp(libs.compose.destinations.ksp)
 
     // Modules
     implementation(project(Modules.model))

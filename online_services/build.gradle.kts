@@ -1,5 +1,3 @@
-import de.fayard.refreshVersions.core.versionFor
-
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -41,7 +39,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
     }
     libraryVariants.all {
         kotlin.sourceSets {
@@ -59,53 +57,53 @@ kotlin {
 }
 
 dependencies {
-    implementation(AndroidX.core.ktx)
+    implementation(libs.androidx.core.ktx)
 
-    implementation(AndroidX.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
 
-    testImplementation(Testing.junit.jupiter)
-    testImplementation(Testing.mockK)
-    testImplementation(libs.truth)
-    testImplementation(KotlinX.coroutines.test)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(KotlinX.datetime)
-    implementation(KotlinX.coroutines.playServices)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.coroutines.playServices)
 
-    implementation(AndroidX.compose.ui.tooling)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.activity.compose)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.compose.material3)
-    implementation(AndroidX.compose.material3.windowSizeClass)
-    implementation(AndroidX.compose.material.icons.extended)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(libs.androidx.compose.material.iconsExtended)
+    debugImplementation(libs.androidx.compose.ui.testManifest)
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    kapt(AndroidX.hilt.compiler)
-    implementation(AndroidX.hilt.navigationCompose)
-    androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.compiler)
-    implementation(AndroidX.hilt.work)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.ext.compiler)
+    implementation(libs.hilt.navigationCompose)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
+    implementation(libs.hilt.ext.work)
 
-    implementation(AndroidX.work.runtimeKtx)
-    androidTestImplementation(AndroidX.work.testing)
+    implementation(libs.androidx.work.ktx)
+    androidTestImplementation(libs.androidx.work.testing)
 
-    implementation(libs.io.github.raamcosta.compose.destinations.core)
-    ksp(libs.io.github.raamcosta.compose.destinations.ksp)
+    implementation(libs.compose.destinations.core)
+    ksp(libs.compose.destinations.ksp)
 
-    implementation(platform(Firebase.bom))
-    implementation(Firebase.cloudFirestoreKtx)
-    implementation(Firebase.remoteConfigKtx)
-    implementation(Firebase.authenticationKtx)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.remoteConfig.ktx)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
-    implementation(libs.firebase.ui.auth)
+    implementation(libs.firebaseUi.auth)
 
-    implementation(COIL.compose)
+    implementation(libs.coil.kt.compose)
 
     implementation(libs.vico.compose)
     implementation(libs.vico.compose.m3)
 
-    implementation(KotlinX.serialization.json)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(project(Modules.core))
     implementation(project(Modules.domain))

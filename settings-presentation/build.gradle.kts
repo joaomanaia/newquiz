@@ -1,5 +1,3 @@
-import de.fayard.refreshVersions.core.versionFor
-
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -40,7 +38,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
     }
     libraryVariants.all {
         kotlin.sourceSets {
@@ -61,38 +59,37 @@ kotlin {
 }
 
 dependencies {
-    implementation(AndroidX.core.ktx)
+    implementation(libs.androidx.core.ktx)
 
-    implementation(AndroidX.lifecycle.runtime.ktx)
-    implementation(AndroidX.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
 
-    testImplementation(Testing.junit.jupiter)
-    testImplementation(libs.truth)
-    androidTestImplementation(Kotlin.test.junit)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(Google.android.material)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(libs.androidx.compose.material.iconsExtended)
+    debugImplementation(libs.androidx.compose.ui.testManifest)
 
-    debugImplementation(AndroidX.compose.ui.testManifest)
-    implementation(AndroidX.compose.ui.tooling)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.activity.compose)
-    implementation(AndroidX.compose.material3)
-    implementation(AndroidX.compose.material3.windowSizeClass)
-    implementation(AndroidX.compose.material.icons.extended)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.ext.compiler)
+    implementation(libs.hilt.navigationCompose)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    kapt(AndroidX.hilt.compiler)
-    implementation(AndroidX.hilt.navigationCompose)
-    androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.compiler)
+    implementation(libs.androidx.dataStore.preferences)
 
-    implementation(AndroidX.dataStore.preferences)
+    implementation(libs.compose.destinations.core)
+    ksp(libs.compose.destinations.ksp)
 
-    implementation(libs.io.github.raamcosta.compose.destinations.core)
-    ksp(libs.io.github.raamcosta.compose.destinations.ksp)
-
-    implementation(libs.play.services.oss.licenses)
+    implementation(libs.google.oss.licenses)
 
     implementation(project(Modules.core))
     implementation(project(Modules.data))
