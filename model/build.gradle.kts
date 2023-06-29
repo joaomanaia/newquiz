@@ -1,10 +1,6 @@
 plugins {
-    kotlin("jvm")
-    id("kotlinx-serialization")
-}
-
-kotlin {
-    jvmToolchain(ProjectConfig.jvmToolchainVersion)
+    id("newquiz.jvm.library")
+    id("newquiz.kotlin.serialization")
 }
 
 dependencies {
@@ -14,7 +10,6 @@ dependencies {
 
     implementation(libs.androidx.annotation)
 
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.datetime)
 }
