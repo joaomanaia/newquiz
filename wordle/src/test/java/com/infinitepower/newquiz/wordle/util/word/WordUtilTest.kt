@@ -3,7 +3,7 @@ package com.infinitepower.newquiz.wordle.util.word
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.model.wordle.WordleChar
 import com.infinitepower.newquiz.model.wordle.WordleItem
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 internal class WordUtilTest {
 

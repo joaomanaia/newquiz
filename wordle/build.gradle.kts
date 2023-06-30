@@ -14,11 +14,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
 
-    testImplementation(libs.google.truth)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
@@ -30,8 +25,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
-    androidTestImplementation(libs.mockk)
-    androidTestImplementation(libs.google.truth)
 
     // Hilt navigation compose utils
     implementation(libs.hilt.navigationCompose)
@@ -50,8 +43,4 @@ dependencies {
     implementation(project(Modules.data))
     implementation(project(Modules.onlineServices))
     androidTestImplementation(project(Modules.coreTest))
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
 }
