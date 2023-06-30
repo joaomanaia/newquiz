@@ -13,6 +13,10 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 configureAndroidCompose(this)
+
+                defaultConfig {
+                    testInstrumentationRunner = "com.infinitepower.newquiz.core_test.HiltTestRunner"
+                }
             }
         }
     }
