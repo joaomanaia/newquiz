@@ -1,11 +1,11 @@
 package com.infinitepower.newquiz
 
-import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureAndroidCompose(
-    applicationExtension: ApplicationExtension
+    applicationExtension: CommonExtension<*, *, *, *, *>
 ) {
     applicationExtension.apply {
         buildFeatures {

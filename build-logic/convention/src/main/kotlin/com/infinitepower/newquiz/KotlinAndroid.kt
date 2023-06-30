@@ -6,6 +6,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.configureKotlinAndroid(
@@ -22,23 +23,33 @@ internal fun Project.configureKotlinAndroid(
             sourceCompatibility = ProjectConfig.javaVersionCompatibility
             targetCompatibility = ProjectConfig.javaVersionCompatibility
         }
+
+        packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                excludes += "/META-INF/LICENSE.md"
+                excludes += "/META-INF/LICENSE-notice.md"
+            }
+        }
     }
 
-    configureKotlin()
+    configureKotlinAndroid()
 }
 
 internal fun Project.configureKotlinJvm() {
-    extensions.configure<JavaPluginExtension> {
-        sourceCompatibility = ProjectConfig.javaVersionCompatibility
-        targetCompatibility = ProjectConfig.javaVersionCompatibility
-    }
+    extensions.apply {
+        configure<JavaPluginExtension> {
+            sourceCompatibility = ProjectConfig.javaVersionCompatibility
+            targetCompatibility = ProjectConfig.javaVersionCompatibility
+        }
 
-    extensions.configure<KotlinJvmProjectExtension> {
-        jvmToolchain(ProjectConfig.jvmToolchainVersion)
+        configure<KotlinJvmProjectExtension> {
+            jvmToolchain(ProjectConfig.jvmToolchainVersion)
+        }
     }
 }
 
-private fun Project.configureKotlin() {
+private fun Project.configureKotlinAndroid() {
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             jvmTarget = ProjectConfig.jvmTargetVersion
@@ -47,5 +58,9 @@ private fun Project.configureKotlin() {
                 "-opt-in=kotlin.RequiresOptIn"
             )
         }
+    }
+
+    extensions.configure<KotlinProjectExtension> {
+        jvmToolchain(ProjectConfig.jvmToolchainVersion)
     }
 }

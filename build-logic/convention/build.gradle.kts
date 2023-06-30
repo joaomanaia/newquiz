@@ -63,5 +63,9 @@ gradlePlugin {
             id = "newquiz.kotlin.serialization"
             implementationClass = "KotlinSerializationConventionPlugin"
         }
+        register("androidComposeDestinations") {
+            id = "newquiz.android.compose.destinations"
+            implementationClass = "AndroidComposeDestinationsConventionPlugin"
+        }
     }
 }

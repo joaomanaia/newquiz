@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.ApplicationExtension
 import com.infinitepower.newquiz.configureAndroidCompose
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -7,7 +8,9 @@ class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply("com.android.application")
-            configureAndroidCompose(extensions.getByType())
+
+            val extension = extensions.getByType<ApplicationExtension>()
+            configureAndroidCompose(extension)
         }
     }
 }

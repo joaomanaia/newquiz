@@ -1,65 +1,11 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-    id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp")
+    id("newquiz.android.library.compose")
+    id("newquiz.android.hilt")
+    id("newquiz.android.compose.destinations")
 }
 
 android {
     namespace = "com.infinitepower.newquiz.wordle"
-    compileSdk = ProjectConfig.compileSdk
-
-    defaultConfig {
-        minSdk = ProjectConfig.minSdk
-
-        testInstrumentationRunner = "com.infinitepower.newquiz.wordle.HiltTestRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersionCompatibility
-        targetCompatibility = ProjectConfig.javaVersionCompatibility
-    }
-    kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTargetVersion
-        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
-    }
-    libraryVariants.all {
-        kotlin.sourceSets {
-            getByName(name) {
-                kotlin.srcDir("build/generated/ksp/$name/kotlin")
-            }
-        }
-
-        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            excludes += "/META-INF/LICENSE.md"
-            excludes += "/META-INF/LICENSE-notice.md"
-        }
-    }
-}
-
-kotlin {
-    jvmToolchain(ProjectConfig.jvmToolchainVersion)
 }
 
 dependencies {
@@ -96,9 +42,6 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     kaptAndroidTest(libs.hilt.compiler)
 
-    implementation(libs.compose.destinations.core)
-    ksp(libs.compose.destinations.ksp)
-
     implementation(libs.kotlinx.datetime)
 
     implementation(libs.androidx.work.ktx)
@@ -114,9 +57,4 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-ksp {
-    arg("compose-destinations.mode", "destinations")
-    arg("compose-destinations.moduleName", "wordle")
 }
