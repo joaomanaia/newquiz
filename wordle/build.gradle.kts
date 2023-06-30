@@ -19,7 +19,6 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
@@ -34,13 +33,11 @@ dependencies {
     androidTestImplementation(libs.mockk)
     androidTestImplementation(libs.google.truth)
 
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.ext.work)
-    kapt(libs.hilt.compiler)
-    kapt(libs.hilt.ext.compiler)
+    // Hilt navigation compose utils
     implementation(libs.hilt.navigationCompose)
-    androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.compiler)
+    // Hilt work manager
+    implementation(libs.hilt.ext.work)
+    kapt(libs.hilt.ext.compiler)
 
     implementation(libs.kotlinx.datetime)
 
