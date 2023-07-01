@@ -1,6 +1,9 @@
 import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
+import com.infinitepower.newquiz.Modules
 import com.infinitepower.newquiz.androidTestImplementation
 import com.infinitepower.newquiz.configureKotlinAndroid
+import com.infinitepower.newquiz.disableUnnecessaryAndroidTests
 import com.infinitepower.newquiz.libs
 import com.infinitepower.newquiz.testImplementation
 import org.gradle.api.Plugin
@@ -9,6 +12,7 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.withType
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
@@ -27,6 +31,10 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 }
             }
 
+            extensions.configure<LibraryAndroidComponentsExtension> {
+                disableUnnecessaryAndroidTests(target)
+            }
+
             dependencies {
                 // Test libraries
                 testImplementation(kotlin("test"))
@@ -39,6 +47,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 androidTestImplementation(libs.findLibrary("google.truth").get())
                 androidTestImplementation(libs.findLibrary("mockk.android").get())
                 androidTestImplementation(libs.findLibrary("kotlinx.coroutines.test").get())
+                androidTestImplementation(project(Modules.coreTest))
             }
 
             tasks.withType<Test> {

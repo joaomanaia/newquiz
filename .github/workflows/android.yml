@@ -47,7 +47,7 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Run unit tests
-        uses: gradle/gradle-build-action@v2.4.2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: >
             test
@@ -58,7 +58,7 @@ jobs:
         with:
           report_paths: '**/build/test-results/test*/TEST-*.xml'
 
-  lint_off:
+  android-lint:
     name: "🔍 Android Lint"
     runs-on: ubuntu-latest
 
@@ -87,7 +87,7 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Lint sources
-        uses: gradle/gradle-build-action@v2.4.2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: lint --stacktrace
 
@@ -96,11 +96,11 @@ jobs:
         with:
           report-path: '**/build/reports/*.xml'
 
-  assemble_apk:
+  assemble-apk:
     name: "📦 Assemble APKs"
     needs:
       - test
-      - lint_off
+      - android-lint
     runs-on: ubuntu-latest
 
     steps:
@@ -125,7 +125,7 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Assemble debug APKs
-        uses: gradle/gradle-build-action@v2.4.2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleDebug
 
@@ -136,3 +136,65 @@ jobs:
           path: |
             app/build/outputs/apk/debug/app-universal-debug.apk
             newquiz_uploads/build/outputs/aar
+
+  android-test:
+    needs: assemble-apk
+    runs-on: macos-latest # enables hardware acceleration in the virtual machine
+    timeout-minutes: 55
+    strategy:
+      matrix:
+        api-level: [30]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Gradle cache
+        uses: gradle/gradle-build-action@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: ${{ env.JAVA_DISTR }}
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Create google-services.json file
+        run: cat /home/runner/work/newquiz/newquiz/app/google-services.json | base64
+
+      - name: Put google-services.json data
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
+
+      - name: Increase gradle daemon memory
+        run: "echo \"org.gradle.jvmargs=-Xmx4096m\" >> gradle.properties"
+
+      - name: Workaround for Android Gradle Plugin issue
+        run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
+
+      - name: AVD cache
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./gradlew connectedCheck
