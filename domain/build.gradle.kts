@@ -1,9 +1,7 @@
-plugins {
-    kotlin("jvm")
-}
+import com.infinitepower.newquiz.Modules
 
-kotlin {
-    jvmToolchain(ProjectConfig.jvmToolchainVersion)
+plugins {
+    id("newquiz.jvm.library")
 }
 
 dependencies {
@@ -12,9 +10,4 @@ dependencies {
     implementation(libs.javax.inject)
     implementation(libs.androidx.annotation)
     implementation(libs.kotlinx.coroutines.core)
-
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
 }

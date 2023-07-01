@@ -1,67 +1,14 @@
-// import de.fayard.refreshVersions.core.versionFor
+import com.infinitepower.newquiz.Modules
 
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-    id("dagger.hilt.android.plugin")
-    id("kotlinx-serialization")
-    id("com.google.devtools.ksp")
+    id("newquiz.android.library.compose")
+    id("newquiz.android.hilt")
+    id("newquiz.android.compose.destinations")
+    id("newquiz.kotlin.serialization")
 }
 
 android {
     namespace = "com.infinitepower.newquiz.daily_challenge"
-    compileSdk = ProjectConfig.compileSdk
-
-    defaultConfig {
-        minSdk = ProjectConfig.minSdk
-
-        testInstrumentationRunner = ProjectConfig.testInstrumentationRunner
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersionCompatibility
-        targetCompatibility = ProjectConfig.javaVersionCompatibility
-    }
-    kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTargetVersion
-        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
-    }
-    libraryVariants.all {
-        kotlin.sourceSets {
-            getByName(name) {
-                kotlin.srcDir("build/generated/ksp/$name/kotlin")
-            }
-        }
-
-        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/LICENSE.md"
-            excludes += "/META-INF/LICENSE-notice.md"
-        }
-    }
-}
-
-kotlin {
-    jvmToolchain(ProjectConfig.jvmToolchainVersion)
 }
 
 dependencies {
@@ -70,12 +17,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
 
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.google.truth)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
@@ -91,18 +32,8 @@ dependencies {
     androidTestImplementation(libs.google.truth)
     androidTestImplementation(libs.androidx.compose.ui.test)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    kapt(libs.hilt.ext.compiler)
     implementation(libs.hilt.navigationCompose)
-    androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.compiler)
-    implementation(libs.hilt.ext.work)
 
-    implementation(libs.compose.destinations.core)
-    ksp(libs.compose.destinations.ksp)
-
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
 
     implementation(libs.androidx.work.ktx)
@@ -112,13 +43,4 @@ dependencies {
     implementation(project(Modules.domain))
     implementation(project(Modules.data))
     androidTestImplementation(project(Modules.coreTest))
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
-ksp {
-    arg("compose-destinations.mode", "destinations")
-    arg("compose-destinations.moduleName", "daily_challenge")
 }

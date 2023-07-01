@@ -57,7 +57,7 @@ internal class QuizStepViewTest {
             .assertIsNotEnabled()
             .assertWidthIsEqualTo(35.dp)
             .assertHeightIsEqualTo(35.dp)
-            .assertContentDescriptionEquals("Question 1 correct")
+            .assertContentDescriptionEquals("Question 1 - Correct")
 
         assertThat(clicked).isFalse()
     }
@@ -84,7 +84,7 @@ internal class QuizStepViewTest {
             .assertIsNotEnabled()
             .assertWidthIsEqualTo(35.dp)
             .assertHeightIsEqualTo(35.dp)
-            .assertContentDescriptionEquals("Question 1 incorrect")
+            .assertContentDescriptionEquals("Question 1 - Incorrect")
     }
 
     @Test
@@ -154,7 +154,7 @@ internal class QuizStepViewTest {
             .assertHasClickAction()
             .assertWidthIsEqualTo(35.dp)
             .assertHeightIsEqualTo(35.dp)
-            .assertContentDescriptionEquals("Question 1 correct")
+            .assertContentDescriptionEquals("Question 1 - Correct")
             .performClick()
 
         assertThat(clicked).isTrue()

@@ -1,3 +1,5 @@
+import com.infinitepower.newquiz.Modules
+
 plugins {
     id("newquiz.android.library.compose")
     id("newquiz.android.hilt")
@@ -14,7 +16,6 @@ dependencies {
     implementation(libs.junit.jupiter)
 
     // Compose
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)

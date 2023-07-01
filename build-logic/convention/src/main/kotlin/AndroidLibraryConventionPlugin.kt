@@ -21,6 +21,10 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
+
+                defaultConfig {
+                    testInstrumentationRunner = "com.infinitepower.newquiz.core_test.HiltTestRunner"
+                }
             }
 
             dependencies {
@@ -29,10 +33,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 testImplementation(libs.findLibrary("google.truth").get())
                 testImplementation(libs.findLibrary("mockk").get())
                 testImplementation(libs.findLibrary("kotlinx.coroutines.test").get())
+                testImplementation(libs.findLibrary("junit.jupiter.params").get())
 
                 androidTestImplementation(kotlin("test"))
                 androidTestImplementation(libs.findLibrary("google.truth").get())
-                androidTestImplementation(libs.findLibrary("mockk").get())
+                androidTestImplementation(libs.findLibrary("mockk.android").get())
                 androidTestImplementation(libs.findLibrary("kotlinx.coroutines.test").get())
             }
 

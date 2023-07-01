@@ -1,3 +1,5 @@
+import com.infinitepower.newquiz.Modules
+
 plugins {
     id("newquiz.android.library")
     id("newquiz.android.hilt")

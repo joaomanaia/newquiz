@@ -140,7 +140,7 @@ internal class MultiChoiceQuizScreenTest {
 
         // Test quiz step row
         composeTestRule
-            .onNodeWithContentDescription("Quiz steps row container")
+            .onNodeWithContentDescription("Quiz steps container")
             .assertIsDisplayed()
             .onChildren()
             .assertCountEquals(5)
@@ -190,12 +190,12 @@ internal class MultiChoiceQuizScreenTest {
 
             // Check if correct answer is displayed in the steps
             composeTestRule
-                .onNodeWithContentDescription("Quiz steps row container")
+                .onNodeWithContentDescription("Quiz steps container")
                 .assertIsDisplayed()
                 .onChildren()
                 .assertAll(isNotEnabled())
                 .apply {
-                    val description = if (correctAnswer) "Question $questionNumber correct" else "Question $questionNumber incorrect"
+                    val description = if (correctAnswer) "Question $questionNumber - Correct" else "Question $questionNumber - Incorrect"
 
                     this[questionNumber - 1]
                         .assertContentDescriptionEquals(description)

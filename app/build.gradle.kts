@@ -1,30 +1,28 @@
-// import de.fayard.refreshVersions.core.versionFor
+import com.infinitepower.newquiz.Modules
 
 plugins {
-    alias(libs.plugins.android.application)
-    kotlin("android")
-    kotlin("kapt")
+    id("newquiz.android.application")
+    id("newquiz.android.application.compose")
+    id("newquiz.android.hilt")
+    id("newquiz.android.compose.destinations")
+    id("newquiz.android.application.firebase")
+    id("newquiz.kotlin.serialization")
     id("kotlin-parcelize")
-    id("kotlinx-serialization")
-    id("dagger.hilt.android.plugin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.firebase.firebase-perf")
-    id("com.google.devtools.ksp")
     id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
-    compileSdk = ProjectConfig.compileSdk
+    namespace = "com.infinitepower.newquiz"
+    compileSdk = 33
 
     defaultConfig {
-        applicationId = ProjectConfig.applicationId
-        minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
-        versionCode = ProjectConfig.versionCode
-        versionName = ProjectConfig.versionName
+        applicationId = "com.infinitepower.newquiz"
+        minSdk = 21
+        targetSdk = 33
+        versionCode = 14
+        versionName = "1.6.0"
 
-        testInstrumentationRunner = ProjectConfig.testInstrumentationRunner
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
         resourceConfigurations += setOf("en", "pt", "fr", "es", "nb")
@@ -44,41 +42,17 @@ android {
             rootProject.ext.set("firebasePerformanceInstrumentationEnabled", "false")
         }
     }
-    compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersionCompatibility
-        targetCompatibility = ProjectConfig.javaVersionCompatibility
-    }
-    kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTargetVersion
-        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
-    }
     buildFeatures {
         compose = true
         buildConfig = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get() // versionFor(AndroidX.compose.compiler)
-    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    lint {
-        disable += "DialogFragmentCallbacksDetector"
-        baseline = file("lint-baseline.xml")
-    }
-    namespace = "com.infinitepower.newquiz"
 
-    applicationVariants.all {
-        kotlin.sourceSets {
-            getByName(name) {
-                kotlin.srcDir("build/generated/ksp/$name/kotlin")
-            }
-        }
-
-        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
-    }
     splits {
         abi {
             isEnable = true
@@ -89,10 +63,6 @@ android {
             isUniversalApk = true
         }
     }
-}
-
-kotlin {
-    jvmToolchain(ProjectConfig.jvmToolchainVersion)
 }
 
 dependencies {
@@ -110,7 +80,6 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.dataStore.preferences)
 
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.material.iconsExtended)
@@ -122,13 +91,9 @@ dependencies {
 
     implementation(libs.google.material)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    kapt(libs.hilt.ext.compiler)
     implementation(libs.hilt.navigationCompose)
-    androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.compiler)
     implementation(libs.hilt.ext.work)
+    kapt(libs.hilt.ext.compiler)
 
     testImplementation(libs.kotlinx.coroutines.test)
     implementation(libs.kotlinx.coroutines.playServices)
@@ -143,12 +108,6 @@ dependencies {
 
     implementation(libs.androidx.work.ktx)
     androidTestImplementation(libs.androidx.work.testing)
-
-    testImplementation(libs.google.truth)
-    androidTestImplementation(libs.google.truth)
-
-    implementation(libs.compose.destinations.core)
-    ksp(libs.compose.destinations.ksp)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics.ktx)
@@ -174,8 +133,4 @@ dependencies {
     implementation(project(Modules.translationDynamicFeature))
     implementation(project(Modules.comparisonQuiz))
     implementation(project(Modules.dailyChallenge))
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
 }

@@ -13,8 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
-import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
+import com.infinitepower.newquiz.core_test.utils.setTestContent
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,17 +29,13 @@ internal class CategoryComponentTest {
         val title = "Test Title"
         val imageUrl = "https://testimage.com/image.jpg"
 
-        composeTestRule.setContent {
-            setTestDeviceLocale()
-
-            NewQuizTestTheme {
-                CategoryComponent(
-                    modifier = Modifier.testTag("CategoryComponent"),
-                    title = title,
-                    imageUrl = imageUrl,
-                    enabled = true
-                )
-            }
+        composeTestRule.setTestContent {
+            CategoryComponent(
+                modifier = Modifier.testTag("CategoryComponent"),
+                title = title,
+                imageUrl = imageUrl,
+                enabled = true
+            )
         }
 
         composeTestRule
@@ -65,18 +60,14 @@ internal class CategoryComponentTest {
         val title = "Test Title"
         val imageUrl = "https://testimage.com/image.jpg"
 
-        composeTestRule.setContent {
-            setTestDeviceLocale()
-
-            NewQuizTestTheme {
-                CategoryComponent(
-                    modifier = Modifier.testTag("CategoryComponent"),
-                    title = title,
-                    imageUrl = imageUrl,
-                    enabled = true,
-                    onClick = { clicked = true }
-                )
-            }
+        composeTestRule.setTestContent {
+            CategoryComponent(
+                modifier = Modifier.testTag("CategoryComponent"),
+                title = title,
+                imageUrl = imageUrl,
+                enabled = true,
+                onClick = { clicked = true }
+            )
         }
         composeTestRule
             .onNodeWithTag("CategoryComponent")
@@ -91,17 +82,13 @@ internal class CategoryComponentTest {
         val title = "Test Title"
         val imageUrl = "https://testimage.com/image.jpg"
 
-        composeTestRule.setContent {
-            setTestDeviceLocale()
-
-            NewQuizTestTheme {
-                CategoryComponent(
-                    modifier = Modifier.testTag("CategoryComponent"),
-                    title = title,
-                    imageUrl = imageUrl,
-                    enabled = false
-                )
-            }
+        composeTestRule.setTestContent {
+            CategoryComponent(
+                modifier = Modifier.testTag("CategoryComponent"),
+                title = title,
+                imageUrl = imageUrl,
+                enabled = false
+            )
         }
 
         composeTestRule
