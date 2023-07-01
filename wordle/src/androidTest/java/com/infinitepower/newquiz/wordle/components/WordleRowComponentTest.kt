@@ -1,13 +1,12 @@
 package com.infinitepower.newquiz.wordle.components
 
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core_test.utils.setTestContent
 import com.infinitepower.newquiz.model.wordle.WordleChar
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import org.junit.Rule
@@ -24,15 +23,11 @@ internal class WordleRowComponentTest {
     fun wordleComponent_emptyWordleItem_test() {
         val item = WordleItem.Empty
 
-        composeTestRule.setContent {
-            NewQuizTheme {
-                Surface {
-                    WordleComponent(
-                        item = item,
-                        onClick = {}
-                    )
-                }
-            }
+        composeTestRule.setTestContent {
+            WordleComponent(
+                item = item,
+                onClick = {}
+            )
         }
 
         composeTestRule
@@ -47,19 +42,15 @@ internal class WordleRowComponentTest {
 
     @Test
     fun wordleComponent_noneWordleItem_test() {
-        composeTestRule.setContent {
+        composeTestRule.setTestContent {
             val (item, setItem) = remember {
                 mutableStateOf<WordleItem>(WordleItem.None(WordleChar('A')))
             }
 
-            NewQuizTheme {
-                Surface {
-                    WordleComponent(
-                        item = item,
-                        onClick = { setItem(WordleItem.Empty) }
-                    )
-                }
-            }
+            WordleComponent(
+                item = item,
+                onClick = { setItem(WordleItem.Empty) }
+            )
         }
 
         composeTestRule
@@ -81,15 +72,11 @@ internal class WordleRowComponentTest {
 
     @Test
     fun wordleComponent_presentWordleItem_test() {
-        composeTestRule.setContent {
-            NewQuizTheme {
-                Surface {
-                    WordleComponent(
-                        item = WordleItem.Present(WordleChar('A')),
-                        onClick = {}
-                    )
-                }
-            }
+        composeTestRule.setTestContent {
+            WordleComponent(
+                item = WordleItem.Present(WordleChar('A')),
+                onClick = {}
+            )
         }
 
         composeTestRule
@@ -104,15 +91,11 @@ internal class WordleRowComponentTest {
 
     @Test
     fun wordleComponent_correctWordleItem_test() {
-        composeTestRule.setContent {
-            NewQuizTheme {
-                Surface {
-                    WordleComponent(
-                        item = WordleItem.Correct(WordleChar('A')),
-                        onClick = {}
-                    )
-                }
-            }
+        composeTestRule.setTestContent {
+            WordleComponent(
+                item = WordleItem.Correct(WordleChar('A')),
+                onClick = {}
+            )
         }
 
         composeTestRule

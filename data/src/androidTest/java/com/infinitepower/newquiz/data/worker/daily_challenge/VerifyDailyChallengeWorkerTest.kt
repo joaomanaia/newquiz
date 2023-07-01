@@ -12,7 +12,6 @@ import com.infinitepower.newquiz.data.database.AppDatabase
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -24,7 +23,6 @@ import javax.inject.Inject
 @SmallTest
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class VerifyDailyChallengeWorkerTest {
     @get:Rule
     val hiltRule = HiltAndroidRule(this)

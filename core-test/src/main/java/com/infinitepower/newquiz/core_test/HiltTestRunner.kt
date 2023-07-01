@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data
+package com.infinitepower.newquiz.core_test
 
 import android.app.Application
 import android.content.Context

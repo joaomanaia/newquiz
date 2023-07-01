@@ -1,25 +1,23 @@
 pluginManagement {
+    includeBuild("build-logic")
+
     repositories {
         gradlePluginPortal()
         google()
         mavenCentral()
-        jcenter()
         maven { url = uri("https://jitpack.io") }
     }
 }
 
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+
+
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
-        jcenter()
         maven { url = uri("https://jitpack.io") }
     }
-}
-
-plugins {
-    id("de.fayard.refreshVersions") version "0.51.0"
 }
 
 rootProject.name = "NewQuiz"

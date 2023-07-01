@@ -1,22 +1,17 @@
 plugins {
-    kotlin("jvm")
-    id("kotlinx-serialization")
-}
-
-kotlin {
-    jvmToolchain(ProjectConfig.jvmToolchainVersion)
+    id("newquiz.jvm.library")
+    id("newquiz.kotlin.serialization")
 }
 
 dependencies {
-    testImplementation(Testing.junit.jupiter)
-    testImplementation(libs.truth)
-    testImplementation(Testing.mockK)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockk)
 
-    implementation(AndroidX.annotation)
+    implementation(libs.androidx.annotation)
 
-    implementation(KotlinX.serialization.json)
-    implementation(KotlinX.coroutines.core)
-    implementation(KotlinX.datetime)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.datetime)
 }
 
 tasks.withType<Test> {

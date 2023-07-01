@@ -6,6 +6,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import com.infinitepower.newquiz.core_test.utils.setTestContent
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +24,7 @@ internal class WordleKeyBoardTest {
     fun testWordleKeyBoard_displayCorrectNumberOfItems() {
         val keys = charArrayOf('a', 'b', 'c')
 
-        composeTestRule.setContent {
+        composeTestRule.setTestContent {
             WordleKeyBoard(
                 keys = keys,
                 disabledKeys = emptySet(),
@@ -40,7 +41,7 @@ internal class WordleKeyBoardTest {
 
     @Test
     fun testWordleKeyBoardItem_displayCorrectKey() {
-        composeTestRule.setContent {
+        composeTestRule.setTestContent {
             WordleKeyboardKey(
                 key = 'a',
                 disabled = true,
@@ -57,7 +58,7 @@ internal class WordleKeyBoardTest {
 
     @Test
     fun testWordleKeyBoardItem_disabled() {
-        composeTestRule.setContent {
+        composeTestRule.setTestContent {
             WordleKeyboardKey(
                 key = 'a',
                 disabled = true,
@@ -76,7 +77,7 @@ internal class WordleKeyBoardTest {
     fun testWordleKeyBoardItem_callsOnClickWhenClicked() {
         var wasOnClickCalled = false
 
-        composeTestRule.setContent {
+        composeTestRule.setTestContent {
             WordleKeyboardKey(
                 key = 'a',
                 disabled = false,

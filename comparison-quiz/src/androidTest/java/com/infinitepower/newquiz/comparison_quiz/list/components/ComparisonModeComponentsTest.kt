@@ -24,8 +24,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
-import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
+import com.infinitepower.newquiz.core_test.utils.setTestContent
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import org.junit.Rule
 import org.junit.Test
@@ -39,15 +38,11 @@ internal class ComparisonModeComponentsTest {
 
     @Test
     fun comparisonModeComponent_greater_shouldBeSelected() {
-        componentRule.setContent {
-            setTestDeviceLocale()
-
-            NewQuizTestTheme {
-                ComparisonModeComponents(
-                    modifier = Modifier.fillMaxWidth(),
-                    selectedMode = ComparisonMode.GREATER
-                )
-            }
+        componentRule.setTestContent {
+            ComparisonModeComponents(
+                modifier = Modifier.fillMaxWidth(),
+                selectedMode = ComparisonMode.GREATER
+            )
         }
 
         // Assert that the greater text and icon are displayed and content selected
@@ -79,15 +74,11 @@ internal class ComparisonModeComponentsTest {
 
     @Test
     fun comparisonModeComponent_lesser_shouldBeSelected() {
-        componentRule.setContent {
-            setTestDeviceLocale()
-
-            NewQuizTestTheme {
-                ComparisonModeComponents(
-                    modifier = Modifier.fillMaxWidth(),
-                    selectedMode = ComparisonMode.LESSER
-                )
-            }
+        componentRule.setTestContent {
+            ComparisonModeComponents(
+                modifier = Modifier.fillMaxWidth(),
+                selectedMode = ComparisonMode.LESSER
+            )
         }
 
         // Assert that the greater text and icon are displayed and content selected
@@ -119,17 +110,13 @@ internal class ComparisonModeComponentsTest {
 
     @Test
     fun row_hasCorrectModifiers() {
-        componentRule.setContent {
-            setTestDeviceLocale()
-
-            NewQuizTestTheme {
-                ComparisonModeComponents(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("ComparisonModeComponents"),
-                    selectedMode = ComparisonMode.GREATER
-                )
-            }
+        componentRule.setTestContent {
+            ComparisonModeComponents(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("ComparisonModeComponents"),
+                selectedMode = ComparisonMode.GREATER
+            )
         }
 
         componentRule
@@ -158,7 +145,7 @@ internal class ComparisonModeComponentsTest {
     fun onModeClick_greater_onClick_when_otherModeIsSelected() {
         var selectedMode by mutableStateOf(ComparisonMode.GREATER)
 
-        componentRule.setContent {
+        componentRule.setTestContent {
             ComparisonModeComponents(
                 selectedMode = selectedMode,
                 onModeClick = { mode -> selectedMode = mode }
@@ -196,7 +183,7 @@ internal class ComparisonModeComponentsTest {
     fun onModeClick_greater_onClick_when_sameModeIsSelected() {
         var selectedMode by mutableStateOf(ComparisonMode.GREATER)
 
-        componentRule.setContent {
+        componentRule.setTestContent {
             ComparisonModeComponents(
                 selectedMode = selectedMode,
                 onModeClick = { mode -> selectedMode = mode }

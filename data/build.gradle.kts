@@ -1,117 +1,59 @@
+import com.infinitepower.newquiz.Modules
+
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-    id("kotlinx-serialization")
-    id("dagger.hilt.android.plugin")
+    id("newquiz.android.library")
+    id("newquiz.android.hilt")
+    id("newquiz.kotlin.serialization")
     id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.infinitepower.newquiz.data"
-    compileSdk = ProjectConfig.compileSdk
-
-    defaultConfig {
-        minSdk = ProjectConfig.minSdk
-
-        testInstrumentationRunner = "com.infinitepower.newquiz.data.HiltTestRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersionCompatibility
-        targetCompatibility = ProjectConfig.javaVersionCompatibility
-    }
-    kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTargetVersion
-        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
-    }
-    lint {
-        abortOnError = false
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/LICENSE.md"
-            excludes += "/META-INF/LICENSE-notice.md"
-        }
-    }
-}
-
-kotlin {
-    jvmToolchain(ProjectConfig.jvmToolchainVersion)
 }
 
 dependencies {
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.appCompat)
-    implementation(Google.android.material)
+    implementation(libs.androidx.core.ktx)
 
-    testImplementation(Testing.junit4)
-    testImplementation(Testing.junit.jupiter)
-    testImplementation(libs.truth)
-    testImplementation(Testing.mockK.android)
+    implementation(libs.kotlinx.coroutines.playServices)
 
-    implementation(platform(Firebase.bom))
-    implementation(Firebase.authenticationKtx)
-    implementation(Firebase.cloudFirestoreKtx)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.compose.ui.test)
 
-    implementation(KotlinX.coroutines.android)
-    implementation(KotlinX.coroutines.playServices)
-    testImplementation(KotlinX.coroutines.test)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.serialization)
 
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
-    androidTestImplementation(AndroidX.test.runner)
-    androidTestImplementation(AndroidX.test.rules)
-    androidTestImplementation(Kotlin.test.junit)
-    androidTestImplementation(Testing.mockK.android)
-    androidTestImplementation(libs.truth)
+    implementation(libs.hilt.navigationCompose)
+    kapt(libs.hilt.ext.compiler)
+    implementation(libs.hilt.ext.work)
 
-    implementation(Ktor.client.core)
-    implementation(Ktor.client.okHttp)
-    implementation(Ktor.client.serialization)
+    implementation(libs.androidx.dataStore.preferences)
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    kapt(AndroidX.hilt.compiler)
-    implementation(AndroidX.hilt.navigationCompose)
-    androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.compiler)
-    implementation(AndroidX.hilt.work)
+    implementation(libs.androidx.work.ktx)
+    androidTestImplementation(libs.androidx.work.testing)
 
-    implementation(AndroidX.dataStore.preferences)
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
 
-    implementation(AndroidX.work.runtimeKtx)
-    androidTestImplementation(AndroidX.work.testing)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.remoteConfig.ktx)
+    implementation(libs.firebase.perf.ktx)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
 
-    implementation(AndroidX.room.runtime)
-    annotationProcessor(AndroidX.room.compiler)
-    ksp(AndroidX.room.compiler)
-    implementation(AndroidX.room.ktx)
-
-    implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
-    implementation(Google.firebase.analyticsKtx.withVersionPlaceholder())
-    implementation(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
-
-    implementation(KotlinX.datetime)
+    implementation(libs.kotlinx.datetime)
 
     implementation(project(Modules.core))
     implementation(project(Modules.domain))
     implementation(project(Modules.model))
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
+    androidTestImplementation(project(Modules.coreTest))
 }
 
 ksp {
     arg("room.schemaLocation", "$rootDir/app/schemas")
+    arg("room.incremental", "true")
 }

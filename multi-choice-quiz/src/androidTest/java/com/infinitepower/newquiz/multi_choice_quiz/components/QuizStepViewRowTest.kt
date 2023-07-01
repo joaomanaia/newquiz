@@ -66,8 +66,8 @@ class QuizStepViewRowTest {
             .filter(isNotEnabled())
             .assertCountEquals(4)
             .apply {
-                onFirst().assertContentDescriptionEquals("Question 1 correct")
-                this[1].assertContentDescriptionEquals("Question 2 incorrect")
+                onFirst().assertContentDescriptionEquals("Question 1 - Correct")
+                this[1].assertContentDescriptionEquals("Question 2 - Incorrect")
                 this[2].assertTextEquals("3")
                 onLast()
                     .assertTextEquals("4")
@@ -113,8 +113,8 @@ class QuizStepViewRowTest {
             .filter(isEnabled() and hasClickAction())
             .assertCountEquals(4)
             .apply {
-                onFirst().assertContentDescriptionEquals("Question 1 correct")
-                this[1].assertContentDescriptionEquals("Question 2 incorrect")
+                onFirst().assertContentDescriptionEquals("Question 1 - Correct")
+                this[1].assertContentDescriptionEquals("Question 2 - Incorrect")
                 this[2].assertTextEquals("3")
                 onLast()
                     .assertTextEquals("4")

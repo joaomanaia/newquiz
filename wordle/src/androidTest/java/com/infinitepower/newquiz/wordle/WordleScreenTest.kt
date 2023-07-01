@@ -1,19 +1,13 @@
 package com.infinitepower.newquiz.wordle
 
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.util.Log
-import androidx.compose.material3.Surface
+import androidx.activity.ComponentActivity
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -22,18 +16,17 @@ import androidx.work.WorkManager
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
 import com.infinitepower.newquiz.core.analytics.logging.wordle.LocalWordleLoggingAnalyticsImpl
-import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
-import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core_test.utils.setTestContent
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
 import javax.inject.Inject
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -43,7 +36,7 @@ class WordleScreenTest {
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    val composeRule = createComposeRule()
+    val composeRule = createAndroidComposeRule<ComponentActivity>()
 
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var viewModel: WordleScreenViewModel
@@ -57,7 +50,7 @@ class WordleScreenTest {
 
     private lateinit var workManager: WorkManager
 
-    @Before
+    @BeforeTest
     fun setup() {
         hiltRule.inject()
 
@@ -72,50 +65,31 @@ class WordleScreenTest {
         WorkManagerTestInitHelper.initializeTestWorkManager(context, workConfig)
         workManager = WorkManager.getInstance(context)
 
-        composeRule.setContent {
-            val configuration = LocalConfiguration.current
-            val resources = LocalContext.current.resources
+        composeRule.setTestContent {
+            savedStateHandle = SavedStateHandle(
+                mapOf(
+                    WordleScreenNavArgs::rowLimit.name to 3,
+                    WordleScreenNavArgs::word.name to "TEST"
+                )
+            )
 
-            val screenHeight = configuration.screenHeightDp.dp
-            val screenWidth = configuration.screenWidthDp.dp
-            val windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(screenWidth, screenHeight))
+            viewModel = WordleScreenViewModel(
+                wordleRepository = wordleRepository,
+                savedStateHandle = savedStateHandle,
+                wordleLoggingAnalytics = LocalWordleLoggingAnalyticsImpl(),
+                workManager = workManager
+            )
 
-            setEnglishLocale(configuration, resources)
+            val windowSizeClass = calculateWindowSizeClass(activity = composeRule.activity)
 
-            NewQuizTheme {
-                Surface {
-                    savedStateHandle = SavedStateHandle(
-                        mapOf(
-                            WordleScreenNavArgs::rowLimit.name to 3,
-                            WordleScreenNavArgs::word.name to "TEST"
-                        )
-                    )
-
-                    val localAnalytics: WordleLoggingAnalytics = LocalWordleLoggingAnalyticsImpl()
-                    viewModel = WordleScreenViewModel(
-                        wordleRepository = wordleRepository,
-                        savedStateHandle = savedStateHandle,
-                        wordleLoggingAnalytics = localAnalytics,
-                        workManager = workManager
-                    )
-
-                    CompositionLocalProvider(LocalInspectionMode provides true) {
-                        WordleScreen(
-                            wordleScreenViewModel = viewModel,
-                            navigator = EmptyDestinationsNavigator,
-                            windowSizeClass = windowSizeClass
-                        )
-                    }
-                }
+            CompositionLocalProvider(LocalInspectionMode provides true) {
+                WordleScreen(
+                    wordleScreenViewModel = viewModel,
+                    navigator = EmptyDestinationsNavigator,
+                    windowSizeClass = windowSizeClass
+                )
             }
         }
-    }
-
-    private fun setEnglishLocale(configuration: Configuration, resources: Resources) {
-        val locale = Locale("en")
-
-        configuration.setLocale(locale)
-        resources.updateConfiguration(configuration, resources.displayMetrics)
     }
 
     @Test

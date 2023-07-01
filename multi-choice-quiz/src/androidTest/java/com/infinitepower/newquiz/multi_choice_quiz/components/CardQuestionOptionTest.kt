@@ -83,7 +83,7 @@ class CardQuestionOptionTest {
 
         composeTestRule
             .onNodeWithTag("Answers")
-            .assertContentDescriptionEquals("Answers")
+            .assertContentDescriptionEquals("Answers container")
             .onChildren()
             .assertCountEquals(answers.size)
             .assertAll(isNotSelected() and hasClickAction())

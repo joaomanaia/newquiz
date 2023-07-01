@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.core.ui.components.icon.button
 
-import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertHasClickAction
@@ -11,8 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.infinitepower.newquiz.core_test.compose.clearExistingImages
-import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
-import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
+import com.infinitepower.newquiz.core_test.utils.setTestContent
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
@@ -38,17 +36,11 @@ internal class BackIconButtonTest {
     fun backIconButton_shouldRenderCorrectly() {
         var clicked = false
 
-        composeTestRule.setContent {
-            setTestDeviceLocale()
-
-            NewQuizTestTheme {
-                Surface {
-                    BackIconButton(
-                        onClick = { clicked = true },
-                        modifier = Modifier.testTag("BackButton")
-                    )
-                }
-            }
+        composeTestRule.setTestContent {
+            BackIconButton(
+                onClick = { clicked = true },
+                modifier = Modifier.testTag("BackButton")
+            )
         }
 
         // Assert that an IconButton and an Icon are rendered with the correct attributes

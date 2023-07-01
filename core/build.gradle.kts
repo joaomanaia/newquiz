@@ -1,146 +1,65 @@
-import de.fayard.refreshVersions.core.versionFor
+import com.infinitepower.newquiz.Modules
 
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-    id("kotlinx-serialization")
-    id("dagger.hilt.android.plugin")
-    id("com.google.devtools.ksp")
+    id("newquiz.android.library.compose")
+    id("newquiz.android.hilt")
+    id("newquiz.android.compose.destinations")
+    id("newquiz.kotlin.serialization")
 }
 
 android {
     namespace = "com.infinitepower.newquiz.core"
-    compileSdk = ProjectConfig.compileSdk
 
-    defaultConfig {
-        minSdk = ProjectConfig.minSdk
-
-        testInstrumentationRunner = ProjectConfig.testInstrumentationRunner
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersionCompatibility
-        targetCompatibility = ProjectConfig.javaVersionCompatibility
-    }
-    kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTargetVersion
-        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
-    }
-    libraryVariants.all {
-        kotlin.sourceSets {
-            getByName(name) {
-                kotlin.srcDir("build/generated/ksp/$name/kotlin")
-            }
-        }
-
-        addJavaSourceFoldersToModel(File(buildDir, "generated/ksp/${name}/kotlin"))
-    }
     lint {
-        disable += "DialogFragmentCallbacksDetector"
-        disable += "UnusedResources"
         disable += "MissingTranslation"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/LICENSE.md"
-            excludes += "/META-INF/LICENSE-notice.md"
-        }
-    }
-}
-
-kotlin {
-    jvmToolchain(ProjectConfig.jvmToolchainVersion)
 }
 
 dependencies {
-    testImplementation(Testing.junit.jupiter)
-    testImplementation(libs.truth)
-    testImplementation(Testing.mockK.android)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.compose.ui.test)
+    debugApi(libs.androidx.tracing.ktx)
 
-    androidTestImplementation(libs.truth)
-    androidTestImplementation(Testing.mockK.android)
-    androidTestImplementation(Kotlin.test.junit)
-    androidTestImplementation(AndroidX.test.runner)
-    androidTestImplementation(AndroidX.test.rules)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(Testing.junit.jupiter)
-    androidTestImplementation(AndroidX.test.runner)
-    androidTestImplementation(AndroidX.compose.ui.test)
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
-    debugApi(AndroidX.tracing.ktx)
+    implementation(libs.androidx.core.ktx)
 
-    debugImplementation(AndroidX.compose.ui.testManifest)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material.iconsExtended)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.constraintlayout.compose)
+    debugImplementation(libs.androidx.compose.ui.testManifest)
 
-    implementation(AndroidX.core.ktx)
+    implementation(libs.hilt.navigationCompose)
+    implementation(libs.hilt.ext.work)
+    kapt(libs.hilt.ext.compiler)
 
-    implementation(AndroidX.compose.ui.tooling)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.activity.compose)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.compose.material3)
-    implementation(AndroidX.compose.material.icons.extended)
-    implementation(AndroidX.constraintLayout.compose)
+    implementation(libs.androidx.work.ktx)
 
-    implementation(Google.android.material)
+    implementation(libs.google.material)
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    kapt(AndroidX.hilt.compiler)
-    implementation(AndroidX.hilt.navigationCompose)
-    androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.compiler)
-    implementation(AndroidX.hilt.work)
+    implementation(libs.androidx.dataStore.preferences)
 
-    implementation(AndroidX.work.runtimeKtx)
-
-    implementation(Google.android.material)
-
-    implementation(AndroidX.dataStore.preferences)
-
-    implementation(Google.firebase.analyticsKtx.withVersionPlaceholder())
-    implementation(Google.firebase.performanceMonitoringKtx.withVersionPlaceholder())
-    implementation(Google.firebase.remoteConfigKtx.withVersionPlaceholder())
-    implementation(Google.firebase.crashlyticsKtx.withVersionPlaceholder())
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.remoteConfig.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.perf.ktx)
 
     implementation(libs.lottie.compose)
 
-    implementation(KotlinX.datetime)
+    implementation(libs.kotlinx.datetime)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(KotlinX.serialization.json)
+    implementation(libs.coil.kt.compose)
+    implementation(libs.coil.kt.svg)
 
-    testImplementation(KotlinX.coroutines.test)
-
-    implementation(COIL.compose)
-    implementation(COIL.svg)
-
-    //implementation("androidx.palette:palette-ktx:1.0.0")
-
-    implementation(libs.io.github.raamcosta.compose.destinations.core)
-    ksp(libs.io.github.raamcosta.compose.destinations.ksp)
+    //implementation("androidx.palette:palette-ktx:_")
 
     // Modules
     implementation(project(Modules.model))
     testImplementation(project(Modules.coreTest))
     androidTestImplementation(project(Modules.coreTest))
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
 }

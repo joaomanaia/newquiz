@@ -8,8 +8,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
-import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
+import com.infinitepower.newquiz.core_test.utils.setTestContent
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,17 +30,13 @@ internal class SkipQuestionDialogTest {
         var skipClickCalled = false
         var dismissClickCalled = false
 
-        composeTestRule.setContent {
-            setTestDeviceLocale()
-
-            NewQuizTestTheme {
-                SkipQuestionDialog(
-                    userDiamonds = userDiamonds,
-                    skipCost = skipCost,
-                    onSkipClick = { skipClickCalled = true },
-                    onDismissClick = { dismissClickCalled = true }
-                )
-            }
+        composeTestRule.setTestContent {
+            SkipQuestionDialog(
+                userDiamonds = userDiamonds,
+                skipCost = skipCost,
+                onSkipClick = { skipClickCalled = true },
+                onDismissClick = { dismissClickCalled = true }
+            )
         }
 
         assertThat(skipClickCalled).isFalse()
@@ -75,15 +70,13 @@ internal class SkipQuestionDialogTest {
         var skipClickCalled = false
         var dismissClickCalled = false
 
-        composeTestRule.setContent {
-            NewQuizTestTheme {
-                SkipQuestionDialog(
-                    userDiamonds = userDiamonds,
-                    skipCost = skipCost,
-                    onSkipClick = { skipClickCalled = true },
-                    onDismissClick = { dismissClickCalled = true }
-                )
-            }
+        composeTestRule.setTestContent {
+            SkipQuestionDialog(
+                userDiamonds = userDiamonds,
+                skipCost = skipCost,
+                onSkipClick = { skipClickCalled = true },
+                onDismissClick = { dismissClickCalled = true }
+            )
         }
 
         composeTestRule.onNodeWithText("Skip question?").assertDoesNotExist()
