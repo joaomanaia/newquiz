@@ -1,4 +1,5 @@
 import com.infinitepower.newquiz.Modules
+import com.infinitepower.newquiz.ProjectConfig
 
 plugins {
     id("newquiz.android.application")
@@ -13,12 +14,12 @@ plugins {
 
 android {
     namespace = "com.infinitepower.newquiz"
-    compileSdk = 33
+    compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
         applicationId = "com.infinitepower.newquiz"
-        minSdk = 21
-        targetSdk = 33
+        minSdk = ProjectConfig.minSdk
+        targetSdk = ProjectConfig.targetSdk
         versionCode = 14
         versionName = "1.6.0"
 
