@@ -46,11 +46,14 @@ jobs:
       - name: Workaround for Android Gradle Plugin issue
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
-      - name: Run unit tests
+      - name: Setup gradle
         uses: gradle/gradle-build-action@v2.5.1
-        with:
-          arguments: >
-            test
+
+      - name: Accept licenses
+        run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
+
+      - name: Run tests
+        run: ./gradlew test --stacktrace
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
@@ -86,10 +89,14 @@ jobs:
       - name: Workaround for Android Gradle Plugin issue
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
-      - name: Lint sources
+      - name: Setup gradle
         uses: gradle/gradle-build-action@v2.5.1
-        with:
-          arguments: lint --stacktrace
+
+      - name: Accept licenses
+        run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
+
+      - name: Lint sources
+        run: ./gradlew lint --stacktrace
 
       - name: Generate GitHub annotations
         uses: yutailang0119/action-android-lint@v3
@@ -124,10 +131,14 @@ jobs:
       - name: Workaround for Android Gradle Plugin issue
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
-      - name: Assemble debug APKs
+      - name: Setup gradle
         uses: gradle/gradle-build-action@v2.5.1
-        with:
-          arguments: assembleDebug
+
+      - name: Accept licenses
+        run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
+
+      - name: Assemble debug APKs
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APKs
         uses: actions/upload-artifact@v3
@@ -149,14 +160,17 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: Gradle cache
-        uses: gradle/gradle-build-action@v2.5.1
-
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: ${{ env.JAVA_DISTR }}
           java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup gradle
+        uses: gradle/gradle-build-action@v2.5.1
+
+      - name: Accept licenses
+        run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
 
       - name: Create google-services.json file
         run: cat app/google-services.json | base64
