@@ -170,7 +170,7 @@ jobs:
         uses: gradle/gradle-build-action@v2.5.1
 
       - name: Accept licenses
-        run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
+        run: yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Create google-services.json file
         run: cat app/google-services.json | base64
