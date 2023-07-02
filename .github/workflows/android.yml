@@ -47,7 +47,7 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Run unit tests
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2.5.1
         with:
           arguments: >
             test
@@ -87,7 +87,7 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Lint sources
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2.5.1
         with:
           arguments: lint --stacktrace
 
@@ -125,7 +125,7 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Assemble debug APKs
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2.5.1
         with:
           arguments: assembleDebug
 
@@ -142,14 +142,15 @@ jobs:
     runs-on: macos-latest # enables hardware acceleration in the virtual machine
     timeout-minutes: 55
     strategy:
+      fail-fast: true
       matrix:
-        api-level: [30]
+        api-level: [29]
     steps:
       - name: checkout
         uses: actions/checkout@v3
 
       - name: Gradle cache
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2.5.1
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -158,18 +159,15 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
 
       - name: Create google-services.json file
-        run: cat /home/runner/work/newquiz/newquiz/app/google-services.json | base64
+        run: cat app/google-services.json | base64
 
       - name: Put google-services.json data
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
+        run: echo $DATA > app/google-services.json
 
       - name: Increase gradle daemon memory
         run: "echo \"org.gradle.jvmargs=-Xmx4096m\" >> gradle.properties"
-
-      - name: Workaround for Android Gradle Plugin issue
-        run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: AVD cache
         uses: actions/cache@v3
