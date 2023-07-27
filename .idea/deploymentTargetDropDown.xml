@@ -2,6 +2,12 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="Tests in 'com.infinitepower.newquiz.core.ui.components'">
+        <State />
+      </entry>
+      <entry key="Tests in 'com.infinitepower.newquiz.daily_challenge'">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>

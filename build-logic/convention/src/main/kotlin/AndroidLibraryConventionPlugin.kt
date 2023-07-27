@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.infinitepower.newquiz.Modules
+import com.infinitepower.newquiz.ProjectConfig
 import com.infinitepower.newquiz.androidTestImplementation
 import com.infinitepower.newquiz.configureKotlinAndroid
 import com.infinitepower.newquiz.disableUnnecessaryAndroidTests
@@ -27,6 +28,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 configureKotlinAndroid(this)
 
                 defaultConfig {
+                    targetSdk = ProjectConfig.targetSdk
                     testInstrumentationRunner = "com.infinitepower.newquiz.core_test.HiltTestRunner"
                 }
             }
