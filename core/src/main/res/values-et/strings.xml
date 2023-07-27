@@ -4,4 +4,10 @@
     <string name="more_options">Lisavalikud</string>
     <string name="quick_quiz">Kiire mälumäng</string>
     <string name="back">Tagasi</string>
+    <string name="wordle_infinite">Lõputu Wordle</string>
+    <string name="wordle_daily">Igapäevane Wordle</string>
+    <string name="verify">Kontrolli</string>
+    <string name="play_again">Mängi uuesti</string>
+    <string name="close">Sulge</string>
+    <string name="game_over">Mäng on läbi</string>
 </resources>
