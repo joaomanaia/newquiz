@@ -2,14 +2,6 @@ name: Android CI
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    paths-ignore:
-      - '**.md'
-  pull_request:
-    branches: [ "main" ]
-    paths-ignore:
-      - '**.md'
 
 permissions:
   contents: read
@@ -147,3 +139,79 @@ jobs:
           path: |
             app/build/outputs/apk/debug/app-universal-debug.apk
             newquiz_uploads/build/outputs/aar
+
+  android-test:
+    needs: assemble-apk
+    runs-on: macos-latest # enables hardware acceleration in the virtual machine
+    timeout-minutes: 55
+    strategy:
+      fail-fast: true
+      matrix:
+        api-level: [22, 26]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: ${{ env.JAVA_DISTR }}
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup gradle
+        uses: gradle/gradle-build-action@v2.5.1
+
+      - name: Accept licenses
+        run: yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+      - name: Create google-services.json file
+        run: cat app/google-services.json | base64
+
+      - name: Put google-services.json data
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA > app/google-services.json
+
+      - name: Increase gradle daemon memory
+        run: "echo \"org.gradle.jvmargs=-Xmx4096m\" >> gradle.properties"
+
+      # API 30+ emulators only have x86_64 system images.
+      - name: Get AVD info
+        uses: ./.github/actions/get-avd-info
+        id: avd-info
+        with:
+          api-level: ${{ matrix.api-level }}
+
+      - name: AVD cache
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+      - name: Create AVD snapshot
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: ${{ steps.avd-info.outputs.arch }}
+          target: ${{ steps.avd-info.outputs.target }}
+          disable-animations: false
+          force-avd-creation: false
+          ram-size: 4096M
+          emulator-boot-timeout: 12000
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: echo "Generated AVD snapshot."
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          disable-animations: true
+          force-avd-creation: false
+          ram-size: 4096M
+          emulator-boot-timeout: 12000
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: ./gradlew connectedDebugAndroidTest

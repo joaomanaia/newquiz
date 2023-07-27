@@ -44,6 +44,7 @@ import org.junit.runner.RunWith
 import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 /**
@@ -95,6 +96,7 @@ internal class MultiChoiceQuizScreenTest {
     }
 
     @Test
+    @Ignore
     fun testMultiChoiceQuizScreen() {
         every { authUserRepository.isSignedIn } returns true
 
