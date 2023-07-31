@@ -7,19 +7,13 @@ data class MathFormula(
     val leftFormula: String,
     val solution: Int
 ) {
-    private val fullFormula: String
-        get() = "$leftFormula = $solution"
-
-    val fullFormulaWithoutSpaces: String
-        get() = fullFormula.replace(" ", "")
-
-    val operatorSize: Int
-        get() = leftFormula.count { it in "+-*/" }
+    val fullFormula: String
+        get() = "$leftFormula=$solution"
 
     override fun toString(): String = fullFormula
 
     companion object {
-        val mathFormulaRegex = "(\\d+(\\+|\\-|\\*|\\/))+\\d+\\=\\d+".toRegex()
+        val mathFormulaRegex = "^-*(\\d+[-+*/])+\\d+\\=-*\\d+\$".toRegex()
 
         fun fromStringFullFormula(value: String): MathFormula = MathFormula(
             leftFormula = value.takeWhile { it != '=' },

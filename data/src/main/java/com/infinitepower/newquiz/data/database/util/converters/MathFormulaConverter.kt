@@ -5,7 +5,7 @@ import com.infinitepower.newquiz.model.math_quiz.MathFormula
 
 class MathFormulaConverter {
     @TypeConverter
-    fun mathFormulaToJson(value: MathFormula): String = value.fullFormulaWithoutSpaces
+    fun mathFormulaToJson(value: MathFormula): String = value.fullFormula
 
     @TypeConverter
     fun stringToMathFormula(value: String): MathFormula = MathFormula.fromStringFullFormula(value)

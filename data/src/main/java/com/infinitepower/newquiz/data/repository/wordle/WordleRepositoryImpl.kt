@@ -66,7 +66,7 @@ class WordleRepositoryImpl @Inject constructor(
                 WordleQuizType.NUMBER -> generateRandomNumberWord(random = random)
                 WordleQuizType.MATH_FORMULA -> {
                     val formula = mathQuizCoreRepository.generateMathFormula(random = random)
-                    WordleWord(formula.fullFormulaWithoutSpaces)
+                    WordleWord(formula.fullFormula)
                 }
                 WordleQuizType.NUMBER_TRIVIA -> numberTriviaQuestionRepository.generateWordleQuestion(random = random)
             }

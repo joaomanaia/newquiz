@@ -1,14 +1,14 @@
 package com.infinitepower.newquiz.data.repository.math_quiz
 
-import com.infinitepower.newquiz.core.math.MathOperator
+import android.os.Build
 import com.infinitepower.newquiz.core.math.evaluator.Expressions
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
+import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository.Companion.numbers
+import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository.Companion.operators
 import com.infinitepower.newquiz.model.math_quiz.MathFormula
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
-import java.lang.ArithmeticException
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.math.roundToInt
 import kotlin.random.Random
 
 @Singleton
@@ -23,41 +23,63 @@ class MathQuizCoreRepositoryImpl @Inject constructor(
         difficulty: QuestionDifficulty,
         random: Random
     ): MathFormula {
-        val formula = mutableListOf<Char>()
+        val formula = StringBuilder()
+        var operatorCount = 0
 
-        formula.addAll(randomNumbers(difficulty, random))
+        // Add the first number
+        formula.append(getRandomNumber(difficulty, random))
 
-        repeat(operatorSize) {
-            formula.add(MathOperator.randomOperatorByDifficulty(difficulty, random).value)
+        while (operatorCount < operatorSize && formula.length < MathQuizCoreRepository.MAX_FORMULA_LENGTH) {
+            // Get the operator
+            val operator = getRandomOperator(difficulty, random)
 
-            formula.addAll(randomNumbers(difficulty, random))
+            // Get the number
+            val number = getRandomNumber(difficulty, random)
+
+            if (operator == '/' && number == 0) {
+                // Skip division by zero
+                continue
+            }
+
+            val newFormula = StringBuilder(formula).apply {
+                append(operator)
+                append(number)
+            }
+
+            // Check if the formula is in range
+            if (getSolution(newFormula.toString()) !in MathQuizCoreRepository.SOLUTION_RANGE) {
+                // Skip if the formula is not in range
+
+                continue
+            }
+
+            formula.append(operator)
+            formula.append(number)
+
+            operatorCount++
         }
 
-        val leftFormula = formula.joinToString("") { c ->
-            if (c.isDigit()) c.toString() else " $c "
+        return MathFormula(formula.toString(), getSolution(formula.toString()))
+    }
+
+    private fun getRandomNumber(
+        difficulty: QuestionDifficulty,
+        random: Random = Random
+    ): Int = difficulty.numbers.random(random)
+
+    private fun getRandomOperator(
+        difficulty: QuestionDifficulty,
+        random: Random = Random
+    ): Char = difficulty.operators.random(random)
+
+    private fun getSolution(formula: String): Int {
+        val solutionBigInt = expressions.eval(formula).toBigInteger()
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            solutionBigInt.intValueExact()
+        } else {
+            solutionBigInt.toInt()
         }
-
-        val solution = try {
-            Expressions()
-                .eval(leftFormula)
-                .toDouble()
-                .roundToInt()
-        } catch (e: ArithmeticException) {
-            return generateMathFormula(
-                operatorSize,
-                difficulty,
-                random
-            )
-        }
-
-        if (solution !in -1000..1000)
-            return generateMathFormula(
-                operatorSize,
-                difficulty,
-                random
-            )
-
-        return MathFormula(leftFormula, solution)
     }
 
     override fun validateFormula(formula: String): Boolean {
@@ -84,23 +106,4 @@ class MathQuizCoreRepositoryImpl @Inject constructor(
             false
         }
     }
-
-    internal fun randomNumbers(
-        difficulty: QuestionDifficulty,
-        random: Random = Random
-    ): List<Char> {
-        val twoDigits = random.nextFloat() < difficulty.probTwoDigitNumber
-        val digitLength = if (twoDigits) 2 else 1
-
-        return List(digitLength) {
-            allNumbers.random(random).digitToChar()
-        }
-    }
-
-    private val QuestionDifficulty.probTwoDigitNumber: Float
-        get() = when (this) {
-            QuestionDifficulty.Easy -> 0f
-            QuestionDifficulty.Medium -> 0.5f
-            QuestionDifficulty.Hard -> 1f
-        }
 }

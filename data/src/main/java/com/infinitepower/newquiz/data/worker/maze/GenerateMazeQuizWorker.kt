@@ -222,7 +222,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
                         random = random
                     )
 
-                    WordleWord(formula.fullFormulaWithoutSpaces)
+                    WordleWord(formula.fullFormula)
                 }
                 WordleQuizType.NUMBER_TRIVIA -> numberTriviaQuestionRepository.generateWordleQuestion(random)
             }
