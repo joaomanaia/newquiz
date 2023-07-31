@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 import com.infinitepower.newquiz.core.util.kotlin.generateIncorrectNumberAnswers
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
+import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository.Companion.operatorSizeRange
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSolutionRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -24,7 +25,7 @@ class GuessMathSolutionRepositoryImpl @Inject constructor(
         random: Random
     ): List<MultiChoiceQuestion> {
         val questionDifficulty = if (difficulty == null) {
-            QuestionDifficulty.Easy
+            QuestionDifficulty.random(random)
         } else {
             QuestionDifficulty.from(difficulty)
         }
@@ -34,7 +35,7 @@ class GuessMathSolutionRepositoryImpl @Inject constructor(
             generator = {
                 mathQuizCoreRepository.generateMathFormula(
                     difficulty = questionDifficulty,
-                    operatorSize = 2,
+                    operatorSize = questionDifficulty.operatorSizeRange.random(random),
                     random = random
                 )
             }

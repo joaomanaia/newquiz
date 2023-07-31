@@ -32,6 +32,13 @@ interface MathQuizCoreRepository {
                 QuestionDifficulty.Medium -> listOf('+', '-', '*')
                 QuestionDifficulty.Hard -> listOf('+', '-', '*', '/')
             }
+
+        val QuestionDifficulty.operatorSizeRange
+            get() = when (this) {
+                QuestionDifficulty.Easy -> 1..1
+                QuestionDifficulty.Medium -> 1..2
+                QuestionDifficulty.Hard -> 1..3
+            }
     }
 
     fun generateMathFormula(
