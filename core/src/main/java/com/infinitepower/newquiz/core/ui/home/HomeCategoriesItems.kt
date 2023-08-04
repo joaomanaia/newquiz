@@ -47,34 +47,48 @@ fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
         )
     }
 
-    item {
-        val seeAllText = if (seeAllCategories) {
-            stringResource(id = R.string.see_less_categories)
-        } else {
-            stringResource(id = R.string.see_all_categories)
-        }
-
-        val seeAllIcon = if (seeAllCategories) {
-            Icons.Rounded.ExpandLess
-        } else {
-            Icons.Rounded.ExpandMore
-        }
-
-        Box(
-            modifier = Modifier.fillParentMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            TextButton(onClick = onSeeAllCategoriesClick) {
-                Icon(
-                    imageVector = seeAllIcon,
-                    contentDescription = seeAllText,
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
+    if (recentCategories.isEmpty() && otherCategories.isEmpty()) {
+        item {
+            Box(
+                modifier = Modifier.fillParentMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
-                    text = seeAllText,
+                    text = stringResource(id = R.string.no_categories_available),
                     style = MaterialTheme.typography.bodyMedium
                 )
+            }
+        }
+    } else if (recentCategories.isNotEmpty() && otherCategories.isNotEmpty()) {
+        item {
+            val seeAllText = if (seeAllCategories) {
+                stringResource(id = R.string.see_less_categories)
+            } else {
+                stringResource(id = R.string.see_all_categories)
+            }
+
+            val seeAllIcon = if (seeAllCategories) {
+                Icons.Rounded.ExpandLess
+            } else {
+                Icons.Rounded.ExpandMore
+            }
+
+            Box(
+                modifier = Modifier.fillParentMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                TextButton(onClick = onSeeAllCategoriesClick) {
+                    Icon(
+                        imageVector = seeAllIcon,
+                        contentDescription = seeAllText,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
+                    Text(
+                        text = seeAllText,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
             }
         }
     }

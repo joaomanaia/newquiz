@@ -266,4 +266,5 @@
     <!-- End Daily Challenge -->
     <string name="hide_online_categories">Hide online categories</string>
     <string name="hide_online_categories_description">Hide categories that require internet connection, when device is offline.</string>
+    <string name="no_categories_available">No categories available</string>
 </resources>
