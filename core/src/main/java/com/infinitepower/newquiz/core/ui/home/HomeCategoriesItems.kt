@@ -1,8 +1,10 @@
 package com.infinitepower.newquiz.core.ui.home
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
@@ -25,6 +27,7 @@ import com.infinitepower.newquiz.core.util.asString
 import com.infinitepower.newquiz.model.BaseCategory
 
 fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
+    contentPadding: PaddingValues = PaddingValues(),
     seeAllCategories: Boolean,
     recentCategories: List<T>,
     otherCategories: List<T>,
@@ -39,7 +42,8 @@ fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
         CategoryComponent(
             modifier = Modifier
                 .fillParentMaxWidth()
-                .height(120.dp),
+                .height(120.dp)
+                .padding(contentPadding),
             title = category.name.asString(),
             imageUrl = category.image,
             onClick = { onCategoryClick(category) },
@@ -101,7 +105,8 @@ fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
             CategoryComponent(
                 modifier = Modifier
                     .fillParentMaxWidth()
-                    .height(120.dp),
+                    .height(120.dp)
+                    .padding(contentPadding),
                 title = category.name.asString(),
                 imageUrl = category.image,
                 onClick = { onCategoryClick(category) },

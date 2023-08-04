@@ -13,18 +13,18 @@ import com.infinitepower.newquiz.core.theme.spacing
 @Composable
 fun HomeLazyColumn(
     modifier: Modifier = Modifier,
+    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(MaterialTheme.spacing.medium),
+    contentPadding: PaddingValues = PaddingValues(
+        start = MaterialTheme.spacing.medium,
+        end = MaterialTheme.spacing.medium,
+        bottom = MaterialTheme.spacing.large,
+    ),
     content: LazyListScope.() -> Unit
 ) {
-    val spaceMedium = MaterialTheme.spacing.medium
-
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(spaceMedium),
-        contentPadding = PaddingValues(
-            start = spaceMedium,
-            end = spaceMedium,
-            bottom = MaterialTheme.spacing.large,
-        ),
+        verticalArrangement = verticalArrangement,
+        contentPadding = contentPadding,
         content = content
     )
 }

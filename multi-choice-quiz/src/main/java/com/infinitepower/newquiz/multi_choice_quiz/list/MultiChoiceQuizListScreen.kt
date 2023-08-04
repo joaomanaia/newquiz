@@ -1,5 +1,7 @@
 package com.infinitepower.newquiz.multi_choice_quiz.list
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
@@ -57,6 +60,8 @@ private fun MultiChoiceQuizListScreenImpl(
     uiState: MultiChoiceQuizListScreenUiState,
     navigator: DestinationsNavigator
 ) {
+    val spaceMedium = MaterialTheme.spacing.medium
+
     val questionsAvailableText = pluralStringResource(
         id = CoreR.plurals.n_questions_available,
         count = uiState.savedQuestionsSize,
@@ -70,14 +75,23 @@ private fun MultiChoiceQuizListScreenImpl(
 
     var seeAllCategories by remember { mutableStateOf(false) }
 
-    HomeLazyColumn {
+    HomeLazyColumn(
+        contentPadding = PaddingValues(
+            bottom = MaterialTheme.spacing.large
+        )
+    ) {
         item {
-            HomeGroupTitle(title = stringResource(id = CoreR.string.random_quiz))
+            HomeGroupTitle(
+                title = stringResource(id = CoreR.string.random_quiz),
+                modifier = Modifier.padding(horizontal = spaceMedium)
+            )
         }
 
         item {
             HomeLargeCard(
-                modifier = Modifier.fillParentMaxWidth(),
+                modifier = Modifier
+                    .fillParentMaxWidth()
+                    .padding(horizontal = spaceMedium),
                 data = HomeCardItem.LargeCard(
                     title = CoreR.string.quiz_with_random_categories,
                     icon = CardIcon.Lottie(LottieCompositionSpec.RawRes(CoreR.raw.quick_quiz)),
@@ -93,7 +107,8 @@ private fun MultiChoiceQuizListScreenImpl(
         item {
             Text(
                 text = stringResource(id = CoreR.string.difficulty),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(horizontal = spaceMedium)
             )
         }
 
@@ -107,11 +122,15 @@ private fun MultiChoiceQuizListScreenImpl(
         item {
             Text(
                 text = stringResource(id = CoreR.string.categories),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(horizontal = spaceMedium)
             )
         }
 
         homeCategoriesItems(
+            contentPadding = PaddingValues(
+                horizontal = spaceMedium
+            ),
             seeAllCategories = seeAllCategories,
             recentCategories = uiState.homeCategories.recentCategories,
             otherCategories = uiState.homeCategories.otherCategories,
@@ -128,12 +147,17 @@ private fun MultiChoiceQuizListScreenImpl(
         )
 
         item {
-            HomeGroupTitle(title = stringResource(id = CoreR.string.saved_questions))
+            HomeGroupTitle(
+                title = stringResource(id = CoreR.string.saved_questions),
+                modifier = Modifier.padding(horizontal = spaceMedium)
+            )
         }
 
         item {
             HomeMediumCard(
-                modifier = Modifier.fillParentMaxWidth(),
+                modifier = Modifier
+                    .fillParentMaxWidth()
+                    .padding(horizontal = spaceMedium),
                 data = HomeCardItem.MediumCard(
                     title = CoreR.string.saved_questions,
                     icon = CardIcon.Icon(Icons.Rounded.Save),

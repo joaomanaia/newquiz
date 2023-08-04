@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.multi_choice_quiz.components.difficulty
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -35,7 +36,8 @@ internal fun SelectableDifficultyRow(
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(spaceMedium),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        contentPadding = PaddingValues(horizontal = spaceMedium)
     ) {
         item {
             if (selectedDifficulty == null) {
