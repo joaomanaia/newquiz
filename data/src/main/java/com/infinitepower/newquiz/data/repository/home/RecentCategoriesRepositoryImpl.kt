@@ -1,9 +1,11 @@
 package com.infinitepower.newquiz.data.repository.home
 
 import com.infinitepower.newquiz.core.common.dataStore.RecentCategoryDataStoreCommon
+import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
 import com.infinitepower.newquiz.core.di.RecentCategoriesDataStoreManager
+import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
@@ -15,13 +17,14 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.wordle.WordleCategory
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RecentCategoriesRepositoryImpl @Inject constructor(
     @RecentCategoriesDataStoreManager private val recentCategoriesDataStoreManager: DataStoreManager,
+    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
     private val comparisonQuizRepository: ComparisonQuizRepository
 ) : RecentCategoriesRepository {
     override fun getMultiChoiceCategories(
@@ -48,18 +51,6 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
         isInternetAvailable = isInternetAvailable
     )
 
-    fun <T : BaseCategory> getHomeCategories(
-        allCategories: List<T>,
-        recentCategoriesFlow: Flow<Set<String>>,
-        isInternetAvailable: Boolean
-    ): Flow<HomeCategories<T>> = recentCategoriesFlow.map { recentCategoriesIds ->
-        getHomeBaseCategories(
-            savedRecentCategoriesIds = recentCategoriesIds,
-            allCategories = allCategories,
-            isInternetAvailable = isInternetAvailable
-        )
-    }
-
     private fun <T : BaseCategory> getHomeCategories(
         allCategories: List<T>,
         request: PreferenceRequest<Set<String>>,
@@ -67,8 +58,33 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
     ): Flow<HomeCategories<T>> = getHomeCategories(
         allCategories = allCategories,
         recentCategoriesFlow = recentCategoriesDataStoreManager.getPreferenceFlow(request),
+        hideOnlineCategoriesFlow = settingsDataStoreManager.getPreferenceFlow(SettingsCommon.HideOnlineCategories),
         isInternetAvailable = isInternetAvailable
     )
+
+    internal fun <T : BaseCategory> getHomeCategories(
+        allCategories: List<T>,
+        recentCategoriesFlow: Flow<Set<String>>,
+        hideOnlineCategoriesFlow: Flow<Boolean>,
+        isInternetAvailable: Boolean
+    ) = combine(
+        recentCategoriesFlow,
+        hideOnlineCategoriesFlow
+    ) { recentCategoriesIds, hideOnlineCategories ->
+        val shouldHideCategories = hideOnlineCategories && !isInternetAvailable
+
+        val allCategoriesFiltered = if (shouldHideCategories) {
+            allCategories.filter { !it.requireInternetConnection }
+        } else {
+            allCategories
+        }
+
+        getHomeBaseCategories(
+            savedRecentCategoriesIds = recentCategoriesIds,
+            allCategories = allCategoriesFiltered,
+            isInternetAvailable = isInternetAvailable
+        )
+    }
 
     private fun <T : BaseCategory> getHomeBaseCategories(
         savedRecentCategoriesIds: Set<String>,

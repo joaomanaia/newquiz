@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.data.repository.home
 
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.common.dataStore.RecentCategoryDataStoreCommon
+import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
@@ -36,13 +37,17 @@ internal class RecentCategoriesRepositoryImplTest {
     private lateinit var recentCategoriesRepository: RecentCategoriesRepositoryImpl
 
     private val recentCategoriesDataStoreManager: DataStoreManager = mockk(relaxed = true)
+    private val settingsDataStoreManager: DataStoreManager = mockk(relaxed = true)
     private val comparisonQuizRepository: ComparisonQuizRepository = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
+        every { settingsDataStoreManager.getPreferenceFlow(SettingsCommon.HideOnlineCategories) } returns flowOf(false)
+
         // Create an instance of RecentCategoriesRepositoryImpl with mocked dependencies
         recentCategoriesRepository = RecentCategoriesRepositoryImpl(
             recentCategoriesDataStoreManager,
+            settingsDataStoreManager,
             comparisonQuizRepository
         )
     }
@@ -86,6 +91,7 @@ internal class RecentCategoriesRepositoryImplTest {
         val result = recentCategoriesRepository.getHomeCategories(
             allCategories = testCategories,
             recentCategoriesFlow = flowOf(recentCategoriesIds),
+            hideOnlineCategoriesFlow = flowOf(false),
             isInternetAvailable = true
         ).first()
 
@@ -107,6 +113,7 @@ internal class RecentCategoriesRepositoryImplTest {
         val result = recentCategoriesRepository.getHomeCategories(
             allCategories = testCategories,
             recentCategoriesFlow = flowOf(recentCategoriesIds),
+            hideOnlineCategoriesFlow = flowOf(false),
             isInternetAvailable = true
         ).first()
 
@@ -135,6 +142,7 @@ internal class RecentCategoriesRepositoryImplTest {
         val result = recentCategoriesRepository.getHomeCategories(
             allCategories = testCategories,
             recentCategoriesFlow = flowOf(recentCategoriesIds),
+            hideOnlineCategoriesFlow = flowOf(false),
             isInternetAvailable = false
         ).first()
 
@@ -160,6 +168,7 @@ internal class RecentCategoriesRepositoryImplTest {
         val result = recentCategoriesRepository.getHomeCategories(
             allCategories = testCategories,
             recentCategoriesFlow = flowOf(recentCategoriesIds),
+            hideOnlineCategoriesFlow = flowOf(false),
             isInternetAvailable = false
         ).first()
 
@@ -190,6 +199,7 @@ internal class RecentCategoriesRepositoryImplTest {
         val result = recentCategoriesRepository.getHomeCategories(
             allCategories = testCategories,
             recentCategoriesFlow = flowOf(recentCategoriesIds),
+            hideOnlineCategoriesFlow = flowOf(false),
             isInternetAvailable = false
         ).first()
 

@@ -34,6 +34,8 @@ object SettingsCommon {
     object MultiChoiceQuizQuestionsSize :
         PreferenceRequest<Int>(intPreferencesKey("quickQuizQuestionsSize"), 5)
 
+    object HideOnlineCategories : PreferenceRequest<Boolean>(booleanPreferencesKey("hideOnlineCategories"), false)
+
     object MultiChoiceQuiz {
         object TranslationEnabled : PreferenceRequest<Boolean>(
             booleanPreferencesKey("multiChoiceQuizTranslationEnabled"),

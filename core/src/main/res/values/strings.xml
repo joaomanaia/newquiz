@@ -264,4 +264,6 @@
         <item quantity="other">Play %1$d games with %2$s mode in comparison quiz.</item>
     </plurals>
     <!-- End Daily Challenge -->
+    <string name="hide_online_categories">Hide online categories</string>
+    <string name="hide_online_categories_description">Hide categories that require internet connection, when device is offline.</string>
 </resources>

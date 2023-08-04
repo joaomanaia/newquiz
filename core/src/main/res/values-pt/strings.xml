@@ -271,4 +271,6 @@
     <string name="question_n_correct">Pergunta %1$d - Correta</string>
     <string name="question_n_incorrect">Pergunta %1$d - Incorreta</string>
     <string name="loading_questions">A carregar as perguntas…</string>
+    <string name="hide_online_categories">Ocultar categorias online</string>
+    <string name="hide_online_categories_description">Ocultar categorias que requerem conexão com a internet, quando o dispositivo está offline.</string>
 </resources>

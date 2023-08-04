@@ -156,16 +156,32 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     scope.launch(Dispatchers.IO) { dataStoreManager.clearPreferences() }
                 }
             ),
-            Preference.PreferenceItem.TextPreference(
-                title = stringResource(id = CoreR.string.clear_recent_categories),
-                summary = stringResource(id = CoreR.string.clear_recent_categories_description),
-                onClick = cleanRecentCategories,
-                icon = {
-                    Icon(
-                        imageVector = Icons.Rounded.ClearAll,
-                        contentDescription = stringResource(id = CoreR.string.clear_recent_categories),
+            Preference.PreferenceGroup(
+                title = stringResource(id = CoreR.string.categories),
+                preferenceItems = listOf(
+                    Preference.PreferenceItem.SwitchPreference(
+                        title = stringResource(id = CoreR.string.hide_online_categories),
+                        summary = stringResource(id = CoreR.string.hide_online_categories_description),
+                        request = SettingsCommon.HideOnlineCategories,
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Visibility,
+                                contentDescription = stringResource(id = CoreR.string.hide_online_categories)
+                            )
+                        }
+                    ),
+                    Preference.PreferenceItem.TextPreference(
+                        title = stringResource(id = CoreR.string.clear_recent_categories),
+                        summary = stringResource(id = CoreR.string.clear_recent_categories_description),
+                        onClick = cleanRecentCategories,
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.ClearAll,
+                                contentDescription = stringResource(id = CoreR.string.clear_recent_categories),
+                            )
+                        }
                     )
-                }
+                )
             ),
             Preference.PreferenceGroup(
                 title = stringResource(id = CoreR.string.animations),
