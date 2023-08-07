@@ -271,4 +271,7 @@
     <string name="quiz_steps_row_container">Contenedor de pasos de Quiz</string>
     <string name="question_n_correct">Pregunta %1$d - Correcta</string>
     <string name="question_n_incorrect">Pregunta %1$d - Incorrecta</string>
+    <string name="hide_online_categories">Ocultar las categorías online</string>
+    <string name="hide_online_categories_description">Ocultar las categorías que requieren conexión a Internet, cuando el dispositivo está sin conexión.</string>
+    <string name="no_categories_available">No hay categorías disponibles</string>
 </resources>
