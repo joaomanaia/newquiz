@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="back">Zurück</string>
+    <string name="more_options">Mehr Optionen</string>
+    <string name="saved_questions">Gespeicherte Fragen</string>
+    <string name="wordle_infinite">Unendliches Wordle</string>
+    <string name="wordle_daily">Tägliches Wordle</string>
+    <string name="verify">Überprüfen</string>
+    <string name="close">Schließen</string>
+    <string name="game_over">Spiel vorbei</string>
+    <string name="item_empty">Element leer</string>
+    <string name="item_i_none">Kein Element %1$s</string>
+    <string name="quick_quiz">Kurzes Quiz</string>
+    <string name="play_again">Erneut Spielen</string>
+    <string name="item_i_present">Element %1$s vorhanden</string>
+</resources>
