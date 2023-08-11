@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="back">Zurück</string>
+    <string name="more_options">Mehr Optionen</string>
+    <string name="saved_questions">Gespeicherte Fragen</string>
+    <string name="wordle_infinite">Unendliches Wordle</string>
+    <string name="wordle_daily">Tägliches Wordle</string>
+    <string name="verify">Überprüfen</string>
+    <string name="close">Schließen</string>
+    <string name="game_over">Spiel vorbei</string>
+    <string name="item_empty">Element leer</string>
+    <string name="item_i_none">Kein Element %1$s</string>
+    <string name="quick_quiz">Kurzes Quiz</string>
+    <string name="play_again">Erneut Spielen</string>
+    <string name="item_i_present">Element %1$s vorhanden</string>
+    <string name="generate_maze">Labyrinth generieren</string>
+    <string name="generate_offline_maze_description">Erstelle ein Labyrinth mit allen Spielmodi, die keine Internetverbindung benötigen.</string>
+    <string name="random_maze">Zufälliges Labyrinth</string>
+    <string name="generate_maze_with_random_items">Generiere ein Labyrinth mit zufälligen Fragen, alle Spielmodi sind enthalten.</string>
+    <string name="expand_custom_options">Benutzerdefinierte Optionen anzeigen</string>
+    <string name="custom_maze_multi_choice_warning">Bei Verwendung eines benutzerdefinierten Seeds werden Multi-Choice-Fragen nicht nach dem Zufallsprinzip generiert.</string>
+    <string name="generate">Generieren</string>
+    <string name="seed">Seed</string>
+    <string name="number_trivia">Zahlen-Trivia</string>
+    <string name="wordle_animations_enabled">Wordle Animationen aktiviert</string>
+    <string name="wordle_animations_enabled_description">Aktiviere Animationen für den Wordle-Spielmodus.</string>
+    <string name="multi_choice_animations_enabled">Multi-Choice-Quiz-Animationen aktiviert</string>
+    <string name="multi_choice_animations_enabled_description">Aktiviere Animationen für den Multi-Choice-Quiz-Spielmodus.</string>
+    <string name="play">Spielen</string>
+    <string name="play_with_selected_questions">Mit ausgewählten Fragen spielen</string>
+    <string name="unselect_all">Alle abwählen</string>
+    <string name="sort_by_default">Sortieren nach Standard</string>
+    <string name="sort_by_category">Sortieren nach Kategorie</string>
+    <string name="or">oder</string>
+    <string name="highest_n">Höchstes: %1$d</string>
+    <string name="highest_score">Höchste Punktzahl</string>
+    <string name="select_a_comparison_mode_for_the_first_item">Wählen Sie einen Vergleichsmodus für die erste Position</string>
+    <string name="image_category_of_s">Bildkategorie von %1$s</string>
+    <string name="greater">Größer</string>
+    <string name="name">Name</string>
+    <string name="random_quiz">Zufälliges Quiz</string>
+    <string name="random">Zufall</string>
+    <string name="clear_recent_categories">Letzte Kategorien löschen</string>
+    <string name="clear_recent_categories_description">Alle letzten Kategorien aus dem Listenbildschirm entfernen</string>
+    <string name="question_n_correct">Frage %1$d - Richtig</string>
+    <string name="question_n_incorrect">Frage %1$d - Falsch</string>
+    <string name="loading_questions">Lade Fragen …</string>
+    <string name="quiz_steps_row_container">Quizschritte Container</string>
+    <string name="analytics">Analytik</string>
+    <string name="analytics_collection_enabled">Analytische Erfassung aktiviert</string>
+    <string name="data_collection_consent_description">Danke, dass du NewQuiz benutzt! Um die App zu verbessern und eventuell auftretende Probleme zu beheben, sammeln wir bestimmte Daten von Ihrem Gerät. Die Daten, die wir sammeln, umfassen:
+\n
+\n \t- Analysedaten: Dazu gehören Informationen darüber, wie du die App nutzt, z.B. welche Funktionen du am häufigsten nutzt, wie lange du auf jeder Seite verweilst und welche Quizfragen du abschließt.
+\n
+\n \t- Absturzdaten: Wenn die App abstürzt, während du sie benutzt, sammeln wir Daten über den Absturz, damit wir das Problem identifizieren und beheben können.
+\n
+\n \t- Leistungsdaten: Wir sammeln Informationen darüber, wie die App auf deinem Gerät funktioniert, z. B. wie schnell Seiten geladen werden und wie lange es dauert, Quizfragen zu beantworten.
+\n
+\n Wir nehmen Ihre Privatsphäre ernst und verwenden diese Daten nur für die Verbesserung der App. Die Daten werden niemals verkauft oder zu Marketingzwecken an Dritte weitergegeben.
+\n
+\n Durch die Nutzung von NewQuiz erklärst du dich mit der Erfassung dieser Daten einverstanden. Solltest du deine Meinung ändern, kannst du die Datenerfassung in den Einstellungen der App deaktivieren.
+\n
+\n Vielen Dank für dein Verständnis und deine Unterstützung!</string>
+    <string name="data_collection_consent_disagree">Nein, ich bin nicht einverstanden</string>
+    <string name="general_analytics_description_enabled">Ermöglicht allgemeine Analysen wie Ereignisse, z. B. Spielbeginn usw.</string>
+    <string name="crash_analytics_enabled">Crash-Analyse aktiviert</string>
+    <string name="crash_analytics_description_enabled">Ermöglicht die Analyse von Absturzdaten wie App-Abstürze und Fehlern.</string>
+    <string name="performance_monitoring_enabled">Leistungsüberwachung aktiviert</string>
+    <string name="performance_monitoring_description_enabled">Ermöglicht die Leistungsüberwachung, z. B. die Startzeit der Anwendung und andere Leistungskennzahlen.</string>
+    <string name="daily_challenge">Tägliche Herausforderung</string>
+    <plurals name="play_random_multi_choice_quiz_game">
+        <item quantity="one">Spiele ein zufälliges Multi-Choice-Quizspiel.</item>
+        <item quantity="other">Spiele %d zufällige Multi-Choice-Quizspiele.</item>
+    </plurals>
+    <plurals name="end_multi_choice_quiz_game">
+        <item quantity="one">Beende ein Multi-Choice-Quizspiel.</item>
+        <item quantity="other">Beende %d Multi-Choice-Quizspiele.</item>
+    </plurals>
+    <plurals name="play_multi_choice_quiz_questions">
+        <item quantity="one">Beantworte eine Frage im Multi-Choice-Quizspiel.</item>
+        <item quantity="other">Beantworte %d Fragen im Multi-Choice-Quizspiel.</item>
+    </plurals>
+    <plurals name="get_multi_choice_quiz_answer_correct">
+        <item quantity="one">Beantworte eine Frage richtig in einem Multi-Choice-Quizspiel.</item>
+        <item quantity="other">Beantworte %d Fragen richtig in einem Multi-Choice-Quizspiel.</item>
+    </plurals>
+    <plurals name="play_multi_choice_quiz_game_in_category">
+        <item quantity="one">Spiele ein Spiel mit der Kategorie %2$s im Multi-Choice-Quiz.</item>
+        <item quantity="other">Spiele %1$d Spiele mit der Kategorie %2$s im Multi-Choice-Quiz.</item>
+    </plurals>
+    <plurals name="get_wordle_word_correct">
+        <item quantity="one">Finde ein richtiges Wort im Wordle-Spiel.</item>
+        <item quantity="other">Finde %d richtige Wörter im Wordle-Spiel.</item>
+    </plurals>
+    <plurals name="play_wordle_game_in_category">
+        <item quantity="one">Spiele ein Spiel mit der Kategorie %2$s im Wordle-Spiel.</item>
+        <item quantity="other">Spiele %1$d Spiele mit der Kategorie %2$s im Wordle-Spiel.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_category">
+        <item quantity="one">Spiele ein Spiel mit der Kategorie %2$s im Vergleichsquiz.</item>
+        <item quantity="other">Spiele %1$d Spiele mit der Kategorie %2$s im Vergleichsquiz.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_and_get_score">
+        <item quantity="one">Spiele ein Spiel und erreiche eine Punktzahl von %2$d im Vergleichsquiz.</item>
+        <item quantity="other">Spiele %1$d Spiele und erreiche eine Punktzahl von %2$d im Vergleichsquiz.</item>
+    </plurals>
+    <plurals name="play_comparison_quiz_game_in_comparison_mode">
+        <item quantity="one">Spiele ein Spiel mit dem %2$s-Modus im Vergleichsquiz.</item>
+        <item quantity="other">Spiele %1$d Spiele mit dem %2$s-Modus im Vergleichsquiz.</item>
+    </plurals>
+    <string name="hide_online_categories">Online-Kategorien ausblenden</string>
+    <string name="hide_online_categories_description">Kategorien ausblenden, die eine Internetverbindung erfordern, wenn das Gerät offline ist.</string>
+    <string name="item_i_correct">Element %1$s korrekt</string>
+    <string name="four_letters">4 Buchstaben</string>
+    <string name="back_month">Monat zurück</string>
+    <string name="next_month">Nächster Monat</string>
+    <string name="settings">Einstellungen</string>
+    <string name="general">Allgemein</string>
+    <string name="quiz">Quiz</string>
+    <string name="quiz_language">Quizsprache</string>
+    <string name="portuguese">Portugiesisch</string>
+    <string name="color_blind_mode">Farbenblindheit-Modus</string>
+    <string name="high_contrast_colors">Kontrastreiche Farben</string>
+    <string name="info">Info</string>
+    <string name="letter_hints">Hinweise zu Buchstaben</string>
+    <string name="hard_mode">Schwerer Modus</string>
+    <string name="any_revealed_hints_must_be_used_in_subsequest_guesses">Alle aufgedeckten Hinweise müssen bei folgenden Versuchen verwendet werden</string>
+    <string name="clean_calendar_data">Kalenderdaten löschen</string>
+    <string name="wordle_infinite_row_limit_value">Wordle endlose Versuche Grenze.</string>
+    <string name="clear_settings">Einstellungen zurücksetzten</string>
+    <string name="remove_all_saved_settings">Entfernt alle gespeicherten Einstellungen</string>
+    <string name="home">Startseite</string>
+    <string name="today_game">Heutiges Spiel</string>
+    <string name="multi_choice_quiz">Multi-Choice-Quiz</string>
+    <string name="logo_quiz">Logo-Quiz</string>
+    <string name="other">Andere</string>
+    <string name="general_knowledge">Allgemeines Wissen</string>
+    <string name="entertainment_film">Filme</string>
+    <string name="entertainment_music">Musik</string>
+    <string name="entertainment_musicals_and_theatres">Musicals &amp; Theater</string>
+    <string name="entertainment_television">Fernsehen</string>
+    <string name="entertainment_board_games">Brettspiele</string>
+    <string name="science_and_nature">Wissenschaft &amp; Natur</string>
+    <string name="science_computers">Computer</string>
+    <string name="sports">Sport</string>
+    <string name="geography">Geografie</string>
+    <string name="history">Geschichte</string>
+    <string name="politics">Politik</string>
+    <string name="celebrities">Berühmte Persönlichkeiten</string>
+    <string name="animals">Tiere</string>
+    <string name="vehicles">Fahrzeuge</string>
+    <string name="entertainment_comics">Comics</string>
+    <string name="science_gadgets">Gadgets</string>
+    <string name="entertainment_japanese_anime_and_manga">Japanische Anime &amp; Manga</string>
+    <string name="entertainment_cartoon_and_animations">Zeichentrickfilm &amp; Animationen</string>
+    <string name="categories">Kategorien</string>
+    <plurals name="n_questions_available">
+        <item quantity="one">%1$s Frage vorhanden</item>
+        <item quantity="other">%1$s Fragen vorhanden</item>
+    </plurals>
+    <string name="difficulty">Schwierigkeitsgrad</string>
+    <string name="is_not_in_the_target_word_wordle">" nicht im Zielwort enthalten ist."</string>
+    <string name="online">Online</string>
+    <string name="profile">Profil</string>
+    <string name="correct_answers">Richtige Antworten</string>
+    <string name="total_questions">Gesamtzahl der Fragen</string>
+    <string name="last_quiz_times">Letzte Quizzeiten</string>
+    <string name="time">Zeit</string>
+    <string name="last_questions">Letzte Fragen</string>
+    <string name="correct_words">Richtige Wörter</string>
+    <string name="total_words">Wörter insgesamt</string>
+    <string name="user_xp">Anwender Erfahrung</string>
+    <string name="level">Level</string>
+    <string name="photo_of_s">Foto von %1$s</string>
+    <string name="morning">Morgen</string>
+    <string name="afternoon">Nachmittag</string>
+    <string name="evening">Abend</string>
+    <string name="night">Nacht</string>
+    <string name="good_day_text">Guten %1$s,
+\n</string>
+    <string name="no_diamonds">Keine Diamanten</string>
+    <string name="skip_question_q">Frage überspringen\?</string>
+    <string name="sign_in">Anmelden</string>
+    <string name="show_login_card">Anmeldekarte anzeigen</string>
+    <string name="guess_math_formula">Errate die Matheformel</string>
+    <string name="guess_solution">Lösung erraten</string>
+    <string name="math_quiz">Mathe-Quiz</string>
+    <string name="maze">Labyrinth</string>
+    <string name="easy">Leicht</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Schwer</string>
+    <string name="open_drawer">Seitennavigation öffnen</string>
+    <string name="copy_maze_seed">Labyrinthsamen kopieren</string>
+    <string name="restart_maze">Labyrinth neu starten</string>
+    <string name="generate_offline_maze">Labyrinth offline generieren</string>
+    <string name="custom_maze">Benutzerdefiniertes Labyrinth</string>
+    <string name="generate_maze_with_custom_options">Labyrinth mit benutzerdefinierten Optionen generieren</string>
+    <string name="user">Benutzer</string>
+    <string name="sign_out">Abmelden</string>
+    <string name="about_and_help">Info und Hilfe</string>
+    <string name="animations">Animationen</string>
+    <string name="animations_enabled">Animationen aktiviert</string>
+    <string name="global_animations_enabled">Globale Animationen aktiviert</string>
+    <string name="sort_questions">Fragen sortieren</string>
+    <string name="play_with_random_saved_questions">Quiz mit zufällig gespeicherten Fragen spielen</string>
+    <string name="select_all">Alle auswählen</string>
+    <string name="delete_selected">Ausgewählte löschen</string>
+    <string name="download_questions">Fragen herunterladen</string>
+    <string name="sort_by_description">Sortieren nach Beschreibung</string>
+    <string name="country_capital_flags">Flaggen der Landeshauptstädte</string>
+    <string name="comparison_quiz">Vergleichsquiz</string>
+    <string name="position_n">Position: %1$d</string>
+    <string name="your_score">Deine Punktzahl</string>
+    <string name="icon_of_s">Symbol von %1$s</string>
+    <string name="lesser">Kleiner</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Passwort</string>
+    <string name="next">Nächstes</string>
+    <string name="sign_up">Registrieren</string>
+    <string name="quiz_with_random_categories">Quiz mit zufälligen Kategorien</string>
+    <string name="see_all_categories">Alle Kategorien anzeigen</string>
+    <string name="see_less_categories">Weniger Kategorien anzeigen</string>
+    <string name="data_collection_consent">Zustimmung zur Datenerhebung</string>
+    <string name="data_collection_consent_agree">Ja, ich stimme zu</string>
+    <string name="general_analytics_enabled">Allgemeine Analytik aktiviert</string>
+    <string name="no_categories_available">Keine Kategorien verfügbar</string>
+    <string name="five_letters">5 Buchstaben</string>
+    <string name="six_letters">6 Buchstaben</string>
+    <string name="english">Englisch</string>
+    <string name="spanish">Spanisch</string>
+    <string name="french">Französisch</string>
+    <string name="hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word">Hinweis über dem Buchstaben, dass er zweimal oder öfter in dem versteckten Wort vorkommt</string>
+    <string name="rows_limited">Begrenzte Versuche</string>
+    <string name="wordle_infinite_row_limited">Wordle unendliche Versuche begrenzt.</string>
+    <string name="clean_saved_calendar_wins_losses">Löscht alle gespeicherten Kalender Siege/Verluste.</string>
+    <string name="today_random_game">Heutiges zufälliges Spiel</string>
+    <string name="flag_quiz">Flaggenquiz</string>
+    <string name="entertainment_books">Bücher</string>
+    <string name="entertainment_video_games">Videospiele</string>
+    <string name="science_mathematics">Mathematik</string>
+    <string name="mythology">Mythologie</string>
+    <string name="art">Kunst</string>
+    <string name="see_all">Alle anzeigen</string>
+    <string name="is_in_the_word_but_in_the_wrong_spot_wordle">" im Zielwort enthalten, aber an anderer Stelle."</string>
+    <string name="is_in_the_word_and_in_the_correct_spot_wordle">" steht im Wort und an der richtigen Stelle."</string>
+    <string name="results_screen">Ergebnisbildschirm</string>
+    <string name="n_correct_questions">%1$s richtige Fragen</string>
+    <string name="translation_enabled">Übersetzung aktivierte</string>
+    <string name="quiz_question_size">Anzahl der Quizfragen</string>
+    <string name="download_translation_model">Übersetzungsmodell herunterladen</string>
+    <string name="translation">Übersetzung</string>
+    <string name="delete_translation_model">Übersetzungsmodell löschen</string>
+    <string name="download_translation_model_to_device_language">Übersetzungsmodell auf das Gerät herunterladen.</string>
+    <string name="current_xp">Derzeitige Erfahrung</string>
+    <string name="required_xp_to_next_level">Erforderliche Erfahrung für die nächste Stufe</string>
+    <plurals name="you_have_n_diamonds_skip_question_q">
+        <item quantity="one">Du hast einen Diamanten. Möchtest du den Diamanten benutzen, um diese Frage zu überspringen\?</item>
+        <item quantity="other">Du hast %1$d Diamanten, möchtest du %2$d Diamanten verwenden, um diese Frage zu überspringen\?</item>
+    </plurals>
+    <string name="no_diamonds_to_skip_question_description">Du hast nicht genügend Diamanten, um diese Frage zu überspringen!</string>
+    <string name="skip">Überspringen</string>
+    <string name="save">Speichern</string>
+    <string name="save_you_progress_description">Speichere deinen Fortschritt, verwende Überspringen und sehe die Bestenliste, indem du dich anmeldest!</string>
+    <string name="dismiss">Ablehnen</string>
+    <string name="show_login_card_at_home_screen">Anmeldekarte auf dem Startbildschirm anzeigen</string>
+    <string name="guess_the_word">Errate das Wort</string>
+    <string name="guess_the_number">Errate die Zahl</string>
+</resources>
