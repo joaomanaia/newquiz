@@ -3,6 +3,7 @@ import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.infinitepower.newquiz.Modules
 import com.infinitepower.newquiz.ProjectConfig
 import com.infinitepower.newquiz.androidTestImplementation
+import com.infinitepower.newquiz.configureFlavors
 import com.infinitepower.newquiz.configureKotlinAndroid
 import com.infinitepower.newquiz.disableUnnecessaryAndroidTests
 import com.infinitepower.newquiz.libs
@@ -26,6 +27,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
+                configureFlavors(this)
 
                 defaultConfig {
                     targetSdk = ProjectConfig.targetSdk

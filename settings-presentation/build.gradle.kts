@@ -29,11 +29,18 @@ dependencies {
 
     implementation(libs.google.oss.licenses)
 
+    // WorkManager
+    implementation(libs.androidx.work.ktx)
+
+    // Hilt with WorkManager
+    implementation(libs.hilt.ext.work)
+    kapt(libs.hilt.ext.compiler)
+
     implementation(project(Modules.core))
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
     implementation(project(Modules.model))
-    implementation(project(Modules.translationDynamicFeature))
+    implementation(project(Modules.translation))
 }
 
 tasks.withType<Test> {

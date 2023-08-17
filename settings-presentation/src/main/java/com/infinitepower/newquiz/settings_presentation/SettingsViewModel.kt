@@ -3,6 +3,8 @@ package com.infinitepower.newquiz.settings_presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
@@ -11,9 +13,10 @@ import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesReposito
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
+import com.infinitepower.newquiz.settings_presentation.data.TranslatorModelState
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
-import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
-import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil.TranslatorModelState
+import com.infinitepower.newquiz.translation.TranslatorUtil
+import com.infinitepower.newquiz.translation.work.DownloadTranslationModelWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +33,8 @@ class SettingsViewModel @Inject constructor(
     private val translatorUtil: TranslatorUtil,
     private val authUserRepository: AuthUserRepository,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val recentCategoriesRepository: RecentCategoriesRepository
+    private val recentCategoriesRepository: RecentCategoriesRepository,
+    private val workManager: WorkManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
@@ -48,11 +52,21 @@ class SettingsViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.update { currentState ->
-                val state = if (translatorUtil.isModelDownloaded()) {
-                    TranslatorModelState.Downloaded
-                } else TranslatorModelState.None
+                currentState.copy(
+                    translationModelState = if (translatorUtil.isModelDownloaded()) {
+                        TranslatorModelState.Downloaded
+                    } else {
+                        TranslatorModelState.None
+                    }
+                )
+            }
+        }
 
-                currentState.copy(translationModelState = state)
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    translatorTargetLanguages = translatorUtil.availableTargetLanguages
+                )
             }
         }
 
@@ -77,14 +91,39 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun downloadTranslationModel() = viewModelScope.launch(Dispatchers.IO)  {
-        translatorUtil
-            .downloadModel()
-            .collect { res ->
+    private fun downloadTranslationModel() = viewModelScope.launch {
+        val targetLanguage = settingsDataStoreManager.getPreference(SettingsCommon.Translation.TargetLanguage)
+
+        // Check if the target language is picked by the user
+        if (targetLanguage.isEmpty()) {
+            return@launch
+        }
+
+        val requireWifi = settingsDataStoreManager.getPreference(SettingsCommon.Translation.RequireWifi)
+        val requireCharging = settingsDataStoreManager.getPreference(SettingsCommon.Translation.RequireCharging)
+
+        // Start the download
+        val workId = DownloadTranslationModelWorker.enqueueWork(
+            workManager = workManager,
+            targetLanguage = targetLanguage,
+            requireWifi = requireWifi,
+            requireCharging = requireCharging
+        )
+
+        // Get the worker status
+        DownloadTranslationModelWorker
+            .getWorkInfo(workManager, workId)
+            .onEach { workInfo ->
                 _uiState.update { currentState ->
-                    currentState.copy(translationModelState = res.data ?: TranslatorModelState.None)
+                    currentState.copy(
+                        translationModelState = when (workInfo.state) {
+                            WorkInfo.State.SUCCEEDED -> TranslatorModelState.Downloaded
+                            WorkInfo.State.RUNNING -> TranslatorModelState.Downloading
+                            else -> TranslatorModelState.None
+                        },
+                    )
                 }
-            }
+            }.launchIn(viewModelScope)
     }
 
     private fun clearHomeRecentCategories() = viewModelScope.launch(Dispatchers.IO) {

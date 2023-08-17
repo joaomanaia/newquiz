@@ -105,7 +105,7 @@ internal class MultiChoiceQuizScreenTest {
         } returns 5
 
         coEvery {
-            settingsDataStoreManager.getPreference(SettingsCommon.MultiChoiceQuiz.TranslationEnabled)
+            settingsDataStoreManager.getPreference(SettingsCommon.Translation.Enabled)
         } returns false
 
         composeTestRule.setTestContent {

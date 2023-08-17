@@ -19,6 +19,7 @@ import androidx.compose.material.icons.rounded.Password
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,7 +37,7 @@ import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
-import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil.TranslatorModelState
+import com.infinitepower.newquiz.translation.TranslatorTargetLanguages
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,8 +54,9 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             MultiChoiceQuiz.key -> MultiChoiceQuiz
             Wordle.key -> Wordle
             User.key -> User
+            Translation.key -> Translation
             AboutAndHelp.key -> AboutAndHelp
-            else -> MainPage
+            else -> throw IllegalArgumentException("Unknown screen key: $key")
         }
     }
 
@@ -70,6 +72,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             inMainPage: Boolean,
             currentScreenKey: ScreenKey
         ) = listOf(
+            // General
             Preference.PreferenceItem.NavigationButton(
                 title = stringResource(id = General.stringRes),
                 iconImageVector = Icons.Rounded.Settings,
@@ -79,6 +82,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 screenExpanded = screenExpanded,
                 inMainPage = inMainPage
             ),
+            // Multi Choice Quiz
             Preference.PreferenceItem.NavigationButton(
                 title = stringResource(id = MultiChoiceQuiz.stringRes),
                 iconImageVector = Icons.Rounded.ListAlt,
@@ -88,6 +92,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 screenExpanded = screenExpanded,
                 inMainPage = inMainPage
             ),
+            // Wordle
             Preference.PreferenceItem.NavigationButton(
                 title = stringResource(id = Wordle.stringRes),
                 iconImageVector = Icons.Rounded.Password,
@@ -97,6 +102,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 screenExpanded = screenExpanded,
                 inMainPage = inMainPage
             ),
+            // User
             Preference.PreferenceItem.NavigationButton(
                 title = stringResource(id = User.stringRes),
                 iconImageVector = Icons.Rounded.Person,
@@ -106,6 +112,16 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 screenExpanded = screenExpanded,
                 inMainPage = inMainPage
             ),
+            Preference.PreferenceItem.NavigationButton(
+                title = stringResource(id = Translation.stringRes),
+                iconImageVector = Icons.Rounded.Translate,
+                screenKey = Translation.key,
+                onClick = { navigateToScreen(Translation.key) },
+                itemSelected = currentScreenKey == Translation.key,
+                screenExpanded = screenExpanded,
+                inMainPage = inMainPage
+            ),
+            // About and Help
             Preference.PreferenceItem.NavigationButton(
                 title = stringResource(id = AboutAndHelp.stringRes),
                 iconImageVector = Icons.Rounded.Help,
@@ -271,11 +287,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
 
         @Composable
         @ReadOnlyComposable
-        fun items(
-            translationModelState: TranslatorModelState,
-            downloadTranslationModel: () -> Unit,
-            deleteTranslationModel: () -> Unit
-        ) = listOf(
+        fun items() = listOf(
             Preference.PreferenceItem.SeekBarPreference(
                 request = SettingsCommon.MultiChoiceQuizQuestionsSize,
                 title = stringResource(id = CoreR.string.quiz_question_size),
@@ -287,28 +299,6 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     )
                 },
                 valueRange = (5..20)
-            ),
-            Preference.PreferenceGroup(
-                title = stringResource(id = CoreR.string.translation),
-                preferenceItems = listOf(
-                    Preference.PreferenceItem.SwitchPreference(
-                        request = SettingsCommon.MultiChoiceQuiz.TranslationEnabled,
-                        title = stringResource(id = CoreR.string.translation_enabled)
-                    ),
-                    Preference.PreferenceItem.TextPreference(
-                        title = stringResource(id = CoreR.string.download_translation_model),
-                        summary = stringResource(id = CoreR.string.download_translation_model_to_device_language),
-                        dependency = listOf(SettingsCommon.MultiChoiceQuiz.TranslationEnabled),
-                        enabled = translationModelState == TranslatorModelState.None,
-                        onClick = downloadTranslationModel
-                    ),
-                    Preference.PreferenceItem.TextPreference(
-                        title = stringResource(id = CoreR.string.delete_translation_model),
-                        dependency = listOf(SettingsCommon.MultiChoiceQuiz.TranslationEnabled),
-                        enabled = translationModelState == TranslatorModelState.Downloaded,
-                        onClick = deleteTranslationModel
-                    ),
-                )
             )
         )
     }
@@ -369,6 +359,64 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         valueRange = 2..30,
                         dependency = listOf(SettingsCommon.WordleInfiniteRowsLimited)
                     )
+                )
+            )
+        )
+    }
+
+    data object Translation : SettingsScreenPageData(key = ScreenKey("translation")) {
+        override val stringRes: Int
+            get() = CoreR.string.translation
+
+        @Composable
+        @ReadOnlyComposable
+        fun items(
+            targetLanguages: TranslatorTargetLanguages,
+            translationModelState: TranslatorModelState,
+            downloadTranslationModel: () -> Unit,
+            deleteTranslationModel: () -> Unit
+        ) = listOf(
+            Preference.PreferenceItem.SwitchPreference(
+                request = SettingsCommon.Translation.Enabled,
+                title = stringResource(id = CoreR.string.translation_enabled),
+                primarySwitch = true
+            ),
+            Preference.PreferenceItem.ListPreference(
+                request = SettingsCommon.Translation.TargetLanguage,
+                title = "Target Language",
+                summary = "Select the language you want to translate to",
+                entries = targetLanguages,
+                enabled = translationModelState == TranslatorModelState.None,
+                dependency = listOf(SettingsCommon.Translation.Enabled)
+            ),
+            Preference.PreferenceItem.TextPreference(
+                title = stringResource(id = CoreR.string.download_translation_model),
+                summary = "Download the translation model using the current target language.",
+                dependency = listOf(SettingsCommon.Translation.Enabled),
+                enabled = translationModelState == TranslatorModelState.None,
+                onClick = downloadTranslationModel
+            ),
+            Preference.PreferenceItem.TextPreference(
+                title = stringResource(id = CoreR.string.delete_translation_model),
+                dependency = listOf(SettingsCommon.Translation.Enabled),
+                enabled = translationModelState == TranslatorModelState.Downloaded,
+                onClick = deleteTranslationModel
+            ),
+            Preference.PreferenceGroup(
+                title = "Download Settings",
+                preferenceItems = listOf(
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.Translation.RequireWifi,
+                        title = "Require WiFi",
+                        summary = "Only download the translation model when connected to WiFi.",
+                        dependency = listOf(SettingsCommon.Translation.Enabled),
+                    ),
+                    Preference.PreferenceItem.SwitchPreference(
+                        request = SettingsCommon.Translation.RequireCharging,
+                        title = "Require Charging",
+                        summary = "Require the device to be charging to download the translation model.",
+                        dependency = listOf(SettingsCommon.Translation.Enabled),
+                    ),
                 )
             )
         )

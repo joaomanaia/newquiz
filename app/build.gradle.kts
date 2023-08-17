@@ -135,7 +135,7 @@ dependencies {
     implementation(project(Modules.domain))
     implementation(project(Modules.onlineServices))
     implementation(project(Modules.mazeQuiz))
-    implementation(project(Modules.translationDynamicFeature))
+    implementation(project(Modules.translation))
     implementation(project(Modules.comparisonQuiz))
     implementation(project(Modules.dailyChallenge))
 }

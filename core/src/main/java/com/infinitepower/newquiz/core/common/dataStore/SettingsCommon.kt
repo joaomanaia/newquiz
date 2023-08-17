@@ -36,13 +36,6 @@ object SettingsCommon {
 
     object HideOnlineCategories : PreferenceRequest<Boolean>(booleanPreferencesKey("hideOnlineCategories"), false)
 
-    object MultiChoiceQuiz {
-        object TranslationEnabled : PreferenceRequest<Boolean>(
-            booleanPreferencesKey("multiChoiceQuizTranslationEnabled"),
-            false
-        )
-    }
-
     object InfiniteWordleQuizLanguage : PreferenceRequest<String>(
         stringPreferencesKey("infiniteWordleQuizLanguage"),
         getInfiniteWordleDefaultLang()
@@ -66,6 +59,44 @@ object SettingsCommon {
     object GlobalAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("animations_enabled"), true)
     object WordleAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("wordle_animations_enabled"), true)
     object MultiChoiceAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("multi_choice_animations_enabled"), true)
+
+    /**
+     * The translation settings.
+     */
+    object Translation {
+        /**
+         * Returns whether the translation is enabled.
+         */
+        object Enabled : PreferenceRequest<Boolean>(
+            booleanPreferencesKey("translationEnabled"),
+            false
+        )
+
+        /**
+         * Returns the target language for the app translation.
+         * When empty, there is no translation target language.
+         */
+        object TargetLanguage : PreferenceRequest<String>(
+            stringPreferencesKey("translationTargetLanguage"),
+            ""
+        )
+
+        /**
+         * Preference to store whether the user wants to download the translation model over wifi only.
+         */
+        object RequireWifi : PreferenceRequest<Boolean>(
+            booleanPreferencesKey("translationRequireWifi"),
+            true
+        )
+
+        /**
+         * Preference to store whether the user wants to download the translation model only when charging.
+         */
+        object RequireCharging : PreferenceRequest<Boolean>(
+            booleanPreferencesKey("translationRequireCharging"),
+            false
+        )
+    }
 }
 
 @Keep

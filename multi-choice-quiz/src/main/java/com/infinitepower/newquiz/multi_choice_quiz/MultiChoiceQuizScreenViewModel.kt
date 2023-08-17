@@ -34,10 +34,22 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.isAllCorrect
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import com.infinitepower.newquiz.online_services.core.worker.multichoicequiz.MultiChoiceQuizEndGameWorker
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
-import com.infinitepower.newquiz.translation_dynamic_feature.TranslatorUtil
+import com.infinitepower.newquiz.translation.TranslatorUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -179,7 +191,7 @@ class QuizScreenViewModel @Inject constructor(
 
     private suspend fun List<MultiChoiceQuestion>.getOrTranslateQuestions(): List<MultiChoiceQuestion> {
         val translationEnabled =
-            settingsDataStoreManager.getPreference(SettingsCommon.MultiChoiceQuiz.TranslationEnabled)
+            settingsDataStoreManager.getPreference(SettingsCommon.Translation.Enabled)
         val translationModelDownloaded = translationUtil.isModelDownloaded()
         val translateQuestions = translationEnabled && translationModelDownloaded
 
@@ -193,9 +205,7 @@ class QuizScreenViewModel @Inject constructor(
     private suspend infix fun MultiChoiceQuestion.translateQuestionWith(translationUtil: TranslatorUtil): MultiChoiceQuestion {
         return copy(
             description = translationUtil.translate(description),
-            answers = answers.map { answer ->
-                translationUtil.translate(answer)
-            }
+            answers = translationUtil.translate(answers)
         )
     }
 

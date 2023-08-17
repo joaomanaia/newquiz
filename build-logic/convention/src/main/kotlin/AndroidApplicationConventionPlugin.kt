@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.infinitepower.newquiz.ProjectConfig
+import com.infinitepower.newquiz.configureFlavors
 import com.infinitepower.newquiz.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,6 +16,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
+                configureFlavors(this)
 
                 defaultConfig {
                     targetSdk = ProjectConfig.targetSdk

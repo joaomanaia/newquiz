@@ -74,13 +74,15 @@ internal fun PreferencesScreen(
                 enableLoggingAnalytics = { onEvent(SettingsScreenUiEvent.EnableLoggingAnalytics(it)) },
                 cleanRecentCategories = { onEvent(SettingsScreenUiEvent.ClearHomeRecentCategories) }
             )
-            is SettingsScreenPageData.MultiChoiceQuiz -> page.items(
+            is SettingsScreenPageData.MultiChoiceQuiz -> page.items()
+            is SettingsScreenPageData.Wordle -> page.items(
+                onChangeWordleLang = coreLoggingAnalytics::setWordleLangUserProperty
+            )
+            is SettingsScreenPageData.Translation -> page.items(
+                targetLanguages = uiState.translatorTargetLanguages,
                 translationModelState = uiState.translationModelState,
                 downloadTranslationModel = { onEvent(SettingsScreenUiEvent.DownloadTranslationModel) },
                 deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) }
-            )
-            is SettingsScreenPageData.Wordle -> page.items(
-                onChangeWordleLang = coreLoggingAnalytics::setWordleLangUserProperty
             )
             is SettingsScreenPageData.User -> page.items(
                 userIsSignedIn = uiState.userIsSignedIn,
