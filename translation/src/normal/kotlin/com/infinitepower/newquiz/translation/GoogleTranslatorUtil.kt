@@ -11,6 +11,8 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import java.util.Locale
 import javax.inject.Inject
@@ -20,8 +22,24 @@ import javax.inject.Singleton
 class GoogleTranslatorUtil @Inject constructor(
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager
 ) : TranslatorUtil {
-    override suspend fun isTranslatorAvailable(): Boolean {
-        return isModelDownloaded()
+    override val isTranslatorAvailable: Boolean = true
+
+    override suspend fun isModelDownloaded(): Boolean {
+        val localeLanguage = getTargetLanguageCode()
+
+        // If the locale language is empty, then the model is not downloaded
+        if (localeLanguage.isEmpty()) {
+            return false
+        }
+
+        val localeModel = TranslateRemoteModel
+            .Builder(localeLanguage)
+            .build()
+
+        return RemoteModelManager
+            .getInstance()
+            .isModelDownloaded(localeModel)
+            .await()
     }
 
     override val availableTargetLanguageCodes: List<String> by lazy {
@@ -34,7 +52,7 @@ class GoogleTranslatorUtil @Inject constructor(
 
     override val availableTargetLanguages: TranslatorTargetLanguages by lazy {
         // Associate the language code with the language name
-        this.availableTargetLanguageCodes.associateWith { languageCode ->
+        availableTargetLanguageCodes.associateWith { languageCode ->
             // Get the locale for the given language code
             val locale = Locale(languageCode)
 
@@ -46,7 +64,7 @@ class GoogleTranslatorUtil @Inject constructor(
         return settingsDataStoreManager.getPreference(SettingsCommon.Translation.TargetLanguage)
     }
 
-    private suspend fun getTranslator(): Translator {
+    suspend fun getTranslator(): Translator {
         val targetLanguage = getTargetLanguageCode()
 
         if (targetLanguage.isEmpty()) {
@@ -74,7 +92,9 @@ class GoogleTranslatorUtil @Inject constructor(
         targetLanguage: String,
         requireWifi: Boolean,
         requireCharging: Boolean
-    ) {
+    ): Flow<TranslatorModelState> = flow {
+        emit(TranslatorModelState.Downloading)
+
         // Get the translator
         val translator = getTranslator(targetLanguage)
 
@@ -92,6 +112,8 @@ class GoogleTranslatorUtil @Inject constructor(
         translator
             .downloadModelIfNeeded(conditions)
             .await()
+
+        emit(TranslatorModelState.Downloaded)
     }
 
     override suspend fun deleteModel() {
@@ -130,23 +152,5 @@ class GoogleTranslatorUtil @Inject constructor(
      */
     private suspend fun translate(text: String, translator: Translator): String {
         return translator.translate(text).await()
-    }
-
-    override suspend fun isModelDownloaded(): Boolean {
-        val localeLanguage = getTargetLanguageCode()
-
-        // If the locale language is empty, then the model is not downloaded
-        if (localeLanguage.isEmpty()) {
-            return false
-        }
-
-        val localeModel = TranslateRemoteModel
-            .Builder(localeLanguage)
-            .build()
-
-        return RemoteModelManager
-            .getInstance()
-            .isModelDownloaded(localeModel)
-            .await()
     }
 }

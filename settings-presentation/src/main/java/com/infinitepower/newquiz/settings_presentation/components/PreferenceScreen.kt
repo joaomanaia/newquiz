@@ -39,48 +39,50 @@ internal fun PreferenceScreen(
         contentPadding = contentPadding
     ) {
         items.forEach { preference ->
-            when (preference) {
-                // Create Preference Group
-                is Preference.PreferenceGroup -> {
-                    item {
-                        PreferenceGroupHeader(title = preference.title)
+            if (preference.visible) {
+                when (preference) {
+                    // Create Preference Group
+                    is Preference.PreferenceGroup -> {
+                        item {
+                            PreferenceGroupHeader(title = preference.title)
+                        }
+                        items(preference.preferenceItems) { item ->
+                            val enabled = preference.enabled && item.dependency.all { dependency ->
+                                prefs?.get(dependency.key) ?: dependency.defaultValue
+                            }
+
+                            CompositionLocalProvider(LocalPreferenceEnabledStatus provides enabled) {
+                                PreferenceItem(
+                                    item = item,
+                                    prefs = prefs,
+                                    dataStoreManager = dataStoreManager
+                                )
+                            }
+                        }
+                        item {
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
                     }
-                    items(preference.preferenceItems) { item ->
-                        val enabled = preference.enabled && item.dependency.all { dependency ->
+
+                    // Create Preference Item
+                    is Preference.PreferenceItem<*> -> item {
+                        val enabled = preference.enabled && preference.dependency.all { dependency ->
                             prefs?.get(dependency.key) ?: dependency.defaultValue
                         }
 
                         CompositionLocalProvider(LocalPreferenceEnabledStatus provides enabled) {
                             PreferenceItem(
-                                item = item,
+                                item = preference,
                                 prefs = prefs,
                                 dataStoreManager = dataStoreManager
                             )
                         }
                     }
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-                }
 
-                // Create Preference Item
-                is Preference.PreferenceItem<*> -> item {
-                    val enabled = preference.enabled && preference.dependency.all { dependency ->
-                        prefs?.get(dependency.key) ?: dependency.defaultValue
-                    }
-
-                    CompositionLocalProvider(LocalPreferenceEnabledStatus provides enabled) {
-                        PreferenceItem(
-                            item = preference,
-                            prefs = prefs,
-                            dataStoreManager = dataStoreManager
-                        )
-                    }
-                }
-
-                is Preference.CustomPreference -> {
-                    item {
-                        CustomPreferenceWidget(preference = preference)
+                    is Preference.CustomPreference -> {
+                        item {
+                            CustomPreferenceWidget(preference = preference)
+                        }
                     }
                 }
             }

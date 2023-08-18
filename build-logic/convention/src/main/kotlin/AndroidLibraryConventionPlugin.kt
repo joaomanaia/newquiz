@@ -51,6 +51,9 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 androidTestImplementation(libs.findLibrary("google.truth").get())
                 androidTestImplementation(libs.findLibrary("mockk.android").get())
                 androidTestImplementation(libs.findLibrary("kotlinx.coroutines.test").get())
+                androidTestImplementation(libs.findLibrary("androidx.test.runner").get())
+                androidTestImplementation(libs.findLibrary("androidx.test.rules").get())
+                androidTestImplementation(libs.findLibrary("androidx.compose.ui.test").get())
                 androidTestImplementation(project(Modules.coreTest))
             }
 

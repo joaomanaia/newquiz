@@ -41,9 +41,9 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.settings_presentation.components.PreferencesScreen
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
-import com.infinitepower.newquiz.settings_presentation.data.TranslatorModelState
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
+import com.infinitepower.newquiz.translation.TranslatorModelState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction

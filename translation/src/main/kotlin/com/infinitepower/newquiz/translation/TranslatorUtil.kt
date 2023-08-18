@@ -1,7 +1,17 @@
 package com.infinitepower.newquiz.translation
 
+import kotlinx.coroutines.flow.Flow
+
 interface TranslatorUtil {
-    suspend fun isTranslatorAvailable(): Boolean
+    /**
+     * @return true if the translator is available, false otherwise
+     */
+    val isTranslatorAvailable: Boolean
+
+    /**
+     * @return true if the model is downloaded, false otherwise
+     */
+    suspend fun isModelDownloaded(): Boolean
 
     /**
      * @return the list of available language codes
@@ -26,7 +36,7 @@ interface TranslatorUtil {
         targetLanguage: String,
         requireWifi: Boolean,
         requireCharging: Boolean
-    )
+    ): Flow<TranslatorModelState>
 
     /**
      * Deletes the current translation model
@@ -42,6 +52,4 @@ interface TranslatorUtil {
      * Translates the given [items] to the current target language.
      */
     suspend fun translate(items: List<String>): List<String>
-
-    suspend fun isModelDownloaded(): Boolean
 }

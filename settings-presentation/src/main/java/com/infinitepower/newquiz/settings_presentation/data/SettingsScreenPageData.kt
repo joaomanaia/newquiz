@@ -37,6 +37,7 @@ import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
+import com.infinitepower.newquiz.translation.TranslatorModelState
 import com.infinitepower.newquiz.translation.TranslatorTargetLanguages
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,7 +61,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         }
     }
 
-    object MainPage : SettingsScreenPageData(key = ScreenKey("main")) {
+    data object MainPage : SettingsScreenPageData(key = ScreenKey("main")) {
         override val stringRes: Int
             get() = CoreR.string.settings
 
@@ -70,7 +71,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             navigateToScreen: (screenKey: ScreenKey) -> Unit,
             screenExpanded: Boolean,
             inMainPage: Boolean,
-            currentScreenKey: ScreenKey
+            currentScreenKey: ScreenKey,
+            translatorAvailable: Boolean
         ) = listOf(
             // General
             Preference.PreferenceItem.NavigationButton(
@@ -112,6 +114,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 screenExpanded = screenExpanded,
                 inMainPage = inMainPage
             ),
+            // Translation
             Preference.PreferenceItem.NavigationButton(
                 title = stringResource(id = Translation.stringRes),
                 iconImageVector = Icons.Rounded.Translate,
@@ -119,7 +122,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 onClick = { navigateToScreen(Translation.key) },
                 itemSelected = currentScreenKey == Translation.key,
                 screenExpanded = screenExpanded,
-                inMainPage = inMainPage
+                inMainPage = inMainPage,
+                visible = translatorAvailable
             ),
             // About and Help
             Preference.PreferenceItem.NavigationButton(
@@ -134,7 +138,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         )
     }
 
-    object General : SettingsScreenPageData(key = ScreenKey("general")) {
+    data object General : SettingsScreenPageData(key = ScreenKey("general")) {
         override val stringRes: Int
             get() = CoreR.string.general
 
@@ -281,7 +285,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         )
     }
 
-    object MultiChoiceQuiz : SettingsScreenPageData(key = ScreenKey("multi_choice_quiz")) {
+    data object MultiChoiceQuiz : SettingsScreenPageData(key = ScreenKey("multi_choice_quiz")) {
         override val stringRes: Int
             get() = CoreR.string.multi_choice_quiz
 
@@ -303,7 +307,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         )
     }
 
-    object Wordle : SettingsScreenPageData(key = ScreenKey("wordle")) {
+    data object Wordle : SettingsScreenPageData(key = ScreenKey("wordle")) {
         override val stringRes: Int
             get() = CoreR.string.wordle
 
@@ -371,6 +375,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         @Composable
         @ReadOnlyComposable
         fun items(
+            currentTargetLanguage: String,
             targetLanguages: TranslatorTargetLanguages,
             translationModelState: TranslatorModelState,
             downloadTranslationModel: () -> Unit,
@@ -393,13 +398,14 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 title = stringResource(id = CoreR.string.download_translation_model),
                 summary = "Download the translation model using the current target language.",
                 dependency = listOf(SettingsCommon.Translation.Enabled),
-                enabled = translationModelState == TranslatorModelState.None,
+                visible = translationModelState == TranslatorModelState.None,
+                enabled = currentTargetLanguage.isNotBlank(),
                 onClick = downloadTranslationModel
             ),
             Preference.PreferenceItem.TextPreference(
                 title = stringResource(id = CoreR.string.delete_translation_model),
                 dependency = listOf(SettingsCommon.Translation.Enabled),
-                enabled = translationModelState == TranslatorModelState.Downloaded,
+                visible = translationModelState == TranslatorModelState.Downloaded,
                 onClick = deleteTranslationModel
             ),
             Preference.PreferenceGroup(
@@ -422,7 +428,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         )
     }
 
-    object User : SettingsScreenPageData(key = ScreenKey("user")) {
+    data object User : SettingsScreenPageData(key = ScreenKey("user")) {
         override val stringRes: Int
             get() = CoreR.string.user
 
@@ -446,7 +452,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         )
     }
 
-    object AboutAndHelp : SettingsScreenPageData(key = ScreenKey("about_and_help")) {
+    data object AboutAndHelp : SettingsScreenPageData(key = ScreenKey("about_and_help")) {
         override val stringRes: Int
             get() = CoreR.string.about_and_help
 

@@ -143,7 +143,6 @@ jobs:
       - name: Upload APKs
         uses: actions/upload-artifact@v3
         with:
-          name: artifacts.zip
-          path: |
-            app/build/outputs/apk/debug/app-universal-debug.apk
-            newquiz_uploads/build/outputs/aar
+          name: APKs
+          path: app/build/outputs/apk/**/app-*-universal-debug.apk
+#                app/build/outputs/apk/debug/app-universal-debug.apk

@@ -70,7 +70,7 @@ Hello and thank you for your interest — NewQuiz is being translated using [Web
 
 ## Requirements
 
-- [Android Studio](https://developer.android.com/studio) Giraffe 2022.3.1 Canary or later. Or use an other version of [Android Studio](https://developer.android.com/studio) but you need to change the gradle version to be compatible with your version of [Android Studio](https://developer.android.com/studio).
+- [Android Studio](https://developer.android.com/studio) Hedgehog 2023.1.1 Canary 16 or later. Or use an other version of [Android Studio](https://developer.android.com/studio) but you need to change the gradle version to be compatible with your version of [Android Studio](https://developer.android.com/studio).
   
 - Java 17 or later.
 
@@ -92,5 +92,7 @@ git clone https://github.com/joaomanaia/newquiz.git
    4. Copy the file to the app folder.
 
 4. Click the run button.
+
+> **Warning**: FOSS Builds still contains proprietary code, such as Firebase, Crashlytics, and Google Play Services. In the future all proprietary code will be removed from the FOSS Builds.
 
 > **Warning**: To run the project locally you need to add firebase to the project, otherwise the you cannot build and run the project.

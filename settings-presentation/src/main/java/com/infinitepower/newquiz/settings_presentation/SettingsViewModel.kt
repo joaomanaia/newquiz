@@ -3,8 +3,6 @@ package com.infinitepower.newquiz.settings_presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
@@ -13,14 +11,15 @@ import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesReposito
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
-import com.infinitepower.newquiz.settings_presentation.data.TranslatorModelState
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
+import com.infinitepower.newquiz.translation.TranslatorModelState
 import com.infinitepower.newquiz.translation.TranslatorUtil
-import com.infinitepower.newquiz.translation.work.DownloadTranslationModelWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -33,50 +32,49 @@ class SettingsViewModel @Inject constructor(
     private val translatorUtil: TranslatorUtil,
     private val authUserRepository: AuthUserRepository,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val recentCategoriesRepository: RecentCategoriesRepository,
-    private val workManager: WorkManager
+    private val recentCategoriesRepository: RecentCategoriesRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
-        savedStateHandle
-            .getStateFlow(
-                key = SettingsScreenNavArgs::screenKey.name,
-                initialValue = SettingsScreenPageData.MainPage.key.value
-            ).onEach { key ->
-                _uiState.update { currentState ->
-                    currentState.copy(screenKey = ScreenKey(key))
-                }
-            }.launchIn(viewModelScope)
-
-        viewModelScope.launch(Dispatchers.IO) {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    translationModelState = if (translatorUtil.isModelDownloaded()) {
-                        TranslatorModelState.Downloaded
-                    } else {
-                        TranslatorModelState.None
-                    }
-                )
-            }
-        }
-
         viewModelScope.launch {
             _uiState.update { currentState ->
+                val translationModelState = if (translatorUtil.isModelDownloaded()) {
+                    TranslatorModelState.Downloaded
+                } else {
+                    TranslatorModelState.None
+                }
+
+
                 currentState.copy(
+                    translatorAvailable = translatorUtil.isTranslatorAvailable,
+                    translationModelState = translationModelState,
                     translatorTargetLanguages = translatorUtil.availableTargetLanguages
                 )
             }
         }
 
-        authUserRepository
-            .isSignedInFlow
-            .onEach { isSignedIn ->
-                _uiState.update { currentState ->
-                    currentState.copy(userIsSignedIn = isSignedIn)
-                }
-            }.launchIn(viewModelScope)
+        combine(
+            savedStateHandle.getStateFlow(
+                key = SettingsScreenNavArgs::screenKey.name,
+                initialValue = SettingsScreenPageData.MainPage.key.value
+            ),
+            authUserRepository.isSignedInFlow,
+            settingsDataStoreManager.getPreferenceFlow(
+                SettingsCommon.Translation.TargetLanguage
+            )
+        ) { screenKey, isSignedIn, targetLanguage ->
+            Triple(screenKey, isSignedIn, targetLanguage)
+        }.onEach { (screenKey, isSignedIn, targetLanguage) ->
+            _uiState.update { currentState ->
+                currentState.copy(
+                    screenKey = ScreenKey(screenKey),
+                    userIsSignedIn = isSignedIn,
+                    translatorTargetLanguage = targetLanguage
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: SettingsScreenUiEvent) {
@@ -102,28 +100,24 @@ class SettingsViewModel @Inject constructor(
         val requireWifi = settingsDataStoreManager.getPreference(SettingsCommon.Translation.RequireWifi)
         val requireCharging = settingsDataStoreManager.getPreference(SettingsCommon.Translation.RequireCharging)
 
-        // Start the download
-        val workId = DownloadTranslationModelWorker.enqueueWork(
-            workManager = workManager,
+        translatorUtil.downloadModel(
             targetLanguage = targetLanguage,
             requireWifi = requireWifi,
             requireCharging = requireCharging
-        )
-
-        // Get the worker status
-        DownloadTranslationModelWorker
-            .getWorkInfo(workManager, workId)
-            .onEach { workInfo ->
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        translationModelState = when (workInfo.state) {
-                            WorkInfo.State.SUCCEEDED -> TranslatorModelState.Downloaded
-                            WorkInfo.State.RUNNING -> TranslatorModelState.Downloading
-                            else -> TranslatorModelState.None
-                        },
-                    )
-                }
-            }.launchIn(viewModelScope)
+        ).onEach { downloadState ->
+            _uiState.update { currentState ->
+                currentState.copy(
+                    translationModelState = downloadState
+                )
+            }
+        }.catch { exception ->
+            exception.printStackTrace()
+            _uiState.update { currentState ->
+                currentState.copy(
+                    translationModelState = TranslatorModelState.None
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun clearHomeRecentCategories() = viewModelScope.launch(Dispatchers.IO) {

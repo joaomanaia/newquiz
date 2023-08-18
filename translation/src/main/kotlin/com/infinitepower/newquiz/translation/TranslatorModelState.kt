@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.settings_presentation.data
+package com.infinitepower.newquiz.translation
 
 enum class TranslatorModelState {
     None,

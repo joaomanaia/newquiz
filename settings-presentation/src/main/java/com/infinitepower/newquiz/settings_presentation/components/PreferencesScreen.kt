@@ -66,7 +66,8 @@ internal fun PreferencesScreen(
                 navigateToScreen = navigateToScreen,
                 screenExpanded = screenExpanded,
                 inMainPage = uiState.screenKey == SettingsScreenPageData.MainPage.key,
-                currentScreenKey = uiState.screenKey
+                currentScreenKey = uiState.screenKey,
+                translatorAvailable = uiState.translatorAvailable
             )
             is SettingsScreenPageData.General -> page.items(
                 scope = scope,
@@ -79,6 +80,7 @@ internal fun PreferencesScreen(
                 onChangeWordleLang = coreLoggingAnalytics::setWordleLangUserProperty
             )
             is SettingsScreenPageData.Translation -> page.items(
+                currentTargetLanguage = uiState.translatorTargetLanguage,
                 targetLanguages = uiState.translatorTargetLanguages,
                 translationModelState = uiState.translationModelState,
                 downloadTranslationModel = { onEvent(SettingsScreenUiEvent.DownloadTranslationModel) },

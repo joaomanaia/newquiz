@@ -11,6 +11,7 @@ import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
 sealed class Preference {
     abstract val title: String
     abstract val enabled: Boolean
+    abstract val visible: Boolean
 
     /**
      * A single [Preference] item
@@ -34,6 +35,7 @@ sealed class Preference {
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
+            override val visible: Boolean = true,
 
             val screenKey: ScreenKey,
             val iconImageVector: ImageVector,
@@ -53,6 +55,7 @@ sealed class Preference {
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
+            override val visible: Boolean = true,
 
             val onClick: () -> Unit = {}
         ) : PreferenceItem<String>()
@@ -73,6 +76,7 @@ sealed class Preference {
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
+            override val visible: Boolean = true,
 
             val onCheckChange: (newValue: Boolean) -> Unit = {},
             val primarySwitch: Boolean = false
@@ -90,6 +94,7 @@ sealed class Preference {
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
+            override val visible: Boolean = true,
 
             val entries: Map<String, String>,
             val onItemClick: (value: String) -> Unit = {}
@@ -107,6 +112,7 @@ sealed class Preference {
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
+            override val visible: Boolean = true,
 
             val entries: Map<String, String>,
         ) : PreferenceItem<Set<String>>()
@@ -122,6 +128,7 @@ sealed class Preference {
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
+            override val visible: Boolean = true,
 
             val valueRange: ClosedRange<Int> = 0..10,
             val steps: Int = 0,
@@ -140,6 +147,7 @@ sealed class Preference {
             override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
+            override val visible: Boolean = true,
 
             val entries: Map<String, String>,
         ) : PreferenceItem<String>()
@@ -151,6 +159,7 @@ sealed class Preference {
     data class PreferenceGroup(
         override val title: String,
         override val enabled: Boolean = true,
+        override val visible: Boolean = true,
 
         val preferenceItems: List<PreferenceItem<out Any>>
     ) : Preference()
@@ -161,6 +170,7 @@ sealed class Preference {
     data class CustomPreference(
         override val title: String,
         override val enabled: Boolean = true,
+        override val visible: Boolean = true,
 
         val content: @Composable BoxScope.() -> Unit
     ) : Preference()
