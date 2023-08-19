@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
@@ -36,7 +37,8 @@ private const val NEWQUIZ_REPOSITORY_LINK = "https://github.com/joaomanaia/newqu
 @Composable
 @ExperimentalMaterial3Api
 internal fun AboutAndHelpButtons(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    iconSize: Dp = 50.dp
 ) {
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
@@ -50,27 +52,31 @@ internal fun AboutAndHelpButtons(
             imageVector = ImageVector.vectorResource(id = CoreR.drawable.github_logo),
             contentDescription = "Github repository",
             onClick = { uriHandler.openUri(NEWQUIZ_REPOSITORY_LINK) },
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(iconSize)
         )
         FilledIconButton(
             imageVector = Icons.Rounded.ContactSupport,
             contentDescription = "Contact support",
             onClick = { uriHandler.openUri("https://github.com/joaomanaia/newquiz/issues") },
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(iconSize)
         )
         FilledIconButton(
             imageVector = Icons.Rounded.Update,
             contentDescription = "Update",
             onClick = { uriHandler.openUri("https://github.com/joaomanaia/newquiz/releases") },
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(iconSize)
         )
         FilledIconButton(
             imageVector = Icons.Rounded.Balance,
             contentDescription = "Open source licences",
             onClick = {
-                context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                context.startActivity(
+                    Intent(context, OssLicensesMenuActivity::class.java).apply {
+                        action = Intent.ACTION_VIEW
+                    }
+                )
             },
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(iconSize)
         )
     }
 }

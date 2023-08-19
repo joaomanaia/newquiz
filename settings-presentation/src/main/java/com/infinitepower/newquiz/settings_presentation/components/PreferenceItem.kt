@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.settings_presentation.components
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.datastore.preferences.core.Preferences
@@ -18,7 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun PreferenceItem(
     item: Preference.PreferenceItem<*>,
     prefs: Preferences?,

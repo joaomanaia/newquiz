@@ -1,7 +1,9 @@
 package com.infinitepower.newquiz.settings_presentation.components.widgets
 
 import androidx.compose.foundation.clickable
-import androidx.compose.material3.*
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
@@ -9,7 +11,6 @@ import com.infinitepower.newquiz.core.ui.StatusWrapper
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun TextPreferenceWidget(
     preference: Preference.PreferenceItem<*>,
     summary: String? = null,
@@ -57,7 +58,6 @@ internal fun TextPreferenceWidget(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun TextPreferenceWidgetRes(
     preference: Preference.PreferenceItem<*>,
     summary: String? = null,
@@ -89,7 +89,6 @@ internal fun TextPreferenceWidgetRes(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun TextPreferenceWidget(
     preference: Preference.PreferenceItem<*>,
     summary: @Composable () -> Unit,

@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.settings_presentation.components.widgets
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -13,7 +12,6 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun SwitchPreferenceWidget(
     preference: Preference.PreferenceItem.SwitchPreference,
     checked: Boolean,
@@ -40,7 +38,7 @@ internal fun SwitchPreferenceWidget(
 }
 
 @Composable
-fun SwitchPreferenceContainer(
+private fun SwitchPreferenceContainer(
     checked: Boolean,
     isEnabled: Boolean,
     isPrimary: Boolean,

@@ -4,17 +4,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.settings_presentation.model.Preference
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun ListPreferenceWidget(
     preference: Preference.PreferenceItem.ListPreference,
     value: String,
@@ -59,12 +65,12 @@ internal fun ListPreferenceWidget(
                         onValueChange(newValue)
                     }
                 ) {
-                    Text(text = "Confirm")
+                    Text(text = stringResource(id = CoreR.string.confirm))
                 }
             },
             dismissButton = {
                 TextButton(onClick = dismissDialog) {
-                    Text(text = "Dismiss")
+                    Text(text = stringResource(id = CoreR.string.dismiss))
                 }
             }
         )
@@ -72,7 +78,6 @@ internal fun ListPreferenceWidget(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 private fun SelectableListItem(
     modifier: Modifier = Modifier,
     text: String,
@@ -96,7 +101,6 @@ private fun SelectableListItem(
 
 @Composable
 @PreviewNightLight
-@OptIn(ExperimentalMaterial3Api::class)
 private fun SelectableListItemPreview() {
     NewQuizTheme {
         Surface {

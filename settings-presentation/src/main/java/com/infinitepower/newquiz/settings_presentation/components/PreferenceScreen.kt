@@ -5,13 +5,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
@@ -25,14 +24,13 @@ import com.infinitepower.newquiz.settings_presentation.model.Preference
  * @param modifier [Modifier] to be applied to the preferenceScreen layout
  */
 @Composable
-@ExperimentalMaterial3Api
 internal fun PreferenceScreen(
     items: List<Preference>,
     dataStoreManager: DataStoreManager,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    val prefs by dataStoreManager.preferenceFlow.collectAsState(initial = null)
+    val prefs by dataStoreManager.preferenceFlow.collectAsStateWithLifecycle(initialValue = null)
 
     LazyColumn(
         modifier = modifier,

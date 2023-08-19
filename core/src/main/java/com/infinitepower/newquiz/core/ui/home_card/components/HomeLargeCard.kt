@@ -33,6 +33,7 @@ import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLigh
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.compose.StatusWrapper
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 
@@ -83,11 +84,16 @@ fun HomeLargeCard(
                     is CardIcon.Lottie -> {
                         val composition by rememberLottieComposition(spec = data.icon.spec)
 
-                        LottieAnimation(
-                            composition = composition,
-                            modifier = Modifier.size(100.dp),
-                            iterations = LottieConstants.IterateForever,
-                        )
+                        StatusWrapper(
+                            enabled = data.enabled,
+                        ) {
+                            LottieAnimation(
+                                composition = composition,
+                                modifier = Modifier.size(100.dp),
+                                iterations = LottieConstants.IterateForever,
+                                isPlaying = data.enabled
+                            )
+                        }
                     }
                 }
             }
@@ -100,7 +106,7 @@ private fun getPrimaryCardColors(): CardColors = CardDefaults.cardColors(
     containerColor = MaterialTheme.colorScheme.primary,
     contentColor = MaterialTheme.colorScheme.onPrimary,
     disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = DisabledAlpha),
-    disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = DisabledAlpha),
+    disabledContentColor = MaterialTheme.colorScheme.onPrimary,
 )
 
 private const val DisabledAlpha = 0.38f

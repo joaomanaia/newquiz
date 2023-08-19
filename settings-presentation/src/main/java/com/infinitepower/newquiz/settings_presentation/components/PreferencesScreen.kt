@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.settings_presentation.components
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -22,7 +21,6 @@ import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageDa
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun PreferencesScreen(
     page: SettingsScreenPageData,
     uiState: SettingsUiState,
@@ -48,7 +46,6 @@ internal fun PreferencesScreen(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun PreferencesScreen(
     page: SettingsScreenPageData,
     uiState: SettingsUiState,
@@ -72,7 +69,7 @@ internal fun PreferencesScreen(
             is SettingsScreenPageData.General -> page.items(
                 scope = scope,
                 dataStoreManager = dataStoreManager,
-                enableLoggingAnalytics = { onEvent(SettingsScreenUiEvent.EnableLoggingAnalytics(it)) },
+                navigateToScreen = navigateToScreen,
                 cleanRecentCategories = { onEvent(SettingsScreenUiEvent.ClearHomeRecentCategories) }
             )
             is SettingsScreenPageData.MultiChoiceQuiz -> page.items()
@@ -91,6 +88,10 @@ internal fun PreferencesScreen(
                 signOut = { onEvent(SettingsScreenUiEvent.SignOut) }
             )
             is SettingsScreenPageData.AboutAndHelp -> page.items()
+            is SettingsScreenPageData.Analytics -> page.items(
+                enableLoggingAnalytics = { onEvent(SettingsScreenUiEvent.EnableLoggingAnalytics(it)) },
+            )
+            is SettingsScreenPageData.Animations -> page.items()
         },
         dataStoreManager = dataStoreManager,
         modifier = Modifier.fillMaxSize()
@@ -99,7 +100,6 @@ internal fun PreferencesScreen(
 
 @Composable
 @AllPreviewsNightLight
-@OptIn(ExperimentalMaterial3Api::class)
 private fun PreferencesScreenPreview() {
     val context = LocalContext.current
     val dataStore = context.settingsDataStore

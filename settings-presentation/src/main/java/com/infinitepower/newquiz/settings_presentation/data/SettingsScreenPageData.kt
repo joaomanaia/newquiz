@@ -58,6 +58,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             User.key -> User
             Translation.key -> Translation
             AboutAndHelp.key -> AboutAndHelp
+            Analytics.key -> Analytics
+            Animations.key -> Animations
             else -> throw IllegalArgumentException("Unknown screen key: $key")
         }
     }
@@ -148,7 +150,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         fun items(
             scope: CoroutineScope,
             dataStoreManager: DataStoreManager,
-            enableLoggingAnalytics: (enabled: Boolean) -> Unit,
+            navigateToScreen: (screenKey: ScreenKey) -> Unit,
             cleanRecentCategories: () -> Unit
         ) = listOf(
             Preference.PreferenceItem.SwitchPreference(
@@ -204,84 +206,25 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                     )
                 )
             ),
-            Preference.PreferenceGroup(
+            Preference.PreferenceItem.TextPreference(
                 title = stringResource(id = CoreR.string.animations),
-                preferenceItems = listOf(
-                    Preference.PreferenceItem.SwitchPreference(
-                        request = SettingsCommon.GlobalAnimationsEnabled,
-                        title = stringResource(id = CoreR.string.animations_enabled),
-                        summary = stringResource(id = CoreR.string.global_animations_enabled),
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Animation,
-                                contentDescription = stringResource(id = CoreR.string.animations_enabled)
-                            )
-                        }
-                    ),
-                    Preference.PreferenceItem.SwitchPreference(
-                        request = SettingsCommon.WordleAnimationsEnabled,
-                        title = stringResource(id = CoreR.string.wordle_animations_enabled),
-                        summary = stringResource(id = CoreR.string.wordle_animations_enabled_description),
-                        dependency = listOf(SettingsCommon.GlobalAnimationsEnabled)
-                    ),
-                    Preference.PreferenceItem.SwitchPreference(
-                        request = SettingsCommon.MultiChoiceAnimationsEnabled,
-                        title = stringResource(id = CoreR.string.multi_choice_animations_enabled),
-                        summary = stringResource(id = CoreR.string.multi_choice_animations_enabled_description),
-                        dependency = listOf(SettingsCommon.GlobalAnimationsEnabled)
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Animation,
+                        contentDescription = stringResource(id = CoreR.string.animations)
                     )
-                )
+                },
+                onClick = { navigateToScreen(Animations.key) }
             ),
-            Preference.PreferenceGroup(
+            Preference.PreferenceItem.TextPreference(
                 title = stringResource(id = CoreR.string.analytics),
-                preferenceItems = listOf(
-                    // Global analytics dependency
-                    Preference.PreferenceItem.SwitchPreference(
-                        request = SettingsCommon.DataAnalyticsCollectionEnabled,
-                        title = stringResource(id = CoreR.string.analytics_collection_enabled),
-                        onCheckChange = enableLoggingAnalytics,
-                        primarySwitch = true
-                    ),
-                    Preference.PreferenceItem.SwitchPreference(
-                        request = SettingsCommon.GeneralAnalyticsEnabled,
-                        title = stringResource(id = CoreR.string.general_analytics_enabled),
-                        summary = stringResource(id = CoreR.string.general_analytics_description_enabled),
-                        dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Analytics,
-                                contentDescription = stringResource(id = CoreR.string.general_analytics_enabled)
-                            )
-                        },
-                        onCheckChange = { enabled -> AnalyticsUtils.enableGeneralAnalytics(enabled) }
-                    ),
-                    Preference.PreferenceItem.SwitchPreference(
-                        request = SettingsCommon.CrashlyticsEnabled,
-                        title = stringResource(id = CoreR.string.crash_analytics_enabled),
-                        summary = stringResource(id = CoreR.string.crash_analytics_description_enabled),
-                        dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.BugReport,
-                                contentDescription = stringResource(id = CoreR.string.crash_analytics_enabled)
-                            )
-                        },
-                        onCheckChange = { enabled -> AnalyticsUtils.enableCrashlytics(enabled) }
-                    ),
-                    Preference.PreferenceItem.SwitchPreference(
-                        request = SettingsCommon.PerformanceMonitoringEnabled,
-                        title = stringResource(id = CoreR.string.performance_monitoring_enabled),
-                        summary = stringResource(id = CoreR.string.performance_monitoring_description_enabled),
-                        dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.MonitorHeart,
-                                contentDescription = stringResource(id = CoreR.string.performance_monitoring_enabled)
-                            )
-                        },
-                        onCheckChange = { enabled -> AnalyticsUtils.enablePerformanceMonitoring(enabled) }
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Analytics,
+                        contentDescription = stringResource(id = CoreR.string.analytics)
                     )
-                )
+                },
+                onClick = { navigateToScreen(Analytics.key) }
             )
         )
     }
@@ -473,6 +416,91 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         AboutAndHelpButtons()
                     }
                 }
+            )
+        )
+    }
+
+    data object Analytics : SettingsScreenPageData(key = ScreenKey("analytics")) {
+        override val stringRes: Int
+            get() = CoreR.string.analytics
+
+        @Composable
+        @ReadOnlyComposable
+        fun items(
+            enableLoggingAnalytics: (enabled: Boolean) -> Unit
+        ) = listOf(
+            // Global analytics dependency
+            Preference.PreferenceItem.SwitchPreference(
+                request = SettingsCommon.DataAnalyticsCollectionEnabled,
+                title = stringResource(id = CoreR.string.analytics_collection_enabled),
+                onCheckChange = enableLoggingAnalytics,
+                primarySwitch = true
+            ),
+            Preference.PreferenceItem.SwitchPreference(
+                request = SettingsCommon.GeneralAnalyticsEnabled,
+                title = stringResource(id = CoreR.string.general_analytics_enabled),
+                summary = stringResource(id = CoreR.string.general_analytics_description_enabled),
+                dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Analytics,
+                        contentDescription = stringResource(id = CoreR.string.general_analytics_enabled)
+                    )
+                },
+                onCheckChange = { enabled -> AnalyticsUtils.enableGeneralAnalytics(enabled) }
+            ),
+            Preference.PreferenceItem.SwitchPreference(
+                request = SettingsCommon.CrashlyticsEnabled,
+                title = stringResource(id = CoreR.string.crash_analytics_enabled),
+                summary = stringResource(id = CoreR.string.crash_analytics_description_enabled),
+                dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.BugReport,
+                        contentDescription = stringResource(id = CoreR.string.crash_analytics_enabled)
+                    )
+                },
+                onCheckChange = { enabled -> AnalyticsUtils.enableCrashlytics(enabled) }
+            ),
+            Preference.PreferenceItem.SwitchPreference(
+                request = SettingsCommon.PerformanceMonitoringEnabled,
+                title = stringResource(id = CoreR.string.performance_monitoring_enabled),
+                summary = stringResource(id = CoreR.string.performance_monitoring_description_enabled),
+                dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.MonitorHeart,
+                        contentDescription = stringResource(id = CoreR.string.performance_monitoring_enabled)
+                    )
+                },
+                onCheckChange = { enabled -> AnalyticsUtils.enablePerformanceMonitoring(enabled) }
+            )
+        )
+    }
+
+    data object Animations : SettingsScreenPageData(key = ScreenKey("animations")) {
+        override val stringRes: Int
+            get() = CoreR.string.animations
+
+        @Composable
+        @ReadOnlyComposable
+        fun items() = listOf(
+            Preference.PreferenceItem.SwitchPreference(
+                request = SettingsCommon.GlobalAnimationsEnabled,
+                title = stringResource(id = CoreR.string.animations_enabled),
+                primarySwitch = true
+            ),
+            Preference.PreferenceItem.SwitchPreference(
+                request = SettingsCommon.WordleAnimationsEnabled,
+                title = stringResource(id = CoreR.string.wordle_animations_enabled),
+                summary = stringResource(id = CoreR.string.wordle_animations_enabled_description),
+                dependency = listOf(SettingsCommon.GlobalAnimationsEnabled)
+            ),
+            Preference.PreferenceItem.SwitchPreference(
+                request = SettingsCommon.MultiChoiceAnimationsEnabled,
+                title = stringResource(id = CoreR.string.multi_choice_animations_enabled),
+                summary = stringResource(id = CoreR.string.multi_choice_animations_enabled_description),
+                dependency = listOf(SettingsCommon.GlobalAnimationsEnabled)
             )
         )
     }

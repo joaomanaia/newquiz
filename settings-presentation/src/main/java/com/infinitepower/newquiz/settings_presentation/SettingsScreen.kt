@@ -47,6 +47,7 @@ import com.infinitepower.newquiz.translation.TranslatorModelState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Keep
 data class SettingsScreenNavArgs(
@@ -145,7 +146,8 @@ private fun SettingsContainer(
             MaterialTheme.colorScheme.surfaceVariant
         } else {
             MaterialTheme.colorScheme.surface
-        }
+        },
+        label = "mainContentColor"
     )
 
     Row(modifier = modifier.fillMaxSize()) {
@@ -188,11 +190,11 @@ private fun DownloadingTranslatorDialog() {
     AlertDialog(
         onDismissRequest = {},
         title = {
-            Text(text = "Downloading translation model")
+            Text(text = stringResource(id = CoreR.string.downloading_translation_model))
         },
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Please wait until translation model is downloaded!")
+                Text(text = stringResource(id = CoreR.string.downloading_translation_model_description))
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                 CircularProgressIndicator()
             }
@@ -202,7 +204,7 @@ private fun DownloadingTranslatorDialog() {
                 onClick = {},
                 enabled = false
             ) {
-                Text(text = "Close")
+                Text(text = stringResource(id = CoreR.string.dismiss))
             }
         }
     )

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,7 +20,6 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun NavigationButtonWidget(
     modifier: Modifier = Modifier,
     preference: Preference.PreferenceItem.NavigationButton
@@ -44,7 +42,8 @@ internal fun NavigationButtonWidget(
             itemSelected -> MaterialTheme.colorScheme.primary
             screenExpanded && !inMainPage -> MaterialTheme.colorScheme.surfaceVariant
             else -> MaterialTheme.colorScheme.surface
-        }
+        },
+        label = "Background Color"
     )
 
     val backgroundIconColor by animateColorAsState(
@@ -52,7 +51,8 @@ internal fun NavigationButtonWidget(
             itemSelected -> MaterialTheme.colorScheme.onPrimary
             screenExpanded && !inMainPage -> MaterialTheme.colorScheme.secondary
             else -> MaterialTheme.colorScheme.secondary
-        }
+        },
+        label = "Background Icon Color"
     )
 
     val iconColor by animateColorAsState(
@@ -60,7 +60,8 @@ internal fun NavigationButtonWidget(
             itemSelected -> MaterialTheme.colorScheme.primary
             screenExpanded && !inMainPage -> MaterialTheme.colorScheme.onSecondary
             else -> MaterialTheme.colorScheme.onSecondary
-        }
+        },
+        label = "Icon Color"
     )
 
     Surface(
