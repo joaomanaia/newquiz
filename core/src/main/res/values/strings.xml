@@ -91,7 +91,7 @@
     <string name="translation">Translation</string>
     <string name="translation_enabled">Translation enabled</string>
     <string name="download_translation_model">Download translation model</string>
-    <string name="download_translation_model_description">Download translation model for the translation.</string>
+    <string name="download_translation_model_description">Download translation model for on device translation.</string>
     <string name="delete_translation_model">Delete translation model</string>
     <string name="online">Online</string>
     <string name="profile">Profile</string>

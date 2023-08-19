@@ -96,6 +96,7 @@
     <string name="translation">Tradução</string>
     <string name="translation_enabled">Tradução habilitada</string>
     <string name="download_translation_model">Transferir o modelo da tradução</string>
+    <string name="download_translation_model_description">Transferir o modelo para a tradução no dispositivo.</string>
     <string name="delete_translation_model">Apagar o modelo da tradução</string>
     <string name="online">Online</string>
     <string name="profile">Perfil</string>
