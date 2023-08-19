@@ -10,7 +10,8 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="test" />
+          <option value="testNormalDebug" />
+          <option value="testFossDebug" />
         </list>
       </option>
       <option name="vmOptions" />
@@ -18,6 +19,7 @@
     <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
     <DebugAllEnabled>false</DebugAllEnabled>
+    <ForceTestExec>false</ForceTestExec>
     <method v="2" />
   </configuration>
 </component>

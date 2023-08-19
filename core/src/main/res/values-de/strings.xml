@@ -250,7 +250,6 @@
     <string name="download_translation_model">Übersetzungsmodell herunterladen</string>
     <string name="translation">Übersetzung</string>
     <string name="delete_translation_model">Übersetzungsmodell löschen</string>
-    <string name="download_translation_model_to_device_language">Übersetzungsmodell auf das Gerät herunterladen.</string>
     <string name="current_xp">Derzeitige Erfahrung</string>
     <string name="required_xp_to_next_level">Erforderliche Erfahrung für die nächste Stufe</string>
     <plurals name="you_have_n_diamonds_skip_question_q">

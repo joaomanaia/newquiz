@@ -91,8 +91,8 @@
     <string name="translation">Translation</string>
     <string name="translation_enabled">Translation enabled</string>
     <string name="download_translation_model">Download translation model</string>
+    <string name="download_translation_model_description">Download translation model for the translation.</string>
     <string name="delete_translation_model">Delete translation model</string>
-    <string name="download_translation_model_to_device_language">Download translation model to your device language.</string>
     <string name="online">Online</string>
     <string name="profile">Profile</string>
     <string name="correct_answers">Correct answers</string>
@@ -267,4 +267,12 @@
     <string name="hide_online_categories">Hide online categories</string>
     <string name="hide_online_categories_description">Hide categories that require internet connection, when device is offline.</string>
     <string name="no_categories_available">No categories available</string>
+
+    <string name="target_language">Target Language</string>
+    <string name="target_language_description">Select the language you want to translate to</string>
+    <string name="download_settings">Download Settings</string>
+    <string name="require_wifi">Require Wi-Fi</string>
+    <string name="translation_require_wifi_description">Only download the translation model when connected to WiFi.</string>
+    <string name="require_charging">Require Charging</string>
+    <string name="translation_require_charging_description">Only download the translation model when the device is charging.</string>
 </resources>

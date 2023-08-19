@@ -144,7 +144,6 @@
     <string name="analytics">Analyse</string>
     <string name="analytics_collection_enabled">Innsamling av analysedata påskrudd</string>
     <string name="last_quiz_times">Siste quiz-tider</string>
-    <string name="download_translation_model_to_device_language">Last ned oversettelsesmodell til ditt enhetsspråk.</string>
     <string name="wordle_animations_enabled">Wordle-animasjoner påskrudd</string>
     <string name="global_animations_enabled">Animasjoner i hele programmet påskrudd</string>
 </resources>

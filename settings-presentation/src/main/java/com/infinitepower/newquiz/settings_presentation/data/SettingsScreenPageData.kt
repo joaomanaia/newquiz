@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.settings_presentation.data
 
+import android.os.Build
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -388,15 +389,15 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             ),
             Preference.PreferenceItem.ListPreference(
                 request = SettingsCommon.Translation.TargetLanguage,
-                title = "Target Language",
-                summary = "Select the language you want to translate to",
+                title = stringResource(id = CoreR.string.target_language),
+                summary = stringResource(id = CoreR.string.target_language_description),
                 entries = targetLanguages,
                 enabled = translationModelState == TranslatorModelState.None,
                 dependency = listOf(SettingsCommon.Translation.Enabled)
             ),
             Preference.PreferenceItem.TextPreference(
                 title = stringResource(id = CoreR.string.download_translation_model),
-                summary = "Download the translation model using the current target language.",
+                summary = stringResource(id = CoreR.string.download_translation_model_description),
                 dependency = listOf(SettingsCommon.Translation.Enabled),
                 visible = translationModelState == TranslatorModelState.None,
                 enabled = currentTargetLanguage.isNotBlank(),
@@ -409,19 +410,20 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 onClick = deleteTranslationModel
             ),
             Preference.PreferenceGroup(
-                title = "Download Settings",
+                title = stringResource(id = CoreR.string.download_settings),
                 preferenceItems = listOf(
                     Preference.PreferenceItem.SwitchPreference(
                         request = SettingsCommon.Translation.RequireWifi,
-                        title = "Require WiFi",
-                        summary = "Only download the translation model when connected to WiFi.",
+                        title = stringResource(id = CoreR.string.require_wifi),
+                        summary = stringResource(id = CoreR.string.translation_require_wifi_description),
                         dependency = listOf(SettingsCommon.Translation.Enabled),
                     ),
                     Preference.PreferenceItem.SwitchPreference(
                         request = SettingsCommon.Translation.RequireCharging,
-                        title = "Require Charging",
-                        summary = "Require the device to be charging to download the translation model.",
+                        title = stringResource(id = CoreR.string.require_charging),
+                        summary = stringResource(id = CoreR.string.translation_require_charging_description),
                         dependency = listOf(SettingsCommon.Translation.Enabled),
+                        visible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                     ),
                 )
             )

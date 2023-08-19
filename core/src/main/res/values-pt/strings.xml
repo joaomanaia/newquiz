@@ -97,7 +97,6 @@
     <string name="translation_enabled">Tradução habilitada</string>
     <string name="download_translation_model">Transferir o modelo da tradução</string>
     <string name="delete_translation_model">Apagar o modelo da tradução</string>
-    <string name="download_translation_model_to_device_language">Transferir o modelo da tradução para com o idioma do seu dispositivo.</string>
     <string name="online">Online</string>
     <string name="profile">Perfil</string>
     <string name="correct_answers">Respostas corretas</string>
@@ -274,4 +273,11 @@
     <string name="hide_online_categories">Ocultar categorias online</string>
     <string name="hide_online_categories_description">Ocultar categorias que requerem conexão com a internet, quando o dispositivo está offline.</string>
     <string name="no_categories_available">Sem categorias disponíveis</string>
+    <string name="target_language">Idioma da Tradução</string>
+    <string name="target_language_description">Selecione o idioma para o qual deseja traduzir</string>
+    <string name="download_settings">Configurações de download</string>
+    <string name="require_wifi">Requer Wi-Fi</string>
+    <string name="translation_require_wifi_description">Transfira o modelo de tradução apenas quando estiver ligado a uma rede Wi-Fi.</string>
+    <string name="require_charging">Requer carregamento</string>
+    <string name="translation_require_charging_description">Transfira o modelo de tradução apenas quando o dispositivo estiver a carregar.</string>
 </resources>

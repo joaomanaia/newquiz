@@ -85,7 +85,6 @@
     <string name="translation_enabled">Traduction activée</string>
     <string name="download_translation_model">Télécharger le modèle de traduction</string>
     <string name="delete_translation_model">Supprimer le modèle de traduction</string>
-    <string name="download_translation_model_to_device_language">Téléchargez le modèle de traduction dans le langage de votre appareil.</string>
     <string name="online">En ligne</string>
     <string name="profile">Le profil</string>
     <string name="correct_answers">Réponses correctes</string>

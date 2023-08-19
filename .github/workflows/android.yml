@@ -53,7 +53,8 @@ jobs:
         run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
 
       - name: Run tests
-        run: ./gradlew test --stacktrace
+        run: ./gradlew testNormalDebug testFossDebug --stacktrace
+#        run: ./gradlew test --stacktrace
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
