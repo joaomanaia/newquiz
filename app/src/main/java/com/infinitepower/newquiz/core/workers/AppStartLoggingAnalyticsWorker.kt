@@ -10,7 +10,7 @@ import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
-import com.infinitepower.newquiz.translation.TranslatorUtil
+import com.infinitepower.newquiz.core.translation.TranslatorUtil
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 

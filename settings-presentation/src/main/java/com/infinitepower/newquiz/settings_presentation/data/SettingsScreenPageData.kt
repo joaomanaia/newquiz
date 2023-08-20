@@ -33,13 +33,13 @@ import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.translation.TranslatorModelState
+import com.infinitepower.newquiz.core.translation.TranslatorTargetLanguages
 import com.infinitepower.newquiz.core.ui.components.AppNameWithLogo
 import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
-import com.infinitepower.newquiz.translation.TranslatorModelState
-import com.infinitepower.newquiz.translation.TranslatorTargetLanguages
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
