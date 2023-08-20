@@ -1,13 +1,30 @@
 package com.infinitepower.newquiz.online_services.ui.profile
 
 import android.net.Uri
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,8 +45,8 @@ import com.infinitepower.newquiz.online_services.model.user.User
 import com.infinitepower.newquiz.online_services.ui.profile.components.GoodDayText
 import com.infinitepower.newquiz.online_services.ui.profile.components.ProfileCard
 import com.infinitepower.newquiz.online_services.ui.profile.components.marker
-import com.patrykandpatryk.vico.compose.axis.horizontal.bottomAxis
-import com.patrykandpatryk.vico.compose.axis.vertical.startAxis
+import com.patrykandpatryk.vico.compose.axis.horizontal.rememberBottomAxis
+import com.patrykandpatryk.vico.compose.axis.vertical.rememberStartAxis
 import com.patrykandpatryk.vico.compose.chart.Chart
 import com.patrykandpatryk.vico.compose.chart.line.lineChart
 import com.patrykandpatryk.vico.compose.component.textComponent
@@ -41,7 +58,6 @@ import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
-@OptIn(ExperimentalMaterial3Api::class)
 fun ProfileScreen(
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
@@ -64,7 +80,6 @@ fun ProfileScreen(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 private fun ProfileScreenImpl(
     user: User
 ) {
@@ -161,12 +176,12 @@ fun UserMultiChoiceQuizData(
             Chart(
                 chart = lineChart(),
                 model = entryModel,
-                startAxis = startAxis(
+                startAxis = rememberStartAxis(
                     guideline = null,
                     titleComponent = textComponent(),
                     title = stringResource(id = CoreR.string.time)
                 ),
-                bottomAxis = bottomAxis(
+                bottomAxis = rememberBottomAxis(
                     guideline = null,
                     titleComponent = textComponent(),
                     title = stringResource(id = CoreR.string.last_questions)
@@ -283,7 +298,6 @@ private fun UserInfoContent(
 
 @Composable
 @PreviewNightLight
-@OptIn(ExperimentalMaterial3Api::class)
 private fun ProfileScreenPreview() {
     val uiState = ProfileScreenUiState(
         user = User(
