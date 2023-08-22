@@ -3,12 +3,12 @@ package com.infinitepower.newquiz.settings_presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.translation.TranslatorModelState
 import com.infinitepower.newquiz.core.translation.TranslatorUtil
-import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
@@ -32,7 +32,8 @@ class SettingsViewModel @Inject constructor(
     private val translatorUtil: TranslatorUtil,
     private val authUserRepository: AuthUserRepository,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val recentCategoriesRepository: RecentCategoriesRepository
+    private val recentCategoriesRepository: RecentCategoriesRepository,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
@@ -138,14 +139,14 @@ class SettingsViewModel @Inject constructor(
 
         // Enable general analytics
         val generalEnabled = settingsDataStoreManager.getPreference(SettingsCommon.GeneralAnalyticsEnabled)
-        AnalyticsUtils.enableGeneralAnalytics(generalEnabled && enabled)
+        analyticsHelper.setGeneralAnalyticsEnabled(generalEnabled && enabled)
 
         // Enable crashlytics
         val crashlyticsEnabled = settingsDataStoreManager.getPreference(SettingsCommon.CrashlyticsEnabled)
-        AnalyticsUtils.enableCrashlytics(crashlyticsEnabled && enabled)
+        analyticsHelper.setCrashlyticsEnabled(crashlyticsEnabled && enabled)
 
         // Enable performance monitoring
         val performanceMonitoringEnabled = settingsDataStoreManager.getPreference(SettingsCommon.PerformanceMonitoringEnabled)
-        AnalyticsUtils.enablePerformanceMonitoring(performanceMonitoringEnabled && enabled)
+        analyticsHelper.setPerformanceEnabled(performanceMonitoringEnabled && enabled)
     }
 }

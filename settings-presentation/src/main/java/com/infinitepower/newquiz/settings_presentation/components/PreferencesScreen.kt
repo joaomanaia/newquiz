@@ -90,6 +90,7 @@ internal fun PreferencesScreen(
             )
             is SettingsScreenPageData.AboutAndHelp -> page.items()
             is SettingsScreenPageData.Analytics -> page.items(
+                analyticsHelper = analyticsHelper,
                 enableLoggingAnalytics = { onEvent(SettingsScreenUiEvent.EnableLoggingAnalytics(it)) },
             )
             is SettingsScreenPageData.Animations -> page.items()

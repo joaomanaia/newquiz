@@ -14,8 +14,7 @@ dependencies {
     implementation(project(Modules.core))
 
     "normalImplementation"(libs.google.mlKit.translate)
-
-    implementation(libs.kotlinx.coroutines.playServices)
+    "normalImplementation"(libs.kotlinx.coroutines.playServices)
 
     implementation(libs.androidx.lifecycle.livedata.ktx)
 

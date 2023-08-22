@@ -2,11 +2,11 @@ package com.infinitepower.newquiz.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.theme.AnimationsEnabled
-import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
@@ -25,7 +25,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val authUserRepository: AuthUserRepository,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val dailyChallengeRepository: DailyChallengeRepository
+    private val dailyChallengeRepository: DailyChallengeRepository,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MainScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -130,7 +131,7 @@ class MainViewModel @Inject constructor(
                 newValue = agreed
             )
 
-            AnalyticsUtils.enableAll(agreed)
+            analyticsHelper.enableAll(agreed)
         }
     }
 }

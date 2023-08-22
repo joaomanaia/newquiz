@@ -43,10 +43,7 @@ dependencies {
     implementation(libs.androidx.dataStore.preferences)
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics.ktx)
     implementation(libs.firebase.remoteConfig.ktx)
-    implementation(libs.firebase.crashlytics.ktx)
-    implementation(libs.firebase.perf.ktx)
 
     implementation(libs.lottie.compose)
 

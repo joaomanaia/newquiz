@@ -30,13 +30,13 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.translation.TranslatorModelState
 import com.infinitepower.newquiz.core.translation.TranslatorTargetLanguages
 import com.infinitepower.newquiz.core.ui.components.AppNameWithLogo
-import com.infinitepower.newquiz.core.util.analytics.AnalyticsUtils
 import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
@@ -427,6 +427,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         @Composable
         @ReadOnlyComposable
         fun items(
+            analyticsHelper: AnalyticsHelper,
             enableLoggingAnalytics: (enabled: Boolean) -> Unit
         ) = listOf(
             // Global analytics dependency
@@ -447,7 +448,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         contentDescription = stringResource(id = CoreR.string.general_analytics_enabled)
                     )
                 },
-                onCheckChange = { enabled -> AnalyticsUtils.enableGeneralAnalytics(enabled) }
+                onCheckChange = analyticsHelper::setGeneralAnalyticsEnabled
             ),
             Preference.PreferenceItem.SwitchPreference(
                 request = SettingsCommon.CrashlyticsEnabled,
@@ -460,7 +461,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         contentDescription = stringResource(id = CoreR.string.crash_analytics_enabled)
                     )
                 },
-                onCheckChange = { enabled -> AnalyticsUtils.enableCrashlytics(enabled) }
+                onCheckChange = analyticsHelper::setCrashlyticsEnabled
             ),
             Preference.PreferenceItem.SwitchPreference(
                 request = SettingsCommon.PerformanceMonitoringEnabled,
@@ -473,7 +474,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         contentDescription = stringResource(id = CoreR.string.performance_monitoring_enabled)
                     )
                 },
-                onCheckChange = { enabled -> AnalyticsUtils.enablePerformanceMonitoring(enabled) }
+                onCheckChange = analyticsHelper::setPerformanceEnabled
             )
         )
     }

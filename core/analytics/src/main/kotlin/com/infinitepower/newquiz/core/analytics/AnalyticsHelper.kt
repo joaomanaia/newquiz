@@ -19,4 +19,12 @@ interface AnalyticsHelper {
      * @see UserProperty
      */
     fun setUserProperty(userProperty: UserProperty)
+
+    fun enableAll(enabled: Boolean)
+
+    fun setGeneralAnalyticsEnabled(enabled: Boolean)
+
+    fun setCrashlyticsEnabled(enabled: Boolean)
+
+    fun setPerformanceEnabled(enabled: Boolean)
 }

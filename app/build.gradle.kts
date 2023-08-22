@@ -115,10 +115,7 @@ dependencies {
     androidTestImplementation(libs.androidx.work.testing)
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics.ktx)
     implementation(libs.firebase.remoteConfig.ktx)
-    implementation(libs.firebase.crashlytics.ktx)
-    implementation(libs.firebase.perf.ktx)
 
     implementation(libs.kotlinx.datetime)
 

@@ -3,12 +3,16 @@ package com.infinitepower.newquiz.core.analytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.ParametersBuilder
 import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.perf.FirebasePerformance
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FirebaseAnalyticsHelper @Inject constructor(
-    private val firebaseAnalytics: FirebaseAnalytics
+    private val firebaseAnalytics: FirebaseAnalytics,
+    private val firebaseCrashlytics: FirebaseCrashlytics,
+    private val firebasePerformance: FirebasePerformance
 ) : AnalyticsHelper {
     private fun ParametersBuilder.param(
         analyticsParam: AnalyticsEvent.Param<*>
@@ -35,5 +39,23 @@ class FirebaseAnalyticsHelper @Inject constructor(
 
     override fun setUserProperty(userProperty: UserProperty) {
         firebaseAnalytics.setUserProperty(userProperty.name, userProperty.value)
+    }
+
+    override fun enableAll(enabled: Boolean) {
+        setGeneralAnalyticsEnabled(enabled)
+        setCrashlyticsEnabled(enabled)
+        setPerformanceEnabled(enabled)
+    }
+
+    override fun setGeneralAnalyticsEnabled(enabled: Boolean) {
+        firebaseAnalytics.setAnalyticsCollectionEnabled(enabled)
+    }
+
+    override fun setCrashlyticsEnabled(enabled: Boolean) {
+        firebaseCrashlytics.setCrashlyticsCollectionEnabled(enabled)
+    }
+
+    override fun setPerformanceEnabled(enabled: Boolean) {
+        firebasePerformance.isPerformanceCollectionEnabled = enabled
     }
 }
