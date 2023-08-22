@@ -39,9 +39,11 @@ import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswer
 import com.infinitepower.newquiz.multi_choice_quiz.components.MultiChoiceQuizContainer
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizTopBar
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.popUpTo
 import kotlin.time.Duration.Companion.seconds
 
 internal val MULTI_CHOICE_QUIZ_COUNTDOWN_TIME = 30.seconds
@@ -78,7 +80,7 @@ fun MultiChoiceQuizScreen(
                         navigator.navigate(event.direction) {
                             launchSingleTop = true
 
-                            popUpTo(event.direction.route) {
+                            popUpTo(MultiChoiceQuizScreenDestination) {
                                 inclusive = true
                             }
                         }

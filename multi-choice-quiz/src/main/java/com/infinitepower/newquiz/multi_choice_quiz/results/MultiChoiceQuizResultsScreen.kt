@@ -55,9 +55,11 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.countCorrectQuestions
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
 import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswers
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.popUpTo
 import kotlinx.serialization.json.Json
 import com.infinitepower.newquiz.core.R as CoreR
 
@@ -89,7 +91,13 @@ fun MultiChoiceQuizResultsScreen(
                     category = category,
                     difficulty = difficulty
                 )
-            )
+            ) {
+                popUpTo(MultiChoiceQuizResultsScreenDestination) {
+                    inclusive = true
+                }
+
+                launchSingleTop = true
+            }
         },
         windowHeightSizeClass = windowSizeClass.heightSizeClass
     )
