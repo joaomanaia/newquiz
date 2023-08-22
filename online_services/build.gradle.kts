@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.vico.compose.m3)
 
     implementation(project(Modules.core))
+    implementation(project(Modules.coreAnalytics))
     implementation(project(Modules.domain))
     implementation(project(Modules.data))
     implementation(project(Modules.model))

@@ -5,8 +5,8 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
-import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.network.NetworkStatusTracker
 import com.infinitepower.newquiz.core.util.kotlin.toULong
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
@@ -25,10 +25,9 @@ class WordleEndGameWorker @AssistedInject constructor(
     private val networkStatusTracker: NetworkStatusTracker,
     private val userRepository: UserRepository,
     private val wordleXpRepository: WordleXpRepository,
-    private val wordleLoggingAnalytics: WordleLoggingAnalytics,
-    private val mazeLoggingAnalytics: MazeLoggingAnalytics,
     private val workManager: WorkManager,
-    private val recentCategoriesRepository: RecentCategoriesRepository
+    private val recentCategoriesRepository: RecentCategoriesRepository,
+    private val analyticsHelper: AnalyticsHelper
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -57,17 +56,19 @@ class WordleEndGameWorker @AssistedInject constructor(
             )
         }
 
-        wordleLoggingAnalytics.logGameEnd(
-            wordLength = word.length,
-            maxRows = rowLimit,
-            lastRow = currentRowPosition,
-            lastRowCorrect = isLastRowCorrect,
-            quizType = quizTypeName,
-            mazeItemId = mazeItemId?.toIntOrNull()
+        analyticsHelper.logEvent(
+            AnalyticsEvent.WordleGameEnd(
+                wordLength = word.length,
+                maxRows = rowLimit,
+                lastRow = currentRowPosition,
+                lastRowCorrect = isLastRowCorrect,
+                category = quizTypeName,
+                mazeItemId = mazeItemId?.toIntOrNull()
+            )
         )
 
         if (mazeItemId != null) {
-            mazeLoggingAnalytics.logMazeItemPlayed(isLastRowCorrect)
+            analyticsHelper.logEvent(AnalyticsEvent.MazeItemPlayed(isLastRowCorrect))
         }
 
         if (networkStatusTracker.connectionAvailable()) {

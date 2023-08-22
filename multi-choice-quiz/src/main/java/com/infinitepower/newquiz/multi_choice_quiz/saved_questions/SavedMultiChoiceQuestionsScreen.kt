@@ -39,7 +39,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.rememberMultiChoiceLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
@@ -61,14 +62,14 @@ fun SavedMultiChoiceQuestionsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val multiChoiceQuizLoggingAnalytics = rememberMultiChoiceLoggingAnalytics()
+    val analyticsHelper = LocalAnalyticsHelper.current
 
     SavedMultiChoiceQuestionsScreenImpl(
         uiState = uiState,
         onBackClick = navigator::popBackStack,
         onEvent = viewModel::onEvent,
         playWithQuestions = { questions ->
-            multiChoiceQuizLoggingAnalytics.logPlaySavedQuestions(questions.size)
+            analyticsHelper.logEvent(AnalyticsEvent.MultiChoicePlaySavedQuestions(questions.size))
             savedQuestionsScreenNavigator.navigateToMultiChoiceQuiz(ArrayList(questions))
         }
     )

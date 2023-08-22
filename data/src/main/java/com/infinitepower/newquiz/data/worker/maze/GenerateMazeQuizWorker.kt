@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
@@ -38,10 +39,10 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val wordleRepository: WordleRepository,
     private val multiChoiceQuestionRepository: MultiChoiceQuestionRepository,
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
-    private val mazeLoggingAnalytics: MazeLoggingAnalytics,
     private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository,
     private val countryCapitalFlagsQuizRepository: CountryCapitalFlagsQuizRepository,
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfigApi: RemoteConfigApi,
+    private val analyticsHelper: AnalyticsHelper
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         const val INPUT_SEED = "INPUT_SEED"
@@ -141,7 +142,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         if (questionsCount != allMazeItems.count())
             throw RuntimeException("Maze saved questions: $questionsCount is not equal to generated questions: ${allMazeItems.count()}")
 
-        mazeLoggingAnalytics.logCreateMaze(seed, questionsCount, inputGameModes?.toList().orEmpty())
+        analyticsHelper.logEvent(AnalyticsEvent.CreateMaze(seed, questionsCount, inputGameModes?.toList().orEmpty()))
 
         Result.success()
     }

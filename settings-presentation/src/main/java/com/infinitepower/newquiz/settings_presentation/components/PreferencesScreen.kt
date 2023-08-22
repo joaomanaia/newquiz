@@ -7,9 +7,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
-import com.infinitepower.newquiz.core.analytics.logging.LocalCoreLoggingAnalytics
-import com.infinitepower.newquiz.core.analytics.logging.rememberCoreLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
+import com.infinitepower.newquiz.core.analytics.UserProperty
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.common.dataStore.settingsDataStore
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
@@ -39,7 +38,6 @@ internal fun PreferencesScreen(
         uiState = uiState,
         screenExpanded = screenExpanded,
         dataStoreManager = dataStoreManager,
-        coreLoggingAnalytics = rememberCoreLoggingAnalytics(),
         onEvent = onEvent,
         navigateToScreen = navigateToScreen
     )
@@ -51,11 +49,12 @@ internal fun PreferencesScreen(
     uiState: SettingsUiState,
     screenExpanded: Boolean,
     dataStoreManager: DataStoreManager,
-    coreLoggingAnalytics: CoreLoggingAnalytics,
     onEvent: (event: SettingsScreenUiEvent) -> Unit,
     navigateToScreen: (screenKey: ScreenKey) -> Unit
 ) {
     val scope = rememberCoroutineScope()
+
+    val analyticsHelper = LocalAnalyticsHelper.current
 
     PreferenceScreen(
         items = when(page) {
@@ -74,7 +73,9 @@ internal fun PreferencesScreen(
             )
             is SettingsScreenPageData.MultiChoiceQuiz -> page.items()
             is SettingsScreenPageData.Wordle -> page.items(
-                onChangeWordleLang = coreLoggingAnalytics::setWordleLangUserProperty
+                onChangeWordleLang = { lang ->
+                    analyticsHelper.setUserProperty(UserProperty.WordleLanguage(lang))
+                }
             )
             is SettingsScreenPageData.Translation -> page.items(
                 currentTargetLanguage = uiState.translatorTargetLanguage,
@@ -113,7 +114,6 @@ private fun PreferencesScreenPreview() {
                 page = SettingsScreenPageData.General,
                 uiState = SettingsUiState(),
                 dataStoreManager = dataStoreManager,
-                coreLoggingAnalytics = LocalCoreLoggingAnalytics,
                 onEvent = {},
                 navigateToScreen = {},
                 screenExpanded = false

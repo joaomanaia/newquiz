@@ -40,6 +40,7 @@ dependencies {
     androidTestImplementation(libs.androidx.work.testing)
 
     implementation(project(Modules.core))
+    implementation(project(Modules.coreAnalytics))
     implementation(project(Modules.model))
     implementation(project(Modules.domain))
     implementation(project(Modules.data))

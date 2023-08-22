@@ -127,6 +127,8 @@ dependencies {
     implementation(libs.google.oss.licenses)
 
     implementation(project(Modules.core))
+    implementation(project(Modules.coreAnalytics))
+    implementation(project(Modules.coreTranslation))
     implementation(project(Modules.model))
     implementation(project(Modules.multiChoicequiz))
     implementation(project(Modules.settingsPresentation))
@@ -135,7 +137,6 @@ dependencies {
     implementation(project(Modules.domain))
     implementation(project(Modules.onlineServices))
     implementation(project(Modules.mazeQuiz))
-    implementation(project(Modules.translation))
     implementation(project(Modules.comparisonQuiz))
     implementation(project(Modules.dailyChallenge))
 }

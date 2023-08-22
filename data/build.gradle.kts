@@ -39,7 +39,6 @@ dependencies {
     implementation(libs.room.ktx)
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics.ktx)
     implementation(libs.firebase.remoteConfig.ktx)
     implementation(libs.firebase.perf.ktx)
     implementation(libs.firebase.auth.ktx)
@@ -48,6 +47,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     implementation(project(Modules.core))
+    implementation(project(Modules.coreAnalytics))
     implementation(project(Modules.domain))
     implementation(project(Modules.model))
     androidTestImplementation(project(Modules.coreTest))

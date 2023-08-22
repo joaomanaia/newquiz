@@ -6,7 +6,8 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.data.worker.multichoicequiz.DownloadMultiChoiceQuestionsWorker
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -28,8 +29,8 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 class SavedMultiChoiceQuestionsViewModel @Inject constructor(
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
-    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SavedMultiChoiceQuestionsUiState())
     val uiState = _uiState.asStateFlow()
@@ -84,7 +85,7 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
     }
 
     private fun downloadQuestions() {
-        multiChoiceQuizLoggingAnalytics.logDownloadQuestions()
+        analyticsHelper.logEvent(AnalyticsEvent.MultiChoiceDownloadQuestions)
 
         val downloadQuestionsRequest = OneTimeWorkRequestBuilder<DownloadMultiChoiceQuestionsWorker>()
             .setConstraints(

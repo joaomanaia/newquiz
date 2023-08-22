@@ -37,10 +37,11 @@ dependencies {
     kapt(libs.hilt.ext.compiler)
 
     implementation(project(Modules.core))
+    implementation(project(Modules.coreAnalytics))
+    implementation(project(Modules.coreTranslation))
     implementation(project(Modules.data))
     implementation(project(Modules.domain))
     implementation(project(Modules.model))
-    implementation(project(Modules.translation))
 }
 
 tasks.withType<Test> {

@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.data.local.maze.MazeQuizDao
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -19,7 +20,7 @@ class EndGameMazeQuizWorker  @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val mazeQuizDao: MazeQuizDao,
-    private val mazeLoggingAnalytics: MazeLoggingAnalytics
+    private val analyticsHelper: AnalyticsHelper
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         const val INPUT_MAZE_ITEM_ID = "INPUT_MAZE_ITEM_ID"
@@ -49,6 +50,6 @@ class EndGameMazeQuizWorker  @AssistedInject constructor(
         val allMazeItems = mazeQuizDao.getAllMazeItems()
         val completed = allMazeItems.all { it.played }
 
-        if (completed) mazeLoggingAnalytics.logMazeCompleted(allMazeItems.size)
+        if (completed) analyticsHelper.logEvent(AnalyticsEvent.MazeCompleted(allMazeItems.size))
     }
 }

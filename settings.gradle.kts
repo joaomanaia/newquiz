@@ -22,8 +22,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "NewQuiz"
 include(":app")
+
 include(":core")
+include(":core:analytics")
 include(":core:translation")
+
 include(":core-test")
 include(":model")
 include(":domain")

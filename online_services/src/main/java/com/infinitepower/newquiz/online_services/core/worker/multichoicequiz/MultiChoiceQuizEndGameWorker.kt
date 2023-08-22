@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.network.NetworkStatusTracker
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.countCorrectQuestions
@@ -18,10 +19,10 @@ import kotlinx.serialization.json.Json
 class MultiChoiceQuizEndGameWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
     private val multiChoiceQuizXPRepository: MultiChoiceQuizXPRepository,
     private val userRepository: UserRepository,
-    private val networkStatusTracker: NetworkStatusTracker
+    private val networkStatusTracker: NetworkStatusTracker,
+    private val analyticsHelper: AnalyticsHelper
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -34,9 +35,11 @@ class MultiChoiceQuizEndGameWorker @AssistedInject constructor(
         val questionSteps: List<MultiChoiceQuestionStep.Completed> =
             Json.decodeFromString(questionStepsStr)
 
-        multiChoiceQuizLoggingAnalytics.logGameEnd(
-            questionsSize = questionSteps.size,
-            correctAnswers = questionSteps.count { it.correct }
+        analyticsHelper.logEvent(
+            AnalyticsEvent.MultiChoiceGameEnd(
+                questionsSize = questionSteps.size,
+                correctAnswers = questionSteps.count { it.correct }
+            )
         )
 
         val saveNewXP = inputData.getBoolean(INPUT_SAVE_NEW_XP, true)

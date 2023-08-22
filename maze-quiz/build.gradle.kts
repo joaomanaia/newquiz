@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.androidx.work.ktx)
 
     implementation(project(Modules.core))
+    implementation(project(Modules.coreAnalytics))
     implementation(project(Modules.model))
     implementation(project(Modules.data))
     implementation(project(Modules.domain))

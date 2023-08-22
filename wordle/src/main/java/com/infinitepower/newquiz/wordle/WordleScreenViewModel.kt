@@ -7,7 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.infinitepower.newquiz.core.analytics.logging.wordle.WordleLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
@@ -39,8 +40,8 @@ private const val TAG = "WordleScreenViewModel"
 class WordleScreenViewModel @Inject constructor(
     private val wordleRepository: WordleRepository,
     private val savedStateHandle: SavedStateHandle,
-    private val wordleLoggingAnalytics: WordleLoggingAnalytics,
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
     private var _uiState = MutableStateFlow(WordleScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -145,7 +146,14 @@ class WordleScreenViewModel @Inject constructor(
                 GameEvent.Wordle.PlayWordWithCategory(quizType)
             )
 
-            wordleLoggingAnalytics.logGameStart(word.length, rowLimit, quizType.name, mazeItemId?.toIntOrNull())
+            analyticsHelper.logEvent(
+                AnalyticsEvent.WordleGameStart(
+                    wordLength = word.length,
+                    maxRows = rowLimit,
+                    category = quizType.name,
+                    mazeItemId = mazeItemId?.toIntOrNull()
+                )
+            )
         }
 
 

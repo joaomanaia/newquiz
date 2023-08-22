@@ -7,7 +7,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.data.worker.maze.CleanMazeQuizWorker
 import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
@@ -25,7 +26,7 @@ import javax.inject.Inject
 class MazeScreenViewModel @Inject constructor(
     private val mazeMathQuizRepository: MazeQuizRepository,
     private val workManager: WorkManager,
-    private val mazeLoggingAnalytics: MazeLoggingAnalytics
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MazeScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -83,7 +84,7 @@ class MazeScreenViewModel @Inject constructor(
     }
 
     private fun cleanSavedMaze() {
-        mazeLoggingAnalytics.logRestartMaze()
+        analyticsHelper.logEvent(AnalyticsEvent.RestartMaze)
 
         val cleanSavedMazeRequest = OneTimeWorkRequestBuilder<CleanMazeQuizWorker>().build()
 

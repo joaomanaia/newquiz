@@ -8,9 +8,8 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.infinitepower.newquiz.core.analytics.logging.CoreLoggingAnalytics
-import com.infinitepower.newquiz.core.analytics.logging.maze.MazeLoggingAnalytics
-import com.infinitepower.newquiz.core.analytics.logging.multi_choice_quiz.MultiChoiceQuizLoggingAnalytics
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
@@ -69,9 +68,7 @@ class QuizScreenViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val authUserRepository: AuthUserRepository,
     private val isQuestionSavedUseCase: IsQuestionSavedUseCase,
-    private val multiChoiceQuizLoggingAnalytics: MultiChoiceQuizLoggingAnalytics,
-    private val coreLoggingAnalytics: CoreLoggingAnalytics,
-    private val mazeLoggingAnalytics: MazeLoggingAnalytics
+    private val analyticsHelper: AnalyticsHelper
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -165,7 +162,7 @@ class QuizScreenViewModel @Inject constructor(
 
         userRepository.addLocalUserDiamonds(-1)
 
-        coreLoggingAnalytics.logSpendDiamonds(1, "skip_multichoicequestion")
+        analyticsHelper.logEvent(AnalyticsEvent.SpendDiamonds(1, "skip_multichoicequestion"))
     }
 
     private suspend fun loadByCloudQuestions() {
@@ -236,10 +233,12 @@ class QuizScreenViewModel @Inject constructor(
             UpdateGlobalEventDataWorker.enqueueWork(workManager = workManager, event)
 
             // Log game start
-            multiChoiceQuizLoggingAnalytics.logGameStart(
-                questionsSize = questionSteps.size,
-                category = category,
-                difficulty = difficulty
+            analyticsHelper.logEvent(
+                AnalyticsEvent.MultiChoiceGameStart(
+                    questionsSize = questionSteps.size,
+                    category = category.toString(),
+                    difficulty = difficulty
+                )
             )
         }
 
@@ -380,7 +379,7 @@ class QuizScreenViewModel @Inject constructor(
                 )
 
                 if (mazeItemId != null) {
-                    mazeLoggingAnalytics.logMazeItemPlayed(allCorrect)
+                    analyticsHelper.logEvent(AnalyticsEvent.MazeItemPlayed(allCorrect))
                 }
             }
 
