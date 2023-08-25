@@ -19,3 +19,6 @@ internal fun DependencyHandler.kaptAndroidTest(dependencyNotation: Any) =
 
 internal fun DependencyHandler.ksp(dependencyNotation: Any) =
     add("ksp", dependencyNotation)
+
+internal fun DependencyHandler.normalImplementation(dependencyNotation: Any) =
+    add("normalImplementation", dependencyNotation)

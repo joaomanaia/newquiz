@@ -6,7 +6,6 @@ plugins {
     id("newquiz.android.application.compose")
     id("newquiz.android.hilt")
     id("newquiz.android.compose.destinations")
-    id("newquiz.android.application.firebase")
     id("newquiz.kotlin.serialization")
     id("kotlin-parcelize")
     id("com.google.android.gms.oss-licenses-plugin")
