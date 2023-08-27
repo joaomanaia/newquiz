@@ -210,3 +210,28 @@ This event logs when the user completes all the questions the maze game mode.
 | Parameter name | Type   | Required | Example value | Description                     |
 |----------------|--------|----------|---------------|---------------------------------|
 | item_size      | number | Yes      | 23            | Number of questions in the maze |
+
+# Comparison Quiz
+
+## comparison_quiz_game_start
+
+This event logs the comparison quiz game start.
+
+### Parameters
+
+| Parameter name  | Type   | Required | Example value      | Description                          |
+|-----------------|--------|----------|--------------------|--------------------------------------|
+| category        | string | Yes      | country_population | The category of the quiz             |
+| comparison_mode | string | Yes      | higher             | The comparison mode used in the quiz |
+
+## comparison_quiz_game_end
+
+This event logs the comparison quiz game end.
+
+### Parameters
+
+| Parameter name   | Type   | Required | Example value      | Description                          |
+|------------------|--------|----------|--------------------|--------------------------------------|
+| category         | string | No       | country_population | The category of the quiz             |
+| comparison_mode  | string | No       | higher             | The comparison mode used in the quiz |
+| score            | number | Yes      | 10                 | The score of the quiz                |

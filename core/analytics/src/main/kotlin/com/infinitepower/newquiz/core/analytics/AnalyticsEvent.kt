@@ -175,4 +175,32 @@ sealed class AnalyticsEvent(
             Param("question_size", questionSize)
         )
     )
+
+    // Comparison Quiz
+
+    @Keep
+    data class ComparisonQuizGameStart(
+        val category: String,
+        val comparisonMode: String,
+    ) : AnalyticsEvent(
+        type = "comparison_quiz_game_start",
+        extras = setOf(
+            Param("category", category),
+            Param("comparison_mode", comparisonMode)
+        )
+    )
+
+    @Keep
+    data class ComparisonQuizGameEnd(
+        val category: String?,
+        val comparisonMode: String?,
+        val score: Int
+    ) : AnalyticsEvent(
+        type = "comparison_quiz_game_end",
+        extras = setOf(
+            Param("category", category),
+            Param("comparison_mode", comparisonMode),
+            Param("score", score)
+        )
+    )
 }

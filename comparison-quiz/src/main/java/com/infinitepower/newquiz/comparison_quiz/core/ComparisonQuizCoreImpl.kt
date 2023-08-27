@@ -1,5 +1,7 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.InitializationData
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.QuizData
@@ -20,7 +22,8 @@ import javax.inject.Inject
 class ComparisonQuizCoreImpl @Inject constructor(
     private val comparisonQuizRepository: ComparisonQuizRepository,
     private val userRepository: UserRepository,
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfigApi: RemoteConfigApi,
+    private val analyticsHelper: AnalyticsHelper
 ) : ComparisonQuizCore {
     private val _quizData = MutableStateFlow(QuizData())
     override val quizDataFlow = _quizData.asStateFlow()
@@ -40,6 +43,13 @@ class ComparisonQuizCoreImpl @Inject constructor(
                         questions = res.data.orEmpty(),
                         comparisonMode = comparisonMode,
                         questionDescription = questionDescription
+                    )
+
+                    analyticsHelper.logEvent(
+                        AnalyticsEvent.ComparisonQuizGameStart(
+                            category = category.id,
+                            comparisonMode = comparisonMode.name,
+                        )
                     )
 
                     _quizData.emit(quizData)

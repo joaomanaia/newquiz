@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
@@ -32,7 +34,8 @@ class ComparisonQuizViewModel @Inject constructor(
     private val workManager: WorkManager,
     private val authUserRepository: AuthUserRepository,
     private val userRepository: UserRepository,
-    private val recentCategoriesRepository: RecentCategoriesRepository
+    private val recentCategoriesRepository: RecentCategoriesRepository,
+    private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ComparisonQuizUiState())
     val uiState = _uiState.asStateFlow()
@@ -51,6 +54,14 @@ class ComparisonQuizViewModel @Inject constructor(
                             UpdateGlobalEventDataWorker.enqueueWork(
                                 workManager = workManager,
                                 GameEvent.ComparisonQuiz.PlayAndGetScore(data.currentPosition)
+                            )
+
+                            analyticsHelper.logEvent(
+                                AnalyticsEvent.ComparisonQuizGameEnd(
+                                    category = currentState.gameCategory?.id,
+                                    comparisonMode = currentState.comparisonMode?.name,
+                                    score = data.currentPosition
+                                )
                             )
                         }
                     }

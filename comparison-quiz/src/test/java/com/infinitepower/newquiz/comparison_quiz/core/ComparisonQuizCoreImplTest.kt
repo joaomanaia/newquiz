@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.core.analytics.NoOpAnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.Resource
@@ -43,7 +44,8 @@ internal class ComparisonQuizCoreImplTest {
         comparisonQuizCoreImpl = ComparisonQuizCoreImpl(
             comparisonQuizRepository = comparisonQuizRepository,
             userRepository = userRepository,
-            remoteConfigApi = remoteConfigApi
+            remoteConfigApi = remoteConfigApi,
+            analyticsHelper = NoOpAnalyticsHelper
         )
     }
 
