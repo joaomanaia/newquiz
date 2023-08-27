@@ -15,7 +15,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.WorkManager
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
-import com.infinitepower.newquiz.core.analytics.logging.wordle.LocalWordleLoggingAnalyticsImpl
+import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core_test.utils.setTestContent
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
@@ -76,8 +76,8 @@ class WordleScreenTest {
             viewModel = WordleScreenViewModel(
                 wordleRepository = wordleRepository,
                 savedStateHandle = savedStateHandle,
-                wordleLoggingAnalytics = LocalWordleLoggingAnalyticsImpl(),
-                workManager = workManager
+                workManager = workManager,
+                analyticsHelper = LocalDebugAnalyticsHelper()
             )
 
             val windowSizeClass = calculateWindowSizeClass(activity = composeRule.activity)

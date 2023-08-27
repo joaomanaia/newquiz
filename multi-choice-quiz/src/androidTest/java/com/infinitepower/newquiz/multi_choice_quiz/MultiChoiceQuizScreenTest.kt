@@ -26,6 +26,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.WorkManager
 import androidx.work.testing.WorkManagerTestInitHelper
+import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
 import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
 import com.infinitepower.newquiz.core_test.utils.setTestContent
@@ -96,7 +97,7 @@ internal class MultiChoiceQuizScreenTest {
     }
 
     @Test
-    @Ignore
+    @Ignore("Mockk problems")
     fun testMultiChoiceQuizScreen() {
         every { authUserRepository.isSignedIn } returns true
 
@@ -129,9 +130,7 @@ internal class MultiChoiceQuizScreenTest {
                     userRepository = mockk(),
                     authUserRepository = authUserRepository,
                     isQuestionSavedUseCase = mockk(relaxed = true),
-                    multiChoiceQuizLoggingAnalytics = mockk(relaxed = true),
-                    coreLoggingAnalytics = mockk(relaxed = true),
-                    mazeLoggingAnalytics = mockk(relaxed = true),
+                    analyticsHelper = LocalDebugAnalyticsHelper()
                 )
             )
         }
