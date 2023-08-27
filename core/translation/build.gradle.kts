@@ -16,15 +16,6 @@ dependencies {
     "normalImplementation"(libs.google.mlKit.translate)
     "normalImplementation"(libs.kotlinx.coroutines.playServices)
 
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-
-    // WorkManager
-    implementation(libs.androidx.work.ktx)
-
-    // Hilt with WorkManager
-    implementation(libs.hilt.ext.work)
-    kapt(libs.hilt.ext.compiler)
-
     // Preferences DataStore
     implementation(libs.androidx.dataStore.preferences)
 }
