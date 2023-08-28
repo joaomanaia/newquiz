@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.navigation.NavigationItem
@@ -103,7 +104,16 @@ internal fun CompactContainer(
                     primaryItems.forEach { item ->
                         NavigationBarItem(
                             selected = item == selectedItem,
-                            onClick = { navController.navigate(item.direction) },
+                            onClick = {
+                                navController.navigate(item.direction) {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    popUpTo(navController.graph.findStartDestination().id)
+                                    // Avoid multiple copies of the same destination when re-selecting the same item
+                                    launchSingleTop = true
+                                }
+                            },
                             icon = {
                                 Icon(
                                     imageVector = item.icon,
