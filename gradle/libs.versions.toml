@@ -45,6 +45,7 @@ javaxInject = "1"
 firebaseUi = "8.0.2"
 vico = "1.9.2"
 mlKitTranslate = "17.0.1"
+turbine = "1.0.0"
 
 [libraries]
 
@@ -126,6 +127,7 @@ firebaseUi-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version
 vico-compose = { group = "com.patrykandpatryk.vico", name = "compose", version.ref = "vico" }
 vico-compose-m3 = { group = "com.patrykandpatryk.vico", name = "compose-m3", version.ref = "vico" }
 google-mlKit-translate = { group = "com.google.mlkit", name = "translate", version.ref = "mlKitTranslate" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

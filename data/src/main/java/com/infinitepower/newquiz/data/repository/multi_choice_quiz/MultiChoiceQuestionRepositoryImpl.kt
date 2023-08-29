@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.dto.OpenTDBQuestionResponse
-import com.infinitepower.newquiz.data.util.mappers.toQuestion
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -38,9 +37,7 @@ class MultiChoiceQuestionRepositoryImpl @Inject constructor(
 
         val questions = openTDBResults.map { result ->
             async(Dispatchers.IO) {
-                result
-                    .decodeResultToQuestionEntity(id = random.nextInt())
-                    .toQuestion()
+                result.decodeResultToQuestion()
             }
         }
 

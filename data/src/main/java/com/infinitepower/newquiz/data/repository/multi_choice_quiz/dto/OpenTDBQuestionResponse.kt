@@ -1,7 +1,11 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz.dto
 
 import androidx.annotation.Keep
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
+import com.infinitepower.newquiz.model.multi_choice_quiz.QuestionLanguage
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.util.base64.base64Decoded
 import kotlinx.serialization.Serializable
 
@@ -30,24 +34,21 @@ data class OpenTDBQuestionResponse(
             incorrect_answers = incorrect_answers.map { answer -> answer.base64Decoded }
         )
 
-        private fun toQuestionEntity(
-            id: Int
-        ): MultiChoiceQuestionEntity {
+        private fun toQuestion(): MultiChoiceQuestion {
             val answers = incorrect_answers.plus(correct_answer).shuffled()
             val correctAnswerIndex = answers.indexOf(correct_answer)
 
-            return MultiChoiceQuestionEntity(
-                id = id,
+            return MultiChoiceQuestion(
                 description = question,
                 answers = answers,
-                category = category,
+                category = MultiChoiceBaseCategory.fromId(category),
                 correctAns = correctAnswerIndex,
-                type = type,
-                difficulty = difficulty,
-                lang = "EN"
+                type = MultiChoiceQuestionType.valueOf(type.uppercase()),
+                difficulty = QuestionDifficulty.from(difficulty),
+                lang = QuestionLanguage.EN
             )
         }
 
-        fun decodeResultToQuestionEntity(id: Int): MultiChoiceQuestionEntity = decodeBase64OpenTDBResult().toQuestionEntity(id)
+        fun decodeResultToQuestion(): MultiChoiceQuestion = decodeBase64OpenTDBResult().toQuestion()
     }
 }

@@ -8,7 +8,6 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
 import com.infinitepower.newquiz.model.multi_choice_quiz.QuestionLanguage
 import com.infinitepower.newquiz.model.multi_choice_quiz.logo_quiz.LogoQuizBaseItem
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -50,7 +49,6 @@ class LogoQuizRepositoryImpl @Inject constructor(
         val answers = answerCountries.shuffled(random)
 
         return MultiChoiceQuestion(
-            id = random.nextInt(),
             description = description,
             imageUrl = imgUrl,
             answers = answers,

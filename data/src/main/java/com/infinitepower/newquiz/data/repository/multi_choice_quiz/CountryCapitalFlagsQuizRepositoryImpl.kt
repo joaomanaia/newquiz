@@ -10,7 +10,6 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.flag_quiz.Continent
 import com.infinitepower.newquiz.model.multi_choice_quiz.flag_quiz.CountryQuizBaseItem
 import com.infinitepower.newquiz.model.multi_choice_quiz.flag_quiz.CountryQuizItem
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -65,7 +64,6 @@ class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor(
         val answersCapitals = answers.map(CountryQuizItem::capital)
 
         return MultiChoiceQuestion(
-            id = random.nextInt(),
             description = "What is the capital of $countryName?",
             imageUrl = flagUrl,
             answers = answersCapitals,

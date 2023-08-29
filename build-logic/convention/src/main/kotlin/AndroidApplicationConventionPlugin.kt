@@ -41,6 +41,14 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply(plugin = "com.google.gms.google-services")
                 logger.warn("Applied Google Services plugin for foss build type, it will be removed once the firebase is completely removed from foss builds")
             }
+
+            tasks.register("testAllUnitTest") {
+                // Only run debug tests
+                dependsOn(
+                    getTasksByName("testNormalDebugUnitTest", true),
+                    getTasksByName("testFossDebugUnitTest", true),
+                )
+            }
         }
     }
 }

@@ -46,6 +46,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 testImplementation(libs.findLibrary("mockk").get())
                 testImplementation(libs.findLibrary("kotlinx.coroutines.test").get())
                 testImplementation(libs.findLibrary("junit.jupiter.params").get())
+                testImplementation(libs.findLibrary("turbine").get())
 
                 androidTestImplementation(kotlin("test"))
                 androidTestImplementation(libs.findLibrary("google.truth").get())
@@ -59,6 +60,14 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             tasks.withType<Test> {
                 useJUnitPlatform()
+            }
+
+            tasks.register("testAllUnitTest") {
+                // Only run debug tests
+                dependsOn(
+                    getTasksByName("testNormalDebugUnitTest", true),
+                    getTasksByName("testFossDebugUnitTest", true),
+                )
             }
         }
     }

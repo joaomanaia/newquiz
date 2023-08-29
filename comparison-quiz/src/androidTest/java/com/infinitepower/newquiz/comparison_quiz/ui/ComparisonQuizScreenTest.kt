@@ -21,6 +21,7 @@ import androidx.work.testing.WorkManagerTestInitHelper
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.comparison_quiz.core.ComparisonQuizCoreImpl
 import com.infinitepower.newquiz.comparison_quiz.data.comparison_quiz.FakeComparisonQuizRepositoryImpl
+import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
 import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
@@ -116,7 +117,8 @@ internal class ComparisonQuizScreenTest {
         comparisonQuizCore = ComparisonQuizCoreImpl(
             comparisonQuizRepository = comparisonQuizRepository,
             userRepository = userRepository,
-            remoteConfigApi = remoteConfigApi
+            remoteConfigApi = remoteConfigApi,
+            analyticsHelper = LocalDebugAnalyticsHelper()
         )
 
         val context = InstrumentationRegistry.getInstrumentation().context
@@ -142,7 +144,8 @@ internal class ComparisonQuizScreenTest {
             workManager = workManager,
             authUserRepository = authUserRepository,
             userRepository = userRepository,
-            recentCategoriesRepository = recentCategoriesRepository
+            recentCategoriesRepository = recentCategoriesRepository,
+            analyticsHelper = LocalDebugAnalyticsHelper()
         )
 
         composeTestRule.setContent {

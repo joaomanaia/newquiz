@@ -45,7 +45,6 @@ class NumberTriviaQuestionRepositoryImpl @Inject constructor(
             val answers = (incorrectAnswers + question.number).shuffled(random)
 
             MultiChoiceQuestion(
-                id = Random.nextInt(),
                 description = question.question,
                 answers = answers.map(Int::toString),
                 correctAns = answers.indexOf(question.number),

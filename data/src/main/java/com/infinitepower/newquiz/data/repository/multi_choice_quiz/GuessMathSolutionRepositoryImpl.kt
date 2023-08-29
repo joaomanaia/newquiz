@@ -45,7 +45,6 @@ class GuessMathSolutionRepositoryImpl @Inject constructor(
             val answersShuffled = answers.shuffled(random)
 
             MultiChoiceQuestion(
-                id = random.nextInt(),
                 description = "What is the solution of ${formula.leftFormula} ?",
                 answers = answersShuffled.map(Int::toString),
                 category = MultiChoiceBaseCategory.GuessMathSolution,

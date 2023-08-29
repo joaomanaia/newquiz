@@ -53,7 +53,6 @@ class FlagQuizRepositoryImpl @Inject constructor(
         val answers = answerCountries.shuffled(random)
 
         return MultiChoiceQuestion(
-            id = random.nextInt(),
             description = "What is the country of this flag?",
             imageUrl = flagUrl,
             answers = answers,

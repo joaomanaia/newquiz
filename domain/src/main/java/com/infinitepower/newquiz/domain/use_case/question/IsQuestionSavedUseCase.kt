@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+/**
+ * Use case to check if a question is locally saved.
+ */
 class IsQuestionSavedUseCase @Inject constructor(
     private val savedQuestionRepository: SavedMultiChoiceQuestionsRepository
 ) {
@@ -16,12 +19,17 @@ class IsQuestionSavedUseCase @Inject constructor(
         try {
             emit(Resource.Loading())
 
+            // Get all the saved questions
             val savedQuestionsFlow = savedQuestionRepository.getFlowQuestions()
 
-            savedQuestionsFlow
-                .map { questions -> questions.find { it == question } }
-                .map { Resource.Success(it != null) } // Checks if question exists
-                .also { questionExistsFlow -> emitAll(questionExistsFlow) }
+            savedQuestionsFlow.map { savedQuestions ->
+                // Check if the question exists in the saved questions
+                val questionExists = savedQuestions.any { savedQuestion ->
+                    savedQuestion == question
+                }
+
+                Resource.Success(questionExists)
+            }.also { questionExistsFlow -> emitAll(questionExistsFlow) }
         } catch (e: Exception) {
             e.printStackTrace()
             emit(Resource.Error(e.localizedMessage ?: "An unknown error occurred..."))

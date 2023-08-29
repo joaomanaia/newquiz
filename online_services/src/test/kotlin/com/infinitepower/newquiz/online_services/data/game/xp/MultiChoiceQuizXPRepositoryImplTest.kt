@@ -114,7 +114,6 @@ internal class MultiChoiceQuizXPRepositoryImplTest {
         val questionSteps = List(5) {
             MultiChoiceQuestionStep.Completed(
                 question = MultiChoiceQuestion(
-                    id = it,
                     description = "",
                     imageUrl = null,
                     answers = emptyList(),
@@ -140,7 +139,6 @@ internal class MultiChoiceQuizXPRepositoryImplTest {
         val questionSteps = List(5) {
             MultiChoiceQuestionStep.Completed(
                 question = MultiChoiceQuestion(
-                    id = it,
                     description = "",
                     imageUrl = null,
                     answers = emptyList(),
@@ -166,7 +164,6 @@ internal class MultiChoiceQuizXPRepositoryImplTest {
         val questionSteps = List(5) {
             MultiChoiceQuestionStep.Completed(
                 question = MultiChoiceQuestion(
-                    id = it,
                     description = "",
                     imageUrl = null,
                     answers = emptyList(),
