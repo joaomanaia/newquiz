@@ -17,6 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonModeComponents
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -39,9 +41,21 @@ fun ComparisonQuizListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val analyticsHelper = LocalAnalyticsHelper.current
+
     ComparisonQuizListScreenImpl(
         uiState = uiState,
         onCategoryClick = { category ->
+            analyticsHelper.logEvent(
+                AnalyticsEvent.CategoryClicked(
+                    game = AnalyticsEvent.Game.COMPARISON_QUIZ,
+                    categoryId = category.id,
+                    otherData = mapOf(
+                        "comparison_mode" to uiState.selectedMode.name.lowercase(),
+                    )
+                )
+            )
+
             navigator.navigate(
                 ComparisonQuizScreenDestination(
                     category = category.toEntity(),

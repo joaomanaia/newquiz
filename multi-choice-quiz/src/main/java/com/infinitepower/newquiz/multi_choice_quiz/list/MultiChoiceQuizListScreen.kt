@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -60,6 +62,7 @@ private fun MultiChoiceQuizListScreenImpl(
     uiState: MultiChoiceQuizListScreenUiState,
     navigator: DestinationsNavigator
 ) {
+    val analyticsHelper = LocalAnalyticsHelper.current
     val spaceMedium = MaterialTheme.spacing.medium
 
     val questionsAvailableText = pluralStringResource(
@@ -136,6 +139,16 @@ private fun MultiChoiceQuizListScreenImpl(
             otherCategories = uiState.homeCategories.otherCategories,
             isInternetAvailable = uiState.internetConnectionAvailable,
             onCategoryClick = { category ->
+                analyticsHelper.logEvent(
+                    AnalyticsEvent.CategoryClicked(
+                        game = AnalyticsEvent.Game.MULTI_CHOICE_QUIZ,
+                        categoryId = category.id,
+                        otherData = mapOf(
+                            "difficulty" to selectedDifficulty?.id
+                        )
+                    )
+                )
+
                 navigator.navigate(
                     MultiChoiceQuizScreenDestination(
                         category = category.toBaseCategory(),

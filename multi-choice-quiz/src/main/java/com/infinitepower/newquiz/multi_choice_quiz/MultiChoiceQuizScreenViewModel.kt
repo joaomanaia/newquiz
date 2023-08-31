@@ -339,6 +339,8 @@ class QuizScreenViewModel @Inject constructor(
         val currentQuestion = currentQuestionStep.question
 
         savedQuestionsRepository.insertQuestions(currentQuestion)
+
+        analyticsHelper.logEvent(AnalyticsEvent.MultiChoiceSaveQuestion)
     }
 
     private fun endGame(questionSteps: List<MultiChoiceQuestionStep.Completed>) {

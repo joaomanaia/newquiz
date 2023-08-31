@@ -12,7 +12,30 @@ sealed class AnalyticsEvent(
         val value: T?
     )
 
+    /**
+     * Enum class for the different games that can be played.
+     */
+    enum class Game {
+        MULTI_CHOICE_QUIZ,
+        WORDLE,
+        COMPARISON_QUIZ
+    }
+
     // Core events
+
+    @Keep
+    data class CategoryClicked(
+        val game: Game,
+        val categoryId: String,
+        val otherData: Map<String, Any?> = emptyMap()
+    ) : AnalyticsEvent(
+        type = "category_clicked",
+        extras = setOf(
+            Param("game", game.name.lowercase()),
+            Param("id", categoryId),
+            *otherData.map { Param(it.key, it.value) }.toTypedArray()
+        )
+    )
 
     @Keep
     data class LevelUp(val level: Int) : AnalyticsEvent(
@@ -71,14 +94,6 @@ sealed class AnalyticsEvent(
             Param("questions_size", questionsSize),
             Param("correct_answers", correctAnswers),
             Param("maze_item_id", mazeItemId)
-        )
-    )
-
-    @Keep
-    data class MultiChoiceCategoryClicked(val category: String) : AnalyticsEvent(
-        type = "multi_choice_category_clicked",
-        extras = setOf(
-            Param("id", category)
         )
     )
 

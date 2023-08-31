@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
@@ -53,6 +55,7 @@ private fun WordleListScreenImpl(
     uiState: WordleListUiState,
     navigateToWordleQuiz: (wordleQuizType: WordleQuizType) -> Unit
 ) {
+    val analyticsHelper = LocalAnalyticsHelper.current
     var seeAllCategories by remember { mutableStateOf(false) }
 
     HomeLazyColumn {
@@ -87,7 +90,16 @@ private fun WordleListScreenImpl(
             recentCategories = uiState.homeCategories.recentCategories,
             otherCategories = uiState.homeCategories.otherCategories,
             isInternetAvailable = uiState.internetConnectionAvailable,
-            onCategoryClick = { category -> navigateToWordleQuiz(category.wordleQuizType) },
+            onCategoryClick = { category ->
+                analyticsHelper.logEvent(
+                    AnalyticsEvent.CategoryClicked(
+                        game = AnalyticsEvent.Game.WORDLE,
+                        categoryId = category.id
+                    )
+                )
+
+                navigateToWordleQuiz(category.wordleQuizType)
+            },
             onSeeAllCategoriesClick = { seeAllCategories = !seeAllCategories }
         )
     }
