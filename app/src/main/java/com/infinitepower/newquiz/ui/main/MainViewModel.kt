@@ -12,79 +12,52 @@ import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val authUserRepository: AuthUserRepository,
+    authUserRepository: AuthUserRepository,
+    dailyChallengeRepository: DailyChallengeRepository,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val dailyChallengeRepository: DailyChallengeRepository,
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(MainScreenUiState())
-    val uiState = _uiState.asStateFlow()
-
-    init {
-        authUserRepository
-            .isSignedInFlow
-            .onEach { isSignedIn ->
-                _uiState.update { currentState ->
-                    currentState.copy(signedIn = isSignedIn)
-                }
-            }.launchIn(viewModelScope)
-
-        settingsDataStoreManager
-            .getPreferenceFlow(SettingsCommon.ShowLoginCard)
-            .onEach { showLoginCard ->
-                _uiState.update { currentState ->
-                    currentState.copy(settingsShowLoginCard = showLoginCard)
-                }
-            }.launchIn(viewModelScope)
-
-        settingsDataStoreManager
-            .getPreferenceFlow(SettingsCommon.DataAnalyticsConsent)
-            .onEach { strConsent ->
-                _uiState.update { currentState ->
-                    val consent = DataAnalyticsConsentState.valueOf(strConsent)
-
-                    currentState.copy(
-                        dialogConsent = consent,
-                        consentStateLoading = false
-                    )
-                }
-            }.launchIn(viewModelScope)
-
-        dailyChallengeRepository
-            .getClaimableTasksCountFlow()
-            .onEach { count ->
-                _uiState.update { currentState ->
-                    currentState.copy(dailyChallengeClaimableCount = count)
-                }
-            }.launchIn(viewModelScope)
-
-        combine(
-            settingsDataStoreManager.getPreferenceFlow(SettingsCommon.GlobalAnimationsEnabled),
-            settingsDataStoreManager.getPreferenceFlow(SettingsCommon.WordleAnimationsEnabled),
-            settingsDataStoreManager.getPreferenceFlow(SettingsCommon.MultiChoiceAnimationsEnabled),
-        ) { globalAnimationsEnabled, wordleAnimationsEnabled, multiChoiceAnimationsEnabled ->
-            AnimationsEnabled(
-                global = globalAnimationsEnabled,
-                wordle = wordleAnimationsEnabled && globalAnimationsEnabled,
-                multiChoice = multiChoiceAnimationsEnabled && globalAnimationsEnabled
-            )
-        }.onEach { animationsEnabled ->
-            _uiState.update { currentState ->
-                currentState.copy(animationsEnabled = animationsEnabled)
-            }
-        }.launchIn(viewModelScope)
+    private val animationsEnabledFlow = combine(
+        settingsDataStoreManager.getPreferenceFlow(SettingsCommon.GlobalAnimationsEnabled),
+        settingsDataStoreManager.getPreferenceFlow(SettingsCommon.WordleAnimationsEnabled),
+        settingsDataStoreManager.getPreferenceFlow(SettingsCommon.MultiChoiceAnimationsEnabled),
+    ) { globalAnimationsEnabled, wordleAnimationsEnabled, multiChoiceAnimationsEnabled ->
+        AnimationsEnabled(
+            global = globalAnimationsEnabled,
+            wordle = wordleAnimationsEnabled && globalAnimationsEnabled,
+            multiChoice = multiChoiceAnimationsEnabled && globalAnimationsEnabled
+        )
     }
+
+    val uiState: StateFlow<MainScreenUiState> = combine(
+        authUserRepository.isSignedInFlow,
+        animationsEnabledFlow,
+        settingsDataStoreManager.getPreferenceFlow(SettingsCommon.ShowLoginCard),
+        settingsDataStoreManager.getPreferenceFlow(SettingsCommon.DataAnalyticsConsent),
+        dailyChallengeRepository.getClaimableTasksCountFlow()
+    ) { signedIn, animationsEnabled, showLoginCard, dataAnalyticsDialogConsent, dailyChallengeClaimableCount ->
+        MainScreenUiState(
+            loading = false,
+            signedIn = signedIn,
+            animationsEnabled = animationsEnabled,
+            settingsShowLoginCard = showLoginCard,
+            dialogConsent = DataAnalyticsConsentState.valueOf(dataAnalyticsDialogConsent),
+            dailyChallengeClaimableCount = dailyChallengeClaimableCount
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        initialValue = MainScreenUiState(),
+        started = SharingStarted.WhileSubscribed(5_000)
+    )
 
     fun onEvent(event: MainScreenUiEvent) {
         when (event) {

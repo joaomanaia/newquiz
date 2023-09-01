@@ -8,5 +8,5 @@ sealed interface MainScreenUiEvent {
         val agreed: Boolean
     ) : MainScreenUiEvent
 
-    object DismissLoginCard : MainScreenUiEvent
+    data object DismissLoginCard : MainScreenUiEvent
 }
