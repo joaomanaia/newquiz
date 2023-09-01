@@ -139,7 +139,7 @@ jobs:
         run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
 
       - name: Assemble debug APKs
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleNormalDebug assembleFossDebug --stacktrace
 
       - name: Upload APKs
         uses: actions/upload-artifact@v3
