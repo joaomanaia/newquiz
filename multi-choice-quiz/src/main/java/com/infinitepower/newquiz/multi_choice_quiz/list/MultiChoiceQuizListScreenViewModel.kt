@@ -35,13 +35,13 @@ class MultiChoiceQuizListScreenViewModel @Inject constructor(
             }.launchIn(viewModelScope)
 
         networkStatusTracker
-            .networkStatus
-            .onEach { status ->
+            .isOnline
+            .onEach { isOnline ->
                 _uiState.update { currentState ->
-                    currentState.copy(internetConnectionAvailable = status.isAvailable())
+                    currentState.copy(internetConnectionAvailable = isOnline)
                 }
-            }.flatMapLatest { status ->
-                recentCategoriesRepository.getMultiChoiceCategories(isInternetAvailable = status.isAvailable())
+            }.flatMapLatest { isOnline ->
+                recentCategoriesRepository.getMultiChoiceCategories(isInternetAvailable = isOnline)
             }.onEach { homeCategories ->
                 _uiState.update { currentState ->
                     currentState.copy(homeCategories = homeCategories)

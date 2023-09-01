@@ -71,7 +71,7 @@ class WordleEndGameWorker @AssistedInject constructor(
             analyticsHelper.logEvent(AnalyticsEvent.MazeItemPlayed(isLastRowCorrect))
         }
 
-        if (networkStatusTracker.connectionAvailable()) {
+        if (networkStatusTracker.isCurrentlyConnected()) {
             val newXp = if (isLastRowCorrect) {
                 wordleXpRepository.generateRandomXP(currentRowPosition)
             } else 0

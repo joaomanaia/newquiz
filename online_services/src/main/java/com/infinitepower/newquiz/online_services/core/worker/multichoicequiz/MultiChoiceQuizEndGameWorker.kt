@@ -44,7 +44,7 @@ class MultiChoiceQuizEndGameWorker @AssistedInject constructor(
 
         val saveNewXP = inputData.getBoolean(INPUT_SAVE_NEW_XP, true)
 
-        if (networkStatusTracker.connectionAvailable() && saveNewXP) {
+        if (networkStatusTracker.isCurrentlyConnected() && saveNewXP) {
             val randomXP = multiChoiceQuizXPRepository.generateQuestionsRandomXP(questionSteps)
 
             val averageQuizTime = questionSteps.getAverageQuizTime()

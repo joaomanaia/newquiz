@@ -25,13 +25,13 @@ class ComparisonQuizListScreenViewModel @Inject constructor(
 
     init {
         networkStatusTracker
-            .networkStatus
-            .onEach { status ->
+            .isOnline
+            .onEach { isOnline ->
                 _uiState.update { currentState ->
-                    currentState.copy(internetConnectionAvailable = status.isAvailable())
+                    currentState.copy(internetConnectionAvailable = isOnline)
                 }
-            }.flatMapLatest { status ->
-                recentCategoriesRepository.getComparisonCategories(isInternetAvailable = status.isAvailable())
+            }.flatMapLatest { isOnline ->
+                recentCategoriesRepository.getComparisonCategories(isInternetAvailable = isOnline)
             }.onEach { homeCategories ->
                 _uiState.update { currentState ->
                     currentState.copy(homeCategories = homeCategories)
