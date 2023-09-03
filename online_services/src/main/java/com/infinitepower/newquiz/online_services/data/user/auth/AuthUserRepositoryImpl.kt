@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.repository
+package com.infinitepower.newquiz.online_services.data.user.auth
 
 import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
@@ -8,7 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.infinitepower.newquiz.core.common.DEFAULT_USER_PHOTO
 import com.infinitepower.newquiz.core.util.toJavaURI
-import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
+import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

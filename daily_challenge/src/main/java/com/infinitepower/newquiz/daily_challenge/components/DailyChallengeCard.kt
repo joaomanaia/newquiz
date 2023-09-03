@@ -38,6 +38,8 @@ internal fun DailyChallengeCard(
     dateRange: ClosedRange<Instant>,
     isCompleted: Boolean,
     isClaimed: Boolean,
+    diamondsReward: UInt,
+    userCanClaim: Boolean = true,
     onClaimClick: () -> Unit,
     onCardClick: () -> Unit
 ) {
@@ -63,6 +65,8 @@ internal fun DailyChallengeCard(
         remainingTime = remainingTime,
         isCompleted = isCompleted,
         enabled = !isExpired && !isClaimed,
+        userCanClaim = userCanClaim,
+        diamondsReward = diamondsReward,
         onClaimClick = onClaimClick,
         onCardClick = onCardClick
     )
@@ -77,7 +81,9 @@ internal fun DailyChallengeCard(
     maxValue: UInt,
     remainingTime: String,
     isCompleted: Boolean,
+    diamondsReward: UInt,
     enabled: Boolean = true,
+    userCanClaim: Boolean = true,
     onClaimClick: () -> Unit,
     onCardClick: () -> Unit
 ) {
@@ -138,13 +144,13 @@ internal fun DailyChallengeCard(
                 color = progressColor,
                 trackColor = trackColor
             )
-            if (isCompleted && enabled) {
+            if (isCompleted && enabled && userCanClaim) {
                 Spacer(modifier = Modifier.height(spaceMedium))
                 Button(
                     onClick = onClaimClick,
                     modifier = Modifier.align(Alignment.End)
                 ) {
-                    Text(text = "Claim")
+                    Text(text = "Claim $diamondsReward \uD83D\uDC8E")
                 }
             }
         }
@@ -160,10 +166,11 @@ private fun DailyChallengeCardPreview() {
             DailyChallengeCard(
                 modifier = Modifier.padding(16.dp),
                 title = "Daily Challenge",
-                currentValue = 7u,
+                currentValue = 10u,
                 maxValue = 10u,
                 remainingTime = "60s",
-                isCompleted = false,
+                isCompleted = true,
+                diamondsReward = 10u,
                 onClaimClick = {},
                 onCardClick = {}
             )

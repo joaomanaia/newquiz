@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.online_services.data
+package com.infinitepower.newquiz.online_services.data.user
 
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -6,9 +6,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.infinitepower.newquiz.core.common.database.DatabaseCommon
-import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
+import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.model.user.UserEntity
 import com.infinitepower.newquiz.online_services.model.user.toUser
 import kotlinx.coroutines.tasks.await

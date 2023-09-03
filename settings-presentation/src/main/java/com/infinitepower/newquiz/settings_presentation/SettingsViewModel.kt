@@ -10,8 +10,8 @@ import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.translation.TranslatorModelState
 import com.infinitepower.newquiz.core.translation.TranslatorUtil
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
-import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
+import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -6,9 +6,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
+import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.model.user.UserEntity
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject

@@ -27,7 +27,6 @@ import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
 import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
-import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
@@ -35,6 +34,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.toUiText
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
+import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import io.mockk.every
 import io.mockk.mockk

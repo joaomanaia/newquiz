@@ -9,6 +9,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlin.time.Duration.Companion.days
@@ -18,13 +19,11 @@ import kotlin.time.toJavaDuration
 class VerifyDailyChallengeWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val dailyChallengeRepository: DailyChallengeRepository
+    private val dailyChallengeRepository: DailyChallengeRepository,
+    private val remoteConfigApi: RemoteConfigApi
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         private const val WORK_NAME = "VerifyDailyChallengeWorker"
-
-        const val DEFAULT_TASKS_TO_GENERATE = 5
-        const val TASKS_TO_GENERATE_KEY = "tasks_to_generate"
 
         fun enqueueUniquePeriodicWork(workManager: WorkManager): Operation {
             val verifyDailyChallengeWorker = PeriodicWorkRequestBuilder<VerifyDailyChallengeWorker>(
@@ -37,11 +36,17 @@ class VerifyDailyChallengeWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         // Get the number of tasks to generate if the tasks are expired or not generated yet.
-        val tasksToGenerate = inputData.getInt(TASKS_TO_GENERATE_KEY, DEFAULT_TASKS_TO_GENERATE)
+        val tasksToGenerate = getTasksToGenerate()
 
         // Check if the tasks are expired or not generated yet.
         dailyChallengeRepository.checkAndGenerateTasksIfNeeded(tasksToGenerate)
 
         return Result.success()
     }
+
+    /**
+     * Get the number of tasks to generate in remote config.
+     * Default value is 5.
+     */
+    private fun getTasksToGenerate(): Int = remoteConfigApi.getInt("daily_challenge_tasks_to_generate")
 }

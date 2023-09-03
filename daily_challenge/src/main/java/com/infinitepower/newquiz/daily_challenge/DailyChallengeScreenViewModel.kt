@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.global_event.GameEvent
+import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DailyChallengeScreenViewModel @Inject constructor(
     private val dailyChallengeRepository: DailyChallengeRepository,
-    private val comparisonQuizRepository: ComparisonQuizRepository
+    private val comparisonQuizRepository: ComparisonQuizRepository,
+    private val authUserRepository: AuthUserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(DailyChallengeScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -33,7 +35,10 @@ class DailyChallengeScreenViewModel @Inject constructor(
             }.launchIn(viewModelScope)
 
         _uiState.update { currentState ->
-            currentState.copy(comparisonQuizCategories = comparisonQuizRepository.getCategories())
+            currentState.copy(
+                comparisonQuizCategories = comparisonQuizRepository.getCategories(),
+                userSignedIn = authUserRepository.isSignedIn
+            )
         }
     }
 

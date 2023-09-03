@@ -1,11 +1,11 @@
-package com.infinitepower.newquiz.online_services.data
+package com.infinitepower.newquiz.online_services.data.user
 
 import com.google.firebase.firestore.FieldValue
 import com.infinitepower.newquiz.core.common.database.DatabaseCommon
-import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
+import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.model.user.User
 import com.infinitepower.newquiz.online_services.model.user.UserNotLoggedInException
 import com.infinitepower.newquiz.online_services.model.user.toUser

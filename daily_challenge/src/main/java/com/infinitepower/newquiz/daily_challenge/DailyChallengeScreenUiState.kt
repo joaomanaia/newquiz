@@ -8,4 +8,5 @@ import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 data class DailyChallengeScreenUiState(
     val tasks: List<DailyChallengeTask> = emptyList(),
     val comparisonQuizCategories: List<ComparisonQuizCategory> = emptyList(),
+    val userSignedIn: Boolean = false
 )

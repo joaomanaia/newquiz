@@ -8,8 +8,10 @@ import com.infinitepower.newquiz.data.util.mappers.toDomain
 import com.infinitepower.newquiz.data.util.mappers.toEntity
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
+import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 import com.infinitepower.newquiz.model.global_event.GameEvent
+import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -22,7 +24,9 @@ import kotlin.time.Duration.Companion.days
 @Singleton
 class DailyChallengeRepositoryImpl @Inject constructor(
     private val dailyChallengeDao: DailyChallengeDao,
-    private val comparisonQuizRepository: ComparisonQuizRepository
+    private val comparisonQuizRepository: ComparisonQuizRepository,
+    private val remoteConfigApi: RemoteConfigApi,
+    private val userRepository: UserRepository
 ) : DailyChallengeRepository {
     override fun getAvailableTasksFlow(): Flow<List<DailyChallengeTask>> = dailyChallengeDao
         .getAllTasksFlow()
@@ -80,13 +84,15 @@ class DailyChallengeRepositoryImpl @Inject constructor(
             random = random
         )
 
+        val diamondsReward = remoteConfigApi.getInt("daily_challenge_item_reward").toUInt()
+
         val newTasks = types.map { type ->
-            val maxValue = type.valueRange.toList().random()
+            val maxValue = type.valueRange.toList().random(random)
 
             DailyChallengeTask(
                 id = random.nextInt(),
-                diamondsReward = 1u,
-                experienceReward = 1u,
+                diamondsReward = diamondsReward,
+                experienceReward = (10u..100u).random(random),
                 isClaimed = false,
                 dateRange = dateRange,
                 currentValue = 0u,
@@ -126,7 +132,8 @@ class DailyChallengeRepositoryImpl @Inject constructor(
         // Update the tasks set
         dailyChallengeDao.update(newTaskEntity)
 
-        // TODO: Update user db with the data
+        // TODO: Add experience reward
+        userRepository.addLocalUserDiamonds(task.diamondsReward.toInt())
     }
 
     override suspend fun claimTask(taskType: GameEvent) {

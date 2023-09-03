@@ -48,6 +48,7 @@ dependencies {
     implementation(project(Modules.coreAnalytics))
     implementation(project(Modules.domain))
     implementation(project(Modules.model))
+    implementation(project(Modules.onlineServices))
     androidTestImplementation(project(Modules.coreTest))
 }
 

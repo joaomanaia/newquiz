@@ -1,9 +1,10 @@
 package com.infinitepower.newquiz.online_services.data
 
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.domain.repository.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
+import com.infinitepower.newquiz.online_services.data.user.UserRepositoryImpl
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
+import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.model.user.User
 import com.infinitepower.newquiz.online_services.model.user.toUserEntity
 import io.mockk.coEvery
