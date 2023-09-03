@@ -71,11 +71,12 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         @Composable
         @ReadOnlyComposable
         fun items(
-            navigateToScreen: (screenKey: ScreenKey) -> Unit,
             screenExpanded: Boolean,
             inMainPage: Boolean,
             currentScreenKey: ScreenKey,
-            translatorAvailable: Boolean
+            translatorAvailable: Boolean,
+            userIsSignedIn: Boolean,
+            navigateToScreen: (screenKey: ScreenKey) -> Unit
         ) = listOf(
             // General
             Preference.PreferenceItem.NavigationButton(
@@ -115,7 +116,8 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 onClick = { navigateToScreen(User.key) },
                 itemSelected = currentScreenKey == User.key,
                 screenExpanded = screenExpanded,
-                inMainPage = inMainPage
+                inMainPage = inMainPage,
+                visible = userIsSignedIn
             ),
             // Translation
             Preference.PreferenceItem.NavigationButton(

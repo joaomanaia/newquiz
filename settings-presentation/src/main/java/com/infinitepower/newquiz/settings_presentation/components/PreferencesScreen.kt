@@ -63,7 +63,8 @@ internal fun PreferencesScreen(
                 screenExpanded = screenExpanded,
                 inMainPage = uiState.screenKey == SettingsScreenPageData.MainPage.key,
                 currentScreenKey = uiState.screenKey,
-                translatorAvailable = uiState.translatorAvailable
+                translatorAvailable = uiState.translatorAvailable,
+                userIsSignedIn = uiState.userIsSignedIn
             )
             is SettingsScreenPageData.General -> page.items(
                 scope = scope,
