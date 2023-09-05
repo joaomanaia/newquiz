@@ -6,13 +6,17 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import android.util.Log
 import androidx.core.content.getSystemService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.conflate
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class NetworkStatusTrackerImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : NetworkStatusTracker {
@@ -49,6 +53,7 @@ class NetworkStatusTrackerImpl @Inject constructor(
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
 
+        Log.d("NetworkStatusTracker", "Registering network callback")
         connectivityManager.registerNetworkCallback(request, callback)
 
         /**
@@ -60,9 +65,10 @@ class NetworkStatusTrackerImpl @Inject constructor(
          * When the flow is closed, unregisters the callback.
          */
         awaitClose {
+            Log.d("NetworkStatusTracker", "Unregistering network callback")
             connectivityManager.unregisterNetworkCallback(callback)
         }
-    }
+    }.conflate()
 
     @Suppress("DEPRECATION")
     private fun ConnectivityManager.isCurrentlyConnected() = when {
