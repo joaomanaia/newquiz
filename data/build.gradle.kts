@@ -25,7 +25,7 @@ dependencies {
     implementation(libs.ktor.client.serialization)
 
     implementation(libs.hilt.navigationCompose)
-    kapt(libs.hilt.ext.compiler)
+    ksp(libs.hilt.ext.compiler)
     implementation(libs.hilt.ext.work)
 
     implementation(libs.androidx.dataStore.preferences)

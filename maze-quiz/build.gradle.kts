@@ -30,8 +30,8 @@ dependencies {
     androidTestImplementation(libs.androidx.test.rules)
 
     implementation(libs.hilt.navigationCompose)
-    kapt(libs.hilt.ext.compiler)
-    kaptAndroidTest(libs.hilt.compiler)
+    ksp(libs.hilt.ext.compiler)
+    kspAndroidTest(libs.hilt.compiler)
 
     implementation(libs.androidx.work.ktx)
 

@@ -32,7 +32,7 @@ dependencies {
     implementation(libs.hilt.navigationCompose)
     // Hilt work manager
     implementation(libs.hilt.ext.work)
-    kapt(libs.hilt.ext.compiler)
+    ksp(libs.hilt.ext.compiler)
 
     implementation(libs.kotlinx.datetime)
 

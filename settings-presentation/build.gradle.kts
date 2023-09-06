@@ -34,7 +34,7 @@ dependencies {
 
     // Hilt with WorkManager
     implementation(libs.hilt.ext.work)
-    kapt(libs.hilt.ext.compiler)
+    ksp(libs.hilt.ext.compiler)
 
     implementation(project(Modules.core))
     implementation(project(Modules.coreAnalytics))
