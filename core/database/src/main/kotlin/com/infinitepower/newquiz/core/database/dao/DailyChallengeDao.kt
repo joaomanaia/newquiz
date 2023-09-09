@@ -1,9 +1,10 @@
-package com.infinitepower.newquiz.data.local.daily_challenge
+package com.infinitepower.newquiz.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.infinitepower.newquiz.core.database.model.DailyChallengeTaskEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

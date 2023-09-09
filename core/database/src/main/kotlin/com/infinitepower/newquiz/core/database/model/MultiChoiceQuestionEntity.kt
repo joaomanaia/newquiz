@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.local.multi_choice_quiz
+package com.infinitepower.newquiz.core.database.model
 
 import androidx.annotation.Keep
 import androidx.room.ColumnInfo

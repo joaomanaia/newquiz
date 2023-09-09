@@ -33,9 +33,7 @@ dependencies {
     implementation(libs.androidx.work.ktx)
     androidTestImplementation(libs.androidx.work.testing)
 
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
+    androidTestImplementation(libs.room.ktx)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.remoteConfig.ktx)
@@ -46,13 +44,9 @@ dependencies {
 
     implementation(project(Modules.core))
     implementation(project(Modules.coreAnalytics))
+    implementation(project(Modules.coreDatabase))
     implementation(project(Modules.domain))
     implementation(project(Modules.model))
     implementation(project(Modules.onlineServices))
     androidTestImplementation(project(Modules.coreTest))
-}
-
-ksp {
-    arg("room.schemaLocation", "$rootDir/app/schemas")
-    arg("room.incremental", "true")
 }

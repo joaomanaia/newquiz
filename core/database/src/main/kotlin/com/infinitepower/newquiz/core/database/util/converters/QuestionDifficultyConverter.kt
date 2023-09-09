@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.database.util.converters
+package com.infinitepower.newquiz.core.database.util.converters
 
 import androidx.room.TypeConverter
 import com.infinitepower.newquiz.model.question.QuestionDifficulty

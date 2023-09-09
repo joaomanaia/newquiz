@@ -1,6 +1,6 @@
 package com.infinitepower.newquiz.data.util.mappers
 
-import com.infinitepower.newquiz.data.local.daily_challenge.DailyChallengeTaskEntity
+import com.infinitepower.newquiz.core.database.model.DailyChallengeTaskEntity
 import com.infinitepower.newquiz.data.repository.daily_challenge.util.getTitle
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
@@ -21,7 +21,7 @@ fun DailyChallengeTask.toEntity(): DailyChallengeTaskEntity {
     )
 }
 
-fun DailyChallengeTaskEntity.toDomain(
+fun DailyChallengeTaskEntity.toModel(
     comparisonQuizCategories: List<ComparisonQuizCategory>
 ): DailyChallengeTask {
     val startInstant = Instant.fromEpochMilliseconds(startDate)

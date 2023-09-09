@@ -1,9 +1,9 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz.saved_questions
 
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuestionEntity
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.SavedMultiChoiceQuestionsDao
-import com.infinitepower.newquiz.data.util.mappers.toEntity
-import com.infinitepower.newquiz.data.util.mappers.toQuestion
+import com.infinitepower.newquiz.core.database.dao.SavedMultiChoiceQuestionsDao
+import com.infinitepower.newquiz.core.database.model.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.core.database.util.mappers.toEntity
+import com.infinitepower.newquiz.core.database.util.mappers.toModel
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.saved.SortSavedQuestionsBy
@@ -35,12 +35,12 @@ class SavedMultiChoiceQuestionsRepositoryImpl @Inject constructor(
             SortSavedQuestionsBy.BY_CATEGORY -> savedQuestionsDao.getFlowQuestionsSortedByCategory()
         }
 
-        return questionsFlow.map { flowQuestions -> flowQuestions.map(MultiChoiceQuestionEntity::toQuestion) }
+        return questionsFlow.map { flowQuestions -> flowQuestions.map(com.infinitepower.newquiz.core.database.model.MultiChoiceQuestionEntity::toModel) }
     }
 
     override suspend fun getQuestions(): List<MultiChoiceQuestion> = savedQuestionsDao
         .getQuestions()
-        .map(MultiChoiceQuestionEntity::toQuestion)
+        .map(MultiChoiceQuestionEntity::toModel)
 
     override suspend fun deleteAllSelected(questions: List<MultiChoiceQuestion>) {
         val questionsEntity = questions.map(MultiChoiceQuestion::toEntity)

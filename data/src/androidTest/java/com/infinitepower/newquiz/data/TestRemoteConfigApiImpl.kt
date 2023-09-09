@@ -5,7 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TestFirebaseRemoteConfigApiImpl @Inject constructor() : RemoteConfigApi {
+class TestRemoteConfigApiImpl @Inject constructor() : RemoteConfigApi {
     private val remoteConfigMap = mutableMapOf<String, Any>()
 
     override fun getLong(key: String): Long = remoteConfigMap[key] as Long

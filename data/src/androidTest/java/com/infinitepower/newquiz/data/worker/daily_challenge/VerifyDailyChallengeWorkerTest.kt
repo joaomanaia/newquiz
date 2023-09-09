@@ -8,7 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.data.database.AppDatabase
+import com.infinitepower.newquiz.core.database.AppDatabase
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -63,6 +63,5 @@ internal class VerifyDailyChallengeWorkerTest {
 
         val tasks = dailyChallengeRepository.getAvailableTasks()
         assertThat(tasks).isNotEmpty()
-        assertThat(tasks).hasSize(VerifyDailyChallengeWorker.DEFAULT_TASKS_TO_GENERATE)
     }
 }

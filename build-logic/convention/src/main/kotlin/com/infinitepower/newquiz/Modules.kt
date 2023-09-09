@@ -3,6 +3,7 @@ package com.infinitepower.newquiz
 object Modules {
     const val core = ":core"
     const val coreAnalytics = ":core:analytics"
+    const val coreDatabase = ":core:database"
     const val coreTranslation = ":core:translation"
 
     const val model = ":model"

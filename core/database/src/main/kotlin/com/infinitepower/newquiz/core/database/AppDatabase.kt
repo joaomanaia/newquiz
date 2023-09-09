@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.database
+package com.infinitepower.newquiz.core.database
 
 import android.annotation.SuppressLint
 import androidx.room.AutoMigration
@@ -7,16 +7,16 @@ import androidx.room.DeleteTable
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
-import com.infinitepower.newquiz.data.database.util.converters.ListConverter
-import com.infinitepower.newquiz.data.database.util.converters.LocalDateConverter
-import com.infinitepower.newquiz.data.database.util.converters.MathFormulaConverter
-import com.infinitepower.newquiz.data.database.util.converters.QuestionDifficultyConverter
-import com.infinitepower.newquiz.data.local.daily_challenge.DailyChallengeDao
-import com.infinitepower.newquiz.data.local.daily_challenge.DailyChallengeTaskEntity
-import com.infinitepower.newquiz.data.local.maze.MazeQuizDao
-import com.infinitepower.newquiz.data.local.maze.MazeQuizItemEntity
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuestionEntity
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.SavedMultiChoiceQuestionsDao
+import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
+import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
+import com.infinitepower.newquiz.core.database.dao.SavedMultiChoiceQuestionsDao
+import com.infinitepower.newquiz.core.database.model.DailyChallengeTaskEntity
+import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
+import com.infinitepower.newquiz.core.database.model.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.core.database.util.converters.ListConverter
+import com.infinitepower.newquiz.core.database.util.converters.LocalDateConverter
+import com.infinitepower.newquiz.core.database.util.converters.MathFormulaConverter
+import com.infinitepower.newquiz.core.database.util.converters.QuestionDifficultyConverter
 
 @SuppressLint("all")
 @TypeConverters(
@@ -50,7 +50,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun dailyChallengeDao(): DailyChallengeDao
 
     companion object {
-        const val DATABASE_NAME = "app-database"
+        internal const val DATABASE_NAME = "app-database"
     }
 
     @DeleteTable(tableName = "wordle_daily_calendar")

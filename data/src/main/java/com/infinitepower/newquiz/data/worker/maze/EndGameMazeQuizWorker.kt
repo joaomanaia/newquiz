@@ -6,7 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
-import com.infinitepower.newquiz.data.local.maze.MazeQuizDao
+import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers

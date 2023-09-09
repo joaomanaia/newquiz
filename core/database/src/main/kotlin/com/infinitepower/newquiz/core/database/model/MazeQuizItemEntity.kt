@@ -1,12 +1,11 @@
-package com.infinitepower.newquiz.data.local.maze
+package com.infinitepower.newquiz.core.database.model
 
 import androidx.annotation.Keep
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.MultiChoiceQuestionEntity
-import com.infinitepower.newquiz.data.util.mappers.toEntity
-import com.infinitepower.newquiz.data.util.mappers.toQuestion
+import com.infinitepower.newquiz.core.database.util.mappers.toEntity
+import com.infinitepower.newquiz.core.database.util.mappers.toModel
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
@@ -56,7 +55,7 @@ fun MazeQuizItemEntity.toMazeQuizItem(): MazeQuiz.MazeItem = when (type) {
     }
     MazeQuizItemEntity.Type.MULTI_CHOICE -> {
         val questionEntity = this.multiChoiceQuestion ?: throw NullPointerException("Question is null")
-        MazeQuiz.MazeItem.MultiChoice(questionEntity.toQuestion(), id, mazeSeed, difficulty, played)
+        MazeQuiz.MazeItem.MultiChoice(questionEntity.toModel(), id, mazeSeed, difficulty, played)
     }
 }
 

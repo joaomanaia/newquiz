@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.data.local.daily_challenge.DailyChallengeDao
+import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
 import com.infinitepower.newquiz.data.repository.daily_challenge.util.getTitle
 import com.infinitepower.newquiz.data.util.mappers.toEntity
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
@@ -13,7 +13,6 @@ import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.Assert.assertThrows
@@ -26,7 +25,6 @@ import kotlin.time.Duration.Companion.days
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 class DailyChallengeRepositoryImplTest {
 
     @get:Rule

@@ -1,8 +1,8 @@
 package com.infinitepower.newquiz.data.local.math_quiz
 
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.data.local.maze.MazeQuizDao
-import com.infinitepower.newquiz.data.local.maze.MazeQuizItemEntity
+import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
+import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
 import com.infinitepower.newquiz.data.repository.maze_quiz.MazeQuizRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.model.Resource
@@ -12,7 +12,6 @@ import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
@@ -22,7 +21,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class MazeMathQuizRepositoryImplTest {
     private val mazeQuizDaoMockk = mockk<MazeQuizDao>()
 

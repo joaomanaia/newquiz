@@ -10,10 +10,10 @@ import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.workDataOf
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.data.database.AppDatabase
+import com.infinitepower.newquiz.core.database.AppDatabase
 import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
-import com.infinitepower.newquiz.data.local.maze.MazeQuizDao
+import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.toEntity
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
