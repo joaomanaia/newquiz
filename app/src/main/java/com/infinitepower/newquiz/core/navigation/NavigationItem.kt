@@ -22,12 +22,17 @@ sealed class NavigationItem {
     data class Item(
         @StringRes override val text: Int,
         override val group: NavDrawerItemGroup? = null,
-        val icon: ImageVector,
+        val selectedIcon: ImageVector,
+        val unselectedIcon: ImageVector? = null,
         val badge: NavDrawerBadgeItem? = null,
         val direction: Direction,
         val primary: Boolean = false,
         val screenType: ScreenType = ScreenType.NORMAL
-    ) : NavigationItem()
+    ) : NavigationItem() {
+        fun getIcon(selected: Boolean): ImageVector {
+            return if (selected || unselectedIcon == null) selectedIcon else unselectedIcon
+        }
+    }
 }
 
 enum class ScreenType {

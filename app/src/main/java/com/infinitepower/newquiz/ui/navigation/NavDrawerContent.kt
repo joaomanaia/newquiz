@@ -120,9 +120,15 @@ private fun NavigationDrawerContent(
                     NavigationDrawerLabel(text = text)
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                 }
+
                 is NavigationItem.Item -> {
                     NavigationDrawerItem(
-                        icon = { Icon(item.icon, contentDescription = text) },
+                        icon = {
+                            Icon(
+                                imageVector = item.getIcon(item == selectedItem),
+                                contentDescription = text
+                            )
+                        },
                         label = { Text(text = text) },
                         selected = item == selectedItem,
                         onClick = { onItemClick(item) },

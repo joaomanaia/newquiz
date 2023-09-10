@@ -98,7 +98,7 @@ internal fun MediumContainer(
                         onClick = { navController.navigate(item.direction) },
                         icon = {
                             Icon(
-                                imageVector = item.icon,
+                                imageVector = item.getIcon(item == selectedItem),
                                 contentDescription = stringResource(id = item.text)
                             )
                         }

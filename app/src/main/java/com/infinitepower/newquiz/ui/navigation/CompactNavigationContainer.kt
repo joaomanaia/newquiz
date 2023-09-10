@@ -116,7 +116,7 @@ internal fun CompactContainer(
                             },
                             icon = {
                                 Icon(
-                                    imageVector = item.icon,
+                                    imageVector = item.getIcon(item == selectedItem),
                                     contentDescription = stringResource(id = item.text)
                                 )
                             }

@@ -2,13 +2,16 @@ package com.infinitepower.newquiz.ui.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Compare
+import androidx.compose.material.icons.outlined.Compare
+import androidx.compose.material.icons.outlined.ViewModule
+import androidx.compose.material.icons.rounded.Image
+import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.ListAlt
-import androidx.compose.material.icons.rounded.NewReleases
-import androidx.compose.material.icons.rounded.Password
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Route
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Today
+import androidx.compose.material.icons.rounded.ViewModule
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -36,31 +39,34 @@ internal fun getNavigationItems(
 ) = listOf(
     NavigationItem.Item(
         text = R.string.multi_choice_quiz,
-        icon = Icons.Rounded.ListAlt,
+        selectedIcon = Icons.Rounded.ListAlt,
+        unselectedIcon = Icons.Rounded.List,
         direction = MultiChoiceQuizListScreenDestination,
         primary = true
     ),
     NavigationItem.Item(
         text = R.string.wordle,
-        icon = Icons.Rounded.Password,
+        selectedIcon = Icons.Rounded.ViewModule,
+        unselectedIcon = Icons.Outlined.ViewModule,
         direction = WordleListScreenDestination,
         primary = true
     ),
     NavigationItem.Item(
         text = R.string.comparison_quiz,
-        icon = Icons.Rounded.Compare,
+        selectedIcon = Icons.Rounded.Image,
+        unselectedIcon = Icons.Outlined.Compare,
         direction = ComparisonQuizListScreenDestination,
         primary = true
     ),
     NavigationItem.Item(
         text = R.string.maze,
-        icon = Icons.Rounded.NewReleases,
+        selectedIcon = Icons.Rounded.Route,
         direction = MazeScreenDestination,
         screenType = ScreenType.NAVIGATION_HIDDEN
     ),
     NavigationItem.Item(
         text = R.string.daily_challenge,
-        icon = Icons.Rounded.Today,
+        selectedIcon = Icons.Rounded.Today,
         direction = DailyChallengeScreenDestination,
         screenType = ScreenType.NAVIGATION_HIDDEN,
         badge = NavDrawerBadgeItem(
@@ -74,14 +80,14 @@ internal fun getNavigationItems(
     ),
     NavigationItem.Item(
         text = R.string.profile,
-        icon = Icons.Rounded.Person,
+        selectedIcon = Icons.Rounded.Person,
         direction = ProfileScreenDestination,
         group = NavDrawerItemGroup("online")
     ),
     NavigationItem.Label(text = R.string.other),
     NavigationItem.Item(
         text = R.string.settings,
-        icon = Icons.Rounded.Settings,
+        selectedIcon = Icons.Rounded.Settings,
         direction = SettingsScreenDestination(),
         screenType = ScreenType.NAVIGATION_HIDDEN
     )
