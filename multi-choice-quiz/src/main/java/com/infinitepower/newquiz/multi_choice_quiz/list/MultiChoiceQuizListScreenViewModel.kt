@@ -47,13 +47,13 @@ class MultiChoiceQuizListScreenViewModel @Inject constructor(
      */
 
     val uiState: StateFlow<MultiChoiceQuizListScreenUiState> = combine(
-        savedQuestionsRepository.getFlowQuestions(),
+        savedQuestionsRepository.getCount(),
         recentCategoriesRepository.getMultiChoiceCategories(
             isInternetAvailable = networkStatusTracker.isCurrentlyConnected()
         ),
-    ) { savedQuestions, recentCategories ->
+    ) { savedQuestionsCount, recentCategories ->
         MultiChoiceQuizListScreenUiState(
-            savedQuestionsSize = savedQuestions.size,
+            savedQuestionsSize = savedQuestionsCount,
             homeCategories = recentCategories,
             internetConnectionAvailable = networkStatusTracker.isCurrentlyConnected()
         )

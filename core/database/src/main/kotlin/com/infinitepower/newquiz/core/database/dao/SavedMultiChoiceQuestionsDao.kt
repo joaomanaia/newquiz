@@ -28,6 +28,9 @@ interface SavedMultiChoiceQuestionsDao {
     @Query("SELECT * FROM saved_multi_choice_questions")
     suspend fun getQuestions(): List<MultiChoiceQuestionEntity>
 
+    @Query("SELECT count(*) FROM saved_multi_choice_questions")
+    fun getCount(): Flow<Int>
+
     @Delete
     suspend fun deleteAll(questions: List<MultiChoiceQuestionEntity>)
 }

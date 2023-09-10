@@ -42,6 +42,8 @@ class SavedMultiChoiceQuestionsRepositoryImpl @Inject constructor(
         .getQuestions()
         .map(MultiChoiceQuestionEntity::toModel)
 
+    override fun getCount(): Flow<Int> = savedQuestionsDao.getCount()
+
     override suspend fun deleteAllSelected(questions: List<MultiChoiceQuestion>) {
         val questionsEntity = questions.map(MultiChoiceQuestion::toEntity)
         savedQuestionsDao.deleteAll(questionsEntity)

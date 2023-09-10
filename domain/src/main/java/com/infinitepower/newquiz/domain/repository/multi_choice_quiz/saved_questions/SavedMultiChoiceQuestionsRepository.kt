@@ -15,5 +15,7 @@ interface SavedMultiChoiceQuestionsRepository {
 
     suspend fun getQuestions(): List<MultiChoiceQuestion>
 
+    fun getCount(): Flow<Int>
+
     suspend fun deleteAllSelected(questions: List<MultiChoiceQuestion>)
 }
