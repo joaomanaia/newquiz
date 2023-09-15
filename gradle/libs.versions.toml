@@ -1,5 +1,6 @@
 [versions]
 
+androidDesugarJdkLibs = "2.0.3"
 androidGradlePlugin = "8.2.0-beta03"
 androidxAnnotation = "1.7.0-rc01"
 androidxActivity = "1.8.0-alpha07"
@@ -49,6 +50,7 @@ turbine = "1.0.0"
 
 [libraries]
 
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidxAnnotation" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }

@@ -17,7 +17,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object FirebaseRemoteConfigInitializer : Initializer<FirebaseRemoteConfig> {
+class FirebaseRemoteConfigInitializer : Initializer<FirebaseRemoteConfig> {
     @Provides
     @Singleton
     override fun create(@ApplicationContext context: Context): FirebaseRemoteConfig {

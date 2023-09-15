@@ -5,10 +5,11 @@ import androidx.startup.Initializer
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.workers.AppStartLoggingAnalyticsWorker
 import com.infinitepower.newquiz.data.worker.daily_challenge.VerifyDailyChallengeWorker
+import com.infinitepower.newquiz.initializer.firebase.FirebaseRemoteConfigInitializer
 import com.infinitepower.newquiz.online_services.core.worker.CheckUserDBWorker
 
 @Suppress("unused")
-object EnqueueStartWorksInitializer : Initializer<Unit> {
+class EnqueueStartWorksInitializer : Initializer<Unit> {
     override fun create(context: Context) {
         val workManager = WorkManager.getInstance(context)
 
@@ -18,6 +19,7 @@ object EnqueueStartWorksInitializer : Initializer<Unit> {
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = listOf(
-        WorkManagerInitializer::class.java
+        WorkManagerInitializer::class.java,
+        FirebaseRemoteConfigInitializer::class.java
     )
 }

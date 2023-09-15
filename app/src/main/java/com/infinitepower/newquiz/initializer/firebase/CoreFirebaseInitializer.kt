@@ -7,7 +7,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 
-object CoreFirebaseInitializer : Initializer<FirebaseApp> {
+class CoreFirebaseInitializer : Initializer<FirebaseApp> {
     override fun create(context: Context): FirebaseApp {
         return Firebase.initialize(context) ?: throw IllegalStateException("FirebaseApp is null")
     }

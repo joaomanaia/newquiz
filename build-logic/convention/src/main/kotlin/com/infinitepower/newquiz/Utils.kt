@@ -19,3 +19,6 @@ internal fun DependencyHandler.kspAndroidTest(dependencyNotation: Any) =
 
 internal fun DependencyHandler.normalImplementation(dependencyNotation: Any) =
     add("normalImplementation", dependencyNotation)
+
+internal fun DependencyHandler.coreLibraryDesugaring(dependencyNotation: Any) =
+    add("coreLibraryDesugaring", dependencyNotation)

@@ -17,7 +17,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object WorkManagerInitializer : Initializer<WorkManager> {
+class WorkManagerInitializer : Initializer<WorkManager> {
     @Provides
     @Singleton
     override fun create(@ApplicationContext context: Context): WorkManager {

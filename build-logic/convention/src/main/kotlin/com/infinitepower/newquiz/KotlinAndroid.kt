@@ -4,6 +4,7 @@ import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
@@ -22,6 +23,8 @@ internal fun Project.configureKotlinAndroid(
         compileOptions {
             sourceCompatibility = ProjectConfig.javaVersionCompatibility
             targetCompatibility = ProjectConfig.javaVersionCompatibility
+
+            isCoreLibraryDesugaringEnabled = true
         }
 
         packaging {
@@ -34,6 +37,10 @@ internal fun Project.configureKotlinAndroid(
     }
 
     configureKotlinAndroid()
+
+    dependencies {
+        coreLibraryDesugaring(libs.findLibrary("android.desugarJdkLibs").get())
+    }
 }
 
 internal fun Project.configureKotlinJvm() {
