@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.data.worker.daily_challenge
 
 import android.content.Context
-import android.os.Build
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -13,7 +12,6 @@ import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChalleng
 import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.days
 import kotlin.time.toJavaDuration
 
