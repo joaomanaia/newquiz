@@ -22,7 +22,7 @@ plugins {
     alias(libs.plugins.gms) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ksp) apply false
-    id("com.github.ben-manes.versions") version "0.47.0"
+    id("com.github.ben-manes.versions") version "0.48.0"
 }
 
 tasks.register("clean", Delete::class) {
