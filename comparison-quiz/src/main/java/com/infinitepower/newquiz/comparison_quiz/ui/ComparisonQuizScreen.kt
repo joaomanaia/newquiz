@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonItem
 import com.infinitepower.newquiz.comparison_quiz.ui.components.GameOverContent
@@ -169,8 +171,6 @@ private fun ComparisonQuizContent(
     onAnswerClick: (ComparisonQuizItem) -> Unit,
     onSkipClick: () -> Unit
 ) {
-    val attributionText = gameCategory.dataSourceAttribution?.text
-
     ComparisonQuizContainer(
         modifier = modifier.fillMaxSize(),
         verticalContent = verticalContent,
@@ -213,11 +213,11 @@ private fun ComparisonQuizContent(
                 SkipIconButton(onClick = onSkipClick)
             }
         },
-        attributionText = attributionText?.let { text ->
+        attributionContent = gameCategory.dataSourceAttribution?.let { data ->
             {
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.bodyMedium,
+                DataSourceAttributionContent(
+                    text = data.text,
+                    imageUrl = data.logo
                 )
             }
         }
@@ -233,7 +233,7 @@ fun ComparisonQuizContainer(
     firstQuestionContent: @Composable BoxScope.() -> Unit,
     secondQuestionContent: @Composable BoxScope.() -> Unit,
     midContent: @Composable () -> Unit,
-    attributionText: (@Composable () -> Unit)? = null,
+    attributionContent: (@Composable () -> Unit)? = null,
     skipButtonContent: (@Composable () -> Unit)? = null
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
@@ -272,9 +272,9 @@ fun ComparisonQuizContainer(
                     .weight(1f),
                 content = secondQuestionContent
             )
-            attributionText?.let { attribution ->
+            attributionContent?.let { content ->
                 Spacer(modifier = Modifier.height(spaceMedium))
-                attribution()
+                content()
             }
         }
     } else {
@@ -310,7 +310,7 @@ fun ComparisonQuizContainer(
                     content = secondQuestionContent
                 )
             }
-            attributionText?.let { attribution ->
+            attributionContent?.let { attribution ->
                 Spacer(modifier = Modifier.height(spaceMedium))
                 attribution()
             }
@@ -365,7 +365,7 @@ fun ComparisonMidContent(
 }
 
 @Composable
-fun ComparisonMidContainer(
+private fun ComparisonMidContainer(
     modifier: Modifier = Modifier,
     verticalContent: Boolean,
     currentPositionContent: @Composable () -> Unit,
@@ -391,6 +391,33 @@ fun ComparisonMidContainer(
             currentPositionContent()
             midContent()
             highestPositionContent()
+        }
+    }
+}
+
+@Composable
+private fun DataSourceAttributionContent(
+    modifier: Modifier = Modifier,
+    text: String,
+    imageUrl: String? = null
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        if (imageUrl != null) {
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = "Logo of the data source",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(MaterialTheme.shapes.extraSmall)
+            )
         }
     }
 }
