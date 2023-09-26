@@ -155,8 +155,8 @@ private fun MazeScreenImpl(
             if (!uiState.loading && uiState.isMazeEmpty) {
                 GenerateMazeComponent(
                     modifier = Modifier.fillMaxSize(),
-                    onGenerateClick = { seed, gamesModeSelected ->
-                        uiEvent(MazeScreenUiEvent.GenerateMaze(seed, gamesModeSelected))
+                    onGenerateClick = { seed, multiChoiceCategories, wordleCategories ->
+                        uiEvent(MazeScreenUiEvent.GenerateMaze(seed, multiChoiceCategories, wordleCategories))
                     }
                 )
             }

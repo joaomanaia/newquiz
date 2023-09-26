@@ -154,14 +154,12 @@ sealed class AnalyticsEvent(
     @Keep
     data class CreateMaze(
         val seed: Int,
-        val questionsSize: Int,
-        val gameModes: List<Int>
+        val questionsSize: Int
     ) : AnalyticsEvent(
         type = "create_maze",
         extras = setOf(
             Param("seed", seed),
-            Param("questions_size", questionsSize),
-            Param("game_modes", gameModes.toString())
+            Param("questions_size", questionsSize)
         )
     )
 

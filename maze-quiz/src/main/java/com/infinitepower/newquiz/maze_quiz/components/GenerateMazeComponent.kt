@@ -20,7 +20,9 @@ import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker.Companion.GameModes
+import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
+import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
+import com.infinitepower.newquiz.model.wordle.WordleCategory
 
 @Composable
 @ExperimentalMaterial3Api
@@ -28,7 +30,8 @@ internal fun GenerateMazeComponent(
     modifier: Modifier = Modifier,
     onGenerateClick: (
         seed: Int?,
-        gameModesSelected: List<Int>?
+        selectedMultiChoiceCategories: List<MultiChoiceCategory>,
+        selectedWordleCategories: List<WordleCategory>
     ) -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
@@ -50,7 +53,9 @@ internal fun GenerateMazeComponent(
         item {
             GenerateMazeCard(
                 onClick = {
-                    onGenerateClick(null, null) // null list means all game modes selected
+                    val allMultiChoiceCategories = GenerateMazeQuizWorker.GameModes.MultiChoice.categories
+                    val allWordleCategories = GenerateMazeQuizWorker.GameModes.Wordle.categories
+                    onGenerateClick(null, allMultiChoiceCategories, allWordleCategories)
                 }
             )
         }
@@ -58,15 +63,15 @@ internal fun GenerateMazeComponent(
         item {
             GenerateOfflineMazeCard(
                 onClick = {
-                    val offlineGameModesKeys = GameModes.offlineGameModesKeys()
-
-                    onGenerateClick(null, offlineGameModesKeys)
+                    val offlineMultiChoiceCategories = GenerateMazeQuizWorker.GameModes.MultiChoice.getOfflineCategories()
+                    val offlineWordleCategories = GenerateMazeQuizWorker.GameModes.Wordle.getOfflineCategories()
+                    onGenerateClick(null, offlineMultiChoiceCategories, offlineWordleCategories)
                 }
             )
         }
 
         item {
-            GenerateMazeWithSeedCard(onClick = onGenerateClick)
+            GenerateCustomMaze(onClick = onGenerateClick)
         }
     }
 }
@@ -112,7 +117,7 @@ private fun GenerateMazeComponentPreview() {
         Surface {
             GenerateMazeComponent(
                 modifier = Modifier.padding(16.dp),
-                onGenerateClick = { _, _ -> }
+                onGenerateClick = { _, _, _ -> }
             )
         }
     }

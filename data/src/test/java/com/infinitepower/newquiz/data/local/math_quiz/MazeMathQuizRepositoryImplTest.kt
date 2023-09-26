@@ -5,7 +5,6 @@ import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
 import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
 import com.infinitepower.newquiz.data.repository.maze_quiz.MazeQuizRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
-import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
@@ -13,7 +12,6 @@ import com.infinitepower.newquiz.model.wordle.WordleWord
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
@@ -50,15 +48,10 @@ internal class MazeMathQuizRepositoryImplTest {
 
     @Test
     fun `get saved maze quiz flow test`() = runTest {
-        val res = mazeQuizRepository
+        val maze = mazeQuizRepository
             .getSavedMazeQuizFlow()
-            .filter { it is Resource.Success || it is Resource.Error }
             .catch { thr -> fail(thr) }
             .single()
-
-        assertThat(res).isInstanceOf(Resource.Success::class.java)
-
-        val maze = res.data ?: fail("Math quiz maze is null")
 
         assertThat(maze.items).hasSize(1)
         assertThat(maze.items).containsExactly(

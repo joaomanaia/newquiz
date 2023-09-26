@@ -278,4 +278,5 @@
     <string name="require_charging">Require Charging</string>
     <string name="translation_require_charging_description">Only download the translation model when the device is charging.</string>
     <string name="confirm">Confirm</string>
+    <string name="others">Others</string>
 </resources>

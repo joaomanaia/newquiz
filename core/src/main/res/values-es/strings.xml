@@ -284,4 +284,5 @@
     <string name="download_translation_model_description">Descargar el modelo de la traducción para la traducción en el dispositivo.</string>
     <string name="downloading_translation_model">Descargando el modelo de la traducción</string>
     <string name="target_language">Idioma del destino</string>
+    <string name="others">Otros</string>
 </resources>

@@ -5,11 +5,8 @@ import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
 import com.infinitepower.newquiz.core.database.model.toEntity
 import com.infinitepower.newquiz.core.database.model.toMazeQuizItem
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
-import com.infinitepower.newquiz.model.FlowResource
-import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.maze.MazeQuiz
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,24 +15,10 @@ import javax.inject.Singleton
 class MazeQuizRepositoryImpl @Inject constructor(
     private val mazeQuizDao: MazeQuizDao
 ) : MazeQuizRepository {
-    override fun getSavedMazeQuizFlow(): FlowResource<MazeQuiz> = flow {
-        try {
-            emit(Resource.Loading())
-
-            val mazeFlow = mazeQuizDao
-                .getAllMazeItemsFlow()
-                .map { entities -> entities.map(MazeQuizItemEntity::toMazeQuizItem) }
-                .map { mazeItems ->
-                    val maze = MazeQuiz(items = mazeItems)
-                    Resource.Success(maze)
-                }
-
-            emitAll(mazeFlow)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(Resource.Error(e.localizedMessage ?: "Error while loading saved maze quiz"))
-        }
-    }
+    override fun getSavedMazeQuizFlow(): Flow<MazeQuiz> = mazeQuizDao
+        .getAllMazeItemsFlow()
+        .map { entities -> entities.map(MazeQuizItemEntity::toMazeQuizItem) }
+        .map { mazeItems -> MazeQuiz(items = mazeItems) }
 
     override suspend fun countAllItems(): Int = mazeQuizDao.countAllItems()
 
