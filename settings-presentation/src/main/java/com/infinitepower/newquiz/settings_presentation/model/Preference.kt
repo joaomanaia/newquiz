@@ -3,7 +3,7 @@ package com.infinitepower.newquiz.settings_presentation.model
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
+import com.infinitepower.newquiz.core.datastore.PreferenceRequest
 
 /**
  * The basic building block that represents an individual setting displayed to a user in the preference hierarchy.

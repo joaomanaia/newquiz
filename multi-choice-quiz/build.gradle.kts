@@ -46,6 +46,7 @@ dependencies {
 
     implementation(project(Modules.core))
     implementation(project(Modules.coreAnalytics))
+    implementation(project(Modules.coreDatastore))
     implementation(project(Modules.coreTranslation))
     implementation(project(Modules.model))
     implementation(project(Modules.domain))

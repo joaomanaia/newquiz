@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.core.dataStore.manager
+package com.infinitepower.newquiz.core.datastore
 
 import androidx.datastore.preferences.core.Preferences
 

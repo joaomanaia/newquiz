@@ -40,8 +40,6 @@ dependencies {
 
     implementation(libs.google.material)
 
-    implementation(libs.androidx.dataStore.preferences)
-
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.remoteConfig.ktx)
 

@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.core.common.dataStore
+package com.infinitepower.newquiz.core.datastore.common
 
 import android.content.Context
 import androidx.annotation.Keep
@@ -10,9 +10,9 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
+import com.infinitepower.newquiz.core.datastore.PreferenceRequest
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
+import com.infinitepower.newquiz.core.R as CoreR
 import java.util.Locale
 
 val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -109,23 +109,23 @@ data class SettingsWordleLang(
 val textWordleSupportedLang = listOf(
     SettingsWordleLang(
         key = "en",
-        languageId = R.string.english,
-        rawListId = R.raw.wordle_list
+        languageId = CoreR.string.english,
+        rawListId = CoreR.raw.wordle_list
     ),
     SettingsWordleLang(
         key = "pt",
-        languageId = R.string.portuguese,
-        rawListId = R.raw.wordle_list_pt
+        languageId = CoreR.string.portuguese,
+        rawListId = CoreR.raw.wordle_list_pt
     ),
     SettingsWordleLang(
         key = "es",
-        languageId = R.string.spanish,
-        rawListId = R.raw.wordle_list_es
+        languageId = CoreR.string.spanish,
+        rawListId = CoreR.raw.wordle_list_es
     ),
     SettingsWordleLang(
         key = "fr",
-        languageId = R.string.french,
-        rawListId = R.raw.wordle_list_fr
+        languageId = CoreR.string.french,
+        rawListId = CoreR.raw.wordle_list_fr
     )
 )
 

@@ -12,10 +12,8 @@ android {
 dependencies {
     implementation(project(Modules.model))
     implementation(project(Modules.core))
+    implementation(project(Modules.coreDatastore))
 
     "normalImplementation"(libs.google.mlKit.translate)
     "normalImplementation"(libs.kotlinx.coroutines.playServices)
-
-    // Preferences DataStore
-    implementation(libs.androidx.dataStore.preferences)
 }

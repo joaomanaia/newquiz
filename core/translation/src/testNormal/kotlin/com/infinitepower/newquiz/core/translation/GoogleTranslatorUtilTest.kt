@@ -2,8 +2,8 @@ package com.infinitepower.newquiz.core.translation
 
 import com.google.common.truth.Truth.assertThat
 import com.google.mlkit.nl.translate.TranslateLanguage
-import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

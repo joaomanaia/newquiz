@@ -2,10 +2,10 @@ package com.infinitepower.newquiz.data.repository.wordle
 
 import android.content.Context
 import androidx.core.text.isDigitsOnly
-import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
-import com.infinitepower.newquiz.core.common.dataStore.textWordleSupportedLang
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
-import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.common.textWordleSupportedLang
+import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository

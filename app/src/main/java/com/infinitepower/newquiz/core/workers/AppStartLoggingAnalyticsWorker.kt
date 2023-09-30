@@ -8,9 +8,9 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.analytics.UserProperty
-import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
-import com.infinitepower.newquiz.core.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.translation.TranslatorUtil
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject

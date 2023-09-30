@@ -1,28 +1,27 @@
-package com.infinitepower.newquiz.core.dataStore.manager
+package com.infinitepower.newquiz.core.datastore.manager
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.core.datastore.PreferenceRequest
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
-internal class DataStoreManagerImplTest {
+internal class PreferencesDatastoreManagerTest {
     private lateinit var dataStoreManager: DataStoreManager
 
     private val dataStore = mockk<DataStore<Preferences>>(relaxed = true)
 
     @BeforeEach
     fun setup() {
-        dataStoreManager = DataStoreManagerImpl(dataStore)
+        dataStoreManager = PreferencesDatastoreManager(dataStore)
     }
 
     @Test

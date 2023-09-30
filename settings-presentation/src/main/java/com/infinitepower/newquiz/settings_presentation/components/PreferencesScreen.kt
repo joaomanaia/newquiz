@@ -10,9 +10,9 @@ import androidx.compose.ui.platform.LocalContext
 import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.analytics.UserProperty
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
-import com.infinitepower.newquiz.core.common.dataStore.settingsDataStore
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
+import com.infinitepower.newquiz.core.datastore.common.settingsDataStore
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.datastore.manager.PreferencesDatastoreManager
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.settings_presentation.SettingsScreenUiEvent
 import com.infinitepower.newquiz.settings_presentation.SettingsUiState
@@ -30,7 +30,7 @@ internal fun PreferencesScreen(
     val context = LocalContext.current
     val dataStore = context.settingsDataStore
     val dataStoreManager = remember {
-        DataStoreManagerImpl(dataStore)
+        PreferencesDatastoreManager(dataStore)
     }
 
     PreferencesScreen(
@@ -107,7 +107,7 @@ private fun PreferencesScreenPreview() {
     val context = LocalContext.current
     val dataStore = context.settingsDataStore
     val dataStoreManager = remember {
-        DataStoreManagerImpl(dataStore)
+        PreferencesDatastoreManager(dataStore)
     }
 
     NewQuizTheme {

@@ -1,11 +1,11 @@
-package com.infinitepower.newquiz.core.common.dataStore
+package com.infinitepower.newquiz.core.datastore.common
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
+import com.infinitepower.newquiz.core.datastore.PreferenceRequest
 
 val Context.recentCategoriesDataStore: DataStore<Preferences> by preferencesDataStore(name = "recent_categories")
 

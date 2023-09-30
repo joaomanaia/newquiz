@@ -28,8 +28,6 @@ dependencies {
     ksp(libs.hilt.ext.compiler)
     implementation(libs.hilt.ext.work)
 
-    implementation(libs.androidx.dataStore.preferences)
-
     implementation(libs.androidx.work.ktx)
     androidTestImplementation(libs.androidx.work.testing)
 
@@ -45,6 +43,7 @@ dependencies {
     implementation(project(Modules.core))
     implementation(project(Modules.coreAnalytics))
     implementation(project(Modules.coreDatabase))
+    implementation(project(Modules.coreDatastore))
     implementation(project(Modules.domain))
     implementation(project(Modules.model))
     implementation(project(Modules.onlineServices))

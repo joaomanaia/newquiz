@@ -1,9 +1,9 @@
 package com.infinitepower.newquiz.data.repository.comparison_quiz
 
 import com.infinitepower.newquiz.core.common.BaseApiUrls
-import com.infinitepower.newquiz.core.common.dataStore.ComparisonQuizDataStoreCommon
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
-import com.infinitepower.newquiz.core.di.ComparisonQuizDataStoreManager
+import com.infinitepower.newquiz.core.datastore.common.ComparisonQuizDataStoreCommon
+import com.infinitepower.newquiz.core.datastore.di.ComparisonQuizDataStoreManager
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.FlowResource
 import com.infinitepower.newquiz.model.Resource

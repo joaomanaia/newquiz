@@ -82,7 +82,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewModelCompose)
 
     implementation(libs.androidx.startup.runtime)
-    implementation(libs.androidx.dataStore.preferences)
 
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling)
@@ -124,6 +123,7 @@ dependencies {
 
     implementation(project(Modules.core))
     implementation(project(Modules.coreAnalytics))
+    implementation(project(Modules.coreDatastore))
     implementation(project(Modules.coreTranslation))
     implementation(project(Modules.model))
     implementation(project(Modules.multiChoicequiz))

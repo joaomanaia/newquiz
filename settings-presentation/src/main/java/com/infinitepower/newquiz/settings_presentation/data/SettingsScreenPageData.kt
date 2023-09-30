@@ -31,8 +31,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
-import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.translation.TranslatorModelState
 import com.infinitepower.newquiz.core.translation.TranslatorTargetLanguages

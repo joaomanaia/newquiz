@@ -26,6 +26,7 @@ include(":app")
 include(":core")
 include(":core:analytics")
 include(":core:database")
+include(":core:datastore")
 include(":core:translation")
 
 include(":core-test")

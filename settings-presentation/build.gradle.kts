@@ -25,8 +25,6 @@ dependencies {
 
     implementation(libs.hilt.navigationCompose)
 
-    implementation(libs.androidx.dataStore.preferences)
-
     implementation(libs.google.oss.licenses)
 
     // WorkManager
@@ -38,6 +36,7 @@ dependencies {
 
     implementation(project(Modules.core))
     implementation(project(Modules.coreAnalytics))
+    implementation(project(Modules.coreDatastore))
     implementation(project(Modules.coreTranslation))
     implementation(project(Modules.data))
     implementation(project(Modules.domain))

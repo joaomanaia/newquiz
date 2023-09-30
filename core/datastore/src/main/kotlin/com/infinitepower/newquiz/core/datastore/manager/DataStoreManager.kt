@@ -1,6 +1,7 @@
-package com.infinitepower.newquiz.core.dataStore.manager
+package com.infinitepower.newquiz.core.datastore.manager
 
 import androidx.datastore.preferences.core.Preferences
+import com.infinitepower.newquiz.core.datastore.PreferenceRequest
 import kotlinx.coroutines.flow.Flow
 
 interface DataStoreManager {

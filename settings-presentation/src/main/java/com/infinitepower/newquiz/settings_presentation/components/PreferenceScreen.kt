@@ -12,15 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManagerImpl
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.settings_presentation.components.widgets.CustomPreferenceWidget
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 
 /**
  * Preference Screen composable which contains a list of [Preference] items
  * @param items [Preference] items which should be displayed on the preference screen. An item can be a single [PreferenceItem] or a group ([PreferenceGroup])
- * @param dataStoreManager a [DataStoreManagerImpl] responsible for the dataStore backing the preference screen
+ * @param dataStoreManager a [DataStoreManager] responsible for the dataStore backing the preference screen
  * @param modifier [Modifier] to be applied to the preferenceScreen layout
  */
 @Composable

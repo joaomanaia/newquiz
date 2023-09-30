@@ -1,10 +1,10 @@
 package com.infinitepower.newquiz.data.repository.home
 
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core.common.dataStore.RecentCategoryDataStoreCommon
-import com.infinitepower.newquiz.core.common.dataStore.SettingsCommon
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
-import com.infinitepower.newquiz.core.dataStore.manager.PreferenceRequest
+import com.infinitepower.newquiz.core.datastore.PreferenceRequest
+import com.infinitepower.newquiz.core.datastore.common.RecentCategoryDataStoreCommon
+import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository

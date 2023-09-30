@@ -4,6 +4,7 @@ object Modules {
     const val core = ":core"
     const val coreAnalytics = ":core:analytics"
     const val coreDatabase = ":core:database"
+    const val coreDatastore = ":core:datastore"
     const val coreTranslation = ":core:translation"
 
     const val model = ":model"

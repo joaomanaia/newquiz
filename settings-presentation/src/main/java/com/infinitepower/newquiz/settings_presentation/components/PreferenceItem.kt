@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.datastore.preferences.core.Preferences
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
-import com.infinitepower.newquiz.core.dataStore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.settings_presentation.components.widgets.DropDownPreferenceWidget
 import com.infinitepower.newquiz.settings_presentation.components.widgets.ListPreferenceWidget
 import com.infinitepower.newquiz.settings_presentation.components.widgets.MultiSelectListPreferenceWidget
