@@ -14,7 +14,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.util.asString
-import com.infinitepower.newquiz.core_test.utils.setTestContent
+import com.infinitepower.newquiz.core.testing.utils.setTestContent
 import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
 import org.junit.Rule
 import org.junit.runner.RunWith

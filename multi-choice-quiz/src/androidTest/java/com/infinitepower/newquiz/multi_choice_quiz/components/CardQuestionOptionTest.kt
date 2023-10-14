@@ -10,7 +10,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core_test.utils.setTestContent
+import com.infinitepower.newquiz.core.testing.utils.setTestContent
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import org.junit.Rule
 import org.junit.Test

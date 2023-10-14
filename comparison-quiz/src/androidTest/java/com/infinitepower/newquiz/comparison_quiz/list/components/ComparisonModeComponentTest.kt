@@ -16,8 +16,8 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
-import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
+import com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme
+import com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import org.junit.Rule
 import org.junit.Test
@@ -32,9 +32,9 @@ internal class ComparisonModeComponentTest {
     @Test
     fun comparisonModeComponent_greater_shouldDisplayTitleAndIcon() {
         componentRule.setContent {
-            setTestDeviceLocale()
+            com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale()
 
-            NewQuizTestTheme {
+            com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = true,
                     mode = ComparisonMode.GREATER
@@ -58,9 +58,9 @@ internal class ComparisonModeComponentTest {
     @Test
     fun comparisonModeComponent_lesser_shouldDisplayTitleAndIcon() {
         componentRule.setContent {
-            setTestDeviceLocale()
+            com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale()
 
-            NewQuizTestTheme {
+            com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = true,
                     mode = ComparisonMode.LESSER
@@ -86,9 +86,9 @@ internal class ComparisonModeComponentTest {
         var clicked = false
 
         componentRule.setContent {
-            setTestDeviceLocale()
+            com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale()
 
-            NewQuizTestTheme {
+            com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = true,
                     enabled = true,
@@ -116,9 +116,9 @@ internal class ComparisonModeComponentTest {
         var clicked = false
 
         componentRule.setContent {
-            setTestDeviceLocale()
+            com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale()
 
-            NewQuizTestTheme {
+            com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = true,
                     enabled = false,
@@ -143,9 +143,9 @@ internal class ComparisonModeComponentTest {
     @Test
     fun comparisonModeComponent_shouldBeSelected() {
         componentRule.setContent {
-            setTestDeviceLocale()
+            com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale()
 
-            NewQuizTestTheme {
+            com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = true,
                     mode = ComparisonMode.LESSER,
@@ -163,9 +163,9 @@ internal class ComparisonModeComponentTest {
     @Test
     fun comparisonModeComponent_should_not_beSelected() {
         componentRule.setContent {
-            setTestDeviceLocale()
+            com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale()
 
-            NewQuizTestTheme {
+            com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme {
                 ComparisonModeComponent(
                     selected = false,
                     mode = ComparisonMode.LESSER,

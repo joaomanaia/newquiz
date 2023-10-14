@@ -55,6 +55,6 @@ dependencies {
 
     // Modules
     implementation(project(Modules.model))
-    testImplementation(project(Modules.coreTest))
-    androidTestImplementation(project(Modules.coreTest))
+    testImplementation(project(Modules.coreTesting))
+    androidTestImplementation(project(Modules.coreTesting))
 }

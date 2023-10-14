@@ -31,8 +31,6 @@ dependencies {
     implementation(libs.androidx.work.ktx)
     androidTestImplementation(libs.androidx.work.testing)
 
-    androidTestImplementation(libs.room.ktx)
-
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.remoteConfig.ktx)
     implementation(libs.firebase.auth.ktx)
@@ -47,5 +45,5 @@ dependencies {
     implementation(project(Modules.domain))
     implementation(project(Modules.model))
     implementation(project(Modules.onlineServices))
-    androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(project(Modules.coreTesting))
 }

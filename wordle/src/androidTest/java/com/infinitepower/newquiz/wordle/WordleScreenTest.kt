@@ -16,7 +16,7 @@ import androidx.work.WorkManager
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
 import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
-import com.infinitepower.newquiz.core_test.utils.setTestContent
+import com.infinitepower.newquiz.core.testing.utils.setTestContent
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import dagger.hilt.android.testing.HiltAndroidRule

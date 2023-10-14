@@ -23,8 +23,8 @@ import com.infinitepower.newquiz.comparison_quiz.core.ComparisonQuizCoreImpl
 import com.infinitepower.newquiz.comparison_quiz.data.comparison_quiz.FakeComparisonQuizRepositoryImpl
 import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
-import com.infinitepower.newquiz.core_test.compose.theme.NewQuizTestTheme
-import com.infinitepower.newquiz.core_test.utils.setTestDeviceLocale
+import com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme
+import com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
@@ -151,8 +151,8 @@ internal class ComparisonQuizScreenTest {
         composeTestRule.setContent {
             val windowSizeClass = calculateWindowSizeClass(activity = composeTestRule.activity)
 
-            NewQuizTestTheme {
-                setTestDeviceLocale()
+            com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme {
+                com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale()
 
                 ComparisonQuizScreen(
                     windowSizeClass = windowSizeClass,

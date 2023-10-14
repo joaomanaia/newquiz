@@ -31,7 +31,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
                 defaultConfig {
                     targetSdk = ProjectConfig.targetSdk
-                    testInstrumentationRunner = "com.infinitepower.newquiz.core_test.HiltTestRunner"
+                    testInstrumentationRunner = "com.infinitepower.newquiz.core.testing.NewQuizTestRunner"
                 }
             }
 
@@ -55,7 +55,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 androidTestImplementation(libs.findLibrary("androidx.test.runner").get())
                 androidTestImplementation(libs.findLibrary("androidx.test.rules").get())
                 androidTestImplementation(libs.findLibrary("androidx.compose.ui.test").get())
-                androidTestImplementation(project(Modules.coreTest))
+                androidTestImplementation(project(Modules.coreTesting))
             }
 
             tasks.withType<Test> {

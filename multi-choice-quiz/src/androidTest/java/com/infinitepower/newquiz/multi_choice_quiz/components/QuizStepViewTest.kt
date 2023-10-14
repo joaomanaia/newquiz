@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core_test.utils.setTestContent
+import com.infinitepower.newquiz.core.testing.utils.setTestContent
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
 import org.junit.Rule
