@@ -1,5 +1,3 @@
-import com.infinitepower.newquiz.Modules
-
 plugins {
     id("newquiz.android.library")
     id("newquiz.android.hilt")
@@ -38,12 +36,12 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
-    implementation(project(Modules.core))
-    implementation(project(Modules.coreAnalytics))
-    implementation(project(Modules.coreDatabase))
-    implementation(project(Modules.coreDatastore))
-    implementation(project(Modules.domain))
-    implementation(project(Modules.model))
-    implementation(project(Modules.onlineServices))
-    androidTestImplementation(project(Modules.coreTesting))
+    implementation(projects.core)
+    implementation(projects.core.analytics)
+    implementation(projects.core.database)
+    implementation(projects.core.datastore)
+    implementation(projects.domain)
+    implementation(projects.model)
+    implementation(projects.onlineServices)
+    androidTestImplementation(projects.core.testing)
 }

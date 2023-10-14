@@ -1,6 +1,5 @@
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
-import com.infinitepower.newquiz.Modules
 import com.infinitepower.newquiz.ProjectConfig
 import com.infinitepower.newquiz.androidTestImplementation
 import com.infinitepower.newquiz.configureFlavors
@@ -14,7 +13,6 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.kotlin
-import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.withType
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
@@ -55,7 +53,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 androidTestImplementation(libs.findLibrary("androidx.test.runner").get())
                 androidTestImplementation(libs.findLibrary("androidx.test.rules").get())
                 androidTestImplementation(libs.findLibrary("androidx.compose.ui.test").get())
-                androidTestImplementation(project(Modules.coreTesting))
+                androidTestImplementation(project(":core:testing"))
             }
 
             tasks.withType<Test> {

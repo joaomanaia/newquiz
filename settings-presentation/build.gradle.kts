@@ -1,5 +1,3 @@
-import com.infinitepower.newquiz.Modules
-
 plugins {
     id("newquiz.android.library.compose")
     id("newquiz.android.hilt")
@@ -34,14 +32,14 @@ dependencies {
     implementation(libs.hilt.ext.work)
     ksp(libs.hilt.ext.compiler)
 
-    implementation(project(Modules.core))
-    implementation(project(Modules.coreAnalytics))
-    implementation(project(Modules.coreDatastore))
-    implementation(project(Modules.coreTranslation))
-    implementation(project(Modules.data))
-    implementation(project(Modules.domain))
-    implementation(project(Modules.model))
-    implementation(project(Modules.onlineServices))
+    implementation(projects.core)
+    implementation(projects.core.analytics)
+    implementation(projects.core.datastore)
+    implementation(projects.core.translation)
+    implementation(projects.data)
+    implementation(projects.domain)
+    implementation(projects.model)
+    implementation(projects.onlineServices)
 }
 
 tasks.withType<Test> {

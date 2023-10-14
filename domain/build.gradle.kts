@@ -1,11 +1,9 @@
-import com.infinitepower.newquiz.Modules
-
 plugins {
     id("newquiz.jvm.library")
 }
 
 dependencies {
-    implementation(project(Modules.model))
+    implementation(projects.model)
 
     implementation(libs.javax.inject)
     implementation(libs.androidx.annotation)

@@ -1,5 +1,3 @@
-import com.infinitepower.newquiz.Modules
-
 plugins {
     id("newquiz.android.library.compose")
     id("newquiz.android.hilt")
@@ -45,7 +43,7 @@ dependencies {
     implementation(libs.vico.compose)
     implementation(libs.vico.compose.m3)
 
-    implementation(project(Modules.core))
-    implementation(project(Modules.coreAnalytics))
-    implementation(project(Modules.model))
+    implementation(projects.core)
+    implementation(projects.core.analytics)
+    implementation(projects.model)
 }

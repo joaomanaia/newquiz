@@ -1,5 +1,3 @@
-import com.infinitepower.newquiz.Modules
-
 plugins {
     id("newquiz.android.library.compose")
     id("newquiz.android.hilt")
@@ -23,10 +21,10 @@ dependencies {
 
     debugApi(libs.androidx.compose.ui.testManifest)
 
-    implementation(project(Modules.model))
-    implementation(project(Modules.core))
-    implementation(project(Modules.data))
-    implementation(project(Modules.domain))
-    implementation(project(Modules.coreDatabase))
-    implementation(project(Modules.onlineServices))
+    implementation(projects.model)
+    implementation(projects.core)
+    implementation(projects.core.database)
+    implementation(projects.data)
+    implementation(projects.domain)
+    implementation(projects.onlineServices)
 }

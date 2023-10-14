@@ -1,4 +1,3 @@
-import com.infinitepower.newquiz.Modules
 import com.infinitepower.newquiz.ProjectConfig
 
 plugins {
@@ -121,18 +120,18 @@ dependencies {
 
     implementation(libs.google.oss.licenses)
 
-    implementation(project(Modules.core))
-    implementation(project(Modules.coreAnalytics))
-    implementation(project(Modules.coreDatastore))
-    implementation(project(Modules.coreTranslation))
-    implementation(project(Modules.model))
-    implementation(project(Modules.multiChoicequiz))
-    implementation(project(Modules.settingsPresentation))
-    implementation(project(Modules.wordle))
-    implementation(project(Modules.data))
-    implementation(project(Modules.domain))
-    implementation(project(Modules.onlineServices))
-    implementation(project(Modules.mazeQuiz))
-    implementation(project(Modules.comparisonQuiz))
-    implementation(project(Modules.dailyChallenge))
+    implementation(projects.core)
+    implementation(projects.core.analytics)
+    implementation(projects.core.datastore)
+    implementation(projects.core.translation)
+    implementation(projects.model)
+    implementation(projects.multiChoiceQuiz)
+    implementation(projects.settingsPresentation)
+    implementation(projects.wordle)
+    implementation(projects.data)
+    implementation(projects.domain)
+    implementation(projects.onlineServices)
+    implementation(projects.mazeQuiz)
+    implementation(projects.comparisonQuiz)
+    implementation(projects.dailyChallenge)
 }

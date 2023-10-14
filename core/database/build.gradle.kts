@@ -1,5 +1,3 @@
-import com.infinitepower.newquiz.Modules
-
 plugins {
     id("newquiz.android.library")
     id("newquiz.android.hilt")
@@ -14,5 +12,5 @@ android {
 dependencies {
     implementation(libs.kotlinx.datetime)
 
-    implementation(project(Modules.model))
+    implementation(projects.model)
 }

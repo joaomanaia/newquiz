@@ -1,5 +1,3 @@
-import com.infinitepower.newquiz.Modules
-
 plugins {
     id("newquiz.android.library.compose")
     id("newquiz.android.hilt")
@@ -54,7 +52,7 @@ dependencies {
     //implementation("androidx.palette:palette-ktx:_")
 
     // Modules
-    implementation(project(Modules.model))
-    testImplementation(project(Modules.coreTesting))
-    androidTestImplementation(project(Modules.coreTesting))
+    implementation(projects.model)
+    testImplementation(projects.core.testing)
+    androidTestImplementation(projects.core.testing)
 }
