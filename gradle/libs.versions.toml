@@ -149,3 +149,14 @@ firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "fireb
 gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+newquiz-android-application = { id = "newquiz.android.application", version = "unspecified" }
+newquiz-android-application-compose = { id = "newquiz.android.application.compose", version = "unspecified" }
+newquiz-android-application-firebase = { id = "newquiz.android.application.firebase", version = "unspecified" }
+newquiz-android-hilt = { id = "newquiz.android.hilt", version = "unspecified" }
+newquiz-android-compose-destinations = { id = "newquiz.android.compose.destinations", version = "unspecified" }
+newquiz-android-library = { id = "newquiz.android.library", version = "unspecified" }
+newquiz-android-library-compose = { id = "newquiz.android.library.compose", version = "unspecified" }
+newquiz-android-room = { id = "newquiz.android.room", version = "unspecified" }
+newquiz-kotlin-serialization = { id = "newquiz.kotlin.serialization", version = "unspecified" }
+newquiz-jvm-library = { id = "newquiz.jvm.library", version = "unspecified" }

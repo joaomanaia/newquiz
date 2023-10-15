@@ -1,7 +1,7 @@
 plugins {
-    id("newquiz.android.library")
-    id("newquiz.android.hilt")
-    id("newquiz.kotlin.serialization")
+    alias(libs.plugins.newquiz.android.library.compose)
+    alias(libs.plugins.newquiz.android.hilt)
+    alias(libs.plugins.newquiz.kotlin.serialization)
     id("com.google.devtools.ksp")
 }
 

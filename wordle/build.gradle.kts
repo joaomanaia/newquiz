@@ -1,7 +1,7 @@
 plugins {
-    id("newquiz.android.library.compose")
-    id("newquiz.android.hilt")
-    id("newquiz.android.compose.destinations")
+    alias(libs.plugins.newquiz.android.library.compose)
+    alias(libs.plugins.newquiz.android.hilt)
+    alias(libs.plugins.newquiz.android.compose.destinations)
 }
 
 android {

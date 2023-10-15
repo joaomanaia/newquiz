@@ -1,8 +1,10 @@
 plugins {
     id("newquiz.android.library")
-    id("newquiz.android.hilt")
     id("newquiz.android.room")
-    id("newquiz.kotlin.serialization")
+    alias(libs.plugins.newquiz.android.hilt)
+    alias(libs.plugins.newquiz.kotlin.serialization)
+//    alias(libs.plugins.newquiz.android.library)
+//    alias(libs.plugins.newquiz.android.room)
 }
 
 android {

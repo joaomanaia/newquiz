@@ -1,6 +1,6 @@
 plugins {
-    id("newquiz.jvm.library")
-    id("newquiz.kotlin.serialization")
+    alias(libs.plugins.newquiz.jvm.library)
+    alias(libs.plugins.newquiz.kotlin.serialization)
 }
 
 dependencies {

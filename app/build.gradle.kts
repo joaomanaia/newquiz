@@ -1,11 +1,11 @@
 import com.infinitepower.newquiz.ProjectConfig
 
 plugins {
-    id("newquiz.android.application")
-    id("newquiz.android.application.compose")
-    id("newquiz.android.hilt")
-    id("newquiz.android.compose.destinations")
-    id("newquiz.kotlin.serialization")
+    alias(libs.plugins.newquiz.android.application)
+    alias(libs.plugins.newquiz.android.application.compose)
+    alias(libs.plugins.newquiz.android.hilt)
+    alias(libs.plugins.newquiz.android.compose.destinations)
+    alias(libs.plugins.newquiz.kotlin.serialization)
     id("kotlin-parcelize")
     id("com.google.android.gms.oss-licenses-plugin")
 }
