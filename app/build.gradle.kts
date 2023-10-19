@@ -112,7 +112,7 @@ dependencies {
     androidTestImplementation(libs.androidx.work.testing)
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.remoteConfig.ktx)
+    implementation(libs.firebase.remoteConfig)
 
     implementation(libs.kotlinx.datetime)
 

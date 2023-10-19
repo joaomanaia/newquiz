@@ -8,13 +8,13 @@ androidxAppCompat = "1.7.0-alpha03"
 androidxCoreKtx = "1.12.0-rc01"
 androidxCoreSplashscreen = "1.0.1"
 androidxComposeCompiler = "1.5.3"
-androidxComposeBom = "2023.09.02"
+androidxComposeBom = "2023.10.00"
 androidxComposeRuntime = "1.5.0-beta02"
 androidxDataStore = "1.0.0"
 androidxStartup = "1.1.1"
 androidxLifecycle = "2.6.1"
 androidxNavigation = "2.7.3"
-androidxWork = "2.8.1"
+androidxWork = "2.9.0-rc01"
 androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
 androidxTracing = "1.1.0"
@@ -37,11 +37,11 @@ kotlinxSerializationJson = "1.6.0"
 ksp = "1.9.10-1.0.13"
 ktor = "2.3.4"
 lottie = "6.1.0"
-firebaseBom = "32.3.1"
+firebaseBom = "32.4.0"
 slf4j = "2.0.9"
 junitJupiter = "5.9.3"
 mockk = "1.13.3"
-room = "2.5.2"
+room = "2.6.0"
 javaxInject = "1"
 firebaseUi = "8.0.2"
 vico = "1.9.2"
@@ -109,12 +109,12 @@ ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.r
 ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
-firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
-firebase-remoteConfig-ktx = { group = "com.google.firebase", name = "firebase-config-ktx" }
-firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
-firebase-perf-ktx = { group = "com.google.firebase", name = "firebase-perf-ktx" }
-firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
-firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-remoteConfig = { group = "com.google.firebase", name = "firebase-config" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junitJupiter" }
 junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junitJupiter" }

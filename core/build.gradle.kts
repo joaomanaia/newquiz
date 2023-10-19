@@ -39,7 +39,7 @@ dependencies {
     implementation(libs.google.material)
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.remoteConfig.ktx)
+    implementation(libs.firebase.remoteConfig)
 
     implementation(libs.lottie.compose)
 

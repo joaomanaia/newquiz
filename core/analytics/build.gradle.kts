@@ -11,7 +11,7 @@ dependencies {
     implementation(libs.androidx.compose.runtime)
 
     "normalImplementation"(platform(libs.firebase.bom))
-    "normalImplementation"(libs.firebase.analytics.ktx)
-    "normalImplementation"(libs.firebase.crashlytics.ktx)
-    "normalImplementation"(libs.firebase.perf.ktx)
+    "normalImplementation"(libs.firebase.analytics)
+    "normalImplementation"(libs.firebase.crashlytics)
+    "normalImplementation"(libs.firebase.perf)
 }
