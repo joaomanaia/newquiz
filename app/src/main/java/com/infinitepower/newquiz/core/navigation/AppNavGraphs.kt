@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizListScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.daily_challenge.destinations.DailyChallengeScreenDestination
 import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
@@ -62,8 +63,10 @@ internal object AppNavGraphs {
     )
 }
 
-internal fun DestinationScopeWithNoDependencies<*>.currentNavigator(): CommonNavGraphNavigator {
-    return CommonNavGraphNavigator(navController)
+internal fun DestinationScopeWithNoDependencies<*>.currentNavigator(
+    remoteConfig: RemoteConfig
+): CommonNavGraphNavigator {
+    return CommonNavGraphNavigator(navController, remoteConfig)
 }
 
 @Composable
@@ -72,6 +75,7 @@ internal fun AppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     windowSizeClass: WindowSizeClass,
+    remoteConfig: RemoteConfig,
     signedIn: Boolean,
     showLoginCard: Boolean,
     dailyChallengeClaimCount: Int,
@@ -91,7 +95,7 @@ internal fun AppNavigation(
             navController = navController,
             modifier = modifier.padding(innerPadding),
             dependenciesContainerBuilder = {
-                dependency(currentNavigator())
+                dependency(currentNavigator(remoteConfig))
                 dependency(windowSizeClass)
             }
         )

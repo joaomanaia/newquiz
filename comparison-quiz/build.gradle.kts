@@ -43,9 +43,6 @@ dependencies {
 
     implementation(libs.lottie.compose)
 
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.remoteConfig)
-
     implementation(projects.core)
     implementation(projects.core.analytics)
     implementation(projects.core.remoteConfig)

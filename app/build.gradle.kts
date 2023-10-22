@@ -109,9 +109,6 @@ dependencies {
     implementation(libs.androidx.work.ktx)
     androidTestImplementation(libs.androidx.work.testing)
 
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.remoteConfig)
-
     implementation(libs.kotlinx.datetime)
 
     implementation(libs.slf4j.simple)

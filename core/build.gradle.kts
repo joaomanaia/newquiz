@@ -38,6 +38,7 @@ dependencies {
 
     implementation(libs.google.material)
 
+    // TODO: Remove when firebase is moved to normal flavor
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.remoteConfig)
 

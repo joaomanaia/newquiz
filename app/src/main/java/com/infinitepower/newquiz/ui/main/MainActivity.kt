@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.navigation.AppNavigation
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import com.infinitepower.newquiz.ui.components.DataCollectionConsentDialog
@@ -37,6 +38,9 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var analyticsHelper: AnalyticsHelper
+
+    @Inject
+    lateinit var remoteConfig: RemoteConfig
 
     private val viewModel by viewModels<MainViewModel>()
 
@@ -76,6 +80,7 @@ class MainActivity : ComponentActivity() {
                             navController = rememberNavController(),
                             modifier = Modifier.fillMaxSize(),
                             windowSizeClass = windowSize,
+                            remoteConfig = remoteConfig,
                             signedIn = uiState.signedIn,
                             showLoginCard = uiState.showLoginCard,
                             dailyChallengeClaimCount = uiState.dailyChallengeClaimableCount,

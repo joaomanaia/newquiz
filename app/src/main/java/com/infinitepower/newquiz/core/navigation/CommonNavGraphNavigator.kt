@@ -1,9 +1,8 @@
 package com.infinitepower.newquiz.core.navigation
 
 import androidx.navigation.NavController
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.daily_challenge.DailyChallengeScreenNavigator
 import com.infinitepower.newquiz.maze_quiz.MazeScreenNavigator
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
@@ -18,12 +17,11 @@ import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.navigation.navigate
 
 class CommonNavGraphNavigator(
-    private val navController: NavController
+    private val navController: NavController,
+    private val remoteConfig: RemoteConfig
 ) : SavedQuestionsScreenNavigator,
     MazeScreenNavigator,
     DailyChallengeScreenNavigator {
-
-    private val remoteConfig by lazy { Firebase.remoteConfig }
 
     override fun navigateToWordleQuiz(type: WordleQuizType) {
         navController.navigate(WordleScreenDestination(quizType = type))
