@@ -6,7 +6,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.infinitepower.newquiz.core.common.database.DatabaseCommon
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
 import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.model.user.UserEntity
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class FirestoreUserApiImpl @Inject constructor(
     private val authUserRepository: AuthUserRepository,
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfig: RemoteConfig
 ) : UserApi {
     private val firestore = Firebase.firestore
 
@@ -100,7 +100,7 @@ class FirestoreUserApiImpl @Inject constructor(
             )
 
             if (user.toUser().isNewLevel(newXp)) {
-                val newUserMapWithDiamonds = getNewUserLevelMapWithDiamonds(remoteConfigApi, user.toUser(), newXp)
+                val newUserMapWithDiamonds = getNewUserLevelMapWithDiamonds(remoteConfig, user.toUser(), newXp)
 
                 transition.update(userDoc, newUserUpdateMap + newUserMapWithDiamonds)
             } else {

@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.comparison_quiz.core
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.analytics.NoOpAnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
@@ -10,7 +11,6 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.toUiText
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import io.mockk.coEvery
@@ -35,7 +35,7 @@ import java.net.URI
 internal class ComparisonQuizCoreImplTest {
     private val comparisonQuizRepository = mockk<ComparisonQuizRepository>()
     private val userRepository = mockk<UserRepository>()
-    private val remoteConfigApi = mockk<RemoteConfigApi>()
+    private val remoteConfig = mockk<RemoteConfig>()
 
     private lateinit var comparisonQuizCoreImpl: ComparisonQuizCoreImpl
 
@@ -44,7 +44,7 @@ internal class ComparisonQuizCoreImplTest {
         comparisonQuizCoreImpl = ComparisonQuizCoreImpl(
             comparisonQuizRepository = comparisonQuizRepository,
             userRepository = userRepository,
-            remoteConfigApi = remoteConfigApi,
+            remoteConfig = remoteConfig,
             analyticsHelper = NoOpAnalyticsHelper
         )
     }
@@ -330,15 +330,15 @@ internal class ComparisonQuizCoreImplTest {
         val skipCost = 10u
         val userDiamonds = 15
 
-        every { remoteConfigApi.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
+        every { remoteConfig.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
 
         val result = comparisonQuizCoreImpl.canSkip()
 
         // Verify interactions
-        verify { remoteConfigApi.getLong("comparison_quiz_skip_cost") }
+        verify { remoteConfig.getLong("comparison_quiz_skip_cost") }
         coVerify { userRepository.getLocalUserDiamonds() }
-        confirmVerified(remoteConfigApi, userRepository)
+        confirmVerified(remoteConfig, userRepository)
 
         // Verify result
         assertThat(result).isTrue()
@@ -349,15 +349,15 @@ internal class ComparisonQuizCoreImplTest {
         val skipCost = 10u
         val userDiamonds = 5
 
-        every { remoteConfigApi.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
+        every { remoteConfig.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
 
         val result = comparisonQuizCoreImpl.canSkip()
 
         // Verify interactions
-        verify { remoteConfigApi.getLong("comparison_quiz_skip_cost") }
+        verify { remoteConfig.getLong("comparison_quiz_skip_cost") }
         coVerify { userRepository.getLocalUserDiamonds() }
-        confirmVerified(remoteConfigApi, userRepository)
+        confirmVerified(remoteConfig, userRepository)
 
         // Verify result
         assertThat(result).isFalse()
@@ -370,7 +370,7 @@ internal class ComparisonQuizCoreImplTest {
 
         val initialData = getInitializationData()
 
-        every { remoteConfigApi.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
+        every { remoteConfig.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
         coEvery { userRepository.addLocalUserDiamonds(-skipCost.toInt()) } just runs
 
@@ -403,7 +403,7 @@ internal class ComparisonQuizCoreImplTest {
         comparisonQuizCoreImpl.skip()
 
         // Verify that we called this twice, one for checking if can skip and one for actually skipping
-        verify(exactly = 2) { remoteConfigApi.getLong("comparison_quiz_skip_cost") }
+        verify(exactly = 2) { remoteConfig.getLong("comparison_quiz_skip_cost") }
 
         coVerify(exactly = 1) { userRepository.getLocalUserDiamonds() }
         coVerify(exactly = 1) { userRepository.addLocalUserDiamonds(-skipCost.toInt()) }
@@ -426,7 +426,7 @@ internal class ComparisonQuizCoreImplTest {
         val skipCost = 10u
         val userDiamonds = 5
 
-        every { remoteConfigApi.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
+        every { remoteConfig.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
 
         // Assert exception is thrown
@@ -438,11 +438,11 @@ internal class ComparisonQuizCoreImplTest {
 
         // Verify that we called this once, one for checking if can skip
         // We don't call it again because we don't have enough diamonds
-        verify(exactly = 1) { remoteConfigApi.getLong("comparison_quiz_skip_cost") }
+        verify(exactly = 1) { remoteConfig.getLong("comparison_quiz_skip_cost") }
 
         coVerify(exactly = 1) { userRepository.getLocalUserDiamonds() }
         coVerify(exactly = 0) { userRepository.addLocalUserDiamonds(any()) }
-        confirmVerified(remoteConfigApi, userRepository)
+        confirmVerified(remoteConfig, userRepository)
     }
 
     private fun getInitializationData(

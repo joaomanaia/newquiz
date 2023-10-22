@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.online_services.data.user
 
 import com.google.firebase.firestore.FieldValue
 import com.infinitepower.newquiz.core.common.database.DatabaseCommon
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class UserRepositoryImpl @Inject constructor(
     private val authUserRepository: AuthUserRepository,
     private val userApi: UserApi,
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfig: RemoteConfig
 ) : UserRepository {
     override suspend fun getUserByUid(uid: String): User? {
         return userApi.getUserByUid(uid)?.toUser()
@@ -56,7 +56,7 @@ class UserRepositoryImpl @Inject constructor(
             )
 
             if (currentUser.toUser().isNewLevel(newXp)) {
-                updateData + getNewUserLevelMapWithDiamonds(remoteConfigApi, currentUser.toUser(), newXp)
+                updateData + getNewUserLevelMapWithDiamonds(remoteConfig, currentUser.toUser(), newXp)
             } else {
                 updateData
             }
@@ -85,12 +85,12 @@ class UserRepositoryImpl @Inject constructor(
 }
 
 internal fun getNewUserLevelMapWithDiamonds(
-    remoteConfigApi: RemoteConfigApi,
+    remoteConfig: RemoteConfig,
     currentUser: User,
     newXp: ULong
 ): Map<String, Any> {
     // Fetch the new level diamonds reward from remote config
-    val newLevelDiamondsReward = remoteConfigApi.getLong("new_level_diamonds_reward").toULong()
+    val newLevelDiamondsReward = remoteConfig.getLong("new_level_diamonds_reward").toULong()
 
     // Calculate the new level and diamonds
     val newUserLevel = currentUser.getLevelAfter(newXp)

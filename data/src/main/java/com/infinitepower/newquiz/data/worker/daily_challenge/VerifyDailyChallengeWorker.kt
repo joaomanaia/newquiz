@@ -8,8 +8,8 @@ import androidx.work.Operation
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlin.time.Duration.Companion.days
@@ -20,7 +20,7 @@ class VerifyDailyChallengeWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val dailyChallengeRepository: DailyChallengeRepository,
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfig: RemoteConfig
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         private const val WORK_NAME = "VerifyDailyChallengeWorker"
@@ -48,5 +48,5 @@ class VerifyDailyChallengeWorker @AssistedInject constructor(
      * Get the number of tasks to generate in remote config.
      * Default value is 5.
      */
-    private fun getTasksToGenerate(): Int = remoteConfigApi.getInt("daily_challenge_tasks_to_generate")
+    private fun getTasksToGenerate(): Int = remoteConfig.getInt("daily_challenge_tasks_to_generate")
 }

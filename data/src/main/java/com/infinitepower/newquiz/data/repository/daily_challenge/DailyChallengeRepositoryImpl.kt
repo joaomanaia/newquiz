@@ -2,13 +2,13 @@ package com.infinitepower.newquiz.data.repository.daily_challenge
 
 import android.util.Log
 import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.data.util.mappers.toEntity
 import com.infinitepower.newquiz.data.util.mappers.toModel
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.repository.daily_challenge.util.getTitle
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
@@ -25,7 +25,7 @@ import kotlin.time.Duration.Companion.days
 class DailyChallengeRepositoryImpl @Inject constructor(
     private val dailyChallengeDao: DailyChallengeDao,
     private val comparisonQuizRepository: ComparisonQuizRepository,
-    private val remoteConfigApi: RemoteConfigApi,
+    private val remoteConfig: RemoteConfig,
     private val userRepository: UserRepository
 ) : DailyChallengeRepository {
     override fun getAvailableTasksFlow(): Flow<List<DailyChallengeTask>> = dailyChallengeDao
@@ -84,7 +84,7 @@ class DailyChallengeRepositoryImpl @Inject constructor(
             random = random
         )
 
-        val diamondsReward = remoteConfigApi.getInt("daily_challenge_item_reward").toUInt()
+        val diamondsReward = remoteConfig.getInt("daily_challenge_item_reward").toUInt()
 
         val newTasks = types.map { type ->
             val maxValue = type.valueRange.toList().random(random)

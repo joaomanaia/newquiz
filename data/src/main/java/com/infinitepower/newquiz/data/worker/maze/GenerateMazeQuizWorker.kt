@@ -10,6 +10,7 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
@@ -24,7 +25,6 @@ import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionR
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.BaseCategory
 import com.infinitepower.newquiz.model.UiText
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
@@ -66,7 +66,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
     private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository,
     private val countryCapitalFlagsQuizRepository: CountryCapitalFlagsQuizRepository,
-    private val remoteConfigApi: RemoteConfigApi,
+    private val remoteConfig: RemoteConfig,
     private val analyticsHelper: AnalyticsHelper
 ) : CoroutineWorker(appContext, workerParams) {
     /**
@@ -167,7 +167,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val seed = inputData.getInt(INPUT_SEED, Random.nextInt())
 
-        val remoteConfigQuestionSize = remoteConfigApi.getInt("maze_quiz_generated_questions")
+        val remoteConfigQuestionSize = remoteConfig.getInt("maze_quiz_generated_questions")
 
         val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, remoteConfigQuestionSize)
 

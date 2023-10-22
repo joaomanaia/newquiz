@@ -5,9 +5,9 @@ import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.InitializationData
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.QuizData
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class ComparisonQuizCoreImpl @Inject constructor(
     private val comparisonQuizRepository: ComparisonQuizRepository,
     private val userRepository: UserRepository,
-    private val remoteConfigApi: RemoteConfigApi,
+    private val remoteConfig: RemoteConfig,
     private val analyticsHelper: AnalyticsHelper
 ) : ComparisonQuizCore {
     private val _quizData = MutableStateFlow(QuizData())
@@ -102,7 +102,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
     }
 
     override val skipCost: UInt
-        get() = remoteConfigApi.getLong("comparison_quiz_skip_cost").toUInt()
+        get() = remoteConfig.getLong("comparison_quiz_skip_cost").toUInt()
 
     override suspend fun getUserSkips(): UInt = userRepository.getLocalUserDiamonds().toUInt()
 

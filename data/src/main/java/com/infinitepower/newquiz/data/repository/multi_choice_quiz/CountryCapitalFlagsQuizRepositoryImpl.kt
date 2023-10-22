@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepository
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
@@ -28,7 +28,7 @@ private fun CountryQuizBaseItem.toCountryQuizItem(
 
 @Singleton
 class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor(
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfig: RemoteConfig
 ) : CountryCapitalFlagsQuizRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
@@ -38,7 +38,7 @@ class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor(
     ): List<MultiChoiceQuestion> {
         val allBaseCountries = getRemoteConfigAllCountries()
         val allCountries = allBaseCountries.map { item ->
-            val flagUrl = remoteConfigApi.getFlagUrl(item.countryCode)
+            val flagUrl = remoteConfig.getFlagUrl(item.countryCode)
 
             item.toCountryQuizItem(flagUrl)
         }
@@ -51,7 +51,7 @@ class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor(
     }
 
     private fun getRemoteConfigAllCountries(): List<CountryQuizBaseItem> {
-        val allLogosQuizStr = remoteConfigApi.getString("countries_and_capitals")
+        val allLogosQuizStr = remoteConfig.getString("countries_and_capitals")
         return Json.decodeFromString(allLogosQuizStr)
     }
 

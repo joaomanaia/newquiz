@@ -6,7 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
 import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.model.user.UserEntity
@@ -19,7 +19,7 @@ class CheckUserDBWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val userApi: UserApi,
     private val authUserRepository: AuthUserRepository,
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfig: RemoteConfig
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         fun enqueue(workManager: WorkManager) {
@@ -37,7 +37,7 @@ class CheckUserDBWorker @AssistedInject constructor(
         // If user exists in database there is no need to create the user.
         if (localUser != null) return Result.success()
 
-        val initialDiamonds = remoteConfigApi.getLong("user_initial_diamonds")
+        val initialDiamonds = remoteConfig.getLong("user_initial_diamonds")
 
         val newUser = UserEntity(
             uid = localUid,

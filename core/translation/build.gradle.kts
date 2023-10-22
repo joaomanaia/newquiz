@@ -13,6 +13,6 @@ dependencies {
     implementation(projects.core)
     implementation(projects.core.datastore)
 
-    "normalImplementation"(libs.google.mlKit.translate)
-    "normalImplementation"(libs.kotlinx.coroutines.playServices)
+    normalImplementation(libs.google.mlKit.translate)
+    normalImplementation(libs.kotlinx.coroutines.playServices)
 }

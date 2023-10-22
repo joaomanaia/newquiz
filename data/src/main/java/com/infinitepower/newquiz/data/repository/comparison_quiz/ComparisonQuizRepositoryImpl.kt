@@ -4,6 +4,7 @@ import com.infinitepower.newquiz.core.common.BaseApiUrls
 import com.infinitepower.newquiz.core.datastore.common.ComparisonQuizDataStoreCommon
 import com.infinitepower.newquiz.core.datastore.di.ComparisonQuizDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.FlowResource
 import com.infinitepower.newquiz.model.Resource
@@ -12,7 +13,6 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEnt
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import com.infinitepower.newquiz.model.comparison_quiz.toComparisonQuizItem
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.request
@@ -30,13 +30,13 @@ import javax.inject.Singleton
 class ComparisonQuizRepositoryImpl @Inject constructor(
     private val client: HttpClient,
     @ComparisonQuizDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfig: RemoteConfig
 ) : ComparisonQuizRepository {
     private val categoriesCache: MutableList<ComparisonQuizCategory> = mutableListOf()
 
     override fun getCategories(): List<ComparisonQuizCategory> {
         if (categoriesCache.isEmpty()) {
-            val categoriesStr = remoteConfigApi.getString("comparison_quiz_categories")
+            val categoriesStr = remoteConfig.getString("comparison_quiz_categories")
             val categoriesEntity: List<ComparisonQuizCategoryEntity> = Json.decodeFromString(categoriesStr)
             val categories = categoriesEntity.map(ComparisonQuizCategoryEntity::toModel)
 

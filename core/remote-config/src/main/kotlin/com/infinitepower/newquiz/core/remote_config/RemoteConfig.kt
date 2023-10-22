@@ -1,6 +1,10 @@
-package com.infinitepower.newquiz.model.config
+package com.infinitepower.newquiz.core.remote_config
 
-interface RemoteConfigApi {
+interface RemoteConfig {
+    fun initialize(
+        fetchInterval: Long = 3600L,
+    )
+
     fun getString(key: String): String
 
     fun getLong(key: String): Long

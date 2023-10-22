@@ -1,10 +1,10 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
 import android.content.Context
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.util.android.resources.readRawJson
 import com.infinitepower.newquiz.data.R
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRepository
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
@@ -19,7 +19,7 @@ import kotlin.random.Random
 @Singleton
 class FlagQuizRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfig: RemoteConfig
 ) : FlagQuizRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
@@ -38,7 +38,7 @@ class FlagQuizRepositoryImpl @Inject constructor(
             .shuffled(random)
             .take(amount)
             .map { country ->
-                val flagUrl = remoteConfigApi.getFlagUrl(country.code)
+                val flagUrl = remoteConfig.getFlagUrl(country.code)
 
                 country.toQuestion(allCountriesName, flagUrl, random)
             }

@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
@@ -15,7 +15,7 @@ import kotlin.random.Random
 
 @Singleton
 class LogoQuizRepositoryImpl @Inject constructor(
-    private val remoteConfigApi: RemoteConfigApi
+    private val remoteConfig: RemoteConfig
 ) : LogoQuizRepository {
     override suspend fun getRandomQuestions(
         amount: Int,
@@ -37,7 +37,7 @@ class LogoQuizRepositoryImpl @Inject constructor(
     }
 
     private fun getRemoteConfigAllLogos(): List<LogoQuizBaseItem> {
-        val allLogosQuizStr = remoteConfigApi.getString("all_logos_quiz")
+        val allLogosQuizStr = remoteConfig.getString("all_logos_quiz")
         return Json.decodeFromString(allLogosQuizStr)
     }
 

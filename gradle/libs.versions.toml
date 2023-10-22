@@ -152,7 +152,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 newquiz-android-application = { id = "newquiz.android.application", version = "unspecified" }
 newquiz-android-application-compose = { id = "newquiz.android.application.compose", version = "unspecified" }
-newquiz-android-application-firebase = { id = "newquiz.android.application.firebase", version = "unspecified" }
 newquiz-android-hilt = { id = "newquiz.android.hilt", version = "unspecified" }
 newquiz-android-compose-destinations = { id = "newquiz.android.compose.destinations", version = "unspecified" }
 newquiz-android-library = { id = "newquiz.android.library", version = "unspecified" }

@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.online_services.data
 
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.online_services.data.user.UserRepositoryImpl
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
 import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
@@ -20,12 +20,12 @@ import org.junit.jupiter.api.Test
 internal class UserRepositoryImplTest {
     private val authUserRepository = mockk<AuthUserRepository>()
     private val userApi = mockk<UserApi>()
-    private val remoteConfigApi = mockk<RemoteConfigApi>()
+    private val remoteConfig = mockk<RemoteConfig>()
 
     private val userRepository = UserRepositoryImpl(
         authUserRepository = authUserRepository,
         userApi = userApi,
-        remoteConfigApi = remoteConfigApi
+        remoteConfig = remoteConfig
     )
 
     private val testUser = User(
