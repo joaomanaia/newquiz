@@ -1,5 +1,3 @@
-import com.infinitepower.newquiz.ProjectConfig
-
 plugins {
     alias(libs.plugins.newquiz.android.application)
     alias(libs.plugins.newquiz.android.application.compose)
@@ -12,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.infinitepower.newquiz"
-    compileSdk = ProjectConfig.compileSdk
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.infinitepower.newquiz"
-        minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
+        minSdk = 21
+        targetSdk = 34
         versionCode = 15
         versionName = "1.6.2"
 
