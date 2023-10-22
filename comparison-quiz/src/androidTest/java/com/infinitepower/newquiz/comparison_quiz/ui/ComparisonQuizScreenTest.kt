@@ -23,15 +23,13 @@ import com.infinitepower.newquiz.comparison_quiz.core.ComparisonQuizCoreImpl
 import com.infinitepower.newquiz.comparison_quiz.data.comparison_quiz.FakeComparisonQuizRepositoryImpl
 import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
-import com.infinitepower.newquiz.core.testing.ui.theme.NewQuizTestTheme
-import com.infinitepower.newquiz.core.testing.utils.setTestDeviceLocale
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import com.infinitepower.newquiz.model.config.RemoteConfigApi
 import com.infinitepower.newquiz.model.toUiText
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
@@ -60,7 +58,7 @@ internal class ComparisonQuizScreenTest {
 
     private val authUserRepository = mockk<AuthUserRepository>(relaxed = true)
     private val userRepository = mockk<UserRepository>(relaxed = true)
-    private val remoteConfigApi = mockk<RemoteConfigApi>(relaxed = true)
+    private val remoteConfig = mockk<RemoteConfig>(relaxed = true)
     private val recentCategoriesRepository = mockk<RecentCategoriesRepository>(relaxed = true)
 
     private lateinit var comparisonQuizCore: ComparisonQuizCore
@@ -117,7 +115,7 @@ internal class ComparisonQuizScreenTest {
         comparisonQuizCore = ComparisonQuizCoreImpl(
             comparisonQuizRepository = comparisonQuizRepository,
             userRepository = userRepository,
-            remoteConfigApi = remoteConfigApi,
+            remoteConfig = remoteConfig,
             analyticsHelper = LocalDebugAnalyticsHelper()
         )
 
