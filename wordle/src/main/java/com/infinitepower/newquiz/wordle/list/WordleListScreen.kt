@@ -100,7 +100,8 @@ private fun WordleListScreenImpl(
 
                 navigateToWordleQuiz(category.wordleQuizType)
             },
-            onSeeAllCategoriesClick = { seeAllCategories = !seeAllCategories }
+            onSeeAllCategoriesClick = { seeAllCategories = !seeAllCategories },
+            showConnectionInfo = uiState.showCategoryConnectionInfo
         )
     }
 }

@@ -138,6 +138,7 @@ private fun MultiChoiceQuizListScreenImpl(
             recentCategories = uiState.homeCategories.recentCategories,
             otherCategories = uiState.homeCategories.otherCategories,
             isInternetAvailable = uiState.internetConnectionAvailable,
+            showConnectionInfo = uiState.showCategoryConnectionInfo,
             onCategoryClick = { category ->
                 analyticsHelper.logEvent(
                     AnalyticsEvent.CategoryClicked(

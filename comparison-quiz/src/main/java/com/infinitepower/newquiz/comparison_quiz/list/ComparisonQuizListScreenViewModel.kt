@@ -23,11 +23,13 @@ class ComparisonQuizListScreenViewModel @Inject constructor(
         _uiState,
         recentCategoriesRepository.getComparisonCategories(
             isInternetAvailable = networkStatusTracker.isCurrentlyConnected()
-        )
-    ) { uiState, recentCategories ->
+        ),
+        recentCategoriesRepository.getShowCategoryConnectionInfoFlow()
+    ) { uiState, recentCategories, showCategoryConnectionInfo ->
         uiState.copy(
             homeCategories = recentCategories,
-            internetConnectionAvailable = networkStatusTracker.isCurrentlyConnected()
+            internetConnectionAvailable = networkStatusTracker.isCurrentlyConnected(),
+            showCategoryConnectionInfo = showCategoryConnectionInfo
         )
     }.stateIn(
         scope = viewModelScope,

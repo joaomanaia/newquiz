@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.domain.repository.home
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.wordle.WordleCategory
@@ -31,6 +32,8 @@ interface RecentCategoriesRepository {
     fun getComparisonCategories(
         isInternetAvailable: Boolean
     ): HomeCategoriesFlow<ComparisonQuizCategory>
+
+    fun getShowCategoryConnectionInfoFlow(): Flow<ShowCategoryConnectionInfo>
 
     suspend fun addMultiChoiceCategory(categoryId: String)
 

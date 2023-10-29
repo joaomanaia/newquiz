@@ -285,4 +285,9 @@
     <string name="downloading_translation_model">A transferir o modelo de tradução</string>
     <string name="downloading_translation_model_description">A transferir o modelo de tradução, esta operação pode demorar algum tempo.</string>
     <string name="others">Outros</string>
+    <string name="require_internet_connection">Requer ligação à Internet</string>
+    <string name="dont_require_internet_connection">Não requer ligação à Internet</string>
+    <string name="none">Nenhum</string>
+    <string name="both">Ambos</string>
+    <string name="show_category_connection_info">Mostrar informações de conexão da categoria</string>
 </resources>

@@ -279,4 +279,9 @@
     <string name="translation_require_charging_description">Only download the translation model when the device is charging.</string>
     <string name="confirm">Confirm</string>
     <string name="others">Others</string>
+    <string name="require_internet_connection">Requires internet connection</string>
+    <string name="dont_require_internet_connection">Don\'t require internet connection</string>
+    <string name="none">None</string>
+    <string name="both">Both</string>
+    <string name="show_category_connection_info">Show category connection info</string>
 </resources>

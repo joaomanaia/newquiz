@@ -285,4 +285,9 @@
     <string name="downloading_translation_model">Descargando el modelo de la traducción</string>
     <string name="target_language">Idioma del destino</string>
     <string name="others">Otros</string>
+    <string name="require_internet_connection">Requiere conexión a Internet</string>
+    <string name="dont_require_internet_connection">No requiere conexión a Internet</string>
+    <string name="none">Ninguno</string>
+    <string name="both">Ambos</string>
+    <string name="show_category_connection_info">Mostrar información de conexión de categoría</string>
 </resources>

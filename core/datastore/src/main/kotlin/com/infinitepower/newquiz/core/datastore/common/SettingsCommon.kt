@@ -12,6 +12,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.infinitepower.newquiz.core.datastore.PreferenceRequest
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
+import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 import com.infinitepower.newquiz.core.R as CoreR
 import java.util.Locale
 
@@ -35,6 +36,11 @@ object SettingsCommon {
         PreferenceRequest<Int>(intPreferencesKey("quickQuizQuestionsSize"), 5)
 
     object HideOnlineCategories : PreferenceRequest<Boolean>(booleanPreferencesKey("hideOnlineCategories"), false)
+
+    object CategoryConnectionInfoBadge : PreferenceRequest<String>(
+        stringPreferencesKey("categoryConnectionInfoBadge"),
+        ShowCategoryConnectionInfo.NONE.name
+    )
 
     object InfiniteWordleQuizLanguage : PreferenceRequest<String>(
         stringPreferencesKey("infiniteWordleQuizLanguage"),

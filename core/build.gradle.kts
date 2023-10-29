@@ -40,7 +40,7 @@ dependencies {
 
     // TODO: Remove when firebase is moved to normal flavor
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.remoteConfig)
+    implementation(libs.firebase.analytics)
 
     implementation(libs.lottie.compose)
 

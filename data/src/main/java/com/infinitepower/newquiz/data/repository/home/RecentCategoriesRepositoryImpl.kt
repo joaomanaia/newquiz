@@ -13,11 +13,13 @@ import com.infinitepower.newquiz.domain.repository.home.HomeCategories
 import com.infinitepower.newquiz.domain.repository.home.HomeCategoriesFlow
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.BaseCategory
+import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.wordle.WordleCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -136,6 +138,10 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
                 .take(3)
         }
     }
+
+    override fun getShowCategoryConnectionInfoFlow(): Flow<ShowCategoryConnectionInfo> = settingsDataStoreManager
+        .getPreferenceFlow(SettingsCommon.CategoryConnectionInfoBadge)
+        .map(ShowCategoryConnectionInfo::valueOf)
 
     override suspend fun addMultiChoiceCategory(categoryId: String) {
         addCategory(categoryId, RecentCategoryDataStoreCommon.MultiChoice)

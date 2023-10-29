@@ -108,7 +108,8 @@ private fun ComparisonQuizListScreenImpl(
             otherCategories = uiState.homeCategories.otherCategories,
             isInternetAvailable = uiState.internetConnectionAvailable,
             onCategoryClick = onCategoryClick,
-            onSeeAllCategoriesClick = { seeAllCategories = !seeAllCategories }
+            onSeeAllCategoriesClick = { seeAllCategories = !seeAllCategories },
+            showConnectionInfo = uiState.showCategoryConnectionInfo
         )
     }
 }

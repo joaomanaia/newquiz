@@ -25,6 +25,7 @@ import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
 import com.infinitepower.newquiz.core.util.asString
 import com.infinitepower.newquiz.model.BaseCategory
+import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 
 fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
     contentPadding: PaddingValues = PaddingValues(),
@@ -32,6 +33,7 @@ fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
     recentCategories: List<T>,
     otherCategories: List<T>,
     isInternetAvailable: Boolean,
+    showConnectionInfo: ShowCategoryConnectionInfo,
     onCategoryClick: (T) -> Unit,
     onSeeAllCategoriesClick: () -> Unit,
 ) {
@@ -47,7 +49,9 @@ fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
             title = category.name.asString(),
             imageUrl = category.image,
             onClick = { onCategoryClick(category) },
-            enabled = isInternetAvailable || !category.requireInternetConnection
+            enabled = isInternetAvailable || !category.requireInternetConnection,
+            requireInternetConnection = category.requireInternetConnection,
+            showConnectionInfo = showConnectionInfo
         )
     }
 
@@ -110,7 +114,9 @@ fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
                 title = category.name.asString(),
                 imageUrl = category.image,
                 onClick = { onCategoryClick(category) },
-                enabled = isInternetAvailable || !category.requireInternetConnection
+                enabled = isInternetAvailable || !category.requireInternetConnection,
+                requireInternetConnection = category.requireInternetConnection,
+                showConnectionInfo = showConnectionInfo
             )
         }
     }

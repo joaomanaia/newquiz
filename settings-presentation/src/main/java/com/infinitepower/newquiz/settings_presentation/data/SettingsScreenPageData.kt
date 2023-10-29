@@ -38,6 +38,7 @@ import com.infinitepower.newquiz.core.translation.TranslatorModelState
 import com.infinitepower.newquiz.core.translation.TranslatorTargetLanguages
 import com.infinitepower.newquiz.core.ui.components.AppNameWithLogo
 import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
+import com.infinitepower.newquiz.settings_presentation.data.util.getShowCategoryConnectionInfoEntryMap
 import com.infinitepower.newquiz.settings_presentation.model.Preference
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
 import kotlinx.coroutines.CoroutineScope
@@ -184,6 +185,11 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             Preference.PreferenceGroup(
                 title = stringResource(id = CoreR.string.categories),
                 preferenceItems = listOf(
+                    Preference.PreferenceItem.ListPreference(
+                        title = stringResource(id = CoreR.string.show_category_connection_info),
+                        request = SettingsCommon.CategoryConnectionInfoBadge,
+                        entries = getShowCategoryConnectionInfoEntryMap(),
+                    ),
                     Preference.PreferenceItem.SwitchPreference(
                         title = stringResource(id = CoreR.string.hide_online_categories),
                         summary = stringResource(id = CoreR.string.hide_online_categories_description),

@@ -51,11 +51,13 @@ class MultiChoiceQuizListScreenViewModel @Inject constructor(
         recentCategoriesRepository.getMultiChoiceCategories(
             isInternetAvailable = networkStatusTracker.isCurrentlyConnected()
         ),
-    ) { savedQuestionsCount, recentCategories ->
+        recentCategoriesRepository.getShowCategoryConnectionInfoFlow()
+    ) { savedQuestionsCount, recentCategories, showCategoryConnectionInfo ->
         MultiChoiceQuizListScreenUiState(
             savedQuestionsSize = savedQuestionsCount,
             homeCategories = recentCategories,
-            internetConnectionAvailable = networkStatusTracker.isCurrentlyConnected()
+            internetConnectionAvailable = networkStatusTracker.isCurrentlyConnected(),
+            showCategoryConnectionInfo = showCategoryConnectionInfo
         )
     }.stateIn(
         scope = viewModelScope,

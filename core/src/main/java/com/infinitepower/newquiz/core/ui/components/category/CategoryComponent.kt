@@ -24,13 +24,17 @@ import coil.compose.AsyncImage
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.compose.StatusWrapper
+import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 
 @Composable
 fun CategoryComponent(
     modifier: Modifier = Modifier,
     title: String,
     imageUrl: Any,
+    requireInternetConnection: Boolean = false,
+    showConnectionInfo: ShowCategoryConnectionInfo = ShowCategoryConnectionInfo.NONE,
     enabled: Boolean = true,
     textStyle: TextStyle = MaterialTheme.typography.headlineLarge,
     onClick: () -> Unit = {}
@@ -72,6 +76,14 @@ fun CategoryComponent(
                     color = Color.White,
                     textAlign = TextAlign.Center
                 )
+                if (showConnectionInfo.shouldShowBadge(requireInternetConnection)) {
+                    CategoryConnectionInfoBadge(
+                        modifier = Modifier
+                            .padding(MaterialTheme.spacing.default)
+                            .align(Alignment.TopEnd),
+                        requireConnection = requireInternetConnection
+                    )
+                }
             }
         }
     }
