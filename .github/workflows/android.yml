@@ -49,9 +49,6 @@ jobs:
       - name: Setup gradle
         uses: gradle/gradle-build-action@v2.5.1
 
-      - name: Accept licenses
-        run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
-
       - name: Run tests
         run: ./gradlew testAllUnitTest --stacktrace
 #        run: ./gradlew testNormalDebug testFossDebug --stacktrace
@@ -93,9 +90,6 @@ jobs:
       - name: Setup gradle
         uses: gradle/gradle-build-action@v2.5.1
 
-      - name: Accept licenses
-        run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
-
       - name: Lint sources
         run: ./gradlew lint --stacktrace
 
@@ -134,9 +128,6 @@ jobs:
 
       - name: Setup gradle
         uses: gradle/gradle-build-action@v2.5.1
-
-      - name: Accept licenses
-        run: echo "y" | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
 
       - name: Assemble debug APKs
         run: ./gradlew assembleNormalDebug assembleFossDebug --stacktrace
