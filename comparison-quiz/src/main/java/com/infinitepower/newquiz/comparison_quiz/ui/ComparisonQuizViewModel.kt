@@ -19,9 +19,9 @@ import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserReposi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,51 +38,47 @@ class ComparisonQuizViewModel @Inject constructor(
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ComparisonQuizUiState())
-    val uiState = _uiState.asStateFlow()
+    val uiState = combine(
+        _uiState,
+        comparisonQuizRepository.getHighestPosition(),
+        comparisonQuizCore.quizDataFlow
+    ) { uiState, highestPosition, quizData ->
+        if (quizData.currentPosition > uiState.highestPosition) {
+            comparisonQuizRepository.saveHighestPosition(quizData.currentPosition)
+        }
+
+        if (quizData.isGameOver) {
+            viewModelScope.launch(Dispatchers.IO) {
+                UpdateGlobalEventDataWorker.enqueueWork(
+                    workManager = workManager,
+                    GameEvent.ComparisonQuiz.PlayAndGetScore(quizData.currentPosition)
+                )
+
+                analyticsHelper.logEvent(
+                    AnalyticsEvent.ComparisonQuizGameEnd(
+                        category = uiState.gameCategory?.id,
+                        comparisonMode = uiState.comparisonMode?.name,
+                        score = quizData.currentPosition
+                    )
+                )
+            }
+        }
+
+        uiState.copy(
+            currentQuestion = quizData.currentQuestion,
+            gameDescription = quizData.questionDescription,
+            currentPosition = quizData.currentPosition,
+            isGameOver = quizData.isGameOver,
+            firstItemHelperValueState = quizData.firstItemHelperValueState,
+            highestPosition = highestPosition.data ?: 0
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = ComparisonQuizUiState()
+    )
 
     init {
-        comparisonQuizCore
-            .quizDataFlow
-            .onEach { data ->
-                _uiState.update { currentState ->
-                    if (data.currentPosition > currentState.highestPosition) {
-                        comparisonQuizRepository.saveHighestPosition(data.currentPosition)
-                    }
-
-                    if (data.isGameOver) {
-                        viewModelScope.launch(Dispatchers.IO) {
-                            UpdateGlobalEventDataWorker.enqueueWork(
-                                workManager = workManager,
-                                GameEvent.ComparisonQuiz.PlayAndGetScore(data.currentPosition)
-                            )
-
-                            analyticsHelper.logEvent(
-                                AnalyticsEvent.ComparisonQuizGameEnd(
-                                    category = currentState.gameCategory?.id,
-                                    comparisonMode = currentState.comparisonMode?.name,
-                                    score = data.currentPosition
-                                )
-                            )
-                        }
-                    }
-
-                    currentState.copy(
-                        currentQuestion = data.currentQuestion,
-                        gameDescription = data.questionDescription,
-                        currentPosition = data.currentPosition,
-                        isGameOver = data.isGameOver
-                    )
-                }
-            }.launchIn(viewModelScope)
-
-        comparisonQuizRepository
-            .getHighestPosition()
-            .onEach { res ->
-                _uiState.update { currentState ->
-                    currentState.copy(highestPosition = res.data ?: 0)
-                }
-            }.launchIn(viewModelScope)
-
         // Start game
         viewModelScope.launch(Dispatchers.IO) {
             val category = getCategory()

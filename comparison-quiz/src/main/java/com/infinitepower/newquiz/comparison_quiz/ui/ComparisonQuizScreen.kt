@@ -41,7 +41,6 @@ import coil.compose.AsyncImage
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonItem
 import com.infinitepower.newquiz.comparison_quiz.ui.components.GameOverContent
-import com.infinitepower.newquiz.comparison_quiz.ui.components.HelperValueState
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -54,6 +53,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
 import com.ramcosta.composedestinations.annotation.Destination
@@ -124,6 +124,7 @@ fun ComparisonQuizScreenImpl(
                 onBackClick = onBackClick,
                 gameCategory = uiState.gameCategory,
                 isSignedIn = uiState.isSignedIn,
+                firstItemHelperValueState = uiState.firstItemHelperValueState,
                 onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) },
                 onSkipClick = { onEvent(ComparisonQuizUiEvent.ShowSkipQuestionDialog) },
             )
@@ -167,6 +168,7 @@ private fun ComparisonQuizContent(
     highestPosition: Int,
     verticalContent: Boolean,
     isSignedIn: Boolean,
+    firstItemHelperValueState: ComparisonQuizHelperValueState,
     onBackClick: () -> Unit,
     onAnswerClick: (ComparisonQuizItem) -> Unit,
     onSkipClick: () -> Unit
@@ -187,7 +189,7 @@ private fun ComparisonQuizContent(
                 item = currentQuestion.questions.first,
                 onClick = { onAnswerClick(currentQuestion.questions.first) },
                 helperContentAlignment = Alignment.BottomCenter,
-                helperValueState = HelperValueState.NORMAL,
+                helperValueState = firstItemHelperValueState,
                 category = gameCategory
             )
         },
@@ -196,7 +198,7 @@ private fun ComparisonQuizContent(
                 item = currentQuestion.questions.second,
                 onClick = { onAnswerClick(currentQuestion.questions.second) },
                 helperContentAlignment = if (verticalContent) Alignment.TopCenter else Alignment.BottomCenter,
-                helperValueState = HelperValueState.HIDDEN,
+                helperValueState = ComparisonQuizHelperValueState.HIDDEN,
                 category = gameCategory
             )
         },

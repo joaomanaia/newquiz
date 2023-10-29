@@ -7,6 +7,7 @@ import com.infinitepower.newquiz.core.game.ComparisonQuizCore.InitializationData
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.QuizData
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,10 +40,14 @@ class ComparisonQuizCoreImpl @Inject constructor(
                     val comparisonMode = initializationData.comparisonMode
                     val questionDescription = category.getQuestionDescription(comparisonMode)
 
+                    val firstItemHelperValueStr = remoteConfig.getString("comparison_quiz_first_item_helper_value")
+                    val firstItemHelperValue = ComparisonQuizHelperValueState.valueOf(firstItemHelperValueStr)
+
                     val quizData = QuizData(
                         questions = res.data.orEmpty(),
                         comparisonMode = comparisonMode,
-                        questionDescription = questionDescription
+                        questionDescription = questionDescription,
+                        firstItemHelperValueState = firstItemHelperValue,
                     )
 
                     analyticsHelper.logEvent(

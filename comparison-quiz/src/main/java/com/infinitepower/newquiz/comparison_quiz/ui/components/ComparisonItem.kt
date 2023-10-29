@@ -35,6 +35,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.util.toAndroidUri
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 
 @Composable
@@ -43,7 +44,7 @@ internal fun ComparisonItem(
     category: ComparisonQuizCategory,
     item: ComparisonQuizItem,
     helperContentAlignment: Alignment,
-    helperValueState: HelperValueState = HelperValueState.HIDDEN,
+    helperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN,
     onClick: () -> Unit
 ) {
     val helperValue = remember(item.value) {
@@ -61,8 +62,6 @@ internal fun ComparisonItem(
     )
 }
 
-enum class HelperValueState { NORMAL, HIDDEN }
-
 @Composable
 internal fun ComparisonItem(
     modifier: Modifier = Modifier,
@@ -70,7 +69,7 @@ internal fun ComparisonItem(
     image: Uri,
     helperValue: String,
     helperContentAlignment: Alignment,
-    helperValueState: HelperValueState,
+    helperValueState: ComparisonQuizHelperValueState,
     onClick: () -> Unit
 ) {
     val spaceExtraSmall = MaterialTheme.spacing.extraSmall
@@ -125,7 +124,7 @@ internal fun ComparisonItem(
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Center
                     )
-                    if (helperValueState == HelperValueState.NORMAL) {
+                    if (helperValueState == ComparisonQuizHelperValueState.NORMAL) {
                         Spacer(modifier = Modifier.width(spaceExtraSmall))
                         Divider(
                             modifier = Modifier
@@ -165,7 +164,7 @@ private fun ComparisonQuizScreenPreview(
                 helperValue = "12,345",
                 onClick = {},
                 helperContentAlignment = alignment,
-                helperValueState = HelperValueState.NORMAL
+                helperValueState = ComparisonQuizHelperValueState.NORMAL
             )
         }
     }

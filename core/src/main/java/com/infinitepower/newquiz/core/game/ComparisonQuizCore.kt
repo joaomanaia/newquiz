@@ -4,12 +4,14 @@ import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 
 /**
  * Represents the core functionality of a comparison quiz.
  */
-interface ComparisonQuizCore : GameCore<ComparisonQuizCore.QuizData, ComparisonQuizCore.InitializationData>, SkipGame {
+interface ComparisonQuizCore :
+    GameCore<ComparisonQuizCore.QuizData, ComparisonQuizCore.InitializationData>, SkipGame {
     /**
      * Handles the click event on an answer in the comparison quiz.
      *
@@ -34,7 +36,8 @@ interface ComparisonQuizCore : GameCore<ComparisonQuizCore.QuizData, ComparisonQ
         val currentQuestion: ComparisonQuizCurrentQuestion? = null,
         val comparisonMode: ComparisonMode = ComparisonMode.GREATER,
         val currentPosition: Int = 0,
-        val isGameOver: Boolean = false
+        val isGameOver: Boolean = false,
+        val firstItemHelperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN
     ) {
         /**
          * Returns the next question and updates the current question.
@@ -80,10 +83,19 @@ interface ComparisonQuizCore : GameCore<ComparisonQuizCore.QuizData, ComparisonQ
                 currentQuestion.nextQuestion(firstQuestion)
             }
 
+            val isNewGame = currentQuestion == null
+
             return copy(
                 questions = newQuestions,
                 currentQuestion = newCurrentQuestion,
-                currentPosition = currentPosition + 1
+                currentPosition = currentPosition + 1,
+                // If it is a new game, then it should show the current helper value
+                // If it is next question, then it should show the helper value
+                firstItemHelperValueState = if (isNewGame) {
+                    firstItemHelperValueState
+                } else {
+                    ComparisonQuizHelperValueState.NORMAL
+                }
             )
         }
     }

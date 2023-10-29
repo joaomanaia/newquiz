@@ -15,6 +15,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,7 +30,7 @@ internal class ComparisonItemTest {
     fun comparisonItem_titleAndHelperValueDisplayed() {
         val title = "Item title"
         val helperValue = "Helper value"
-        val helperValueState = HelperValueState.NORMAL
+        val helperValueState = ComparisonQuizHelperValueState.NORMAL
         var onClickCalled = false
 
         componentRule.setContent {
@@ -67,7 +68,7 @@ internal class ComparisonItemTest {
     fun comparisonItem_titleDisplayed_andHelperValueNotDisplayedWhenStateHidden() {
         val title = "Item title"
         val helperValue = "Helper value"
-        val helperValueState = HelperValueState.HIDDEN
+        val helperValueState = ComparisonQuizHelperValueState.HIDDEN
         var onClickCalled = false
 
         componentRule.setContent {

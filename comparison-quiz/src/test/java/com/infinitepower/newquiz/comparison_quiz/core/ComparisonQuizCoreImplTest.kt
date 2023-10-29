@@ -10,6 +10,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
@@ -54,6 +55,11 @@ internal class ComparisonQuizCoreImplTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
 
+        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
+        every {
+            remoteConfig.getString("comparison_quiz_first_item_helper_value")
+        } returns firstItemHelperValueState.name
+
         val expectedQuestions = listOf(
             ComparisonQuizItem(
                 title = "Question 1",
@@ -81,6 +87,7 @@ internal class ComparisonQuizCoreImplTest {
         val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
         assertThat(quizData.comparisonMode).isEqualTo(initialData.comparisonMode)
         assertThat(quizData.questions).contains(expectedQuestions[2])
+        assertThat(quizData.firstItemHelperValueState).isEqualTo(firstItemHelperValueState)
 
         val expectedCurrentQuestion = ComparisonQuizCurrentQuestion(
             questions = expectedQuestions[0] to expectedQuestions[1]
@@ -113,6 +120,11 @@ internal class ComparisonQuizCoreImplTest {
         )
         val uriMock = getUriMock()
 
+        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
+        every {
+            remoteConfig.getString("comparison_quiz_first_item_helper_value")
+        } returns firstItemHelperValueState.name
+
         val expectedQuestions = listOf(
             ComparisonQuizItem(
                 title = "Question 1",
@@ -143,6 +155,9 @@ internal class ComparisonQuizCoreImplTest {
 
         assertThat(quizData.comparisonMode).isEqualTo(initialData.comparisonMode)
 
+        // Check if the helper value is correct
+        assertThat(quizData.firstItemHelperValueState).isEqualTo(firstItemHelperValueState)
+
         assertThat(quizData.isGameOver).isFalse()
         assertThat(currentQuestion).isNotNull()
         require(currentQuestion != null)
@@ -167,6 +182,10 @@ internal class ComparisonQuizCoreImplTest {
 
         assertThat(newCurrentQuestion.questions.first).isEqualTo(expectedQuestions[1])
         assertThat(newCurrentQuestion.questions.second).isEqualTo(expectedQuestions[2])
+
+        // Check if the helper value is changed
+        assertThat(newQuizData.firstItemHelperValueState).isNotEqualTo(firstItemHelperValueState)
+        assertThat(newQuizData.firstItemHelperValueState).isEqualTo(ComparisonQuizHelperValueState.NORMAL)
     }
 
     // Test when the user gets the answer wrong
@@ -176,6 +195,11 @@ internal class ComparisonQuizCoreImplTest {
             comparisonMode = ComparisonMode.LESSER
         )
         val uriMock = getUriMock()
+
+        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
+        every {
+            remoteConfig.getString("comparison_quiz_first_item_helper_value")
+        } returns firstItemHelperValueState.name
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -211,6 +235,9 @@ internal class ComparisonQuizCoreImplTest {
         // Check if comparison mode is correct
         assertThat(quizData.comparisonMode).isEqualTo(initialData.comparisonMode)
 
+        // Check if the helper value is correct
+        assertThat(quizData.firstItemHelperValueState).isEqualTo(firstItemHelperValueState)
+
         // Check if current question is not null
         assertThat(currentQuestion).isNotNull()
         require(currentQuestion != null)
@@ -235,6 +262,11 @@ internal class ComparisonQuizCoreImplTest {
     fun `onAnswerClicked should end the game when no more questions is remaining`() = runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
+
+        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
+        every {
+            remoteConfig.getString("comparison_quiz_first_item_helper_value")
+        } returns firstItemHelperValueState.name
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -282,6 +314,11 @@ internal class ComparisonQuizCoreImplTest {
     fun `endGame() should end the game`() = runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
+
+        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
+        every {
+            remoteConfig.getString("comparison_quiz_first_item_helper_value")
+        } returns firstItemHelperValueState.name
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -370,6 +407,11 @@ internal class ComparisonQuizCoreImplTest {
 
         val initialData = getInitializationData()
 
+        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
+        every {
+            remoteConfig.getString("comparison_quiz_first_item_helper_value")
+        } returns firstItemHelperValueState.name
+
         every { remoteConfig.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
         coEvery { userRepository.addLocalUserDiamonds(-skipCost.toInt()) } just runs
@@ -400,6 +442,19 @@ internal class ComparisonQuizCoreImplTest {
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
+        // verify current question
+        val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
+        val currentQuestion = quizData.currentQuestion
+
+        assertThat(quizData.comparisonMode).isEqualTo(initialData.comparisonMode)
+
+        // Check if the helper value is correct
+        assertThat(quizData.firstItemHelperValueState).isEqualTo(firstItemHelperValueState)
+
+        assertThat(quizData.isGameOver).isFalse()
+        assertThat(currentQuestion).isNotNull()
+        require(currentQuestion != null)
+
         comparisonQuizCoreImpl.skip()
 
         // Verify that we called this twice, one for checking if can skip and one for actually skipping
@@ -419,6 +474,10 @@ internal class ComparisonQuizCoreImplTest {
 
         assertThat(newCurrentQuestion.questions.first).isEqualTo(expectedQuestions[1])
         assertThat(newCurrentQuestion.questions.second).isEqualTo(expectedQuestions[2])
+
+        // Check if the helper value is changed
+        assertThat(newQuizData.firstItemHelperValueState).isNotEqualTo(firstItemHelperValueState)
+        assertThat(newQuizData.firstItemHelperValueState).isEqualTo(ComparisonQuizHelperValueState.NORMAL)
     }
 
     @Test

@@ -29,6 +29,7 @@ import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesReposito
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
@@ -87,6 +88,8 @@ internal class ComparisonQuizScreenTest {
         )
     }
 
+    private val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
+
     @Before
     fun setUp() {
         comparisonQuizRepository = FakeComparisonQuizRepositoryImpl(
@@ -111,6 +114,10 @@ internal class ComparisonQuizScreenTest {
         )
 
         every { authUserRepository.isSignedIn } returns false
+
+        every {
+            remoteConfig.getString("comparison_quiz_first_item_helper_value")
+        } returns firstItemHelperValueState.name
 
         comparisonQuizCore = ComparisonQuizCoreImpl(
             comparisonQuizRepository = comparisonQuizRepository,
@@ -183,7 +190,13 @@ internal class ComparisonQuizScreenTest {
         // Check if first item helper text is displayed
         composeTestRule
             .onNodeWithText("1")
-            .assertIsDisplayed()
+            .apply {
+                if (firstItemHelperValueState == ComparisonQuizHelperValueState.HIDDEN) {
+                    assertDoesNotExist()
+                } else {
+                    assertIsDisplayed()
+                }
+            }
 
         // Check if the second item is displayed
         composeTestRule
