@@ -17,11 +17,12 @@ import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,7 +37,27 @@ class SettingsViewModel @Inject constructor(
     private val analyticsHelper: AnalyticsHelper
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
-    val uiState = _uiState.asStateFlow()
+    val uiState = combine(
+        _uiState,
+        savedStateHandle.getStateFlow(
+            key = SettingsScreenNavArgs::screenKey.name,
+            initialValue = SettingsScreenPageData.MainPage.key.value
+        ),
+        authUserRepository.isSignedInFlow,
+        settingsDataStoreManager.getPreferenceFlow(
+            SettingsCommon.Translation.TargetLanguage
+        )
+    ) { uiState, screenKey, isSignedIn, targetLanguage ->
+        uiState.copy(
+            screenKey = ScreenKey(screenKey),
+            userIsSignedIn = isSignedIn,
+            translatorTargetLanguage = targetLanguage
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = SettingsUiState()
+    )
 
     init {
         viewModelScope.launch {
@@ -56,27 +77,6 @@ class SettingsViewModel @Inject constructor(
                 )
             }
         }
-
-        combine(
-            savedStateHandle.getStateFlow(
-                key = SettingsScreenNavArgs::screenKey.name,
-                initialValue = SettingsScreenPageData.MainPage.key.value
-            ),
-            authUserRepository.isSignedInFlow,
-            settingsDataStoreManager.getPreferenceFlow(
-                SettingsCommon.Translation.TargetLanguage
-            )
-        ) { screenKey, isSignedIn, targetLanguage ->
-            Triple(screenKey, isSignedIn, targetLanguage)
-        }.onEach { (screenKey, isSignedIn, targetLanguage) ->
-            _uiState.update { currentState ->
-                currentState.copy(
-                    screenKey = ScreenKey(screenKey),
-                    userIsSignedIn = isSignedIn,
-                    translatorTargetLanguage = targetLanguage
-                )
-            }
-        }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: SettingsScreenUiEvent) {
