@@ -33,6 +33,8 @@ interface RecentCategoriesRepository {
         isInternetAvailable: Boolean
     ): HomeCategoriesFlow<ComparisonQuizCategory>
 
+    fun getDefaultShowCategoryConnectionInfo(): ShowCategoryConnectionInfo
+
     fun getShowCategoryConnectionInfoFlow(): Flow<ShowCategoryConnectionInfo>
 
     suspend fun addMultiChoiceCategory(categoryId: String)

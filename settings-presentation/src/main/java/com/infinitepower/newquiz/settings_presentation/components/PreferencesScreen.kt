@@ -70,6 +70,7 @@ internal fun PreferencesScreen(
                 scope = scope,
                 dataStoreManager = dataStoreManager,
                 navigateToScreen = navigateToScreen,
+                defaultShowCategoryConnectionInfo = uiState.defaultShowCategoryConnectionInfo,
                 cleanRecentCategories = { onEvent(SettingsScreenUiEvent.ClearHomeRecentCategories) }
             )
             is SettingsScreenPageData.MultiChoiceQuiz -> page.items()

@@ -51,7 +51,8 @@ class SettingsViewModel @Inject constructor(
                 currentState.copy(
                     translatorAvailable = translatorUtil.isTranslatorAvailable,
                     translationModelState = translationModelState,
-                    translatorTargetLanguages = translatorUtil.availableTargetLanguages
+                    translatorTargetLanguages = translatorUtil.availableTargetLanguages,
+                    defaultShowCategoryConnectionInfo = recentCategoriesRepository.getDefaultShowCategoryConnectionInfo()
                 )
             }
         }

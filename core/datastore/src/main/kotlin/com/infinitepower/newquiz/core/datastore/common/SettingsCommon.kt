@@ -37,9 +37,12 @@ object SettingsCommon {
 
     object HideOnlineCategories : PreferenceRequest<Boolean>(booleanPreferencesKey("hideOnlineCategories"), false)
 
-    object CategoryConnectionInfoBadge : PreferenceRequest<String>(
+    @Keep
+    data class CategoryConnectionInfoBadge(
+        val default: ShowCategoryConnectionInfo = ShowCategoryConnectionInfo.NONE
+    ) : PreferenceRequest<String>(
         stringPreferencesKey("categoryConnectionInfoBadge"),
-        ShowCategoryConnectionInfo.NONE.name
+        default.name
     )
 
     object InfiniteWordleQuizLanguage : PreferenceRequest<String>(

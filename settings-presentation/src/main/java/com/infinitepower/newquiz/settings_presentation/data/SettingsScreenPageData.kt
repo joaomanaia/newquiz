@@ -37,6 +37,7 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.translation.TranslatorModelState
 import com.infinitepower.newquiz.core.translation.TranslatorTargetLanguages
 import com.infinitepower.newquiz.core.ui.components.AppNameWithLogo
+import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 import com.infinitepower.newquiz.settings_presentation.components.other.AboutAndHelpButtons
 import com.infinitepower.newquiz.settings_presentation.data.util.getShowCategoryConnectionInfoEntryMap
 import com.infinitepower.newquiz.settings_presentation.model.Preference
@@ -153,6 +154,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         fun items(
             scope: CoroutineScope,
             dataStoreManager: DataStoreManager,
+            defaultShowCategoryConnectionInfo: ShowCategoryConnectionInfo,
             navigateToScreen: (screenKey: ScreenKey) -> Unit,
             cleanRecentCategories: () -> Unit
         ) = listOf(
@@ -187,7 +189,9 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 preferenceItems = listOf(
                     Preference.PreferenceItem.ListPreference(
                         title = stringResource(id = CoreR.string.show_category_connection_info),
-                        request = SettingsCommon.CategoryConnectionInfoBadge,
+                        request = SettingsCommon.CategoryConnectionInfoBadge(
+                            default = defaultShowCategoryConnectionInfo
+                        ),
                         entries = getShowCategoryConnectionInfoEntryMap(),
                     ),
                     Preference.PreferenceItem.SwitchPreference(

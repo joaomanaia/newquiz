@@ -5,6 +5,7 @@ import com.infinitepower.newquiz.core.datastore.PreferenceRequest
 import com.infinitepower.newquiz.core.datastore.common.RecentCategoryDataStoreCommon
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
@@ -39,6 +40,7 @@ internal class RecentCategoriesRepositoryImplTest {
     private val recentCategoriesDataStoreManager: DataStoreManager = mockk(relaxed = true)
     private val settingsDataStoreManager: DataStoreManager = mockk(relaxed = true)
     private val comparisonQuizRepository: ComparisonQuizRepository = mockk(relaxed = true)
+    private val remoteConfig: RemoteConfig = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
@@ -48,7 +50,8 @@ internal class RecentCategoriesRepositoryImplTest {
         recentCategoriesRepository = RecentCategoriesRepositoryImpl(
             recentCategoriesDataStoreManager,
             settingsDataStoreManager,
-            comparisonQuizRepository
+            comparisonQuizRepository,
+            remoteConfig
         )
     }
 

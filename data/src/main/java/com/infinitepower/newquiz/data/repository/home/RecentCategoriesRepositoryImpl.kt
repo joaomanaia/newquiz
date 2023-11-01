@@ -6,6 +6,7 @@ import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.di.RecentCategoriesDataStoreManager
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
@@ -27,7 +28,8 @@ import javax.inject.Singleton
 class RecentCategoriesRepositoryImpl @Inject constructor(
     @RecentCategoriesDataStoreManager private val recentCategoriesDataStoreManager: DataStoreManager,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val comparisonQuizRepository: ComparisonQuizRepository
+    private val comparisonQuizRepository: ComparisonQuizRepository,
+    private val remoteConfig: RemoteConfig
 ) : RecentCategoriesRepository {
     override fun getMultiChoiceCategories(
         isInternetAvailable: Boolean
@@ -139,9 +141,22 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getShowCategoryConnectionInfoFlow(): Flow<ShowCategoryConnectionInfo> = settingsDataStoreManager
-        .getPreferenceFlow(SettingsCommon.CategoryConnectionInfoBadge)
-        .map(ShowCategoryConnectionInfo::valueOf)
+    /**
+     * Get the default value for the [ShowCategoryConnectionInfo] settings preference
+     * from the remote config.
+     */
+    override fun getDefaultShowCategoryConnectionInfo(): ShowCategoryConnectionInfo {
+        val defaultStr = remoteConfig.getString("default_show_category_connection_info")
+
+        return ShowCategoryConnectionInfo.valueOf(defaultStr)
+    }
+
+    override fun getShowCategoryConnectionInfoFlow(): Flow<ShowCategoryConnectionInfo> {
+        val default = getDefaultShowCategoryConnectionInfo()
+
+        return settingsDataStoreManager
+            .getPreferenceFlow(SettingsCommon.CategoryConnectionInfoBadge(default))
+            .map(ShowCategoryConnectionInfo::valueOf)    }
 
     override suspend fun addMultiChoiceCategory(categoryId: String) {
         addCategory(categoryId, RecentCategoryDataStoreCommon.MultiChoice)

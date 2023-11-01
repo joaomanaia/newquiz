@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <defaults>
     <entry>
+        <key>default_show_category_connection_info</key>
+        <value>NONE</value>
+    </entry>
+    <entry>
         <key>countries_and_capitals</key>
         <value>
             [{"countryCode":"AF","capital":"Kabul","difficulty":"medium","countryName":"Afghanistan","continent":"Asia"},{"countryCode":"AL","capital":"Tirana","difficulty":"medium","countryName":"Albania","continent":"Europe"},{"countryCode":"DZ","capital":"Algiers","difficulty":"medium","countryName":"Algeria","continent":"Africa"},{"countryCode":"AD","capital":"Andorra
@@ -114,6 +118,14 @@
         <value>https://flagcdn.com/%code%.svg</value>
     </entry>
     <entry>
+        <key>daily_challenge_tasks_to_generate</key>
+        <value>5</value>
+    </entry>
+    <entry>
+        <key>daily_challenge_item_reward</key>
+        <value>1</value>
+    </entry>
+    <entry>
         <key>comparison_quiz_categories</key>
         <value>[{"id":"country-population","name":"Country Population","description":"Compare
             population of each
@@ -149,14 +161,6 @@
     <entry>
         <key>comparison_quiz_first_item_helper_value</key>
         <value>HIDDEN</value>
-    </entry>
-    <entry>
-        <key>daily_challenge_tasks_to_generate</key>
-        <value>5</value>
-    </entry>
-    <entry>
-        <key>daily_challenge_item_reward</key>
-        <value>1</value>
     </entry>
     <entry>
         <key>user_initial_diamonds</key>
