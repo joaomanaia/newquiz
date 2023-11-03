@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <defaults>
     <entry>
-        <key>default_show_category_connection_info</key>
-        <value>NONE</value>
-    </entry>
-    <entry>
         <key>countries_and_capitals</key>
         <value>
             [{"countryCode":"AF","capital":"Kabul","difficulty":"medium","countryName":"Afghanistan","continent":"Asia"},{"countryCode":"AL","capital":"Tirana","difficulty":"medium","countryName":"Albania","continent":"Europe"},{"countryCode":"DZ","capital":"Algiers","difficulty":"medium","countryName":"Algeria","continent":"Africa"},{"countryCode":"AD","capital":"Andorra
@@ -118,6 +114,10 @@
         <value>https://flagcdn.com/%code%.svg</value>
     </entry>
     <entry>
+        <key>default_show_category_connection_info</key>
+        <value>NONE</value>
+    </entry>
+    <entry>
         <key>daily_challenge_tasks_to_generate</key>
         <value>5</value>
     </entry>
@@ -147,11 +147,22 @@
             movies.","image":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fmovie_popularity_illustration.png?alt=media&amp;token=9e54b03f-391a-4cd9-9a04-e0a8f29d0b9f","questionDescription":{"greater":"Which
             movie is more recent?","less":"Which movie is less
             recent?"},"formatType":"date","dataSourceAttribution":{"text":"Powered by
-            TMDB"}},{"id":"movie-actor-popularity","name":"Actor Popularity","description":"Compare
-            popularity of movie
-            actors.","image":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fmovie_popularity_illustration.png?alt=media&amp;token=9e54b03f-391a-4cd9-9a04-e0a8f29d0b9f","questionDescription":{"greater":"Which
-            movie actor is more popular?","less":"Which movie actor is less
-            popular?"},"formatType":"number","dataSourceAttribution":{"text":"Powered by TMDB"}}]
+            TMDB"}},{"id":"club-trophies","name":"Club Trophies","description":"Compare trophies of
+            clubs.","image":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/comparison-quiz%2Fclub-trophies.jpg?alt=media&amp;token=532f1a0b-ce22-4fd2-9d02-6ff7e480a08d","questionDescription":{"greater":"Which
+            club has more trophies?","less":"Which club has less
+            trophies?"},"formatType":"number"},{"id":"club-foundation-date","name":"Club Foundation
+            Date","description":"Compare foundation date of
+            clubs.","image":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/comparison-quiz%2Fstadium-field.jpg?alt=media&amp;token=bd9b32b6-0cd3-4a4b-bed5-c3ace9a7734c","questionDescription":{"greater":"Which
+            club is more recent?","less":"Which club is
+            older?"},"formatType":"date"},{"id":"club-stadium-capacity","name":"Stadium
+            Capacity","description":"Compare the capacity of
+            stadiums.","image":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/comparison-quiz%2Fstadium-inside.jpg?alt=media&amp;token=82843706-2fab-4f12-811a-1f556a0c0674","questionDescription":{"greater":"Which
+            stadium has more capacity?","less":"Which stadium has less
+            capacity?"},"formatType":"number"},{"id":"club-stadium-opened-date","name":"Stadium
+            Opening Date","description":"Compare the opening date of
+            stadiums.","image":"https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/comparison-quiz%2Fstadium-inside2.jpg?alt=media&amp;token=38771c7d-1a4b-47a9-bb89-f49f2fc3ad95","questionDescription":{"greater":"Which
+            stadium opened most recently?","less":"Which stadium opened
+            first?"},"formatType":"date"}]
         </value>
     </entry>
     <entry>
