@@ -5,21 +5,16 @@ typealias QuestionPair = Pair<ComparisonQuizItem, ComparisonQuizItem>
 /**
  * Represents a question in the comparison quiz.
  * @param questions Pair of questions to compare.
- * @throws IllegalArgumentException if questions have the same value.
  * @see ComparisonQuizItem
  */
 @JvmInline
 value class ComparisonQuizCurrentQuestion(
     val questions: QuestionPair
 ) {
-    init {
-        require(questions.first.value != questions.second.value) {
-            "Questions must have different values"
-        }
-    }
-
     /**
      * Returns true if the [answer] is the correct answer for the [mode].
+     * If the values are equal, the answer is considered correct.
+     *
      * @param answer The user selected answer to check.
      * @param mode Mode of comparison.
      * @return True if the [answer] is the correct answer for the [mode].

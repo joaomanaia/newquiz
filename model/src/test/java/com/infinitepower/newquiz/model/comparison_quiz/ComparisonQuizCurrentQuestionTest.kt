@@ -2,30 +2,10 @@ package com.infinitepower.newquiz.model.comparison_quiz
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.net.URI
 
 internal class ComparisonQuizCurrentQuestionTest {
     private val emptyUri = URI("")
-
-    @Test
-    fun `questions must have different values`() {
-        val quizItem1 = ComparisonQuizItem(
-            title = "A",
-            imgUri = emptyUri,
-            value = 10.0
-        )
-
-        val quizItem2 = ComparisonQuizItem(
-            title = "B",
-            imgUri = emptyUri,
-            value = 10.0
-        )
-
-        assertThrows<IllegalArgumentException> {
-            ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
-        }
-    }
 
     @Test
     fun `nextQuestion returns a new ComparisonQuizCurrentQuestion with the second question replaced`() {
@@ -148,5 +128,28 @@ internal class ComparisonQuizCurrentQuestionTest {
 
         val isCorrectLower = question.isCorrectAnswer(quizItem2, ComparisonMode.LESSER)
         assertThat(isCorrectLower).isFalse()
+    }
+
+    @Test
+    fun `test isCorrectAnswer when values are the same`() {
+        val quizItem1 = ComparisonQuizItem(
+            title = "A",
+            imgUri = emptyUri,
+            value = 1.0
+        )
+
+        val quizItem2 = ComparisonQuizItem(
+            title = "B",
+            imgUri = emptyUri,
+            value = 1.0
+        )
+
+        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+
+        val isCorrectGreater = question.isCorrectAnswer(quizItem1, ComparisonMode.GREATER)
+        assertThat(isCorrectGreater).isTrue()
+
+        val isCorrectLower = question.isCorrectAnswer(quizItem1, ComparisonMode.LESSER)
+        assertThat(isCorrectLower).isTrue()
     }
 }
