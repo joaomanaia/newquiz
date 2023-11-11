@@ -4,8 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.ktor.client.*
-import io.ktor.client.engine.okhttp.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
 import javax.inject.Singleton
 
 @Module
@@ -13,9 +13,5 @@ import javax.inject.Singleton
 object KtorModule {
     @Provides
     @Singleton
-    fun providerKtorClient(): HttpClient = HttpClient(OkHttp) {
-        engine {
-            threadsCount = 4
-        }
-    }
+    fun providerKtorClient(): HttpClient = HttpClient(OkHttp)
 }

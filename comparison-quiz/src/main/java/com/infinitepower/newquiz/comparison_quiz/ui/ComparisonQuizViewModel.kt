@@ -40,15 +40,21 @@ class ComparisonQuizViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ComparisonQuizUiState())
     val uiState = combine(
         _uiState,
-        comparisonQuizRepository.getHighestPosition(),
+        comparisonQuizRepository.getHighestPositionFlow(category = getCategory()),
         comparisonQuizCore.quizDataFlow
     ) { uiState, highestPosition, quizData ->
-        if (quizData.currentPosition > uiState.highestPosition) {
-            comparisonQuizRepository.saveHighestPosition(quizData.currentPosition)
-        }
-
         if (quizData.isGameOver) {
-            viewModelScope.launch(Dispatchers.IO) {
+            // Save highest position when game is over.
+            viewModelScope.launch {
+                if (quizData.currentPosition > highestPosition) {
+                    comparisonQuizRepository.saveHighestPosition(
+                        category = getCategory(),
+                        position = quizData.currentPosition
+                    )
+                }
+            }
+
+            viewModelScope.launch {
                 UpdateGlobalEventDataWorker.enqueueWork(
                     workManager = workManager,
                     GameEvent.ComparisonQuiz.PlayAndGetScore(quizData.currentPosition)
@@ -64,13 +70,19 @@ class ComparisonQuizViewModel @Inject constructor(
             }
         }
 
+        val currentPosition = quizData.currentPosition
+
+        // Get the highest position between the current position and the highest position.
+        // The highest position is updated when the game is over.
+        val currentHighestPosition = maxOf(currentPosition, highestPosition)
+
         uiState.copy(
             currentQuestion = quizData.currentQuestion,
             gameDescription = quizData.questionDescription,
-            currentPosition = quizData.currentPosition,
+            currentPosition = currentPosition,
             isGameOver = quizData.isGameOver,
             firstItemHelperValueState = quizData.firstItemHelperValueState,
-            highestPosition = highestPosition.data ?: 0
+            highestPosition = currentHighestPosition
         )
     }.stateIn(
         scope = viewModelScope,

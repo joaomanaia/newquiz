@@ -7,9 +7,11 @@ import androidx.room.DeleteTable
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
+import com.infinitepower.newquiz.core.database.dao.ComparisonQuizDao
 import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
 import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
 import com.infinitepower.newquiz.core.database.dao.SavedMultiChoiceQuestionsDao
+import com.infinitepower.newquiz.core.database.model.ComparisonQuizHighestPosition
 import com.infinitepower.newquiz.core.database.model.DailyChallengeTaskEntity
 import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
 import com.infinitepower.newquiz.core.database.model.MultiChoiceQuestionEntity
@@ -29,9 +31,10 @@ import com.infinitepower.newquiz.core.database.util.converters.QuestionDifficult
     entities = [
         MultiChoiceQuestionEntity::class,
         MazeQuizItemEntity::class,
-        DailyChallengeTaskEntity::class
+        DailyChallengeTaskEntity::class,
+        ComparisonQuizHighestPosition::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -39,7 +42,8 @@ import com.infinitepower.newquiz.core.database.util.converters.QuestionDifficult
             from = 2,
             to = 3,
             spec = AppDatabase.RemoveDailyWordleTableMigration::class
-        )
+        ),
+        AutoMigration(from = 3, to = 4)
     ]
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -48,6 +52,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun mazeQuizDao(): MazeQuizDao
 
     abstract fun dailyChallengeDao(): DailyChallengeDao
+
+    abstract fun comparisonQuizDao(): ComparisonQuizDao
 
     companion object {
         internal const val DATABASE_NAME = "app-database"

@@ -16,6 +16,8 @@ dependencies {
     api(libs.kotlinx.coroutines.test)
     api(libs.androidx.compose.material3)
 
+    api(libs.ktor.client.mock)
+
     api(libs.room.testing)
     api(libs.androidx.work.testing)
 

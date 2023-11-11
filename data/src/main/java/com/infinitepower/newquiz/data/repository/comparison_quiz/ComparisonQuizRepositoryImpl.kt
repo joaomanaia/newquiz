@@ -1,9 +1,8 @@
 package com.infinitepower.newquiz.data.repository.comparison_quiz
 
 import com.infinitepower.newquiz.core.common.BaseApiUrls
-import com.infinitepower.newquiz.core.datastore.common.ComparisonQuizDataStoreCommon
-import com.infinitepower.newquiz.core.datastore.di.ComparisonQuizDataStoreManager
-import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.database.dao.ComparisonQuizDao
+import com.infinitepower.newquiz.core.database.model.ComparisonQuizHighestPosition
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.FlowResource
@@ -19,7 +18,7 @@ import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
-import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
@@ -29,8 +28,8 @@ import javax.inject.Singleton
 @Singleton
 class ComparisonQuizRepositoryImpl @Inject constructor(
     private val client: HttpClient,
-    @ComparisonQuizDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val remoteConfig: RemoteConfig
+    private val remoteConfig: RemoteConfig,
+    private val comparisonQuizDao: ComparisonQuizDao
 ) : ComparisonQuizRepository {
     private val categoriesCache: MutableList<ComparisonQuizCategory> = mutableListOf()
 
@@ -72,22 +71,16 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getHighestPosition(): FlowResource<Int> = flow {
-        try {
-            emit(Resource.Loading())
+    override fun getHighestPositionFlow(category: ComparisonQuizCategory): Flow<Int> = comparisonQuizDao
+        .getHighestPosition(category.id)
+        .map { it?.highestPosition ?: 0 }
 
-            val highestPosition = settingsDataStoreManager
-                .getPreferenceFlow(ComparisonQuizDataStoreCommon.HighestPosition)
-                .map { value -> Resource.Success(value) }
+    override suspend fun saveHighestPosition(category: ComparisonQuizCategory, position: Int) {
+        val entity = ComparisonQuizHighestPosition(
+            categoryId = category.id,
+            highestPosition = position
+        )
 
-            emitAll(highestPosition)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(Resource.Error(e.localizedMessage ?: "An unknown error occurred while fetching highest position"))
-        }
-    }
-
-    override suspend fun saveHighestPosition(position: Int) {
-        settingsDataStoreManager.editPreference(ComparisonQuizDataStoreCommon.HighestPosition.key, position)
+        comparisonQuizDao.upsert(entity)
     }
 }

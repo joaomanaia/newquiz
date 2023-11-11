@@ -7,8 +7,10 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import java.net.URI
 import javax.inject.Inject
@@ -52,13 +54,9 @@ class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRep
         emit(Resource.Success(questions))
     }
 
-    override fun getHighestPosition(): FlowResource<Int> {
-        return highestPosition.map { position ->
-            Resource.Success(position)
-        }
-    }
+    override fun getHighestPositionFlow(category: ComparisonQuizCategory): Flow<Int> = highestPosition
 
-    override suspend fun saveHighestPosition(position: Int) {
+    override suspend fun saveHighestPosition(category: ComparisonQuizCategory, position: Int) {
         highestPosition.emit(position)
     }
 }
