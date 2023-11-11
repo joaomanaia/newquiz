@@ -1,20 +1,27 @@
 package com.infinitepower.newquiz.comparison_quiz.ui
 
 import androidx.annotation.Keep
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -25,13 +32,15 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -41,6 +50,7 @@ import coil.compose.AsyncImage
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonItem
 import com.infinitepower.newquiz.comparison_quiz.ui.components.GameOverContent
+import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonMidContent
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -58,7 +68,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.infinitepower.newquiz.core.R as CoreR
+import kotlinx.coroutines.delay
 
 @Keep
 data class ComparisonQuizListScreenNavArg(
@@ -68,7 +78,7 @@ data class ComparisonQuizListScreenNavArg(
 
 @Composable
 @Destination(navArgsDelegate = ComparisonQuizListScreenNavArg::class)
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 fun ComparisonQuizScreen(
     windowSizeClass: WindowSizeClass,
     navigator: DestinationsNavigator,
@@ -76,9 +86,22 @@ fun ComparisonQuizScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    var animationState by remember { mutableStateOf(AnimationState.StartGame) }
+
+    LaunchedEffect(key1 = uiState.currentPosition) {
+        if (uiState.currentPosition == 1) {
+            animationState = AnimationState.Normal
+        } else if (uiState.currentPosition > 1) {
+            animationState = AnimationState.NextQuestion
+            delay(1000)
+            animationState = AnimationState.Normal
+        }
+    }
+
     ComparisonQuizScreenImpl(
         uiState = uiState,
         windowSizeClass = windowSizeClass,
+        animationState = animationState,
         onEvent = viewModel::onEvent,
         onBackClick = navigator::popBackStack,
         onPlayAgainClick = {
@@ -102,9 +125,11 @@ fun ComparisonQuizScreen(
 
 @Composable
 @ExperimentalMaterial3Api
-fun ComparisonQuizScreenImpl(
+@ExperimentalAnimationApi
+internal fun ComparisonQuizScreenImpl(
     uiState: ComparisonQuizUiState,
     windowSizeClass: WindowSizeClass,
+    animationState: AnimationState,
     onBackClick: () -> Unit = {},
     onPlayAgainClick: () -> Unit = {},
     onEvent: (event: ComparisonQuizUiEvent) -> Unit = {}
@@ -125,6 +150,7 @@ fun ComparisonQuizScreenImpl(
                 gameCategory = uiState.gameCategory,
                 isSignedIn = uiState.isSignedIn,
                 firstItemHelperValueState = uiState.firstItemHelperValueState,
+                animationState = animationState,
                 onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) },
                 onSkipClick = { onEvent(ComparisonQuizUiEvent.ShowSkipQuestionDialog) },
             )
@@ -159,6 +185,7 @@ fun ComparisonQuizScreenImpl(
 }
 
 @Composable
+@ExperimentalAnimationApi
 private fun ComparisonQuizContent(
     modifier: Modifier = Modifier,
     currentQuestion: ComparisonQuizCurrentQuestion,
@@ -169,6 +196,7 @@ private fun ComparisonQuizContent(
     verticalContent: Boolean,
     isSignedIn: Boolean,
     firstItemHelperValueState: ComparisonQuizHelperValueState,
+    animationState: AnimationState,
     onBackClick: () -> Unit,
     onAnswerClick: (ComparisonQuizItem) -> Unit,
     onSkipClick: () -> Unit
@@ -176,6 +204,7 @@ private fun ComparisonQuizContent(
     ComparisonQuizContainer(
         modifier = modifier.fillMaxSize(),
         verticalContent = verticalContent,
+        animationState = animationState,
         descriptionContent = {
             Text(
                 text = gameDescription,
@@ -206,7 +235,8 @@ private fun ComparisonQuizContent(
             ComparisonMidContent(
                 questionPosition = questionPosition,
                 highestPosition = highestPosition,
-                heightCompact = verticalContent
+                verticalContent = verticalContent,
+                animationState = animationState
             )
         },
         backIconContent = { BackIconButton(onClick = onBackClick) },
@@ -227,9 +257,11 @@ private fun ComparisonQuizContent(
 }
 
 @Composable
-fun ComparisonQuizContainer(
+@ExperimentalAnimationApi
+private fun ComparisonQuizContainer(
     modifier: Modifier = Modifier,
     verticalContent: Boolean,
+    animationState: AnimationState,
     backIconContent: @Composable () -> Unit,
     descriptionContent: @Composable () -> Unit,
     firstQuestionContent: @Composable BoxScope.() -> Unit,
@@ -239,6 +271,11 @@ fun ComparisonQuizContainer(
     skipButtonContent: (@Composable () -> Unit)? = null
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
+
+    val mainContentTransition = updateTransition(
+        targetState = animationState,
+        label = "Main Content"
+    )
 
     if (verticalContent) {
         Column(
@@ -259,21 +296,40 @@ fun ComparisonQuizContainer(
                 }
             }
             Spacer(modifier = Modifier.height(spaceMedium))
-            Box(
+            mainContentTransition.AnimatedVisibility(
+                visible = { state -> state != AnimationState.StartGame },
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                content = firstQuestionContent
-            )
+                enter = fadeIn() + slideInHorizontally(),
+                exit = fadeOut() + slideOutHorizontally()
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    content = firstQuestionContent
+                )
+            }
             Spacer(modifier = Modifier.height(spaceMedium))
             midContent()
             Spacer(modifier = Modifier.height(spaceMedium))
-            Box(
+            mainContentTransition.AnimatedVisibility(
+                visible = { state -> state != AnimationState.StartGame },
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                content = secondQuestionContent
-            )
+                // Make this animation from the opposite direction
+                enter = fadeIn() + slideInHorizontally(
+                    initialOffsetX = { it }
+                ),
+                exit = fadeOut() + slideOutHorizontally(
+                    targetOffsetX = { it }
+                )
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    content = secondQuestionContent
+                )
+            }
             attributionContent?.let { content ->
                 Spacer(modifier = Modifier.height(spaceMedium))
                 content()
@@ -300,99 +356,44 @@ fun ComparisonQuizContainer(
             Row(
                 modifier = Modifier.weight(1f)
             ) {
-                Box(
-                    modifier = Modifier.weight(1f),
-                    content = firstQuestionContent
-                )
+                mainContentTransition.AnimatedVisibility(
+                    visible = { state -> state != AnimationState.StartGame },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    enter = fadeIn() + slideInVertically(),
+                    exit = fadeOut() + slideOutVertically()
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        content = firstQuestionContent
+                    )
+                }
                 Spacer(modifier = Modifier.width(spaceMedium))
                 midContent()
                 Spacer(modifier = Modifier.width(spaceMedium))
-                Box(
-                    modifier = Modifier.weight(1f),
-                    content = secondQuestionContent
-                )
+                mainContentTransition.AnimatedVisibility(
+                    visible = { state -> state != AnimationState.StartGame },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    enter = fadeIn() + slideInVertically(
+                        initialOffsetY = { it }
+                    ),
+                    exit = fadeOut() + slideOutVertically(
+                        targetOffsetY = { it }
+                    )
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        content = secondQuestionContent
+                    )
+                }
             }
             attributionContent?.let { attribution ->
                 Spacer(modifier = Modifier.height(spaceMedium))
                 attribution()
             }
-        }
-    }
-}
-
-@Composable
-fun ComparisonMidContent(
-    modifier: Modifier = Modifier,
-    questionPosition: Int,
-    highestPosition: Int,
-    heightCompact: Boolean
-) {
-    ComparisonMidContainer(
-        modifier = modifier,
-        verticalContent = heightCompact,
-        currentPositionContent = {
-            Text(
-                text = stringResource(id = CoreR.string.position_n, questionPosition),
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
-            )
-        },
-        highestPositionContent = {
-            Text(
-                text = stringResource(id = CoreR.string.highest_n, highestPosition),
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
-            )
-        },
-        midContent = {
-            Surface(
-                shape = CircleShape,
-                modifier = Modifier.size(48.dp),
-                color = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary,
-                tonalElevation = 2.dp
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(id = CoreR.string.or).uppercase(),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-            }
-        }
-    )
-}
-
-@Composable
-private fun ComparisonMidContainer(
-    modifier: Modifier = Modifier,
-    verticalContent: Boolean,
-    currentPositionContent: @Composable () -> Unit,
-    highestPositionContent: @Composable () -> Unit,
-    midContent: @Composable () -> Unit
-) {
-    if (verticalContent) {
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            currentPositionContent()
-            midContent()
-            highestPositionContent()
-        }
-    } else {
-        Column(
-            modifier = modifier.fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            currentPositionContent()
-            midContent()
-            highestPositionContent()
         }
     }
 }
@@ -426,7 +427,11 @@ private fun DataSourceAttributionContent(
 
 @Composable
 @AllPreviewsNightLight
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3WindowSizeClassApi::class,
+    ExperimentalAnimationApi::class
+)
 private fun ComparisonQuizScreenPreview() {
     val question1 = ComparisonQuizItem(
         title = "NewQuiz",
@@ -469,7 +474,8 @@ private fun ComparisonQuizScreenPreview() {
                     ),
                     isSignedIn = true
                 ),
-                windowSizeClass = windowSizeClass
+                windowSizeClass = windowSizeClass,
+                animationState = AnimationState.Normal
             )
         }
     }

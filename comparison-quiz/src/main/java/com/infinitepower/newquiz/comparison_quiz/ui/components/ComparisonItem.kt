@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.comparison_quiz.ui.components
 
 import android.net.Uri
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -132,13 +133,18 @@ internal fun ComparisonItem(
                                 .width(DividerDefaults.Thickness)
                         )
                         Spacer(modifier = Modifier.width(spaceExtraSmall))
-                        Text(
+                        AnimatedContent(
+                            targetState = helperValue,
+                            label = "helper value",
                             modifier = Modifier.weight(1f),
-                            text = helperValue,
-                            style = MaterialTheme.typography.titleMedium,
-                            maxLines = 1,
-                            textAlign = TextAlign.Center
-                        )
+                        ) { value ->
+                            Text(
+                                text = value,
+                                style = MaterialTheme.typography.titleMedium,
+                                maxLines = 1,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }
