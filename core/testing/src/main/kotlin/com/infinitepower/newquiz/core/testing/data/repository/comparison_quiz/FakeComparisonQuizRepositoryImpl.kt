@@ -10,8 +10,6 @@ import com.infinitepower.newquiz.model.toUiText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import java.net.URI
 import javax.inject.Inject
 import javax.inject.Singleton

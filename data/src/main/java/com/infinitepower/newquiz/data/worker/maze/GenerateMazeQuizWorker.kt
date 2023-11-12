@@ -37,8 +37,6 @@ import com.infinitepower.newquiz.core.R as CoreR
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -111,10 +109,10 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     companion object {
         private const val TAG = "GenerateMazeQuizWorker"
 
-        private const val INPUT_SEED = "INPUT_SEED"
-        private const val INPUT_QUESTION_SIZE = "INPUT_QUESTION_SIZE"
-        private const val INPUT_MULTI_CHOICE_CATEGORIES = "INPUT_MULTI_CHOICE_CATEGORIES"
-        private const val INPUT_WORDLE_QUIZ_TYPES = "INPUT_WORDLE_QUIZ_TYPES"
+        internal const val INPUT_SEED = "INPUT_SEED"
+        internal const val INPUT_QUESTION_SIZE = "INPUT_QUESTION_SIZE"
+        internal const val INPUT_MULTI_CHOICE_CATEGORIES = "INPUT_MULTI_CHOICE_CATEGORIES"
+        internal const val INPUT_WORDLE_QUIZ_TYPES = "INPUT_WORDLE_QUIZ_TYPES"
 
         /**
          * Enqueue a new work to generate a maze quiz.
@@ -167,10 +165,6 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val seed = inputData.getInt(INPUT_SEED, Random.nextInt())
 
-        val remoteConfigQuestionSize = remoteConfig.getInt("maze_quiz_generated_questions")
-
-        val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, remoteConfigQuestionSize)
-
         val multiChoiceCategoriesStr = inputData.getString(INPUT_MULTI_CHOICE_CATEGORIES)
             ?: throw RuntimeException("Multi choice categories is null")
         val multiChoiceCategories =
@@ -184,6 +178,10 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
 
         Log.i(TAG, "Wordle quiz types: $wordleQuizTypesStr")
 
+        val remoteConfigQuestionSize = remoteConfig.getInt("maze_quiz_generated_questions")
+
+        val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, remoteConfigQuestionSize)
+
         // Random to use in all of the generators
         val random = Random(seed)
 
@@ -196,32 +194,25 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
             "Generating maze with seed: $seed, question size: $questionSize, question size per mode: $questionSizePerMode"
         )
 
-        // Generate all the items async
         val multiChoiceMazeQuestions = multiChoiceCategories.map { category ->
-            async {
-                generateMultiChoiceMazeItems(
-                    mazeSeed = seed,
-                    questionSize = questionSizePerMode,
-                    multiChoiceQuizType = category,
-                    random = random
-                )
-            }
+            generateMultiChoiceMazeItems(
+                mazeSeed = seed,
+                questionSize = questionSizePerMode,
+                multiChoiceQuizType = category,
+                random = random
+            )
         }
 
         val wordleMazeQuestions = wordleQuizTypes.map { wordleQuizType ->
-            async {
-                generateWordleMazeItems(
-                    mazeSeed = seed,
-                    questionSize = questionSizePerMode,
-                    wordleQuizType = wordleQuizType,
-                    random = random
-                )
-            }
+            generateWordleMazeItems(
+                mazeSeed = seed,
+                questionSize = questionSizePerMode,
+                wordleQuizType = wordleQuizType,
+                random = random
+            )
         }
 
-        // Await for all the items to be generated and converts all to one list and finally shuffle all the list
         val allMazeQuestions = (multiChoiceMazeQuestions + wordleMazeQuestions)
-            .awaitAll()
             .flatten()
             .shuffled(random)
 
@@ -299,32 +290,47 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         wordleQuizType: WordleQuizType,
         difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
         random: Random = Random
-    ): List<MazeQuiz.MazeItem> = generateRandomUniqueItems(
-        itemCount = questionSize,
-        generator = {
-            when (wordleQuizType) {
-                WordleQuizType.TEXT -> wordleRepository.generateRandomTextWord(random = random)
-                WordleQuizType.NUMBER -> wordleRepository.generateRandomNumberWord(random = random)
-                WordleQuizType.MATH_FORMULA -> {
-                    val formula = mathQuizCoreRepository.generateMathFormula(
-                        difficulty = difficulty,
-                        random = random
-                    )
+    ): List<MazeQuiz.MazeItem> {
+        if (wordleQuizType == WordleQuizType.NUMBER_TRIVIA)
+            throw RuntimeException("Number trivia is not supported")
 
-                    WordleWord(formula.fullFormula)
-                }
-                // Temporary disabled because of api limitations
-                WordleQuizType.NUMBER_TRIVIA -> numberTriviaQuestionRepository.generateWordleQuestion(
-                    random
+        if (wordleQuizType == WordleQuizType.TEXT) {
+            return wordleRepository.generateRandomTextWords(
+                count = questionSize,
+                random = random
+            ).map { word ->
+                MazeQuiz.MazeItem.Wordle(
+                    mazeSeed = mazeSeed,
+                    wordleWord = word,
+                    wordleQuizType = wordleQuizType,
+                    difficulty = difficulty
                 )
             }
         }
-    ).map { word ->
-        MazeQuiz.MazeItem.Wordle(
-            mazeSeed = mazeSeed,
-            wordleWord = word,
-            wordleQuizType = wordleQuizType,
-            difficulty = difficulty
-        )
+
+        return generateRandomUniqueItems(
+            itemCount = questionSize,
+            generator = {
+                when (wordleQuizType) {
+                    WordleQuizType.NUMBER -> wordleRepository.generateRandomNumberWord(random = random)
+                    WordleQuizType.MATH_FORMULA -> {
+                        val formula = mathQuizCoreRepository.generateMathFormula(
+                            difficulty = difficulty,
+                            random = random
+                        )
+
+                        WordleWord(formula.fullFormula)
+                    }
+                    else -> throw RuntimeException("Wordle quiz type not supported")
+                }
+            }
+        ).map { word ->
+            MazeQuiz.MazeItem.Wordle(
+                mazeSeed = mazeSeed,
+                wordleWord = word,
+                wordleQuizType = wordleQuizType,
+                difficulty = difficulty
+            )
+        }
     }
 }

@@ -1,16 +1,11 @@
 package com.infinitepower.newquiz.data.worker.maze
 
 import android.content.Context
-import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.work.Configuration
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.await
-import androidx.work.testing.SynchronousExecutor
-import androidx.work.testing.WorkManagerTestInitHelper
+import androidx.work.ListenableWorker
+import androidx.work.testing.TestListenableWorkerBuilder
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
 import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
@@ -41,15 +36,6 @@ internal class CleanMazeQuizWorkerTest {
         hiltRule.inject()
 
         context = ApplicationProvider.getApplicationContext()
-        val config = Configuration
-            .Builder()
-            .setWorkerFactory(workerFactory)
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .setExecutor(SynchronousExecutor())
-            .build()
-
-        // Initialize WorkManager for instrumentation tests.
-        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
     }
 
     @Test
@@ -70,10 +56,14 @@ internal class CleanMazeQuizWorkerTest {
         assertThat(mazeQuizItemsBeforeClean).hasSize(10)
 
         // Clean the maze quiz items.
-        val workManager = WorkManager.getInstance(context)
-        val cleanSavedMazeRequest = OneTimeWorkRequestBuilder<CleanMazeQuizWorker>().build()
+        val cleanSavedMazeRequest = TestListenableWorkerBuilder<CleanMazeQuizWorker>(context)
+            .setWorkerFactory(workerFactory)
+            .build()
 
-        workManager.enqueue(cleanSavedMazeRequest).await()
+        val result = cleanSavedMazeRequest.doWork()
+
+        assertThat(result).isNotNull()
+        assertThat(result).isEqualTo(ListenableWorker.Result.success())
 
         // Check if the items were deleted correctly.
         val mazeQuizItemsAfterClean = mazeQuizDao.getAllMazeItems()

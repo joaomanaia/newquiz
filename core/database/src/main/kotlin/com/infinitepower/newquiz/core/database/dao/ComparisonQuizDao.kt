@@ -1,10 +1,7 @@
 package com.infinitepower.newquiz.core.database.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import androidx.room.Upsert
 import com.infinitepower.newquiz.core.database.model.ComparisonQuizHighestPosition
 import kotlinx.coroutines.flow.Flow
