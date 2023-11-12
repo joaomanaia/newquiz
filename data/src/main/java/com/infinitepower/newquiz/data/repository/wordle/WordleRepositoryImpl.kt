@@ -84,6 +84,14 @@ class WordleRepositoryImpl @Inject constructor(
         return WordleWord(allWords.random(random))
     }
 
+    override suspend fun generateRandomTextWords(count: Int, random: Random): List<WordleWord> {
+        val allWords = getAllWords().shuffled(random)
+
+        return allWords
+            .take(count)
+            .map { word -> WordleWord(word) }
+    }
+
     override suspend fun generateRandomNumberWord(
         wordSize: Int,
         random: Random

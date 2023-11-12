@@ -15,6 +15,11 @@ interface WordleRepository {
 
     suspend fun generateRandomTextWord(random: Random = Random): WordleWord
 
+    suspend fun generateRandomTextWords(
+        count: Int = 5,
+        random: Random = Random
+    ): List<WordleWord>
+
     suspend fun generateRandomNumberWord(
         wordSize: Int = 5,
         random: Random = Random
