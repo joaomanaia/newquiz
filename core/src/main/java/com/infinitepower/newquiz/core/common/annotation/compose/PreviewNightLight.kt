@@ -14,10 +14,6 @@ annotation class AllPreviewsNightLight
 )
 @Preview(
     showBackground = true,
-    group = "Compact", device = "spec:parent=pixel_5,orientation=landscape"
-)
-@Preview(
-    showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     group = "Compact"
 )
