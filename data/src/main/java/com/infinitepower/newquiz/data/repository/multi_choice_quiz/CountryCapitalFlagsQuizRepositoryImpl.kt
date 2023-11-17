@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -51,7 +53,7 @@ class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor(
     }
 
     private fun getRemoteConfigAllCountries(): List<CountryQuizBaseItem> {
-        val allLogosQuizStr = remoteConfig.getString("countries_and_capitals")
+        val allLogosQuizStr = remoteConfig.get(RemoteConfigValue.COUNTRIES_AND_CAPITALS)
         return Json.decodeFromString(allLogosQuizStr)
     }
 

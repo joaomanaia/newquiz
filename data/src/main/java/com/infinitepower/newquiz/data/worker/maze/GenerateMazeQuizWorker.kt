@@ -11,6 +11,8 @@ import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
@@ -178,7 +180,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
 
         Log.i(TAG, "Wordle quiz types: $wordleQuizTypesStr")
 
-        val remoteConfigQuestionSize = remoteConfig.getInt("maze_quiz_generated_questions")
+        val remoteConfigQuestionSize = remoteConfig.get(RemoteConfigValue.MAZE_QUIZ_GENERATED_QUESTIONS)
 
         val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, remoteConfigQuestionSize)
 

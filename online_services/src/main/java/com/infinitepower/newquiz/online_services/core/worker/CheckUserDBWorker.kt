@@ -7,6 +7,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
 import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.online_services.model.user.UserEntity
@@ -37,7 +39,7 @@ class CheckUserDBWorker @AssistedInject constructor(
         // If user exists in database there is no need to create the user.
         if (localUser != null) return Result.success()
 
-        val initialDiamonds = remoteConfig.getLong("user_initial_diamonds")
+        val initialDiamonds = remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS)
 
         val newUser = UserEntity(
             uid = localUid,
@@ -45,7 +47,7 @@ class CheckUserDBWorker @AssistedInject constructor(
                 fullName = authUserRepository.name ?: "NewQuiz User",
                 imageUrl = authUserRepository.photoUrl?.toString()
             ),
-            data = UserEntity.UserData(diamonds = initialDiamonds.toInt())
+            data = UserEntity.UserData(diamonds = initialDiamonds)
         )
 
         userApi.createUser(newUser)

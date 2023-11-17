@@ -4,6 +4,8 @@ import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.analytics.NoOpAnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
@@ -367,13 +369,13 @@ internal class ComparisonQuizCoreImplTest {
         val skipCost = 10u
         val userDiamonds = 15
 
-        every { remoteConfig.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
+        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost.toInt()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
 
         val result = comparisonQuizCoreImpl.canSkip()
 
         // Verify interactions
-        verify { remoteConfig.getLong("comparison_quiz_skip_cost") }
+        verify { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
         coVerify { userRepository.getLocalUserDiamonds() }
         confirmVerified(remoteConfig, userRepository)
 
@@ -386,13 +388,13 @@ internal class ComparisonQuizCoreImplTest {
         val skipCost = 10u
         val userDiamonds = 5
 
-        every { remoteConfig.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
+        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost.toInt()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
 
         val result = comparisonQuizCoreImpl.canSkip()
 
         // Verify interactions
-        verify { remoteConfig.getLong("comparison_quiz_skip_cost") }
+        verify { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
         coVerify { userRepository.getLocalUserDiamonds() }
         confirmVerified(remoteConfig, userRepository)
 
@@ -412,7 +414,7 @@ internal class ComparisonQuizCoreImplTest {
             remoteConfig.getString("comparison_quiz_first_item_helper_value")
         } returns firstItemHelperValueState.name
 
-        every { remoteConfig.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
+        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost.toInt()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
         coEvery { userRepository.addLocalUserDiamonds(-skipCost.toInt()) } just runs
 
@@ -458,7 +460,7 @@ internal class ComparisonQuizCoreImplTest {
         comparisonQuizCoreImpl.skip()
 
         // Verify that we called this twice, one for checking if can skip and one for actually skipping
-        verify(exactly = 2) { remoteConfig.getLong("comparison_quiz_skip_cost") }
+        verify(exactly = 2) { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
 
         coVerify(exactly = 1) { userRepository.getLocalUserDiamonds() }
         coVerify(exactly = 1) { userRepository.addLocalUserDiamonds(-skipCost.toInt()) }
@@ -485,7 +487,7 @@ internal class ComparisonQuizCoreImplTest {
         val skipCost = 10u
         val userDiamonds = 5
 
-        every { remoteConfig.getLong("comparison_quiz_skip_cost") } returns skipCost.toLong()
+        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost.toInt()
         coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
 
         // Assert exception is thrown
@@ -497,7 +499,7 @@ internal class ComparisonQuizCoreImplTest {
 
         // Verify that we called this once, one for checking if can skip
         // We don't call it again because we don't have enough diamonds
-        verify(exactly = 1) { remoteConfig.getLong("comparison_quiz_skip_cost") }
+        verify(exactly = 1) { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
 
         coVerify(exactly = 1) { userRepository.getLocalUserDiamonds() }
         coVerify(exactly = 0) { userRepository.addLocalUserDiamonds(any()) }

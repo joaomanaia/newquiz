@@ -3,6 +3,8 @@ package com.infinitepower.newquiz.online_services.data.user
 import com.google.firebase.firestore.FieldValue
 import com.infinitepower.newquiz.core.common.database.DatabaseCommon
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.online_services.domain.user.UserApi
 import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
@@ -90,7 +92,8 @@ internal fun getNewUserLevelMapWithDiamonds(
     newXp: ULong
 ): Map<String, Any> {
     // Fetch the new level diamonds reward from remote config
-    val newLevelDiamondsReward = remoteConfig.getLong("new_level_diamonds_reward").toULong()
+    // TODO: Change this to a remote config value
+    val newLevelDiamondsReward = 1uL
 
     // Calculate the new level and diamonds
     val newUserLevel = currentUser.getLevelAfter(newXp)

@@ -9,6 +9,8 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -48,5 +50,5 @@ class VerifyDailyChallengeWorker @AssistedInject constructor(
      * Get the number of tasks to generate in remote config.
      * Default value is 5.
      */
-    private fun getTasksToGenerate(): Int = remoteConfig.getInt("daily_challenge_tasks_to_generate")
+    private fun getTasksToGenerate(): Int = remoteConfig.get(RemoteConfigValue.DAILY_CHALLENGE_TASKS_TO_GENERATE)
 }

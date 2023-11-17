@@ -13,5 +13,6 @@ dependencies {
     normalImplementation(platform(libs.firebase.bom))
     normalImplementation(libs.firebase.remoteConfig)
 
+    implementation(projects.model)
     normalImplementation(projects.core)
 }

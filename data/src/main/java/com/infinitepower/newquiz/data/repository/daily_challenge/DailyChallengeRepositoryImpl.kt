@@ -3,6 +3,8 @@ package com.infinitepower.newquiz.data.repository.daily_challenge
 import android.util.Log
 import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.data.util.mappers.toEntity
 import com.infinitepower.newquiz.data.util.mappers.toModel
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
@@ -84,7 +86,7 @@ class DailyChallengeRepositoryImpl @Inject constructor(
             random = random
         )
 
-        val diamondsReward = remoteConfig.getInt("daily_challenge_item_reward").toUInt()
+        val diamondsReward = remoteConfig.get(RemoteConfigValue.DAILY_CHALLENGE_ITEM_REWARD).toUInt()
 
         val newTasks = types.map { type ->
             val maxValue = type.valueRange.toList().random(random)

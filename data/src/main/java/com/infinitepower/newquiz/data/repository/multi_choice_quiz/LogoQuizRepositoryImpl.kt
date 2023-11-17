@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -37,7 +39,7 @@ class LogoQuizRepositoryImpl @Inject constructor(
     }
 
     private fun getRemoteConfigAllLogos(): List<LogoQuizBaseItem> {
-        val allLogosQuizStr = remoteConfig.getString("all_logos_quiz")
+        val allLogosQuizStr = remoteConfig.get(RemoteConfigValue.ALL_LOGOS_QUIZ)
         return Json.decodeFromString(allLogosQuizStr)
     }
 

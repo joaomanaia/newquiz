@@ -4,6 +4,8 @@ import com.infinitepower.newquiz.core.common.BaseApiUrls
 import com.infinitepower.newquiz.core.database.dao.ComparisonQuizDao
 import com.infinitepower.newquiz.core.database.model.ComparisonQuizHighestPosition
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.FlowResource
 import com.infinitepower.newquiz.model.Resource
@@ -35,7 +37,7 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
 
     override fun getCategories(): List<ComparisonQuizCategory> {
         if (categoriesCache.isEmpty()) {
-            val categoriesStr = remoteConfig.getString("comparison_quiz_categories")
+            val categoriesStr = remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_CATEGORIES)
             val categoriesEntity: List<ComparisonQuizCategoryEntity> = Json.decodeFromString(categoriesStr)
             val categories = categoriesEntity.map(ComparisonQuizCategoryEntity::toModel)
 

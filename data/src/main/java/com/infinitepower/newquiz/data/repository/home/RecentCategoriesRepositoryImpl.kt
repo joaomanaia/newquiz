@@ -7,6 +7,8 @@ import com.infinitepower.newquiz.core.datastore.di.RecentCategoriesDataStoreMana
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
@@ -146,9 +148,7 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
      * from the remote config.
      */
     override fun getDefaultShowCategoryConnectionInfo(): ShowCategoryConnectionInfo {
-        val defaultStr = remoteConfig.getString("default_show_category_connection_info")
-
-        return ShowCategoryConnectionInfo.valueOf(defaultStr)
+        return remoteConfig.get(RemoteConfigValue.DEFAULT_SHOW_CATEGORY_CONNECTION_INFO)
     }
 
     override fun getShowCategoryConnectionInfoFlow(): Flow<ShowCategoryConnectionInfo> {

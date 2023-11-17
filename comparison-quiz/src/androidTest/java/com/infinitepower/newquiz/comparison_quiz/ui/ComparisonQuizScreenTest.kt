@@ -24,6 +24,8 @@ import com.infinitepower.newquiz.comparison_quiz.data.comparison_quiz.FakeCompar
 import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode

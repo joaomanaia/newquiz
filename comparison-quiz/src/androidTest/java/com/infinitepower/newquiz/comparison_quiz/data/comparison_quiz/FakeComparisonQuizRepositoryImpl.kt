@@ -5,6 +5,7 @@ import com.infinitepower.newquiz.model.FlowResource
 import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -40,19 +41,11 @@ class FakeComparisonQuizRepositoryImpl(
         }
     }
 
-    override fun getHighestPosition(): FlowResource<Int> = flow {
-        try {
-            emit(Resource.Loading())
-
-            val highestPositionFlow = highestPosition.map { position -> Resource.Success(position) }
-
-            emitAll(highestPositionFlow)
-        } catch (e: Exception) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error has occurred"))
-        }
+    override fun getHighestPositionFlow(category: ComparisonQuizCategory): Flow<Int> {
+        return highestPosition.map { it }
     }
 
-    override suspend fun saveHighestPosition(position: Int) {
+    override suspend fun saveHighestPosition(category: ComparisonQuizCategory, position: Int) {
         highestPosition.emit(position)
     }
 }

@@ -6,6 +6,8 @@ import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.InitializationData
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.QuizData
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
@@ -40,8 +42,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
                     val comparisonMode = initializationData.comparisonMode
                     val questionDescription = category.getQuestionDescription(comparisonMode)
 
-                    val firstItemHelperValueStr = remoteConfig.getString("comparison_quiz_first_item_helper_value")
-                    val firstItemHelperValue = ComparisonQuizHelperValueState.valueOf(firstItemHelperValueStr)
+                    val firstItemHelperValue = remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE)
 
                     val quizData = QuizData(
                         questions = res.data.orEmpty(),
@@ -107,7 +108,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
     }
 
     override val skipCost: UInt
-        get() = remoteConfig.getLong("comparison_quiz_skip_cost").toUInt()
+        get() = remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST).toUInt()
 
     override suspend fun getUserSkips(): UInt = userRepository.getLocalUserDiamonds().toUInt()
 

@@ -3,6 +3,8 @@ package com.infinitepower.newquiz.core.navigation
 import androidx.navigation.NavController
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.daily_challenge.DailyChallengeScreenNavigator
 import com.infinitepower.newquiz.maze_quiz.MazeScreenNavigator
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
@@ -35,7 +37,7 @@ class CommonNavGraphNavigator(
     }
 
     override fun navigateToMultiChoiceQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {
-        val remoteConfigDifficulty = remoteConfig.getString("multichoice_quickquiz_difficulty").run {
+        val remoteConfigDifficulty = remoteConfig.get(RemoteConfigValue.MULTICHOICE_QUICKQUIZ_DIFFICULTY).run {
             if (this == "random") null else this
         }
 
@@ -48,7 +50,7 @@ class CommonNavGraphNavigator(
     }
 
     override fun navigateToMultiChoiceQuiz(category: MultiChoiceBaseCategory) {
-        val remoteConfigDifficulty = remoteConfig.getString("multichoice_quickquiz_difficulty").run {
+        val remoteConfigDifficulty = remoteConfig.get(RemoteConfigValue.MULTICHOICE_QUICKQUIZ_DIFFICULTY).run {
             if (this == "random") null else this
         }
 
