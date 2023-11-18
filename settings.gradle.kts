@@ -33,6 +33,7 @@ include(":core:datastore")
 include(":core:testing")
 include(":core:translation")
 include(":core:remote-config")
+include(":core:user-services")
 
 include(":model")
 include(":domain")
