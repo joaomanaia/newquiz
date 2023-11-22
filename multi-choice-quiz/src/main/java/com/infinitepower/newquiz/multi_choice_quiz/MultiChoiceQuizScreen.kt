@@ -136,7 +136,7 @@ private fun MultiChoiceQuizScreenImpl(
             QuizTopBar(
                 remainingTime = uiState.remainingTime,
                 windowHeightSizeClass = windowSizeClass.heightSizeClass,
-                userSignedIn = uiState.userSignedIn,
+                skipsAvailable = uiState.skipsAvailable,
                 onBackClick = onBackClick,
                 onSkipClick = { onEvent(MultiChoiceQuizScreenUiEvent.GetUserSkipQuestionDiamonds) },
                 onSaveClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) },

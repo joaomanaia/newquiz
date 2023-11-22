@@ -27,6 +27,7 @@ dependencies {
     implementation(projects.core)
     implementation(projects.core.analytics)
     implementation(projects.core.database)
+    implementation(projects.core.datastore)
     implementation(projects.core.remoteConfig)
     implementation(projects.data)
     implementation(projects.domain)

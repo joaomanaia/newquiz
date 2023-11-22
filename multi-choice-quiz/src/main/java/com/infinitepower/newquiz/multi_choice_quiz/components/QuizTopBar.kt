@@ -41,7 +41,7 @@ internal fun QuizTopBar(
     modifier: Modifier = Modifier,
     windowHeightSizeClass: WindowHeightSizeClass,
     remainingTime: RemainingTime,
-    userSignedIn: Boolean,
+    skipsAvailable: Boolean,
     questionSaved: Boolean,
     currentQuestionNull: Boolean = true,
     onBackClick: () -> Unit,
@@ -65,7 +65,7 @@ internal fun QuizTopBar(
         },
         onSkipClick = onSkipClick,
         onSaveClick = onSaveClick,
-        userSignedIn = userSignedIn,
+        skipsAvailable = skipsAvailable,
         questionSaved = questionSaved,
         currentQuestionNull = currentQuestionNull
     )
@@ -74,7 +74,7 @@ internal fun QuizTopBar(
 @Composable
 private fun QuizTopBarContainer(
     modifier: Modifier = Modifier,
-    userSignedIn: Boolean,
+    skipsAvailable: Boolean,
     questionSaved: Boolean,
     currentQuestionNull: Boolean = true,
     backButtonContent: @Composable BoxScope.() -> Unit,
@@ -109,7 +109,7 @@ private fun QuizTopBarContainer(
             contentAlignment = Alignment.Center
         )
 
-        if (!currentQuestionNull && (userSignedIn || !questionSaved)) {
+        if (!currentQuestionNull && (skipsAvailable || !questionSaved)) {
             Box(
                 modifier = Modifier.constrainAs(btnMoreOptions) {
                     top.linkTo(progressRef.top)
@@ -129,7 +129,7 @@ private fun QuizTopBarContainer(
                     expanded = moreOptionsPopupExpanded,
                     onDismissRequest = { moreOptionsPopupExpanded = false }
                 ) {
-                    if (userSignedIn) {
+                    if (skipsAvailable) {
                         DropdownMenuItem(
                             text = { Text(text = stringResource(CoreR.string.skip)) },
                             leadingIcon = {
@@ -167,7 +167,7 @@ private fun QuizTopBarPreview() {
             QuizTopBar(
                 windowHeightSizeClass = WindowHeightSizeClass.Medium,
                 remainingTime = RemainingTime.ZERO,
-                userSignedIn = true,
+                skipsAvailable = true,
                 onBackClick = {},
                 onSkipClick = {},
                 onSaveClick = {},

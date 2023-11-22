@@ -64,7 +64,8 @@ data class MultiChoiceQuestion(
  */
 fun getBasicMultiChoiceQuestion(
     id: Int = Random.nextInt(),
-    correctAns: Int = (0..3).random()
+    correctAns: Int = (0..3).random(),
+    difficulty: QuestionDifficulty = QuestionDifficulty.random()
 ): MultiChoiceQuestion {
     return MultiChoiceQuestion(
         id = id,
@@ -80,6 +81,6 @@ fun getBasicMultiChoiceQuestion(
         category = MultiChoiceBaseCategory.Random,
         correctAns = correctAns,
         type = MultiChoiceQuestionType.MULTIPLE,
-        difficulty = QuestionDifficulty.Medium
+        difficulty = difficulty
     )
 }

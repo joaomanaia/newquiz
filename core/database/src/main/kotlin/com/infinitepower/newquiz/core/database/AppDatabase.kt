@@ -9,12 +9,14 @@ import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
 import com.infinitepower.newquiz.core.database.dao.ComparisonQuizDao
 import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
+import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
 import com.infinitepower.newquiz.core.database.dao.SavedMultiChoiceQuestionsDao
 import com.infinitepower.newquiz.core.database.model.ComparisonQuizHighestPosition
 import com.infinitepower.newquiz.core.database.model.DailyChallengeTaskEntity
 import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
 import com.infinitepower.newquiz.core.database.model.MultiChoiceQuestionEntity
+import com.infinitepower.newquiz.core.database.model.user.MultiChoiceGameResultEntity
 import com.infinitepower.newquiz.core.database.util.converters.ListConverter
 import com.infinitepower.newquiz.core.database.util.converters.LocalDateConverter
 import com.infinitepower.newquiz.core.database.util.converters.MathFormulaConverter
@@ -32,7 +34,8 @@ import com.infinitepower.newquiz.core.database.util.converters.QuestionDifficult
         MultiChoiceQuestionEntity::class,
         MazeQuizItemEntity::class,
         DailyChallengeTaskEntity::class,
-        ComparisonQuizHighestPosition::class
+        ComparisonQuizHighestPosition::class,
+        MultiChoiceGameResultEntity::class
     ],
     version = 4,
     exportSchema = true,
@@ -54,6 +57,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun dailyChallengeDao(): DailyChallengeDao
 
     abstract fun comparisonQuizDao(): ComparisonQuizDao
+
+    abstract fun gameResultDao(): GameResultDao
 
     companion object {
         internal const val DATABASE_NAME = "app-database"

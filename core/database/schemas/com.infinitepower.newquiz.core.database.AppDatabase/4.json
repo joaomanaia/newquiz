@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "ca501a93f18f0b24e9772858b9dd5ee8",
+    "identityHash": "77e5b1f8fc4ae0fa2a0e826e8ca27f6b",
     "entities": [
       {
         "tableName": "saved_multi_choice_questions",
@@ -281,12 +281,62 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "multi_choice_game_results",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `correct_answers` INTEGER NOT NULL, `question_count` INTEGER NOT NULL, `average_answer_time` REAL NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "correctAnswers",
+            "columnName": "correct_answers",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "questionCount",
+            "columnName": "question_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averageAnswerTime",
+            "columnName": "average_answer_time",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedXp",
+            "columnName": "earned_xp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playedAt",
+            "columnName": "played_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "game_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ca501a93f18f0b24e9772858b9dd5ee8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '77e5b1f8fc4ae0fa2a0e826e8ca27f6b')"
     ]
   }
 }
