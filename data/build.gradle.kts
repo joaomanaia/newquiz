@@ -40,8 +40,8 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.datastore)
     implementation(projects.core.remoteConfig)
+    implementation(projects.core.userServices)
     implementation(projects.domain)
     implementation(projects.model)
-    implementation(projects.onlineServices)
     androidTestImplementation(projects.core.testing)
 }

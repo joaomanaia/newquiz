@@ -2,16 +2,15 @@ package com.infinitepower.newquiz.daily_challenge
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.global_event.GameEvent
-import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,25 +19,28 @@ import javax.inject.Inject
 class DailyChallengeScreenViewModel @Inject constructor(
     private val dailyChallengeRepository: DailyChallengeRepository,
     private val comparisonQuizRepository: ComparisonQuizRepository,
-    private val authUserRepository: AuthUserRepository
+    private val userService: UserService
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(DailyChallengeScreenUiState())
-    val uiState = _uiState.asStateFlow()
+    val uiState = combine(
+        _uiState,
+        dailyChallengeRepository.getAvailableTasksFlow()
+    ) { uiState, tasks ->
+        uiState.copy(tasks = tasks)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = DailyChallengeScreenUiState()
+    )
 
     init {
-        dailyChallengeRepository
-            .getAvailableTasksFlow()
-            .onEach { tasks ->
-                _uiState.update { currentState ->
-                    currentState.copy(tasks = tasks)
-                }
-            }.launchIn(viewModelScope)
-
-        _uiState.update { currentState ->
-            currentState.copy(
-                comparisonQuizCategories = comparisonQuizRepository.getCategories(),
-                userSignedIn = authUserRepository.isSignedIn
-            )
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    comparisonQuizCategories = comparisonQuizRepository.getCategories(),
+                    userAvailable = userService.userAvailable()
+                )
+            }
         }
     }
 
@@ -49,7 +51,7 @@ class DailyChallengeScreenViewModel @Inject constructor(
     }
 
     private fun claimTask(taskType: GameEvent) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             dailyChallengeRepository.claimTask(taskType)
         }
     }

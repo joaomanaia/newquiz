@@ -37,9 +37,9 @@ dependencies {
     implementation(libs.androidx.work.ktx)
 
     implementation(projects.core)
+    implementation(projects.core.userServices)
     implementation(projects.model)
     implementation(projects.domain)
     implementation(projects.data)
-    implementation(projects.onlineServices)
     androidTestImplementation(projects.core.testing)
 }

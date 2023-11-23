@@ -6,7 +6,8 @@ import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 
 @Keep
 data class DailyChallengeScreenUiState(
+    val loading: Boolean = true,
     val tasks: List<DailyChallengeTask> = emptyList(),
     val comparisonQuizCategories: List<ComparisonQuizCategory> = emptyList(),
-    val userSignedIn: Boolean = false
+    val userAvailable: Boolean = false
 )

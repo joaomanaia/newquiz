@@ -5,6 +5,7 @@ import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
+import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.data.util.mappers.toEntity
 import com.infinitepower.newquiz.data.util.mappers.toModel
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
@@ -13,7 +14,6 @@ import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQui
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 import com.infinitepower.newquiz.model.global_event.GameEvent
-import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -28,7 +28,7 @@ class DailyChallengeRepositoryImpl @Inject constructor(
     private val dailyChallengeDao: DailyChallengeDao,
     private val comparisonQuizRepository: ComparisonQuizRepository,
     private val remoteConfig: RemoteConfig,
-    private val userRepository: UserRepository
+    private val userService: UserService
 ) : DailyChallengeRepository {
     override fun getAvailableTasksFlow(): Flow<List<DailyChallengeTask>> = dailyChallengeDao
         .getAllTasksFlow()
@@ -135,8 +135,7 @@ class DailyChallengeRepositoryImpl @Inject constructor(
         // Update the tasks set
         dailyChallengeDao.update(newTaskEntity)
 
-        // TODO: Add experience reward
-        userRepository.addLocalUserDiamonds(task.diamondsReward.toInt())
+        userService.addRemoveDiamonds(task.diamondsReward.toInt())
     }
 
     override suspend fun claimTask(taskType: GameEvent) {
