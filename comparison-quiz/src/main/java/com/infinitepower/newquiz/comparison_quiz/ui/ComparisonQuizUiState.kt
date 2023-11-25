@@ -15,7 +15,7 @@ data class ComparisonQuizUiState(
     val currentPosition: Int = 0,
     val highestPosition: Int = 0,
     val isGameOver: Boolean = false,
-    val isSignedIn: Boolean = false,
+    val userAvailable: Boolean = false,
     val userDiamonds: Int = -1,
     val userDiamondsLoading: Boolean = false,
     val skipCost: UInt = 0u,

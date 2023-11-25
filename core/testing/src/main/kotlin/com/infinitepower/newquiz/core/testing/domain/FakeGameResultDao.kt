@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.core.user_services
+package com.infinitepower.newquiz.core.testing.domain
 
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.database.model.user.MultiChoiceGameResultEntity

@@ -23,4 +23,6 @@ dependencies {
     androidTestImplementation(libs.androidx.work.testing)
 
     implementation(libs.kotlinx.datetime)
+
+    testImplementation(projects.core.testing)
 }
