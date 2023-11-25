@@ -7,4 +7,12 @@ interface GameResultTracker {
         questionSteps: List<MultiChoiceQuestionStep.Completed>,
         generateXp: Boolean
     )
+
+    suspend fun saveWordleGame(
+        wordLength: UInt,
+        rowsUsed: UInt,
+        maxRows: Int,
+        categoryId: String,
+        generateXp: Boolean
+    )
 }

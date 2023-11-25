@@ -12,10 +12,16 @@ import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.user_services.data.xp.MultiChoiceQuizXpGeneratorImpl
+import com.infinitepower.newquiz.core.user_services.data.xp.WordleXpGeneratorImpl
 import com.infinitepower.newquiz.core.user_services.domain.xp.MultiChoiceQuizXpGenerator
+import com.infinitepower.newquiz.core.user_services.domain.xp.WordleXpGenerator
 import com.infinitepower.newquiz.core.user_services.model.User
+import com.infinitepower.newquiz.model.UiText
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
+import com.infinitepower.newquiz.model.wordle.WordleCategory
+import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,6 +53,7 @@ internal class LocalUserServiceImplUnitTest {
     private lateinit var gameResultDao: GameResultDao
 
     private val multiChoiceQuizXpGenerator: MultiChoiceQuizXpGenerator = MultiChoiceQuizXpGeneratorImpl()
+    private val wordleXpGenerator: WordleXpGenerator = WordleXpGeneratorImpl()
 
     private lateinit var localUserServiceImpl: LocalUserServiceImpl
 
@@ -69,8 +76,9 @@ internal class LocalUserServiceImplUnitTest {
         localUserServiceImpl = LocalUserServiceImpl(
             dataStoreManager = dataStoreManager,
             remoteConfig = remoteConfig,
+            gameResultDao = gameResultDao,
             multiChoiceXpGenerator = multiChoiceQuizXpGenerator,
-            gameResultDao = gameResultDao
+            wordleXpGenerator = wordleXpGenerator
         )
     }
 
@@ -267,6 +275,91 @@ internal class LocalUserServiceImplUnitTest {
         // Check if the game result has been saved
         val gameResults = gameResultDao.getMultiChoiceResults()
 
+        assertThat(gameResults).hasSize(1)
+    }
+
+    @CsvSource(
+        "0",
+        "100",
+        "399",
+        "1000"
+    )
+    @ParameterizedTest(name = "test saveWordleGame when generate xp is enabled and totalXp is {0}")
+    fun `test saveWordleGame when generate xp is enabled`(
+        initialXp: Long
+    ) = testScope.runTest {
+        coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
+        coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
+
+        dataStoreManager.editPreference(LocalUserCommon.UserTotalXp.key, initialXp)
+
+        val initialUser = localUserServiceImpl.getUser()
+        require(initialUser != null)
+
+        localUserServiceImpl.saveWordleGame(
+            wordLength = 5u,
+            rowsUsed = 3u,
+            maxRows = Int.MAX_VALUE,
+            categoryId = "category",
+            generateXp = true
+        )
+
+        // Check that the user's total xp has been updated
+        val updatedUser = localUserServiceImpl.getUser()
+        require(updatedUser != null)
+
+        val expectedXp = wordleXpGenerator.generateXp(rowsUsed = 3u)
+
+        // Check if the new xp is equal to the generated xp
+        val newXp = updatedUser.totalXp - initialUser.totalXp
+        assertThat(newXp.toInt()).isEqualTo(expectedXp.toInt())
+
+        // If the user is in new level, check if the diamonds have been updated
+        if (initialUser.isNewLevel(newXp)) {
+            assertThat(updatedUser.diamonds).isEqualTo(initialUser.diamonds + NEW_LEVEL_DIAMONDS.toUInt())
+        } else {
+            assertThat(updatedUser.diamonds).isEqualTo(initialUser.diamonds)
+        }
+
+        // Check if the game result has been saved
+        val gameResults = gameResultDao.getWordleResults()
+        assertThat(gameResults).hasSize(1)
+
+        // Because there is only one game result, we can assume that the first one is the one we want
+        gameResults.first().apply {
+            assertThat(wordLength).isEqualTo(5)
+            assertThat(rowsUsed).isEqualTo(3)
+            assertThat(maxRows).isEqualTo(Int.MAX_VALUE)
+            assertThat(earnedXp).isEqualTo(newXp.toInt())
+        }
+    }
+
+    @Test
+    fun `test saveWordleGame when generate xp is disabled`() = testScope.runTest {
+        coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
+        coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
+
+        val initialUser = localUserServiceImpl.getUser()
+        require(initialUser != null)
+
+        localUserServiceImpl.saveWordleGame(
+            wordLength = 5u,
+            rowsUsed = 3u,
+            maxRows = Int.MAX_VALUE,
+            categoryId = "category",
+            generateXp = false
+        )
+
+        // Check that the user's total xp has been updated
+        val updatedUser = localUserServiceImpl.getUser()
+        require(updatedUser != null)
+
+        // because the xp generation is disabled, the new xp should be 0
+        val newXp = updatedUser.totalXp - initialUser.totalXp
+        assertThat(newXp).isEqualTo(0uL)
+
+        // Check if the game result has been saved
+        val gameResults = gameResultDao.getWordleResults()
         assertThat(gameResults).hasSize(1)
     }
 }

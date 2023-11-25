@@ -17,6 +17,7 @@ import com.infinitepower.newquiz.core.database.model.DailyChallengeTaskEntity
 import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
 import com.infinitepower.newquiz.core.database.model.MultiChoiceQuestionEntity
 import com.infinitepower.newquiz.core.database.model.user.MultiChoiceGameResultEntity
+import com.infinitepower.newquiz.core.database.model.user.WordleGameResultEntity
 import com.infinitepower.newquiz.core.database.util.converters.ListConverter
 import com.infinitepower.newquiz.core.database.util.converters.LocalDateConverter
 import com.infinitepower.newquiz.core.database.util.converters.MathFormulaConverter
@@ -35,7 +36,8 @@ import com.infinitepower.newquiz.core.database.util.converters.QuestionDifficult
         MazeQuizItemEntity::class,
         DailyChallengeTaskEntity::class,
         ComparisonQuizHighestPosition::class,
-        MultiChoiceGameResultEntity::class
+        MultiChoiceGameResultEntity::class,
+        WordleGameResultEntity::class
     ],
     version = 4,
     exportSchema = true,

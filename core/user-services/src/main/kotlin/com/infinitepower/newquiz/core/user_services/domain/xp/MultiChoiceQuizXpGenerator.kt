@@ -4,7 +4,7 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 
 interface MultiChoiceQuizXpGenerator : XpGenerator {
-    override fun getDefaultXpForDifficulty(difficulty: QuestionDifficulty): UInt {
+    fun getDefaultXpForDifficulty(difficulty: QuestionDifficulty): UInt {
         return when (difficulty) {
             QuestionDifficulty.Easy -> 10u
             QuestionDifficulty.Medium -> 15u
@@ -13,7 +13,7 @@ interface MultiChoiceQuizXpGenerator : XpGenerator {
     }
 
     /**
-     * Generates a random amount of XP based on the given question steps.
+     * Generates a amount of XP based on the given question steps.
      */
     fun generateXp(
         questionSteps: List<MultiChoiceQuestionStep.Completed>

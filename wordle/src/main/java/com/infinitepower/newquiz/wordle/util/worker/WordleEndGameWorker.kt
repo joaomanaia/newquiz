@@ -7,14 +7,11 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
-import com.infinitepower.newquiz.core.network.NetworkStatusTracker
-import com.infinitepower.newquiz.core.util.kotlin.toULong
+import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
-import com.infinitepower.newquiz.online_services.domain.game.xp.WordleXpRepository
-import com.infinitepower.newquiz.online_services.domain.user.UserRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
@@ -22,12 +19,10 @@ import dagger.assisted.AssistedInject
 class WordleEndGameWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val networkStatusTracker: NetworkStatusTracker,
-    private val userRepository: UserRepository,
-    private val wordleXpRepository: WordleXpRepository,
     private val workManager: WorkManager,
     private val recentCategoriesRepository: RecentCategoriesRepository,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
+    private val userService: UserService
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -71,15 +66,13 @@ class WordleEndGameWorker @AssistedInject constructor(
             analyticsHelper.logEvent(AnalyticsEvent.MazeItemPlayed(isLastRowCorrect))
         }
 
-        if (networkStatusTracker.isCurrentlyConnected()) {
-            val newXp = if (isLastRowCorrect) {
-                wordleXpRepository.generateRandomXP(currentRowPosition)
-            } else 0
-
-            userRepository.updateLocalUser(
-                newXp = newXp.toULong(),
-                wordsPlayed = 1uL,
-                wordsCorrect = isLastRowCorrect.toULong()
+        if (isLastRowCorrect) {
+            userService.saveWordleGame(
+                wordLength = word.length.toUInt(),
+                rowsUsed = currentRowPosition.toUInt(),
+                maxRows = rowLimit,
+                categoryId = quizTypeName,
+                generateXp = true
             )
         }
 

@@ -7,20 +7,22 @@ import androidx.room.PrimaryKey
 
 @Keep
 @Entity(
-    tableName = "multi_choice_game_results"
+    tableName = "wordle_game_results"
 )
-data class MultiChoiceGameResultEntity(
+data class WordleGameResultEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "game_id")
     override val gameId: Int = 0,
-    @ColumnInfo(name = "correct_answers")
-    val correctAnswers: Int,
-    @ColumnInfo(name = "question_count")
-    val questionCount: Int,
-    @ColumnInfo(name = "average_answer_time")
-    val averageAnswerTime: Double,
     @ColumnInfo(name = "earned_xp")
     override val earnedXp: Int,
     @ColumnInfo(name = "played_at")
     override val playedAt: Long,
+    @ColumnInfo(name = "word_length")
+    val wordLength: Int,
+    @ColumnInfo(name = "rows_used")
+    val rowsUsed: Int,
+    @ColumnInfo(name = "max_rows")
+    val maxRows: Int,
+    @ColumnInfo(name = "category_id")
+    val categoryId: String,
 ) : BaseGameResultEntity

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "77e5b1f8fc4ae0fa2a0e826e8ca27f6b",
+    "identityHash": "ad35d2c48eba3619d6a020d3e920f922",
     "entities": [
       {
         "tableName": "saved_multi_choice_questions",
@@ -331,12 +331,68 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "wordle_game_results",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL, `word_length` INTEGER NOT NULL, `rows_used` INTEGER NOT NULL, `max_rows` INTEGER NOT NULL, `category_id` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedXp",
+            "columnName": "earned_xp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playedAt",
+            "columnName": "played_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wordLength",
+            "columnName": "word_length",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rowsUsed",
+            "columnName": "rows_used",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxRows",
+            "columnName": "max_rows",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "game_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '77e5b1f8fc4ae0fa2a0e826e8ca27f6b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ad35d2c48eba3619d6a020d3e920f922')"
     ]
   }
 }
