@@ -81,10 +81,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxSize(),
                             windowSizeClass = windowSize,
                             remoteConfig = remoteConfig,
-                            signedIn = uiState.signedIn,
-                            showLoginCard = uiState.showLoginCard,
                             dailyChallengeClaimCount = uiState.dailyChallengeClaimableCount,
-                            onSignDismissClick = { viewModel.onEvent(MainScreenUiEvent.DismissLoginCard) }
                         )
 
                         if (uiState.dialogConsent == DataAnalyticsConsentState.NONE && !uiState.loading) {

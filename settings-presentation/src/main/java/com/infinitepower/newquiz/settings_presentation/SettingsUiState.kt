@@ -11,7 +11,6 @@ import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
 data class SettingsUiState(
     val screenKey: ScreenKey = SettingsScreenPageData.MainPage.key,
     val translationModelState: TranslatorModelState = TranslatorModelState.None,
-    val userIsSignedIn: Boolean = false,
     val translatorAvailable: Boolean = false,
     val translatorTargetLanguages: TranslatorTargetLanguages = emptyMap(),
     val translatorTargetLanguage: String = "",

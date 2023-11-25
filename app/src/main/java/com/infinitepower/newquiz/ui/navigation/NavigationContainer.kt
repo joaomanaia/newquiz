@@ -7,7 +7,6 @@ import androidx.compose.material.icons.outlined.ViewModule
 import androidx.compose.material.icons.rounded.Image
 import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.ListAlt
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Route
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Today
@@ -28,7 +27,6 @@ import com.infinitepower.newquiz.core.navigation.ScreenType
 import com.infinitepower.newquiz.daily_challenge.destinations.DailyChallengeScreenDestination
 import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
-import com.infinitepower.newquiz.online_services.ui.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.settings_presentation.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
@@ -74,16 +72,6 @@ internal fun getNavigationItems(
             description = "Daily challenge claim count"
         )
     ),
-    NavigationItem.Label(
-        text = R.string.online,
-        group = NavDrawerItemGroup("online")
-    ),
-    NavigationItem.Item(
-        text = R.string.profile,
-        selectedIcon = Icons.Rounded.Person,
-        direction = ProfileScreenDestination,
-        group = NavDrawerItemGroup("online")
-    ),
     NavigationItem.Label(text = R.string.other),
     NavigationItem.Item(
         text = R.string.settings,
@@ -105,11 +93,7 @@ private fun getNavigationItemBy(
 internal fun NavigationContainer(
     navController: NavController,
     windowWidthSize: WindowWidthSizeClass,
-    isSignedIn: Boolean,
-    showLoginCard: Boolean,
     dailyChallengeClaimCount: Int,
-    onSignInClick: () -> Unit,
-    onSignDismissClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val destination by navController.currentDestinationAsState()
@@ -118,12 +102,8 @@ internal fun NavigationContainer(
 
     val navigationVisible = selectedItem != null && selectedItem.screenType == ScreenType.NORMAL
 
-    val items = remember(isSignedIn, dailyChallengeClaimCount) {
-        if (isSignedIn) {
-            getNavigationItems(dailyChallengeClaimCount)
-        } else {
-            getNavigationItems(dailyChallengeClaimCount).filterNot { it.group == NavDrawerItemGroup("online") }
-        }
+    val items = remember(dailyChallengeClaimCount) {
+        getNavigationItems(dailyChallengeClaimCount)
     }
 
     val primaryItems = remember(items) {
@@ -143,9 +123,6 @@ internal fun NavigationContainer(
                 primaryItems = primaryItems,
                 navDrawerItems = otherItems,
                 selectedItem = selectedItem,
-                onSignInClick = onSignInClick,
-                onSignDismissClick = onSignDismissClick,
-                showLoginCard = showLoginCard,
                 content = content
             )
             WindowWidthSizeClass.Medium -> MediumContainer(
@@ -153,18 +130,12 @@ internal fun NavigationContainer(
                 primaryItems = primaryItems,
                 navDrawerItems = otherItems,
                 selectedItem = selectedItem,
-                onSignInClick = onSignInClick,
-                onSignDismissClick = onSignDismissClick,
-                showLoginCard = showLoginCard,
                 content = content
             )
             WindowWidthSizeClass.Expanded -> ExpandedContainer(
                 navController = navController,
                 navigationItems = items,
                 selectedItem = selectedItem,
-                onSignInClick = onSignInClick,
-                onSignDismissClick = onSignDismissClick,
-                showLoginCard = showLoginCard,
                 content = content
             )
         }

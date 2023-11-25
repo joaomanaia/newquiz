@@ -19,8 +19,6 @@ import java.util.Locale
 val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 object SettingsCommon {
-    object ShowLoginCard : PreferenceRequest<Boolean>(booleanPreferencesKey("showLoginCard"), true)
-
     // Data Analytics
     object DataAnalyticsCollectionEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("dataAnalyticsEnabled"), false)
 

@@ -11,7 +11,6 @@ import com.infinitepower.newquiz.core.translation.TranslatorModelState
 import com.infinitepower.newquiz.core.translation.TranslatorUtil
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
-import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.infinitepower.newquiz.settings_presentation.data.SettingsScreenPageData
 import com.infinitepower.newquiz.settings_presentation.model.ScreenKey
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +30,6 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val translatorUtil: TranslatorUtil,
-    private val authUserRepository: AuthUserRepository,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
     private val recentCategoriesRepository: RecentCategoriesRepository,
     private val analyticsHelper: AnalyticsHelper
@@ -43,14 +41,12 @@ class SettingsViewModel @Inject constructor(
             key = SettingsScreenNavArgs::screenKey.name,
             initialValue = SettingsScreenPageData.MainPage.key.value
         ),
-        authUserRepository.isSignedInFlow,
         settingsDataStoreManager.getPreferenceFlow(
             SettingsCommon.Translation.TargetLanguage
         )
-    ) { uiState, screenKey, isSignedIn, targetLanguage ->
+    ) { uiState, screenKey, targetLanguage ->
         uiState.copy(
             screenKey = ScreenKey(screenKey),
-            userIsSignedIn = isSignedIn,
             translatorTargetLanguage = targetLanguage
         )
     }.stateIn(
@@ -85,7 +81,6 @@ class SettingsViewModel @Inject constructor(
                 translatorUtil.deleteModel()
             }
             is SettingsScreenUiEvent.DownloadTranslationModel -> downloadTranslationModel()
-            is SettingsScreenUiEvent.SignOut -> authUserRepository.signOut()
             is SettingsScreenUiEvent.EnableLoggingAnalytics -> enableLoggingAnalytics(event.enabled)
             is SettingsScreenUiEvent.ClearHomeRecentCategories -> clearHomeRecentCategories()
         }

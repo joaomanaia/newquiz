@@ -44,9 +44,6 @@ internal fun MediumContainer(
     navDrawerItems: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
-    showLoginCard: Boolean,
-    onSignInClick: () -> Unit,
-    onSignDismissClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -70,10 +67,7 @@ internal fun MediumContainer(
                 onItemClick = { item ->
                     scope.launch { drawerState.close() }
                     navController.navigate(item.direction)
-                },
-                onSignInClick = onSignInClick,
-                onSignDismissClick = onSignDismissClick,
-                showLoginCard = showLoginCard
+                }
             )
         }
     ) {
@@ -140,9 +134,6 @@ private fun MediumContainerPreview() {
                 primaryItems = getNavigationItems().filterIsInstance<NavigationItem.Item>(),
                 navDrawerItems = getNavigationItems(),
                 selectedItem = selectedItem,
-                onSignInClick = {},
-                onSignDismissClick = {},
-                showLoginCard = true
             )
         }
     }

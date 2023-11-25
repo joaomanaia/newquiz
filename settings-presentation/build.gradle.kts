@@ -39,7 +39,6 @@ dependencies {
     implementation(projects.data)
     implementation(projects.domain)
     implementation(projects.model)
-    implementation(projects.onlineServices)
 }
 
 tasks.withType<Test> {

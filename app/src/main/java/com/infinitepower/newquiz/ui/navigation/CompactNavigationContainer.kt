@@ -44,9 +44,6 @@ internal fun CompactContainer(
     navDrawerItems: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
-    showLoginCard: Boolean,
-    onSignInClick: () -> Unit,
-    onSignDismissClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -71,9 +68,6 @@ internal fun CompactContainer(
                     scope.launch { drawerState.close() }
                     navController.navigate(item.direction)
                 },
-                onSignInClick = onSignInClick,
-                onSignDismissClick = onSignDismissClick,
-                showLoginCard = showLoginCard
             )
         }
     ) {
@@ -147,9 +141,6 @@ private fun CompactContainerPreview() {
                 primaryItems = getNavigationItems().filterIsInstance<NavigationItem.Item>(),
                 navDrawerItems = getNavigationItems(),
                 selectedItem = selectedItem,
-                onSignInClick = {},
-                onSignDismissClick = {},
-                showLoginCard = true
             )
         }
     }

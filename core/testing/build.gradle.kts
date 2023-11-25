@@ -31,5 +31,4 @@ dependencies {
     implementation(projects.core.remoteConfig)
     implementation(projects.data)
     implementation(projects.domain)
-    implementation(projects.onlineServices)
 }

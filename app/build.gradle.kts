@@ -126,7 +126,6 @@ dependencies {
     implementation(projects.wordle)
     implementation(projects.data)
     implementation(projects.domain)
-    implementation(projects.onlineServices)
     implementation(projects.mazeQuiz)
     implementation(projects.comparisonQuiz)
     implementation(projects.dailyChallenge)

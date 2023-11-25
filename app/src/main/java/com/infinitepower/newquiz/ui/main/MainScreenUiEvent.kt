@@ -7,6 +7,4 @@ sealed interface MainScreenUiEvent {
     data class OnAgreeDisagreeClick(
         val agreed: Boolean
     ) : MainScreenUiEvent
-
-    data object DismissLoginCard : MainScreenUiEvent
 }
