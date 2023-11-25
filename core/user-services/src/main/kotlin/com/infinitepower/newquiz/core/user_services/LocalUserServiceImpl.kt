@@ -80,7 +80,7 @@ class LocalUserServiceImpl @Inject constructor(
         // Generate xp if needed
         if (generateXp) {
             // Generate and get the new xp
-            newXp = multiChoiceXpGenerator.generateRandomXp(questionSteps)
+            newXp = multiChoiceXpGenerator.generateXp(questionSteps)
             val newTotalXp = currentUser.totalXp + newXp
 
             // Save the new total xp

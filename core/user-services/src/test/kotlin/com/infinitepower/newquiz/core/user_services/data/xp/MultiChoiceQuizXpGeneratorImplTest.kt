@@ -1,11 +1,9 @@
 package com.infinitepower.newquiz.core.user_services.data.xp
 
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core.util.kotlin.times
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
-import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlin.random.Random
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -22,7 +20,7 @@ internal class MultiChoiceQuizXpGeneratorImplTest {
     }
 
     @Test
-    fun `generateRandomXp when all question steps are incorrect, should return 0`() {
+    fun `generateXp when all question steps are incorrect, should return 0`() {
         val questionSteps = List(5) {
             MultiChoiceQuestionStep.Completed(
                 question = getBasicMultiChoiceQuestion(),
@@ -31,13 +29,13 @@ internal class MultiChoiceQuizXpGeneratorImplTest {
             )
         }
 
-        val randomXp = multiChoiceQuizXpGeneratorImpl.generateRandomXp(questionSteps)
+        val randomXp = multiChoiceQuizXpGeneratorImpl.generateXp(questionSteps)
 
         assertThat(randomXp).isEqualTo(0u)
     }
 
     @Test
-    fun `test generateRandomXp`() {
+    fun `test generateXp`() {
         val questionSteps = List(5) {
             MultiChoiceQuestionStep.Completed(
                 question = getBasicMultiChoiceQuestion(),
@@ -46,14 +44,16 @@ internal class MultiChoiceQuizXpGeneratorImplTest {
             )
         }
 
-        val randomXp = multiChoiceQuizXpGeneratorImpl.generateRandomXp(questionSteps)
+        val generatedXp = multiChoiceQuizXpGeneratorImpl.generateXp(questionSteps)
 
-        val correctCount = questionSteps.count { it.correct }
-        val minXpPossible = multiChoiceQuizXpGeneratorImpl.generatedXpRange.first * correctCount.toFloat()
+        val expectedXp = questionSteps
+            .filter(MultiChoiceQuestionStep.Completed::correct)
+            .sumOf { step ->
+                val difficulty = step.question.difficulty
 
-        val hardMultiplierFactor = multiChoiceQuizXpGeneratorImpl.multiplierFactor(QuestionDifficulty.Hard) // Highest multiplier factor
-        val maxXpPossible = multiChoiceQuizXpGeneratorImpl.generatedXpRange.last * correctCount.toFloat() * hardMultiplierFactor
+                multiChoiceQuizXpGeneratorImpl.getDefaultXpForDifficulty(difficulty)
+            }
 
-        assertThat(randomXp).isIn(minXpPossible..maxXpPossible)
+        assertThat(generatedXp).isEqualTo(expectedXp)
     }
 }

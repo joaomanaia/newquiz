@@ -1,17 +1,21 @@
 package com.infinitepower.newquiz.core.user_services.domain.xp
 
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
-import kotlin.random.Random
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
 
 interface MultiChoiceQuizXpGenerator : XpGenerator {
-    override val generatedXpRange: UIntRange
-        get() = 10u..20u
+    override fun getDefaultXpForDifficulty(difficulty: QuestionDifficulty): UInt {
+        return when (difficulty) {
+            QuestionDifficulty.Easy -> 10u
+            QuestionDifficulty.Medium -> 15u
+            QuestionDifficulty.Hard -> 20u
+        }
+    }
 
     /**
-     * Generates a random xp between [generatedXpRange] based if the question was answered correctly.
+     * Generates a random amount of XP based on the given question steps.
      */
-    fun generateRandomXp(
-        questionSteps: List<MultiChoiceQuestionStep.Completed>,
-        random: Random = Random
+    fun generateXp(
+        questionSteps: List<MultiChoiceQuestionStep.Completed>
     ): UInt
 }

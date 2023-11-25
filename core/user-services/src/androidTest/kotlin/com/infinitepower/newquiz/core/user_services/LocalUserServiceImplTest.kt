@@ -124,12 +124,11 @@ internal class LocalUserServiceImplTest {
         val updatedUser = localUserServiceImpl.getUser()
         require(updatedUser != null)
 
-        val minXp = multiChoiceQuizXpGenerator.generatedXpRange.first
-        val maxXp = multiChoiceQuizXpGenerator.generatedXpRange.last * questionSteps.size.toUInt() * 2u
+        val expectedXp = multiChoiceQuizXpGenerator.generateXp(questionSteps)
 
         // Check if the new xp is in the range of the generated xp
         val newXp = updatedUser.totalXp - initialUser.totalXp
-        assertThat(newXp.toInt()).isIn(minXp.toInt()..maxXp.toInt())
+        assertThat(newXp.toInt()).isEqualTo(expectedXp.toInt())
 
         // If the user is in new level, check if the diamonds have been updated
         if (initialUser.isNewLevel(newXp)) {
