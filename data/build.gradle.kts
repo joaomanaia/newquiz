@@ -29,10 +29,6 @@ dependencies {
     implementation(libs.androidx.work.ktx)
     androidTestImplementation(libs.androidx.work.testing)
 
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.firestore)
-
     implementation(libs.kotlinx.datetime)
 
     implementation(projects.core)

@@ -7,7 +7,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.Firebase
 import com.google.firebase.initialize
 
-// TODO: Move to normal core dir
 class CoreFirebaseInitializer : Initializer<FirebaseApp> {
     private companion object {
         private const val TAG = "CoreFirebaseInitializer"
