@@ -15,4 +15,12 @@ interface GameResultTracker {
         categoryId: String,
         generateXp: Boolean
     )
+
+    suspend fun saveComparisonQuizGame(
+        categoryId: String,
+        comparisonMode: String,
+        endPosition: UInt,
+        highestPosition: UInt,
+        generateXp: Boolean
+    )
 }

@@ -10,7 +10,9 @@ import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
+import com.infinitepower.newquiz.core.user_services.domain.xp.ComparisonQuizXpGenerator
 import com.infinitepower.newquiz.core.user_services.domain.xp.MultiChoiceQuizXpGenerator
+import com.infinitepower.newquiz.core.user_services.domain.xp.WordleXpGenerator
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -51,6 +53,12 @@ internal class LocalUserServiceImplTest {
     @Inject
     lateinit var multiChoiceQuizXpGenerator: MultiChoiceQuizXpGenerator
 
+    @Inject
+    lateinit var wordleXpGenerator: WordleXpGenerator
+
+    @Inject
+    lateinit var comparisonQuizXpGenerator: ComparisonQuizXpGenerator
+
     companion object {
         private const val INITIAL_DIAMONDS = 10
         private const val NEW_LEVEL_DIAMONDS = 10
@@ -74,8 +82,10 @@ internal class LocalUserServiceImplTest {
         localUserServiceImpl = LocalUserServiceImpl(
             dataStoreManager = dataStoreManager,
             remoteConfig = remoteConfig,
+            gameResultDao = gameResultDao,
             multiChoiceXpGenerator = multiChoiceQuizXpGenerator,
-            gameResultDao = gameResultDao
+            wordleXpGenerator = wordleXpGenerator,
+            comparisonQuizXpGenerator = comparisonQuizXpGenerator
         )
     }
 

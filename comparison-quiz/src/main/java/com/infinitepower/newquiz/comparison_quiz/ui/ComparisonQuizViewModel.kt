@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
+import com.infinitepower.newquiz.comparison_quiz.core.workers.ComparisonQuizEndGameWorker
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
@@ -32,13 +33,12 @@ class ComparisonQuizViewModel @Inject constructor(
     private val comparisonQuizRepository: ComparisonQuizRepository,
     private val workManager: WorkManager,
     private val recentCategoriesRepository: RecentCategoriesRepository,
-    private val analyticsHelper: AnalyticsHelper,
     private val userService: UserService
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ComparisonQuizUiState())
     val uiState = combine(
         _uiState,
-        comparisonQuizRepository.getHighestPositionFlow(category = getCategory()),
+        comparisonQuizRepository.getHighestPositionFlow(categoryId = getCategory().id),
         comparisonQuizCore.quizDataFlow
     ) { uiState, highestPosition, quizData ->
         if (quizData.isGameOver) {
@@ -46,7 +46,7 @@ class ComparisonQuizViewModel @Inject constructor(
             viewModelScope.launch {
                 if (quizData.currentPosition > highestPosition) {
                     comparisonQuizRepository.saveHighestPosition(
-                        category = getCategory(),
+                        categoryId = getCategory().id,
                         position = quizData.currentPosition
                     )
                 }
@@ -58,12 +58,11 @@ class ComparisonQuizViewModel @Inject constructor(
                     GameEvent.ComparisonQuiz.PlayAndGetScore(quizData.currentPosition)
                 )
 
-                analyticsHelper.logEvent(
-                    AnalyticsEvent.ComparisonQuizGameEnd(
-                        category = uiState.gameCategory?.id,
-                        comparisonMode = uiState.comparisonMode?.name,
-                        score = quizData.currentPosition
-                    )
+                ComparisonQuizEndGameWorker.enqueueWork(
+                    workManager = workManager,
+                    categoryId = getCategory().id,
+                    comparisonMode = getComparisonMode(),
+                    endPosition = quizData.currentPosition
                 )
             }
         }

@@ -5,9 +5,6 @@ import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.database.dao.ComparisonQuizDao
 import com.infinitepower.newquiz.core.database.model.ComparisonQuizHighestPosition
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
-import com.infinitepower.newquiz.model.UiText
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.ktor.client.HttpClient
@@ -18,7 +15,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.utils.io.ByteReadChannel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.runner.RunWith
@@ -65,9 +61,7 @@ internal class ComparisonQuizRepositoryImplTest {
     fun getHighestPosition_returnsHighestPosition() = runTest {
         // The highest position is not stored in the database
         // So it should return 0
-        val noHighestPosition = repository.getHighestPositionFlow(
-            category = getCategory()
-        ).first()
+        val noHighestPosition = repository.getHighestPosition(categoryId = "1")
 
         assertThat(noHighestPosition).isEqualTo(0)
 
@@ -78,39 +72,21 @@ internal class ComparisonQuizRepositoryImplTest {
             )
         )
 
-        val highestPosition = repository.getHighestPositionFlow(
-            category = getCategory()
-        ).first()
+        val highestPosition = repository.getHighestPosition(categoryId = "1")
 
         assertThat(highestPosition).isEqualTo(1)
     }
 
     @Test
     fun saveHighestPosition_savesHighestPosition() = runTest {
-        val category = getCategory()
+        val categoryId = "1"
 
         repository.saveHighestPosition(
-            category = category,
+            categoryId = categoryId,
             position = 1
         )
 
-        val highestPosition = comparisonQuizDao.getHighestPosition(category.id).first()
+        val highestPosition = comparisonQuizDao.getHighestPosition(categoryId)
         assertThat(highestPosition?.highestPosition).isEqualTo(1)
-    }
-
-    companion object {
-        private fun getCategory(
-            id: String = "1"
-        ) = ComparisonQuizCategory(
-            id = id,
-            name = UiText.DynamicString("Category $id"),
-            description = "Category $id description",
-            image = "",
-            questionDescription = ComparisonQuizCategory.QuestionDescription(
-                greater = "Greater",
-                less = "Less"
-            ),
-            formatType = ComparisonQuizFormatType.Number
-        )
     }
 }

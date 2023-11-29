@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "ad35d2c48eba3619d6a020d3e920f922",
+    "identityHash": "8eb09d5aa9369c25252a6244f6c2db22",
     "entities": [
       {
         "tableName": "saved_multi_choice_questions",
@@ -387,12 +387,68 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "comparison_quiz_game_results",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL, `category_id` TEXT NOT NULL, `comparison_mode` TEXT NOT NULL, `end_position` INTEGER NOT NULL, `highest_position` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedXp",
+            "columnName": "earned_xp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playedAt",
+            "columnName": "played_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comparisonMode",
+            "columnName": "comparison_mode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endPosition",
+            "columnName": "end_position",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "highestPosition",
+            "columnName": "highest_position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "game_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ad35d2c48eba3619d6a020d3e920f922')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8eb09d5aa9369c25252a6244f6c2db22')"
     ]
   }
 }

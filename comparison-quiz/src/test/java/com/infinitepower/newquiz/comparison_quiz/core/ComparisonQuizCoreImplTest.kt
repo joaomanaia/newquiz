@@ -16,6 +16,7 @@ import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.testing.domain.FakeGameResultDao
 import com.infinitepower.newquiz.core.user_services.LocalUserServiceImpl
 import com.infinitepower.newquiz.core.user_services.UserService
+import com.infinitepower.newquiz.core.user_services.data.xp.ComparisonQuizXpGeneratorImpl
 import com.infinitepower.newquiz.core.user_services.data.xp.MultiChoiceQuizXpGeneratorImpl
 import com.infinitepower.newquiz.core.user_services.data.xp.WordleXpGeneratorImpl
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
@@ -87,6 +88,7 @@ internal class ComparisonQuizCoreImplTest {
             gameResultDao = gameResultDao,
             multiChoiceXpGenerator = MultiChoiceQuizXpGeneratorImpl(),
             wordleXpGenerator = WordleXpGeneratorImpl(),
+            comparisonQuizXpGenerator = ComparisonQuizXpGeneratorImpl()
         )
 
         comparisonQuizCoreImpl = ComparisonQuizCoreImpl(

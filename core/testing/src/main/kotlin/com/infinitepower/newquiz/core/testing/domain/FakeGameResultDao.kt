@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.core.testing.domain
 
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
+import com.infinitepower.newquiz.core.database.model.user.ComparisonQuizGameResultEntity
 import com.infinitepower.newquiz.core.database.model.user.MultiChoiceGameResultEntity
 import com.infinitepower.newquiz.core.database.model.user.WordleGameResultEntity
 import kotlin.random.Random
@@ -21,4 +22,12 @@ class FakeGameResultDao : GameResultDao {
     }
 
     override suspend fun getWordleResults(): List<WordleGameResultEntity> = wordleResults
+
+    private val comparisonQuizResults = mutableListOf<ComparisonQuizGameResultEntity>()
+
+    override suspend fun insertComparisonQuizResult(result: ComparisonQuizGameResultEntity) {
+        comparisonQuizResults.add(result.copy(gameId = Random.nextInt()))
+    }
+
+    override suspend fun getComparisonQuizResults(): List<ComparisonQuizGameResultEntity> = comparisonQuizResults
 }

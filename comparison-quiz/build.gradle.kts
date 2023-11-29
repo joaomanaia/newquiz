@@ -43,6 +43,10 @@ dependencies {
 
     implementation(libs.lottie.compose)
 
+    // Hilt work manager
+    implementation(libs.hilt.ext.work)
+    ksp(libs.hilt.ext.compiler)
+
     implementation(projects.core)
     implementation(projects.core.analytics)
     implementation(projects.core.remoteConfig)

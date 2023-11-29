@@ -73,13 +73,19 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getHighestPositionFlow(category: ComparisonQuizCategory): Flow<Int> = comparisonQuizDao
-        .getHighestPosition(category.id)
+    override suspend fun getHighestPosition(categoryId: String): Int {
+        val entity = comparisonQuizDao.getHighestPosition(categoryId)
+
+        return entity?.highestPosition ?: 0
+    }
+
+    override fun getHighestPositionFlow(categoryId: String): Flow<Int> = comparisonQuizDao
+        .getHighestPositionFlow(categoryId)
         .map { it?.highestPosition ?: 0 }
 
-    override suspend fun saveHighestPosition(category: ComparisonQuizCategory, position: Int) {
+    override suspend fun saveHighestPosition(categoryId: String, position: Int) {
         val entity = ComparisonQuizHighestPosition(
-            categoryId = category.id,
+            categoryId = categoryId,
             highestPosition = position
         )
 

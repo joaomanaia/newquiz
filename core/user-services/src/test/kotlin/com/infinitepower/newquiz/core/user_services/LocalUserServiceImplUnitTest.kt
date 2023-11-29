@@ -12,11 +12,14 @@ import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.testing.domain.FakeGameResultDao
+import com.infinitepower.newquiz.core.user_services.data.xp.ComparisonQuizXpGeneratorImpl
 import com.infinitepower.newquiz.core.user_services.data.xp.MultiChoiceQuizXpGeneratorImpl
 import com.infinitepower.newquiz.core.user_services.data.xp.WordleXpGeneratorImpl
+import com.infinitepower.newquiz.core.user_services.domain.xp.ComparisonQuizXpGenerator
 import com.infinitepower.newquiz.core.user_services.domain.xp.MultiChoiceQuizXpGenerator
 import com.infinitepower.newquiz.core.user_services.domain.xp.WordleXpGenerator
 import com.infinitepower.newquiz.core.user_services.model.User
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
 import io.mockk.coEvery
@@ -51,6 +54,7 @@ internal class LocalUserServiceImplUnitTest {
 
     private val multiChoiceQuizXpGenerator: MultiChoiceQuizXpGenerator = MultiChoiceQuizXpGeneratorImpl()
     private val wordleXpGenerator: WordleXpGenerator = WordleXpGeneratorImpl()
+    private val comparisonQuizXpGenerator: ComparisonQuizXpGenerator = ComparisonQuizXpGeneratorImpl()
 
     private lateinit var localUserServiceImpl: LocalUserServiceImpl
 
@@ -75,7 +79,8 @@ internal class LocalUserServiceImplUnitTest {
             remoteConfig = remoteConfig,
             gameResultDao = gameResultDao,
             multiChoiceXpGenerator = multiChoiceQuizXpGenerator,
-            wordleXpGenerator = wordleXpGenerator
+            wordleXpGenerator = wordleXpGenerator,
+            comparisonQuizXpGenerator = comparisonQuizXpGenerator
         )
     }
 
@@ -357,6 +362,95 @@ internal class LocalUserServiceImplUnitTest {
 
         // Check if the game result has been saved
         val gameResults = gameResultDao.getWordleResults()
+        assertThat(gameResults).hasSize(1)
+    }
+
+    @CsvSource(
+        "0",
+        "100",
+        "399",
+        "1000"
+    )
+    @ParameterizedTest(name = "test saveComparisonQuizGame when generate xp is enabled and totalXp is {0}")
+    fun `test saveComparisonQuizGame when generate xp is enabled`(
+        initialXp: Long
+    ) = testScope.runTest {
+        coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
+        coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
+
+        dataStoreManager.editPreference(LocalUserCommon.UserTotalXp.key, initialXp)
+
+        val initialUser = localUserServiceImpl.getUser()
+        require(initialUser != null)
+
+        val endPosition = 5u
+
+        localUserServiceImpl.saveComparisonQuizGame(
+            categoryId = "category",
+            comparisonMode = ComparisonMode.GREATER.name,
+            endPosition = endPosition,
+            highestPosition = 10u,
+            generateXp = true
+        )
+
+        // Check that the user's total xp has been updated
+        val updatedUser = localUserServiceImpl.getUser()
+        require(updatedUser != null)
+
+        val expectedXp = comparisonQuizXpGenerator.generateXp(endPosition)
+
+        // Check if the new xp is equal to the generated xp
+        val newXp = updatedUser.totalXp - initialUser.totalXp
+        assertThat(newXp.toInt()).isEqualTo(expectedXp.toInt())
+
+        // If the user is in new level, check if the diamonds have been updated
+        if (initialUser.isNewLevel(newXp)) {
+            assertThat(updatedUser.diamonds).isEqualTo(initialUser.diamonds + NEW_LEVEL_DIAMONDS.toUInt())
+        } else {
+            assertThat(updatedUser.diamonds).isEqualTo(initialUser.diamonds)
+        }
+
+        // Check if the game result has been saved
+        val gameResults = gameResultDao.getComparisonQuizResults()
+        assertThat(gameResults).hasSize(1)
+
+        // Because there is only one game result, we can assume that the first one is the one we want
+        gameResults.first().apply {
+            assertThat(comparisonMode).isEqualTo(ComparisonMode.GREATER.name)
+            assertThat(this.endPosition).isEqualTo(endPosition.toInt())
+            assertThat(highestPosition).isEqualTo(10)
+            assertThat(earnedXp).isEqualTo(newXp.toInt())
+        }
+    }
+
+    @Test
+    fun `test saveComparisonQuizGame when generate xp is disabled`() = testScope.runTest {
+        coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
+        coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
+
+        val initialUser = localUserServiceImpl.getUser()
+        require(initialUser != null)
+
+        val endPosition = 5u
+
+        localUserServiceImpl.saveComparisonQuizGame(
+            categoryId = "category",
+            comparisonMode = ComparisonMode.GREATER.name,
+            endPosition = endPosition,
+            highestPosition = 10u,
+            generateXp = false
+        )
+
+        // Check that the user's total xp has been updated
+        val updatedUser = localUserServiceImpl.getUser()
+        require(updatedUser != null)
+
+        // because the xp generation is disabled, the new xp should be 0
+        val newXp = updatedUser.totalXp - initialUser.totalXp
+        assertThat(newXp).isEqualTo(0uL)
+
+        // Check if the game result has been saved
+        val gameResults = gameResultDao.getComparisonQuizResults()
         assertThat(gameResults).hasSize(1)
     }
 }

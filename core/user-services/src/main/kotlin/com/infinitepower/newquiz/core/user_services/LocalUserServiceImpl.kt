@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.core.user_services
 
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
+import com.infinitepower.newquiz.core.database.model.user.ComparisonQuizGameResultEntity
 import com.infinitepower.newquiz.core.database.model.user.MultiChoiceGameResultEntity
 import com.infinitepower.newquiz.core.database.model.user.WordleGameResultEntity
 import com.infinitepower.newquiz.core.datastore.common.LocalUserCommon
@@ -9,6 +10,7 @@ import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
+import com.infinitepower.newquiz.core.user_services.domain.xp.ComparisonQuizXpGenerator
 import com.infinitepower.newquiz.core.user_services.domain.xp.MultiChoiceQuizXpGenerator
 import com.infinitepower.newquiz.core.user_services.domain.xp.WordleXpGenerator
 import com.infinitepower.newquiz.core.user_services.model.User
@@ -22,7 +24,8 @@ class LocalUserServiceImpl @Inject constructor(
     private val remoteConfig: RemoteConfig,
     private val gameResultDao: GameResultDao,
     private val multiChoiceXpGenerator: MultiChoiceQuizXpGenerator,
-    private val wordleXpGenerator: WordleXpGenerator
+    private val wordleXpGenerator: WordleXpGenerator,
+    private val comparisonQuizXpGenerator: ComparisonQuizXpGenerator
 ) : LocalUserService {
     override suspend fun userAvailable(): Boolean {
         val uid = dataStoreManager.getPreference(LocalUserCommon.UserUid)
@@ -146,6 +149,35 @@ class LocalUserServiceImpl @Inject constructor(
                 rowsUsed = rowsUsed.toInt(),
                 maxRows = maxRows,
                 categoryId = categoryId
+            )
+        )
+    }
+
+    override suspend fun saveComparisonQuizGame(
+        categoryId: String,
+        comparisonMode: String,
+        endPosition: UInt,
+        highestPosition: UInt,
+        generateXp: Boolean
+    ) {
+        var newXp = 0u
+
+        // Generate xp if needed
+        if (generateXp) {
+            // Generate and get the new xp
+            newXp = comparisonQuizXpGenerator.generateXp(endPosition)
+            saveNewXP(newXp)
+        }
+
+        // Save the game result
+        gameResultDao.insertComparisonQuizResult(
+            ComparisonQuizGameResultEntity(
+                earnedXp = newXp.toInt(),
+                playedAt = System.currentTimeMillis(),
+                categoryId = categoryId,
+                comparisonMode = comparisonMode,
+                endPosition = endPosition.toInt(),
+                highestPosition = highestPosition.toInt()
             )
         )
     }

@@ -1,7 +1,9 @@
 package com.infinitepower.newquiz.core.user_services.di
 
+import com.infinitepower.newquiz.core.user_services.data.xp.ComparisonQuizXpGeneratorImpl
 import com.infinitepower.newquiz.core.user_services.data.xp.MultiChoiceQuizXpGeneratorImpl
 import com.infinitepower.newquiz.core.user_services.data.xp.WordleXpGeneratorImpl
+import com.infinitepower.newquiz.core.user_services.domain.xp.ComparisonQuizXpGenerator
 import com.infinitepower.newquiz.core.user_services.domain.xp.MultiChoiceQuizXpGenerator
 import com.infinitepower.newquiz.core.user_services.domain.xp.WordleXpGenerator
 import dagger.Binds
@@ -20,4 +22,8 @@ abstract class XpGeneratorsModule {
     @Binds
     @Singleton
     abstract fun bindWordleXpGenerator(impl: WordleXpGeneratorImpl): WordleXpGenerator
+
+    @Binds
+    @Singleton
+    abstract fun bindComparisonQuizXpGenerator(impl: ComparisonQuizXpGeneratorImpl): ComparisonQuizXpGenerator
 }

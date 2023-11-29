@@ -10,6 +10,8 @@ import com.infinitepower.newquiz.model.toUiText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import java.net.URI
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,7 +22,7 @@ private const val QUESTIONS_TO_GENERATE = 10
 
 @Singleton
 class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRepository {
-    private val highestPosition = MutableStateFlow(0)
+    private val highestPosition = MutableStateFlow<Map<String, Int>>(emptyMap())
 
     override fun getCategories(): List<ComparisonQuizCategory> {
         return List(CATEGORIES_TO_GENERATE) { id ->
@@ -52,9 +54,17 @@ class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRep
         emit(Resource.Success(questions))
     }
 
-    override fun getHighestPositionFlow(category: ComparisonQuizCategory): Flow<Int> = highestPosition
+    override suspend fun getHighestPosition(categoryId: String): Int {
+        return highestPosition.value.getOrDefault(categoryId, 0)
+    }
 
-    override suspend fun saveHighestPosition(category: ComparisonQuizCategory, position: Int) {
-        highestPosition.emit(position)
+    override fun getHighestPositionFlow(categoryId: String): Flow<Int> = highestPosition.map { it.getOrDefault(categoryId, 0)}
+
+    override suspend fun saveHighestPosition(categoryId: String, position: Int) {
+        highestPosition.update { currentHighestPosition ->
+            currentHighestPosition.toMutableMap().apply {
+                set(categoryId, position)
+            }
+        }
     }
 }

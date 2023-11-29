@@ -12,15 +12,19 @@ interface ComparisonQuizRepository {
         category: ComparisonQuizCategory
     ): FlowResource<List<ComparisonQuizItem>>
 
+    suspend fun getHighestPosition(
+        categoryId: String
+    ): Int
+
     /**
      * Get the highest position of the [category].
      */
     fun getHighestPositionFlow(
-        category: ComparisonQuizCategory
+        categoryId: String
     ): Flow<Int>
 
     suspend fun saveHighestPosition(
-        category: ComparisonQuizCategory,
+        categoryId: String,
         position: Int
     )
 }
