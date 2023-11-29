@@ -29,6 +29,12 @@ value class RemoteConfigValue<T>(
 
         val USER_INITIAL_DIAMONDS = RemoteConfigValue<Int>("user_initial_diamonds")
 
+        val COMPARISON_QUIZ_DEFAULT_XP_REWARD = RemoteConfigValue<Int>("comparison_quiz_default_xp_reward")
+
+        val WORDLE_DEFAULT_XP_REWARD = RemoteConfigValue<Int>("wordle_default_xp_reward")
+
+        val MULTICHOICE_QUIZ_DEFAULT_XP_REWARD = RemoteConfigValue<String>("multichoice_quiz_default_xp_reward")
+
         val ALL_LOGOS_QUIZ = RemoteConfigValue<String>("all_logos_quiz")
 
         val MULTICHOICE_QUICKQUIZ_DIFFICULTY = RemoteConfigValue<String>("multichoice_quickquiz_difficulty")

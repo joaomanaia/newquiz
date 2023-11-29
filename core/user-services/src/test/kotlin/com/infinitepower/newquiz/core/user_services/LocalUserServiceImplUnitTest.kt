@@ -23,6 +23,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -52,9 +53,9 @@ internal class LocalUserServiceImplUnitTest {
     private val remoteConfig: RemoteConfig = mockk()
     private lateinit var gameResultDao: GameResultDao
 
-    private val multiChoiceQuizXpGenerator: MultiChoiceQuizXpGenerator = MultiChoiceQuizXpGeneratorImpl()
-    private val wordleXpGenerator: WordleXpGenerator = WordleXpGeneratorImpl()
-    private val comparisonQuizXpGenerator: ComparisonQuizXpGenerator = ComparisonQuizXpGeneratorImpl()
+    private val multiChoiceQuizXpGenerator: MultiChoiceQuizXpGenerator = MultiChoiceQuizXpGeneratorImpl(remoteConfig)
+    private val wordleXpGenerator: WordleXpGenerator = WordleXpGeneratorImpl(remoteConfig)
+    private val comparisonQuizXpGenerator: ComparisonQuizXpGenerator = ComparisonQuizXpGeneratorImpl(remoteConfig)
 
     private lateinit var localUserServiceImpl: LocalUserServiceImpl
 
@@ -73,6 +74,16 @@ internal class LocalUserServiceImplUnitTest {
         dataStoreManager = PreferencesDatastoreManager(testDataStore)
 
         gameResultDao = FakeGameResultDao()
+
+        every { remoteConfig.get(RemoteConfigValue.WORDLE_DEFAULT_XP_REWARD) } returns 10
+        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_DEFAULT_XP_REWARD) } returns 10
+        every { remoteConfig.get(RemoteConfigValue.MULTICHOICE_QUIZ_DEFAULT_XP_REWARD) } returns """
+            {
+                "easy": 10,
+                "medium": 20,
+                "hard": 30
+            }
+        """.trimIndent()
 
         localUserServiceImpl = LocalUserServiceImpl(
             dataStoreManager = dataStoreManager,

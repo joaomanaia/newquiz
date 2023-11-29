@@ -25,6 +25,18 @@
     <value>10</value>
   </entry>
   <entry>
+    <key>comparison_quiz_default_xp_reward</key>
+    <value>10</value>
+  </entry>
+  <entry>
+    <key>wordle_default_xp_reward</key>
+    <value>50</value>
+  </entry>
+  <entry>
+    <key>multichoice_quiz_default_xp_reward</key>
+    <value>{"easy":10,"medium":15,"hard":20}</value>
+  </entry>
+  <entry>
     <key>daily_challenge_tasks_to_generate</key>
     <value>5</value>
   </entry>

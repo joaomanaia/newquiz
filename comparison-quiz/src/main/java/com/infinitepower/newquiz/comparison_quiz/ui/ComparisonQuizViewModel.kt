@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.comparison_quiz.core.workers.ComparisonQuizEndGameWorker
-import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
-import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker

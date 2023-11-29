@@ -1,9 +1,15 @@
 package com.infinitepower.newquiz.core.user_services.data.xp
 
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
+import io.mockk.every
+import io.mockk.mockk
 import kotlin.random.Random
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -14,9 +20,34 @@ import kotlin.test.Test
 internal class MultiChoiceQuizXpGeneratorImplTest {
     private lateinit var multiChoiceQuizXpGeneratorImpl: MultiChoiceQuizXpGeneratorImpl
 
+    private val remoteConfig: RemoteConfig = mockk()
+
     @BeforeTest
     fun setUp() {
-        multiChoiceQuizXpGeneratorImpl = MultiChoiceQuizXpGeneratorImpl()
+        every { remoteConfig.get(RemoteConfigValue.MULTICHOICE_QUIZ_DEFAULT_XP_REWARD) } returns """
+            {
+                "easy": 10,
+                "medium": 20,
+                "hard": 30
+            }
+        """.trimIndent()
+
+        multiChoiceQuizXpGeneratorImpl = MultiChoiceQuizXpGeneratorImpl(
+            remoteConfig = remoteConfig
+        )
+    }
+
+    @Test
+    fun `getDefaultXpReward should return the default XP reward`() {
+        val defaultXpReward = multiChoiceQuizXpGeneratorImpl.getDefaultXpReward()
+
+        assertThat(defaultXpReward).isEqualTo(
+            mapOf(
+                QuestionDifficulty.Easy to 10u,
+                QuestionDifficulty.Medium to 20u,
+                QuestionDifficulty.Hard to 30u
+            )
+        )
     }
 
     @Test
@@ -46,12 +77,14 @@ internal class MultiChoiceQuizXpGeneratorImplTest {
 
         val generatedXp = multiChoiceQuizXpGeneratorImpl.generateXp(questionSteps)
 
+        val defaultXpReward = multiChoiceQuizXpGeneratorImpl.getDefaultXpReward()
+
         val expectedXp = questionSteps
             .filter(MultiChoiceQuestionStep.Completed::correct)
             .sumOf { step ->
                 val difficulty = step.question.difficulty
 
-                multiChoiceQuizXpGeneratorImpl.getDefaultXpForDifficulty(difficulty)
+                defaultXpReward[difficulty] ?: 0u
             }
 
         assertThat(generatedXp).isEqualTo(expectedXp)

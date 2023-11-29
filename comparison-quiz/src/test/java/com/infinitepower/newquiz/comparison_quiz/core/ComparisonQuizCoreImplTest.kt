@@ -28,13 +28,9 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
-import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
-import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -86,9 +82,9 @@ internal class ComparisonQuizCoreImplTest {
             dataStoreManager = dataStoreManager,
             remoteConfig = remoteConfig,
             gameResultDao = gameResultDao,
-            multiChoiceXpGenerator = MultiChoiceQuizXpGeneratorImpl(),
-            wordleXpGenerator = WordleXpGeneratorImpl(),
-            comparisonQuizXpGenerator = ComparisonQuizXpGeneratorImpl()
+            multiChoiceXpGenerator = MultiChoiceQuizXpGeneratorImpl(remoteConfig),
+            wordleXpGenerator = WordleXpGeneratorImpl(remoteConfig),
+            comparisonQuizXpGenerator = ComparisonQuizXpGeneratorImpl(remoteConfig)
         )
 
         comparisonQuizCoreImpl = ComparisonQuizCoreImpl(

@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.core.user_services.domain.xp
 
 interface WordleXpGenerator : XpGenerator {
-    fun getDefaultXp(): UInt = 50u
+    fun getDefaultXp(): UInt
 
     /**
      * Calculates the XP awarded to the player for completing a game of Wordle.
