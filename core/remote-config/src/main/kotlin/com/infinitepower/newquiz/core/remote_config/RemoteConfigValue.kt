@@ -44,5 +44,7 @@ value class RemoteConfigValue<T>(
         val MATH_QUIZ_DIFFICULTY = RemoteConfigValue<QuestionDifficulty>("math_quiz_difficulty")
 
         val NEW_LEVEL_DIAMONDS = RemoteConfigValue<Int>("new_level_diamonds")
+
+        val MULTICHOICE_SKIP_COST = RemoteConfigValue<Int>("multichoice_skip_cost")
     }
 }

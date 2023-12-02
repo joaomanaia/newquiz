@@ -100,7 +100,7 @@ fun MultiChoiceQuizScreen(
 
     SkipQuestionDialog(
         userDiamonds = uiState.userDiamonds,
-        skipCost = 1,
+        skipCost = uiState.skipCost,
         loading = uiState.userDiamondsLoading,
         onSkipClick = { viewModel.onEvent(MultiChoiceQuizScreenUiEvent.SkipQuestion) },
         onDismissClick = { viewModel.onEvent(MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds) }

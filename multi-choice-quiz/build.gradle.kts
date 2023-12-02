@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.translation)
     implementation(projects.core.userServices)
+    implementation(projects.core.remoteConfig)
     implementation(projects.model)
     implementation(projects.domain)
     implementation(projects.data)

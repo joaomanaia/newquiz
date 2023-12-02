@@ -13,6 +13,9 @@ import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.remote_config.RemoteConfig
+import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
+import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.translation.TranslatorUtil
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.core.user_services.workers.MultiChoiceQuizEndGameWorker
@@ -64,7 +67,8 @@ class QuizScreenViewModel @Inject constructor(
     private val workManager: WorkManager,
     private val isQuestionSavedUseCase: IsQuestionSavedUseCase,
     private val analyticsHelper: AnalyticsHelper,
-    private val userService: UserService
+    private val userService: UserService,
+    private val remoteConfig: RemoteConfig
 ) : NavEventViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -121,7 +125,10 @@ class QuizScreenViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { currentState ->
-                currentState.copy(skipsAvailable = userService.userAvailable())
+                currentState.copy(
+                    skipsAvailable = userService.userAvailable(),
+                    skipCost = remoteConfig.get(RemoteConfigValue.MULTICHOICE_SKIP_COST)
+                )
             }
         }
 
@@ -143,24 +150,21 @@ class QuizScreenViewModel @Inject constructor(
             }.launchIn(viewModelScope)
     }
 
-    private fun skipQuestion() = viewModelScope.launch(Dispatchers.IO) {
-        val state = uiState.first()
-
-        if (state.userDiamonds < 1) return@launch
-
-        val currentQuestionStep = state.currentQuestionStep
-        val correctAnswer = currentQuestionStep?.question?.correctAns ?: return@launch
-
-        selectAnswer(SelectedAnswer.fromIndex(correctAnswer))
-        verifyQuestion()
-
+    private fun skipQuestion() = viewModelScope.launch {
         _uiState.update { currentState ->
+            if (currentState.userDiamonds < 1) return@launch
+
+            val currentQuestionStep = currentState.currentQuestionStep
+            val correctAnswer = currentQuestionStep?.question?.correctAns ?: return@launch
+
+            selectAnswer(SelectedAnswer.fromIndex(correctAnswer))
+            verifyQuestion()
+
+            userService.addRemoveDiamonds(-currentState.skipCost)
+            analyticsHelper.logEvent(AnalyticsEvent.SpendDiamonds(currentState.skipCost, "skip_multichoicequestion"))
+
             currentState.copy(userDiamonds = -1)
         }
-
-        userService.addRemoveDiamonds(-1)
-
-        analyticsHelper.logEvent(AnalyticsEvent.SpendDiamonds(1, "skip_multichoicequestion"))
     }
 
     private suspend fun loadByCloudQuestions() {
