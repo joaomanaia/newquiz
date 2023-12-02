@@ -134,8 +134,6 @@ class DailyChallengeRepositoryImpl @Inject constructor(
 
         // Update the tasks set
         dailyChallengeDao.update(newTaskEntity)
-
-        userService.addRemoveDiamonds(task.diamondsReward.toInt())
     }
 
     override suspend fun claimTask(taskType: GameEvent) {
@@ -160,6 +158,9 @@ class DailyChallengeRepositoryImpl @Inject constructor(
 
         // Update the tasks set
         dailyChallengeDao.update(newTaskEntity)
+
+        // Give the user the reward
+        userService.addRemoveDiamonds(newTask.diamondsReward.toInt())
     }
 
     override suspend fun resetTasks() {
