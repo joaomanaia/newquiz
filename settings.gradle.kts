@@ -34,6 +34,7 @@ include(":core:testing")
 include(":core:translation")
 include(":core:remote-config")
 include(":core:user-services")
+include(":core:user-services:ui")
 
 include(":model")
 include(":domain")

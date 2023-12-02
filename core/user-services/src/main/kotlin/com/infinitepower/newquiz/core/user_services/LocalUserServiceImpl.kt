@@ -15,6 +15,11 @@ import com.infinitepower.newquiz.core.user_services.domain.xp.MultiChoiceQuizXpG
 import com.infinitepower.newquiz.core.user_services.domain.xp.WordleXpGenerator
 import com.infinitepower.newquiz.core.user_services.model.User
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,6 +50,39 @@ class LocalUserServiceImpl @Inject constructor(
             totalXp = totalXp.toULong(),
             diamonds = diamonds
         )
+    }
+
+    override suspend fun getXpEarnedByRange(start: Instant, end: Instant): XpEarnedByDays {
+        val xpForDateRange = gameResultDao.getXpForDateRange(
+            startDate = start.toEpochMilliseconds(),
+            endDate = end.toEpochMilliseconds()
+        )
+
+        val tz = TimeZone.currentSystemDefault()
+
+        return xpForDateRange.groupBy {
+            Instant.fromEpochMilliseconds(it.playedAt).toLocalDateTime(tz).date
+        }.mapValues { (_, xpForDay) ->
+            xpForDay.sumOf { it.earnedXp }
+        }.toSortedMap()
+    }
+
+    override fun getXpEarnedByRangeFlow(
+        start: Instant,
+        end: Instant
+    ): Flow<XpEarnedByDays> {
+        val tz = TimeZone.currentSystemDefault()
+
+        return gameResultDao.getXpForDateRangeFlow(
+            startDate = start.toEpochMilliseconds(),
+            endDate = end.toEpochMilliseconds()
+        ).map { xpForPlayedAtList ->
+            xpForPlayedAtList.groupBy {
+                Instant.fromEpochMilliseconds(it.playedAt).toLocalDateTime(tz).date
+            }.mapValues { (_, xpForDay) ->
+                xpForDay.sumOf { it.earnedXp }
+            }.toSortedMap()
+        }
     }
 
     override suspend fun getUserDiamonds(): UInt {

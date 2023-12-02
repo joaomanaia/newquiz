@@ -7,6 +7,7 @@ import androidx.compose.material.icons.outlined.ViewModule
 import androidx.compose.material.icons.rounded.Image
 import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.ListAlt
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Route
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Today
@@ -21,9 +22,9 @@ import androidx.navigation.NavController
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizListScreenDestination
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.navigation.NavDrawerBadgeItem
-import com.infinitepower.newquiz.core.navigation.NavDrawerItemGroup
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.navigation.ScreenType
+import com.infinitepower.newquiz.core.user_services.ui.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.daily_challenge.destinations.DailyChallengeScreenDestination
 import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
@@ -71,6 +72,13 @@ internal fun getNavigationItems(
             value = dailyChallengeClaimCount,
             description = "Daily challenge claim count"
         )
+    ),
+    NavigationItem.Label(text = R.string.user),
+    NavigationItem.Item(
+        text = R.string.profile,
+        selectedIcon = Icons.Rounded.Person,
+        direction = ProfileScreenDestination,
+        screenType = ScreenType.NAVIGATION_HIDDEN
     ),
     NavigationItem.Label(text = R.string.other),
     NavigationItem.Item(

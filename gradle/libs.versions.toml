@@ -1,7 +1,7 @@
 [versions]
 
 androidDesugarJdkLibs = "2.0.4"
-androidGradlePlugin = "8.3.0-alpha14"
+androidGradlePlugin = "8.3.0-alpha16"
 androidxAnnotation = "1.7.0"
 androidxActivity = "1.8.1"
 androidxAppCompat = "1.7.0-alpha03"
@@ -10,6 +10,7 @@ androidxCoreSplashscreen = "1.0.1"
 androidxComposeCompiler = "1.5.4"
 androidxComposeBom = "2023.10.01"
 androidxComposeRuntime = "1.5.0-beta02"
+androidxComposeMaterial3 = "1.2.0-alpha12"
 androidxDataStore = "1.0.0"
 androidxStartup = "1.1.1"
 androidxLifecycle = "2.6.1"
@@ -60,7 +61,7 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }

@@ -5,6 +5,9 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
+import com.infinitepower.newquiz.core.database.model.user.ComparisonQuizGameResultEntity
+import com.infinitepower.newquiz.core.database.model.user.MultiChoiceGameResultEntity
+import com.infinitepower.newquiz.core.database.model.user.WordleGameResultEntity
 import com.infinitepower.newquiz.core.datastore.common.LocalUserCommon
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.PreferencesDatastoreManager
@@ -30,12 +33,18 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import java.io.File
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.measureTimedValue
 
 /**
  * Tests for [LocalUserServiceImpl]
@@ -53,9 +62,11 @@ internal class LocalUserServiceImplUnitTest {
     private val remoteConfig: RemoteConfig = mockk()
     private lateinit var gameResultDao: GameResultDao
 
-    private val multiChoiceQuizXpGenerator: MultiChoiceQuizXpGenerator = MultiChoiceQuizXpGeneratorImpl(remoteConfig)
+    private val multiChoiceQuizXpGenerator: MultiChoiceQuizXpGenerator =
+        MultiChoiceQuizXpGeneratorImpl(remoteConfig)
     private val wordleXpGenerator: WordleXpGenerator = WordleXpGeneratorImpl(remoteConfig)
-    private val comparisonQuizXpGenerator: ComparisonQuizXpGenerator = ComparisonQuizXpGeneratorImpl(remoteConfig)
+    private val comparisonQuizXpGenerator: ComparisonQuizXpGenerator =
+        ComparisonQuizXpGeneratorImpl(remoteConfig)
 
     private lateinit var localUserServiceImpl: LocalUserServiceImpl
 
@@ -106,7 +117,10 @@ internal class LocalUserServiceImplUnitTest {
     @Test
     fun `getUserDiamonds() should return the user diamonds`() = testScope.runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
-        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key, INITIAL_DIAMONDS)
+        dataStoreManager.editPreference(
+            LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key,
+            INITIAL_DIAMONDS
+        )
 
         val result = localUserServiceImpl.getUserDiamonds()
 
@@ -116,7 +130,10 @@ internal class LocalUserServiceImplUnitTest {
     @Test
     fun `addRemoveDiamonds() should add diamonds to the user`() = testScope.runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
-        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key, INITIAL_DIAMONDS)
+        dataStoreManager.editPreference(
+            LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key,
+            INITIAL_DIAMONDS
+        )
 
         val diamondsToAdd = 5
 
@@ -131,7 +148,10 @@ internal class LocalUserServiceImplUnitTest {
     @Test
     fun `updateNewLevelDiamonds() should update the user diamonds`() = testScope.runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
-        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key, INITIAL_DIAMONDS)
+        dataStoreManager.editPreference(
+            LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key,
+            INITIAL_DIAMONDS
+        )
 
         coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
 
@@ -157,7 +177,10 @@ internal class LocalUserServiceImplUnitTest {
         dataStoreManager.editPreference(LocalUserCommon.UserTotalXp.key, 0)
 
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
-        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key, INITIAL_DIAMONDS)
+        dataStoreManager.editPreference(
+            LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key,
+            INITIAL_DIAMONDS
+        )
 
         val result = localUserServiceImpl.getUser()
 
@@ -463,5 +486,115 @@ internal class LocalUserServiceImplUnitTest {
         // Check if the game result has been saved
         val gameResults = gameResultDao.getComparisonQuizResults()
         assertThat(gameResults).hasSize(1)
+    }
+
+    @Test
+    fun `test getXpEarnedByRange() and getXpEarnedInLastDays()`() = testScope.runTest {
+        val now = Clock.System.now()
+        val tz = TimeZone.currentSystemDefault()
+
+        val startInstant = now - 7.days // 7 days ago
+        val startDate = startInstant.toLocalDateTime(tz).date
+        val endDate = now.toLocalDateTime(tz).date
+
+        // Insert multi choice results
+        gameResultDao.insertMultiChoiceResult(
+            MultiChoiceGameResultEntity(
+                correctAnswers = 0,
+                questionCount = 0,
+                averageAnswerTime = 0.0,
+                earnedXp = 5,
+                playedAt = (now - 1.minutes).toEpochMilliseconds() // today
+            ),
+            MultiChoiceGameResultEntity(
+                correctAnswers = 0,
+                questionCount = 0,
+                averageAnswerTime = 0.0,
+                earnedXp = 10,
+                playedAt = (now - 2.minutes).toEpochMilliseconds() // today
+            ),
+            MultiChoiceGameResultEntity(
+                correctAnswers = 0,
+                questionCount = 0,
+                averageAnswerTime = 0.0,
+                earnedXp = 20,
+                playedAt = (now - 1.days).toEpochMilliseconds() // yesterday
+            ),
+            // Insert a result that is not in the current week
+            MultiChoiceGameResultEntity(
+                correctAnswers = 0,
+                questionCount = 0,
+                averageAnswerTime = 0.0,
+                earnedXp = 20,
+                playedAt = (now - 10.days).toEpochMilliseconds() // 10 days ago
+            ),
+        )
+
+        // Insert wordle results
+        gameResultDao.insertWordleResult(
+            WordleGameResultEntity(
+                earnedXp = 10,
+                playedAt = (now - 2.days).toEpochMilliseconds(), // before yesterday
+                wordLength = 5,
+                rowsUsed = 3,
+                maxRows = Int.MAX_VALUE,
+                categoryId = "category"
+            ),
+        )
+
+        // Insert comparison quiz results
+        gameResultDao.insertComparisonQuizResult(
+            ComparisonQuizGameResultEntity(
+                earnedXp = 10,
+                playedAt = (now - 4.minutes).toEpochMilliseconds(), // today
+                comparisonMode = ComparisonMode.GREATER.name,
+                endPosition = 5,
+                highestPosition = 10,
+                categoryId = "category"
+            )
+        )
+
+        // Results:
+        // 3 results today
+        // 1 result yesterday
+        // 1 result before yesterday
+        // 1 result 10 days ago (not in the current week, should not be returned)
+
+        // XP for days:
+        // today: 25
+        // yesterday: 20
+        // before yesterday: 10
+
+        // Check if the results are returned
+        val resultTimed = measureTimedValue {
+            localUserServiceImpl.getXpEarnedByRange(
+                start = startInstant,
+                end = now
+            )
+        }
+
+        val resultLast7Days = localUserServiceImpl.getXpEarnedInLastDuration(7.days)
+
+        println("Time taken: ${resultTimed.duration}")
+
+        val result = resultTimed.value
+
+        assertThat(result).isEqualTo(resultLast7Days)
+
+        assertThat(result).hasSize(3)
+        // Check if the results are sorted by playedAt
+        assertThat(result.map { it.key }).isInOrder()
+
+        result.forEach { (date, _) ->
+            // Check if the result from the other week is not returned
+            assertThat(date).isAtLeast(startDate)
+            assertThat(date).isAtMost(endDate)
+        }
+
+        // Check if the xp is correct
+        println(result)
+        assertThat(result[now.toLocalDateTime(tz).date]).isEqualTo(25) // today
+        assertThat(result[(now - 1.days).toLocalDateTime(tz).date]).isEqualTo(20) // yesterday
+        assertThat(result[(now - 2.days).toLocalDateTime(tz).date]).isEqualTo(10) // before yesterday
     }
 }

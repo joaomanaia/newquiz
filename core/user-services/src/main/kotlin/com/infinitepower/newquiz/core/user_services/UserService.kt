@@ -1,8 +1,11 @@
 package com.infinitepower.newquiz.core.user_services
 
 import com.infinitepower.newquiz.core.user_services.model.User
+import kotlinx.datetime.LocalDate
 
-interface UserService : GameResultTracker {
+typealias XpEarnedByDays = Map<LocalDate, Int>
+
+interface UserService : GameResultTracker, XpManager {
     /**
      * @return true if the user is available, false otherwise
      */
