@@ -102,6 +102,7 @@ internal fun NavigationContainer(
     navController: NavController,
     windowWidthSize: WindowWidthSizeClass,
     dailyChallengeClaimCount: Int,
+    userDiamonds: UInt,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val destination by navController.currentDestinationAsState()
@@ -131,6 +132,7 @@ internal fun NavigationContainer(
                 primaryItems = primaryItems,
                 navDrawerItems = otherItems,
                 selectedItem = selectedItem,
+                userDiamonds = userDiamonds,
                 content = content
             )
             WindowWidthSizeClass.Medium -> MediumContainer(
@@ -138,12 +140,14 @@ internal fun NavigationContainer(
                 primaryItems = primaryItems,
                 navDrawerItems = otherItems,
                 selectedItem = selectedItem,
+                userDiamonds = userDiamonds,
                 content = content
             )
             WindowWidthSizeClass.Expanded -> ExpandedContainer(
                 navController = navController,
                 navigationItems = items,
                 selectedItem = selectedItem,
+                userDiamonds = userDiamonds,
                 content = content
             )
         }

@@ -120,6 +120,7 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.translation)
     implementation(projects.core.remoteConfig)
+    implementation(projects.core.userServices)
     implementation(projects.core.userServices.ui)
     implementation(projects.model)
     implementation(projects.multiChoiceQuiz)

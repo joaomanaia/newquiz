@@ -20,6 +20,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -30,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.ui.components.DiamondsCounter
 import com.ramcosta.composedestinations.navigation.navigate
 import kotlinx.coroutines.launch
 
@@ -43,6 +45,7 @@ internal fun CompactContainer(
     primaryItems: List<NavigationItem.Item>,
     navDrawerItems: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
+    userDiamonds: UInt = 0u,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     content: @Composable (PaddingValues) -> Unit
 ) {
@@ -90,6 +93,12 @@ internal fun CompactContainer(
                                 contentDescription = "Open menu"
                             )
                         }
+                    },
+                    actions = {
+                        DiamondsCounter(
+                            diamonds = userDiamonds,
+                            modifier = Modifier
+                        )
                     }
                 )
             },
@@ -131,6 +140,12 @@ private fun CompactContainerPreview() {
         .filterIsInstance<NavigationItem.Item>()
         .firstOrNull()
 
+    val primaryItems = remember {
+        getNavigationItems()
+            .filterIsInstance<NavigationItem.Item>()
+            .filter { it.primary }
+    }
+
     NewQuizTheme {
         Surface {
             CompactContainer(
@@ -138,9 +153,10 @@ private fun CompactContainerPreview() {
                 content = {
                     Text(text = "NewQuiz")
                 },
-                primaryItems = getNavigationItems().filterIsInstance<NavigationItem.Item>(),
+                primaryItems = primaryItems,
                 navDrawerItems = getNavigationItems(),
                 selectedItem = selectedItem,
+                userDiamonds = 100u
             )
         }
     }

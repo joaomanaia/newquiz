@@ -7,6 +7,7 @@ import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.AnimationsEnabled
+import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     dailyChallengeRepository: DailyChallengeRepository,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
+    private val userService: UserService
 ) : ViewModel() {
     private val animationsEnabledFlow = combine(
         settingsDataStoreManager.getPreferenceFlow(SettingsCommon.GlobalAnimationsEnabled),
@@ -39,13 +41,15 @@ class MainViewModel @Inject constructor(
     val uiState: StateFlow<MainScreenUiState> = combine(
         animationsEnabledFlow,
         settingsDataStoreManager.getPreferenceFlow(SettingsCommon.DataAnalyticsConsent),
-        dailyChallengeRepository.getClaimableTasksCountFlow()
-    ) { animationsEnabled, dataAnalyticsDialogConsent, dailyChallengeClaimableCount ->
+        dailyChallengeRepository.getClaimableTasksCountFlow(),
+        userService.getUserDiamondsFlow()
+    ) { animationsEnabled, dataAnalyticsDialogConsent, dailyChallengeClaimableCount, userDiamonds ->
         MainScreenUiState(
             loading = false,
             animationsEnabled = animationsEnabled,
             dialogConsent = DataAnalyticsConsentState.valueOf(dataAnalyticsDialogConsent),
-            dailyChallengeClaimableCount = dailyChallengeClaimableCount
+            dailyChallengeClaimableCount = dailyChallengeClaimableCount,
+            userDiamonds = userDiamonds
         )
     }.stateIn(
         scope = viewModelScope,

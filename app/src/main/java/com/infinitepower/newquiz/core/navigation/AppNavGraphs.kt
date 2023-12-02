@@ -72,11 +72,13 @@ internal fun AppNavigation(
     windowSizeClass: WindowSizeClass,
     remoteConfig: RemoteConfig,
     dailyChallengeClaimCount: Int,
+    userDiamonds: UInt
 ) {
     NavigationContainer(
         navController = navController,
         windowWidthSize = windowSizeClass.widthSizeClass,
-        dailyChallengeClaimCount = dailyChallengeClaimCount
+        dailyChallengeClaimCount = dailyChallengeClaimCount,
+        userDiamonds = userDiamonds
     ) { innerPadding ->
         DestinationsNavHost(
             navGraph = AppNavGraphs.mainNavGraph,

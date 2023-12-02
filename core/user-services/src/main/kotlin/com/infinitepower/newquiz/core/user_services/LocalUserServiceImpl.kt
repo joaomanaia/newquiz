@@ -92,6 +92,14 @@ class LocalUserServiceImpl @Inject constructor(
         return diamonds.toUInt()
     }
 
+    override fun getUserDiamondsFlow(): Flow<UInt> {
+        val initialDiamonds = remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS)
+
+        return dataStoreManager
+            .getPreferenceFlow(LocalUserCommon.UserDiamonds(initialDiamonds))
+            .map(Int::toUInt)
+    }
+
     override suspend fun addRemoveDiamonds(diamonds: Int) {
         val initialDiamonds = remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS)
         val currentDiamonds =

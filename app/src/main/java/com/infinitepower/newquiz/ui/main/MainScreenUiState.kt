@@ -14,7 +14,8 @@ data class MainScreenUiState(
     val loading: Boolean = true,
     val dialogConsent: DataAnalyticsConsentState = DataAnalyticsConsentState.NONE,
     val dailyChallengeClaimableCount: Int = 0,
-    val animationsEnabled: AnimationsEnabled = AnimationsEnabled()
+    val animationsEnabled: AnimationsEnabled = AnimationsEnabled(),
+    val userDiamonds: UInt = 0u
 )
 
 /*

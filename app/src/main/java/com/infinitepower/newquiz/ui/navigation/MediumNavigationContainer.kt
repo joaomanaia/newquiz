@@ -30,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewMediumNightLight
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.ui.components.DiamondsCounter
 import com.ramcosta.composedestinations.navigation.navigate
 import kotlinx.coroutines.launch
 
@@ -43,6 +44,7 @@ internal fun MediumContainer(
     primaryItems: List<NavigationItem.Item>,
     navDrawerItems: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
+    userDiamonds: UInt = 0u,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     content: @Composable (PaddingValues) -> Unit
 ) {
@@ -107,6 +109,12 @@ internal fun MediumContainer(
                         scrollBehavior = scrollBehavior,
                         title = {
                             Text(text = text)
+                        },
+                        actions = {
+                            DiamondsCounter(
+                                diamonds = userDiamonds,
+                                modifier = Modifier
+                            )
                         }
                     )
                 },
