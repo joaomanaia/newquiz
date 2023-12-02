@@ -1,11 +1,14 @@
 package com.infinitepower.newquiz.model.category
 
+import androidx.annotation.Keep
+
 /**
  * Enum class that represents the possible values for the category connection info badge.
  * The badge is shown on the category card in the home screen.
  *
  * This is used in an entry of the settings screen.
  */
+@Keep
 enum class ShowCategoryConnectionInfo {
     /**
      * Don't show the badge.
