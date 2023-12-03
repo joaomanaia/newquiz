@@ -26,7 +26,10 @@ class DailyChallengeScreenViewModel @Inject constructor(
         _uiState,
         dailyChallengeRepository.getAvailableTasksFlow()
     ) { uiState, tasks ->
-        uiState.copy(tasks = tasks)
+        uiState.copy(
+            // Sort tasks by claimed status, so that claimed tasks are at the bottom of the list
+            tasks = tasks.sortedBy { it.isClaimed }
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
