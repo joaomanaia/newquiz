@@ -16,8 +16,8 @@ android {
         applicationId = "com.infinitepower.newquiz"
         minSdk = 21
         targetSdk = 34
-        versionCode = 15
-        versionName = "1.6.2"
+        versionCode = 16
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
