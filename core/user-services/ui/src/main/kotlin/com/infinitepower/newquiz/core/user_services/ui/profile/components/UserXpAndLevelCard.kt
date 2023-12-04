@@ -13,11 +13,13 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.text.CompactDecimalText
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 internal fun UserXpAndLevelCard(
@@ -35,13 +37,13 @@ internal fun UserXpAndLevelCard(
         ) {
             CardItem(
                 modifier = Modifier.weight(1f),
-                title = "Level",
+                title = stringResource(id = CoreR.string.level),
                 value = level.toInt()
             )
             VerticalDivider()
             CardItem(
                 modifier = Modifier.weight(1f),
-                title = "Total XP",
+                title = stringResource(id = CoreR.string.total_xp),
                 value = totalXp.toInt()
             )
         }
