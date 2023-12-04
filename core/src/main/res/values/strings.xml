@@ -109,11 +109,10 @@
     <string name="current_xp">Current XP</string>
     <string name="required_xp_to_next_level">Required xp to next level</string>
     <string name="photo_of_s">Photo of %1$s</string>
-    <string name="morning">Morning</string>
-    <string name="afternoon">Afternoon</string>
-    <string name="evening">Evening</string>
-    <string name="night">Night</string>
-    <string name="good_day_text">Good %1$s, \n</string>
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+    <string name="good_night">Good night</string>
     <string name="no_diamonds">No diamonds</string>
     <string name="skip_question_q">Skip question?</string>
     <plurals name="you_have_n_diamonds_skip_question_q">
@@ -123,11 +122,7 @@
     <string name="no_diamonds_to_skip_question_description">You don\'t have diamonds to skip this question!</string>
     <string name="skip">Skip</string>
     <string name="save">Save</string>
-    <string name="save_you_progress_description">Save your progress, use skips and see leaderboard by signing in!</string>
     <string name="dismiss">Dismiss</string>
-    <string name="sign_in">Sign in</string>
-    <string name="show_login_card">Show login card</string>
-    <string name="show_login_card_at_home_screen">Show login card at home screen</string>
     <string name="guess_the_word">Guess the Word</string>
     <string name="guess_the_number">Guess the Number</string>
     <string name="guess_math_formula">Guess math formula</string>
@@ -152,7 +147,6 @@
     <string name="generate">Generate</string>
     <string name="seed">Seed</string>
     <string name="user">User</string>
-    <string name="sign_out">Sign out</string>
     <string name="number_trivia">Number trivia</string>
     <string name="about_and_help">About and Help</string>
     <string name="animations">Animations</string>
@@ -188,7 +182,6 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="name">Name</string>
-    <string name="sign_up">Sign Up</string>
     <string name="next">Next</string>
     <string name="random_quiz">Random Quiz</string>
     <string name="random">Random</string>

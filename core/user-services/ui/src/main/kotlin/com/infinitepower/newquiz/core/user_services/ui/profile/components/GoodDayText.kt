@@ -22,13 +22,13 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 private sealed class DayState(@StringRes val text: Int) {
-    data object Morning : DayState(text = CoreR.string.morning)
+    data object Morning : DayState(text = CoreR.string.good_morning)
 
-    data object Afternoon : DayState(text = CoreR.string.afternoon)
+    data object Afternoon : DayState(text = CoreR.string.good_afternoon)
 
-    data object Evening : DayState(text = CoreR.string.evening)
+    data object Evening : DayState(text = CoreR.string.good_evening)
 
-    data object Night : DayState(text = CoreR.string.night)
+    data object Night : DayState(text = CoreR.string.good_night)
 }
 
 @Composable
@@ -44,11 +44,10 @@ internal fun GoodDayText(
 
     val dayText = remember(localTime) {
         when (localTime.hour) {
-            in 0..11 -> DayState.Morning
-            in 12..15 -> DayState.Afternoon
-            in 16..20 -> DayState.Evening
-            in 21..23 -> DayState.Night
-            else -> throw IllegalArgumentException()
+            in 6..11 -> DayState.Morning
+            in 12..17 -> DayState.Afternoon
+            in 18..23 -> DayState.Evening
+            else -> DayState.Night
         }
     }
 
@@ -67,7 +66,8 @@ private fun GoodDayText(
 ) {
     Text(
         text = buildAnnotatedString {
-            append(stringResource(id = CoreR.string.good_day_text, dayText))
+            append(dayText)
+            append(",\n")
             withStyle(
                 style = SpanStyle(fontWeight = FontWeight.Bold)
             ) {

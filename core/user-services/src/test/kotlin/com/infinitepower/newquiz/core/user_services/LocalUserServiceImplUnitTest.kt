@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.core.user_services
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.database.model.user.ComparisonQuizGameResultEntity
@@ -125,6 +126,28 @@ internal class LocalUserServiceImplUnitTest {
         val result = localUserServiceImpl.getUserDiamonds()
 
         assertThat(result).isEqualTo(INITIAL_DIAMONDS.toUInt())
+    }
+
+    @Test
+    fun `getUserDiamonds() should return the initial diamonds when the user diamonds are not set`() = testScope.runTest {
+        coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
+
+        val result = localUserServiceImpl.getUserDiamonds()
+
+        assertThat(result).isEqualTo(INITIAL_DIAMONDS.toUInt())
+    }
+
+    @Test
+    fun `getUserDiamondsFlow() should return the user diamonds`() = testScope.runTest {
+        coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
+        dataStoreManager.editPreference(
+            LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key,
+            INITIAL_DIAMONDS
+        )
+
+        localUserServiceImpl.getUserDiamondsFlow().test {
+            assertThat(awaitItem()).isEqualTo(INITIAL_DIAMONDS.toUInt())
+        }
     }
 
     @Test
@@ -596,5 +619,13 @@ internal class LocalUserServiceImplUnitTest {
         assertThat(result[now.toLocalDateTime(tz).date]).isEqualTo(25) // today
         assertThat(result[(now - 1.days).toLocalDateTime(tz).date]).isEqualTo(20) // yesterday
         assertThat(result[(now - 2.days).toLocalDateTime(tz).date]).isEqualTo(10) // before yesterday
+
+        // Test getXpEarnedByRangeFlow() because it is same as getXpEarnedByRange()
+        localUserServiceImpl.getXpEarnedByRangeFlow(
+            start = startInstant,
+            end = now
+        ).test {
+            assertThat(awaitItem()).isEqualTo(result)
+        }
     }
 }

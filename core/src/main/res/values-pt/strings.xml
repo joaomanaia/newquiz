@@ -112,11 +112,10 @@
     <string name="current_xp">XP Atual</string>
     <string name="required_xp_to_next_level">XP requerido para o próximo nível</string>
     <string name="photo_of_s">Foto de %1$s</string>
-    <string name="morning">Manhã</string>
-    <string name="afternoon">Tarde</string>
-    <string name="evening">Início da noite</string>
-    <string name="night">Noite</string>
-    <string name="good_day_text">Boa %1$s, \n</string>
+    <string name="good_morning">Bom dia</string>
+    <string name="good_afternoon">Boa tarde</string>
+    <string name="good_evening">Boa noite</string>
+    <string name="good_night">Boa noite</string>
     <string name="no_diamonds">Sem diamantes</string>
     <string name="skip_question_q">Saltar pergunta?</string>
     <plurals name="you_have_n_diamonds_skip_question_q" tools:ignore="MissingQuantity,UnusedQuantity">
@@ -126,11 +125,7 @@
     </plurals>
     <string name="skip">Saltar</string>
     <string name="save">Guardar</string>
-    <string name="save_you_progress_description">Guarda o teu progresso, usa skips e vê a tua posição no ranking ao fazer login!</string>
     <string name="dismiss">Dispensar</string>
-    <string name="sign_in">Login</string>
-    <string name="show_login_card">Mostrar o cartão de login</string>
-    <string name="show_login_card_at_home_screen">Mostrar o cartão de login na página inicial</string>
     <string name="more_options">Mais opções</string>
     <string name="open_drawer">Abrir navegação</string>
     <string name="copy_maze_seed">Copiar seed labirinto</string>
@@ -147,7 +142,6 @@
     <string name="generate_offline_maze">Gerar labirinto offline</string>
     <string name="generate_offline_maze_description">Gerar labirinto com todos os modos de jogo que não requerem conecção com a internet.</string>
     <string name="user">Usuário</string>
-    <string name="sign_out">Terminar sessão</string>
     <string name="spanish">Espanhol</string>
     <string name="french">Francês</string>
     <string name="number_trivia">Curiosidades sobre números</string>
@@ -184,7 +178,6 @@
     <string name="email">Email</string>
     <string name="password">Palavra Passe</string>
     <string name="name">Nome</string>
-    <string name="sign_up">Registrar</string>
     <string name="next">Continuar</string>
     <string name="random_quiz">Quiz Aleatório</string>
     <string name="random">Aleatório</string>
