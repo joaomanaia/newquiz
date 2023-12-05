@@ -283,5 +283,6 @@
     <string name="none">Nenhum</string>
     <string name="both">Ambos</string>
     <string name="show_category_connection_info">Mostrar informações de conexão da categoria</string>
+    <string name="xp">XP</string>
     <string name="total_xp">Total de XP</string>
 </resources>

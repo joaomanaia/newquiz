@@ -277,5 +277,6 @@
     <string name="none">None</string>
     <string name="both">Both</string>
     <string name="show_category_connection_info">Show category connection info</string>
+    <string name="xp">XP</string>
     <string name="total_xp">Total XP</string>
 </resources>
