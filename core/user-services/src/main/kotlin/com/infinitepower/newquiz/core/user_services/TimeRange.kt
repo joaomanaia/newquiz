@@ -37,9 +37,6 @@ sealed interface TimeRange {
         private val todayFormatter by lazy { DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT) }
 
         private val thisWeekFormatter by lazy { DateTimeFormatter.ofPattern("d MMM") }
-
-        // Show the month and year for the first and last day of the range
-        private val allTimeFormatter by lazy { DateTimeFormatter.ofPattern("MMM yyyy") }
     }
 
     data object Today : TimeRange {
