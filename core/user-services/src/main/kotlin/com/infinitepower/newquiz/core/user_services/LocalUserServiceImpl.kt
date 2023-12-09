@@ -52,7 +52,10 @@ class LocalUserServiceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getXpEarnedByRange(start: Instant, end: Instant): XpEarnedByDays {
+    override suspend fun getXpEarnedBy(
+        start: Instant,
+        end: Instant
+    ): XpEarnedByDateTime {
         val xpForDateRange = gameResultDao.getXpForDateRange(
             startDate = start.toEpochMilliseconds(),
             endDate = end.toEpochMilliseconds()
@@ -61,27 +64,31 @@ class LocalUserServiceImpl @Inject constructor(
         val tz = TimeZone.currentSystemDefault()
 
         return xpForDateRange.groupBy {
-            Instant.fromEpochMilliseconds(it.playedAt).toLocalDateTime(tz).date
+            Instant.fromEpochMilliseconds(it.playedAt).toLocalDateTime(tz).date.toEpochDays()
         }.mapValues { (_, xpForDay) ->
             xpForDay.sumOf { it.earnedXp }
         }.toSortedMap()
     }
 
-    override fun getXpEarnedByRangeFlow(
-        start: Instant,
-        end: Instant
-    ): Flow<XpEarnedByDays> {
-        val tz = TimeZone.currentSystemDefault()
+    override suspend fun getXpEarnedBy(timeRange: TimeRange): XpEarnedByDateTime {
+        val (start, end) = timeRange.getTimeRange()
+
+        val xpForDateRange = gameResultDao.getXpForDateRange(
+            startDate = start.toEpochMilliseconds(),
+            endDate = end.toEpochMilliseconds()
+        )
+
+        return timeRange.aggregateResults(xpForDateRange)
+    }
+
+    override fun getXpEarnedByFlow(timeRange: TimeRange): Flow<XpEarnedByDateTime> {
+        val (start, end) = timeRange.getTimeRange()
 
         return gameResultDao.getXpForDateRangeFlow(
             startDate = start.toEpochMilliseconds(),
             endDate = end.toEpochMilliseconds()
-        ).map { xpForPlayedAtList ->
-            xpForPlayedAtList.groupBy {
-                Instant.fromEpochMilliseconds(it.playedAt).toLocalDateTime(tz).date
-            }.mapValues { (_, xpForDay) ->
-                xpForDay.sumOf { it.earnedXp }
-            }.toSortedMap()
+        ).map { xpForDateRange ->
+            timeRange.aggregateResults(xpForDateRange)
         }
     }
 

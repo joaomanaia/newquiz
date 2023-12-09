@@ -2,7 +2,6 @@ package com.infinitepower.newquiz.core.user_services.ui.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
@@ -10,6 +9,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -45,6 +47,7 @@ fun ProfileScreen(
 
     ProfileScreen(
         uiState = uiState,
+        onEvent = viewModel::onEvent,
         onBackClick = navigator::popBackStack
     )
 }
@@ -53,8 +56,14 @@ fun ProfileScreen(
 @ExperimentalMaterial3Api
 private fun ProfileScreen(
     uiState: ProfileScreenUiState,
+    onEvent: (event: ProfileScreenUiEvent) -> Unit,
     onBackClick: () -> Unit
 ) {
+    val options = listOf(
+        stringResource(id = CoreR.string.today),
+        stringResource(id = CoreR.string.this_week)
+    )
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -92,16 +101,30 @@ private fun ProfileScreen(
                 }
 
                 item {
-                    Text(
-                        text = "XP earned last 7 days",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Spacer(Modifier.padding(top = MaterialTheme.spacing.medium))
+                    SingleChoiceSegmentedButtonRow(
+                        modifier = Modifier.fillParentMaxWidth(),
+                    ) {
+                        options.forEachIndexed { index, label ->
+                            SegmentedButton(
+                                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+                                onClick = { onEvent(ProfileScreenUiEvent.OnFilterByTimeRangeClick(index)) },
+                                selected = index == uiState.timeRangeIndex
+                            ) {
+                                Text(
+                                    text = label
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
                     OutlinedCard(
                         modifier = Modifier.fillParentMaxWidth()
                     ) {
                         XpEarnedByDayCard(
                             modifier = Modifier.padding(MaterialTheme.spacing.medium),
+                            timeRange = uiState.timeRange,
                             xpEarnedByDay = uiState.xpEarnedLast7Days
                         )
                     }
@@ -127,13 +150,15 @@ private fun ProfileScreenPreview() {
                     uid = "uid",
                     totalXp = 1235u
                 ),
+                timeRangeIndex = 1, // This Week
                 xpEarnedLast7Days = mapOf(
-                    (now - 4.days).toLocalDateTime(tz).date to 20,
-                    (now - 3.days).toLocalDateTime(tz).date to 10,
-                    (now - 1.days).toLocalDateTime(tz).date to 30,
-                    today to 15
+                    (now - 4.days).toLocalDateTime(tz).date.toEpochDays() to 20,
+                    (now - 3.days).toLocalDateTime(tz).date.toEpochDays() to 10,
+                    (now - 1.days).toLocalDateTime(tz).date.toEpochDays() to 30,
+                    today.toEpochDays() to 15
                 )
             ),
+            onEvent = {},
             onBackClick = {}
         )
     }

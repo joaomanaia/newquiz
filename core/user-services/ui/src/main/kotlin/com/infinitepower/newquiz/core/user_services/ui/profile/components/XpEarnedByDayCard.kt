@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.core.user_services.XpEarnedByDays
+import com.infinitepower.newquiz.core.user_services.TimeRange
+import com.infinitepower.newquiz.core.user_services.XpEarnedByDateTime
 import com.infinitepower.newquiz.core.user_services.ui.profile.components.chart.rememberMarker
 import com.infinitepower.newquiz.core.R as CoreR
 import com.patrykandpatryk.vico.compose.axis.horizontal.rememberBottomAxis
@@ -32,24 +32,23 @@ import com.patrykandpatryk.vico.core.component.shape.Shapes
 import com.patrykandpatryk.vico.core.entry.entryModelOf
 import com.patrykandpatryk.vico.core.entry.entryOf
 import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toLocalDateTime
-import java.time.format.DateTimeFormatter
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 @Composable
 internal fun XpEarnedByDayCard(
     modifier: Modifier = Modifier,
-    xpEarnedByDay: XpEarnedByDays
+    timeRange: TimeRange,
+    xpEarnedByDay: XpEarnedByDateTime
 ) {
-    val dateTimeFormatter: DateTimeFormatter = remember { DateTimeFormatter.ofPattern("d MMM") }
-
-    val xValuesToDates = xpEarnedByDay.keys.associateBy { it.toEpochDays().toFloat() }
+    val xValuesToDates = xpEarnedByDay.keys.associateBy { it.toFloat() }
     val chartEntryModel = entryModelOf(xValuesToDates.keys.zip(xpEarnedByDay.values, ::entryOf))
     val horizontalAxisValueFormatter = AxisValueFormatter<AxisPosition.Horizontal.Bottom> { value, _ ->
-        (xValuesToDates[value] ?: LocalDate.fromEpochDays(value.toInt())).toJavaLocalDate().format(dateTimeFormatter)
+        val data = xValuesToDates[value] ?: value.toInt()
+
+        timeRange.formatValueToString(data)
     }
 
     ProvideChartStyle(
@@ -102,6 +101,27 @@ private val startAxisTitleMargins = dimensionsOf(end = axisTitleMarginValue)
 
 @Composable
 @PreviewNightLight
+private fun XpTodayCardPreview() {
+    val now = Clock.System.now()
+    val tz = TimeZone.currentSystemDefault()
+
+    NewQuizTheme {
+        Surface {
+            XpEarnedByDayCard(
+                modifier = Modifier.padding(16.dp),
+                timeRange = TimeRange.Today,
+                xpEarnedByDay = mapOf(
+                    (now - 4.hours).toLocalDateTime(tz).hour to 10,
+                    (now - 3.hours).toLocalDateTime(tz).hour to 5,
+                    now.toLocalDateTime(tz).hour to 15
+                )
+            )
+        }
+    }
+}
+
+@Composable
+@PreviewNightLight
 private fun XpThisWeekCardPreview() {
     val now = Clock.System.now()
     val tz = TimeZone.currentSystemDefault()
@@ -111,11 +131,12 @@ private fun XpThisWeekCardPreview() {
         Surface {
             XpEarnedByDayCard(
                 modifier = Modifier.padding(16.dp),
+                timeRange = TimeRange.ThisWeek,
                 xpEarnedByDay = mapOf(
-                    (now - 4.days).toLocalDateTime(tz).date to 20,
-                    (now - 3.days).toLocalDateTime(tz).date to 10,
-                    (now - 1.days).toLocalDateTime(tz).date to 30,
-                    today to 15
+                    (now - 4.days).toLocalDateTime(tz).date.toEpochDays() to 20,
+                    (now - 3.days).toLocalDateTime(tz).date.toEpochDays() to 10,
+                    (now - 1.days).toLocalDateTime(tz).date.toEpochDays() to 30,
+                    today.toEpochDays() to 15
                 )
             )
         }

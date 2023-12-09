@@ -2,9 +2,6 @@ package com.infinitepower.newquiz.core.user_services
 
 import com.infinitepower.newquiz.core.user_services.model.User
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.LocalDate
-
-typealias XpEarnedByDays = Map<LocalDate, Int>
 
 interface UserService : GameResultTracker, XpManager {
     /**

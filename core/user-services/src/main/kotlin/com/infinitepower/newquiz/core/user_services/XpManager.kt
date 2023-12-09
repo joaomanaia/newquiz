@@ -1,43 +1,21 @@
 package com.infinitepower.newquiz.core.user_services
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.days
+
+typealias XpEarnedByDateTime = Map<Int, Int>
 
 interface XpManager {
-    suspend fun getXpEarnedByRange(
+    suspend fun getXpEarnedBy(
         start: Instant,
         end: Instant
-    ): XpEarnedByDays
+    ): XpEarnedByDateTime
 
-    /**
-     * Get the user's total XP for the current week
-     */
-    suspend fun getXpEarnedInLastDuration(
-        duration: Duration = 7.days
-    ): XpEarnedByDays {
-        val now = Clock.System.now()
-        val startDate = now - duration
+    suspend fun getXpEarnedBy(
+        timeRange: TimeRange
+    ): XpEarnedByDateTime
 
-        return getXpEarnedByRange(startDate, now)
-    }
-
-    fun getXpEarnedByRangeFlow(
-        start: Instant,
-        end: Instant
-    ): Flow<XpEarnedByDays>
-
-    /**
-     * Get the user's total XP for the current week
-     */
-    fun getXpEarnedInLastDurationFlow(
-        duration: Duration = 7.days
-    ): Flow<XpEarnedByDays> {
-        val now = Clock.System.now()
-        val startDate = now - duration
-
-        return getXpEarnedByRangeFlow(startDate, now)
-    }
+    fun getXpEarnedByFlow(
+        timeRange: TimeRange
+    ): Flow<XpEarnedByDateTime>
 }

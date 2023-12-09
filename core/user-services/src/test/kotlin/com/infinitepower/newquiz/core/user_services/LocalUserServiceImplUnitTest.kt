@@ -590,13 +590,13 @@ internal class LocalUserServiceImplUnitTest {
 
         // Check if the results are returned
         val resultTimed = measureTimedValue {
-            localUserServiceImpl.getXpEarnedByRange(
+            localUserServiceImpl.getXpEarnedBy(
                 start = startInstant,
                 end = now
             )
         }
 
-        val resultLast7Days = localUserServiceImpl.getXpEarnedInLastDuration(7.days)
+        val resultLast7Days = localUserServiceImpl.getXpEarnedBy(TimeRange.ThisWeek)
 
         println("Time taken: ${resultTimed.duration}")
 
@@ -610,21 +610,18 @@ internal class LocalUserServiceImplUnitTest {
 
         result.forEach { (date, _) ->
             // Check if the result from the other week is not returned
-            assertThat(date).isAtLeast(startDate)
-            assertThat(date).isAtMost(endDate)
+            assertThat(date).isAtLeast(startDate.toEpochDays())
+            assertThat(date).isAtMost(endDate.toEpochDays())
         }
 
         // Check if the xp is correct
         println(result)
-        assertThat(result[now.toLocalDateTime(tz).date]).isEqualTo(25) // today
-        assertThat(result[(now - 1.days).toLocalDateTime(tz).date]).isEqualTo(20) // yesterday
-        assertThat(result[(now - 2.days).toLocalDateTime(tz).date]).isEqualTo(10) // before yesterday
+        assertThat(result[now.toLocalDateTime(tz).date.toEpochDays()]).isEqualTo(25) // today
+        assertThat(result[(now - 1.days).toLocalDateTime(tz).date.toEpochDays()]).isEqualTo(20) // yesterday
+        assertThat(result[(now - 2.days).toLocalDateTime(tz).date.toEpochDays()]).isEqualTo(10) // before yesterday
 
         // Test getXpEarnedByRangeFlow() because it is same as getXpEarnedByRange()
-        localUserServiceImpl.getXpEarnedByRangeFlow(
-            start = startInstant,
-            end = now
-        ).test {
+        localUserServiceImpl.getXpEarnedByFlow(TimeRange.ThisWeek).test {
             assertThat(awaitItem()).isEqualTo(result)
         }
     }

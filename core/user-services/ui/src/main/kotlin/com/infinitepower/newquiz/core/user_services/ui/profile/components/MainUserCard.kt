@@ -48,8 +48,6 @@ internal fun MainUserCard(
     userName: String,
     userPhoto: String,
 ) {
-
-
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -82,7 +80,7 @@ private fun LevelCard(
     levelProgress: Float,
     userPhoto: String,
     userName: String,
-    initialAvatarState: AvatarState = AvatarState.PHOTO
+    initialAvatarState: AvatarState = AvatarState.LEVEL
 ) {
     val levelProgressAnimated = animateFloatAsState(
         targetValue = levelProgress,

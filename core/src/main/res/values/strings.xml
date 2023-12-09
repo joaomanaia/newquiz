@@ -279,4 +279,6 @@
     <string name="show_category_connection_info">Show category connection info</string>
     <string name="xp">XP</string>
     <string name="total_xp">Total XP</string>
+    <string name="today">Today</string>
+    <string name="this_week">This Week</string>
 </resources>

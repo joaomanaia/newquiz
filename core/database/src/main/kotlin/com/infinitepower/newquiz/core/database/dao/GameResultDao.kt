@@ -41,8 +41,10 @@ interface GameResultDao {
 
     @Query("""
         SELECT earned_xp, played_at FROM multi_choice_game_results
+        WHERE played_at BETWEEN :startDate AND :endDate
         UNION ALL
         SELECT earned_xp, played_at FROM wordle_game_results
+        WHERE played_at BETWEEN :startDate AND :endDate
         UNION ALL
         SELECT earned_xp, played_at FROM comparison_quiz_game_results
         WHERE played_at BETWEEN :startDate AND :endDate
@@ -54,8 +56,10 @@ interface GameResultDao {
 
     @Query("""
         SELECT earned_xp, played_at FROM multi_choice_game_results
+        WHERE played_at BETWEEN :startDate AND :endDate
         UNION ALL
         SELECT earned_xp, played_at FROM wordle_game_results
+        WHERE played_at BETWEEN :startDate AND :endDate
         UNION ALL
         SELECT earned_xp, played_at FROM comparison_quiz_game_results
         WHERE played_at BETWEEN :startDate AND :endDate
