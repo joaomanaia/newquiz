@@ -19,5 +19,5 @@ data class ComparisonQuizUiState(
     val userDiamonds: Int = -1,
     val userDiamondsLoading: Boolean = false,
     val skipCost: UInt = 0u,
-    val firstItemHelperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN,
+    val firstItemHelperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN
 )

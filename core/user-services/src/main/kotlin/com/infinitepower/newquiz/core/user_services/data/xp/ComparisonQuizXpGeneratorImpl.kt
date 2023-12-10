@@ -15,5 +15,15 @@ class ComparisonQuizXpGeneratorImpl @Inject constructor(
         return remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_DEFAULT_XP_REWARD).toUInt()
     }
 
-    override fun generateXp(endPosition: UInt): UInt = getDefaultXpForAnswer() * endPosition
+    override fun generateXp(endPosition: UInt, skippedAnswers: UInt): UInt {
+        // If the user answered incorrectly, then no XP is awarded
+        if (endPosition == 1.toUInt()) return 0u
+
+        // Calculate the number of answers the user answered without skipping
+        // Example: End position is 4, skipped answers is 1, then the user answered 2 questions
+        // without skipping
+        val answersNotSkipped = endPosition - skippedAnswers - 1u
+
+        return getDefaultXpForAnswer() * answersNotSkipped
+    }
 }

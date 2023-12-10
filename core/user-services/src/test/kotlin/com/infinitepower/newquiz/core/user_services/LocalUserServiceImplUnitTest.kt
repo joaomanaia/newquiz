@@ -447,6 +447,7 @@ internal class LocalUserServiceImplUnitTest {
             comparisonMode = ComparisonMode.GREATER.name,
             endPosition = endPosition,
             highestPosition = 10u,
+            skippedAnswers = 1u,
             generateXp = true
         )
 
@@ -454,7 +455,10 @@ internal class LocalUserServiceImplUnitTest {
         val updatedUser = localUserServiceImpl.getUser()
         require(updatedUser != null)
 
-        val expectedXp = comparisonQuizXpGenerator.generateXp(endPosition)
+        val expectedXp = comparisonQuizXpGenerator.generateXp(
+            endPosition = endPosition,
+            skippedAnswers = 1u,
+        )
 
         // Check if the new xp is equal to the generated xp
         val newXp = updatedUser.totalXp - initialUser.totalXp
@@ -495,6 +499,7 @@ internal class LocalUserServiceImplUnitTest {
             comparisonMode = ComparisonMode.GREATER.name,
             endPosition = endPosition,
             highestPosition = 10u,
+            skippedAnswers = 0u,
             generateXp = false
         )
 
@@ -524,6 +529,7 @@ internal class LocalUserServiceImplUnitTest {
         gameResultDao.insertMultiChoiceResult(
             MultiChoiceGameResultEntity(
                 correctAnswers = 0,
+                skippedQuestions = 0,
                 questionCount = 0,
                 averageAnswerTime = 0.0,
                 earnedXp = 5,
@@ -531,6 +537,7 @@ internal class LocalUserServiceImplUnitTest {
             ),
             MultiChoiceGameResultEntity(
                 correctAnswers = 0,
+                skippedQuestions = 0,
                 questionCount = 0,
                 averageAnswerTime = 0.0,
                 earnedXp = 10,
@@ -538,6 +545,7 @@ internal class LocalUserServiceImplUnitTest {
             ),
             MultiChoiceGameResultEntity(
                 correctAnswers = 0,
+                skippedQuestions = 0,
                 questionCount = 0,
                 averageAnswerTime = 0.0,
                 earnedXp = 20,
@@ -546,6 +554,7 @@ internal class LocalUserServiceImplUnitTest {
             // Insert a result that is not in the current week
             MultiChoiceGameResultEntity(
                 correctAnswers = 0,
+                skippedQuestions = 0,
                 questionCount = 0,
                 averageAnswerTime = 0.0,
                 earnedXp = 20,
@@ -573,7 +582,8 @@ internal class LocalUserServiceImplUnitTest {
                 comparisonMode = ComparisonMode.GREATER.name,
                 endPosition = 5,
                 highestPosition = 10,
-                categoryId = "category"
+                categoryId = "category",
+                skippedAnswers = 0
             )
         )
 

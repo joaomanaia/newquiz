@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
@@ -31,6 +32,7 @@ import com.infinitepower.newquiz.model.toUiText
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -93,6 +95,10 @@ internal class ComparisonQuizCoreImplTest {
             analyticsHelper = NoOpAnalyticsHelper,
             userService = userService
         )
+
+        mockkStatic(Log::class)
+        every { Log.d(any(), any()) } returns 0
+        every { Log.e(any(), any(), any()) } returns 0
     }
 
     @Test
@@ -500,6 +506,7 @@ internal class ComparisonQuizCoreImplTest {
         assertThat(quizData.firstItemHelperValueState).isEqualTo(firstItemHelperValueState)
 
         assertThat(quizData.isGameOver).isFalse()
+        assertThat(quizData.skippedAnswers).isEqualTo(0)
         assertThat(currentQuestion).isNotNull()
         require(currentQuestion != null)
 
@@ -512,6 +519,7 @@ internal class ComparisonQuizCoreImplTest {
         val newCurrentQuestion = newQuizData.currentQuestion
 
         assertThat(newQuizData.isGameOver).isFalse()
+        assertThat(newQuizData.skippedAnswers).isEqualTo(1)
         assertThat(newCurrentQuestion).isNotNull()
         require(newCurrentQuestion != null)
 

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "8eb09d5aa9369c25252a6244f6c2db22",
+    "identityHash": "4e64a492cda5cf6ef8b21c3c9599482a",
     "entities": [
       {
         "tableName": "saved_multi_choice_questions",
@@ -284,7 +284,7 @@
       },
       {
         "tableName": "multi_choice_game_results",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `correct_answers` INTEGER NOT NULL, `question_count` INTEGER NOT NULL, `average_answer_time` REAL NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `correct_answers` INTEGER NOT NULL, `skipped_questions` INTEGER NOT NULL, `question_count` INTEGER NOT NULL, `average_answer_time` REAL NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "gameId",
@@ -295,6 +295,12 @@
           {
             "fieldPath": "correctAnswers",
             "columnName": "correct_answers",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "skippedQuestions",
+            "columnName": "skipped_questions",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -390,7 +396,7 @@
       },
       {
         "tableName": "comparison_quiz_game_results",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL, `category_id` TEXT NOT NULL, `comparison_mode` TEXT NOT NULL, `end_position` INTEGER NOT NULL, `highest_position` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL, `category_id` TEXT NOT NULL, `comparison_mode` TEXT NOT NULL, `end_position` INTEGER NOT NULL, `highest_position` INTEGER NOT NULL, `skipped_answers` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "gameId",
@@ -433,6 +439,12 @@
             "columnName": "highest_position",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "skippedAnswers",
+            "columnName": "skipped_answers",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -448,7 +460,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8eb09d5aa9369c25252a6244f6c2db22')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4e64a492cda5cf6ef8b21c3c9599482a')"
     ]
   }
 }

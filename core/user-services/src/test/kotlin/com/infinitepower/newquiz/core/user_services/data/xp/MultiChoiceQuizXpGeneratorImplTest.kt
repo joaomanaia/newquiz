@@ -73,15 +73,22 @@ internal class MultiChoiceQuizXpGeneratorImplTest {
                 correct = Random.nextBoolean(),
                 selectedAnswer = SelectedAnswer.NONE
             )
-        }
+        // Add a skipped question step to test that it is not counted
+        } + MultiChoiceQuestionStep.Completed(
+            question = getBasicMultiChoiceQuestion(),
+            correct = true,
+            selectedAnswer = SelectedAnswer.NONE,
+            skipped = true
+        )
 
         val generatedXp = multiChoiceQuizXpGeneratorImpl.generateXp(questionSteps)
 
         val defaultXpReward = multiChoiceQuizXpGeneratorImpl.getDefaultXpReward()
 
         val expectedXp = questionSteps
-            .filter(MultiChoiceQuestionStep.Completed::correct)
-            .sumOf { step ->
+            .filter { step ->
+                step.correct && !step.skipped
+            }.sumOf { step ->
                 val difficulty = step.question.difficulty
 
                 defaultXpReward[difficulty] ?: 0u

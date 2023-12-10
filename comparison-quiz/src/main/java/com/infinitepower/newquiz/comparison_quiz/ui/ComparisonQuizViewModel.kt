@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.comparison_quiz.ui
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,10 +20,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "ComparisonQuizViewModel"
 
 @HiltViewModel
 class ComparisonQuizViewModel @Inject constructor(
@@ -39,32 +45,6 @@ class ComparisonQuizViewModel @Inject constructor(
         comparisonQuizRepository.getHighestPositionFlow(categoryId = getCategory().id),
         comparisonQuizCore.quizDataFlow
     ) { uiState, highestPosition, quizData ->
-        if (quizData.isGameOver) {
-            // Save highest position when game is over.
-            viewModelScope.launch {
-                if (quizData.currentPosition > highestPosition) {
-                    comparisonQuizRepository.saveHighestPosition(
-                        categoryId = getCategory().id,
-                        position = quizData.currentPosition
-                    )
-                }
-            }
-
-            viewModelScope.launch {
-                UpdateGlobalEventDataWorker.enqueueWork(
-                    workManager = workManager,
-                    GameEvent.ComparisonQuiz.PlayAndGetScore(quizData.currentPosition)
-                )
-
-                ComparisonQuizEndGameWorker.enqueueWork(
-                    workManager = workManager,
-                    categoryId = getCategory().id,
-                    comparisonMode = getComparisonMode(),
-                    endPosition = quizData.currentPosition
-                )
-            }
-        }
-
         val currentPosition = quizData.currentPosition
 
         // Get the highest position between the current position and the highest position.
@@ -87,7 +67,7 @@ class ComparisonQuizViewModel @Inject constructor(
 
     init {
         // Start game
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val category = getCategory()
             val comparisonMode = getComparisonMode()
 
@@ -118,12 +98,52 @@ class ComparisonQuizViewModel @Inject constructor(
                 )
             }
         }
+
+        comparisonQuizCore
+            .quizDataFlow
+            .distinctUntilChangedBy { it.isGameOver }
+            .onEach { quizData ->
+                if (quizData.isGameOver) {
+                    Log.d(TAG, "Game over, with position ${quizData.currentPosition}")
+
+                    // Save highest position when game is over.
+                    viewModelScope.launch {
+                        val highestPosition = comparisonQuizRepository.getHighestPosition(
+                            categoryId = getCategory().id
+                        )
+
+                        if (quizData.currentPosition > highestPosition) {
+                            comparisonQuizRepository.saveHighestPosition(
+                                categoryId = getCategory().id,
+                                position = quizData.currentPosition
+                            )
+                        }
+                    }
+
+                    viewModelScope.launch {
+                        UpdateGlobalEventDataWorker.enqueueWork(
+                            workManager = workManager,
+                            GameEvent.ComparisonQuiz.PlayAndGetScore(quizData.currentPosition)
+                        )
+
+                        ComparisonQuizEndGameWorker.enqueueWork(
+                            workManager = workManager,
+                            categoryId = getCategory().id,
+                            comparisonMode = getComparisonMode(),
+                            endPosition = quizData.currentPosition,
+                            skippedAnswers = quizData.skippedAnswers
+                        )
+                    }
+                }
+            }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: ComparisonQuizUiEvent) {
         when (event) {
             is ComparisonQuizUiEvent.OnAnswerClick -> {
-                comparisonQuizCore.onAnswerClicked(event.item)
+                viewModelScope.launch {
+                    comparisonQuizCore.onAnswerClicked(event.item)
+                }
             }
             is ComparisonQuizUiEvent.ShowSkipQuestionDialog -> getUserDiamonds()
             is ComparisonQuizUiEvent.DismissSkipQuestionDialog -> {

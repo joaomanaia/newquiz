@@ -27,17 +27,20 @@ class ComparisonQuizEndGameWorker @AssistedInject constructor(
         private const val CATEGORY_ID = "category_id"
         private const val COMPARISON_MODE_NAME = "comparison_mode_name"
         private const val END_POSITION = "end_position"
+        private const val SKIPPED_ANSWERS = "skipped_answers"
 
         fun enqueueWork(
             workManager: WorkManager,
             categoryId: String,
             comparisonMode: ComparisonMode,
-            endPosition: Int
+            endPosition: Int,
+            skippedAnswers: Int
         ) {
             val data = workDataOf(
                 CATEGORY_ID to categoryId,
                 COMPARISON_MODE_NAME to comparisonMode.name,
-                END_POSITION to endPosition
+                END_POSITION to endPosition,
+                SKIPPED_ANSWERS to skippedAnswers
             )
 
             val workRequest = OneTimeWorkRequestBuilder<ComparisonQuizEndGameWorker>()
@@ -52,6 +55,7 @@ class ComparisonQuizEndGameWorker @AssistedInject constructor(
         val categoryId = inputData.getString(CATEGORY_ID) ?: return Result.failure()
         val comparisonModeName = inputData.getString(COMPARISON_MODE_NAME) ?: return Result.failure()
         val endPosition = inputData.getInt(END_POSITION, 0)
+        val skippedAnswers = inputData.getInt(SKIPPED_ANSWERS, 0)
 
         analyticsHelper.logEvent(
             AnalyticsEvent.ComparisonQuizGameEnd(
@@ -68,6 +72,7 @@ class ComparisonQuizEndGameWorker @AssistedInject constructor(
             comparisonMode = comparisonModeName,
             endPosition = endPosition.toUInt(),
             highestPosition = highestPosition.toUInt(),
+            skippedAnswers = skippedAnswers.toUInt(),
             generateXp = true
         )
 

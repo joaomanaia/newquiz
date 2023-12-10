@@ -21,6 +21,7 @@ interface GameResultTracker {
         comparisonMode: String,
         endPosition: UInt,
         highestPosition: UInt,
+        skippedAnswers: UInt,
         generateXp: Boolean
     )
 }

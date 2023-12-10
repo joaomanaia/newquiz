@@ -1,13 +1,24 @@
 package com.infinitepower.newquiz.core.game
 
+import android.util.Log
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import io.mockk.every
+import io.mockk.mockkStatic
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.net.URI
+import kotlin.test.BeforeTest
 
 class ComparisonQuizDataTest {
+    @BeforeTest
+    fun setUp() {
+        mockkStatic(Log::class)
+        every { Log.d(any(), any()) } returns 0
+    }
+
     @Test
     fun `nextQuestion should return a new ComparisonQuizData object with a new current question`() {
         val quizItem1 = ComparisonQuizItem(
@@ -51,7 +62,7 @@ class ComparisonQuizDataTest {
         assertThat(quizData.questions).isEmpty()
         assertThat(quizData.currentQuestion).isNull()
 
-        val exception = org.junit.jupiter.api.assertThrows<IllegalStateException> {
+        val exception = assertThrows<GameOverException> {
             quizData.getNextQuestion()
         }
 

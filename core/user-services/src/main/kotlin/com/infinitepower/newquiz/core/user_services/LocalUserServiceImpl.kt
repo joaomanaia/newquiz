@@ -164,12 +164,14 @@ class LocalUserServiceImpl @Inject constructor(
 
         // Save the game result
         val correctAnswers = questionSteps.count { it.correct }
+        val skippedQuestions = questionSteps.count { it.skipped }
         val averageAnswerTime = questionSteps.getAverageQuizTime()
 
         gameResultDao.insertMultiChoiceResult(
             MultiChoiceGameResultEntity(
                 correctAnswers = correctAnswers,
                 questionCount = questionSteps.size,
+                skippedQuestions = skippedQuestions,
                 averageAnswerTime = averageAnswerTime,
                 earnedXp = newXp.toInt(),
                 playedAt = System.currentTimeMillis()
@@ -211,6 +213,7 @@ class LocalUserServiceImpl @Inject constructor(
         comparisonMode: String,
         endPosition: UInt,
         highestPosition: UInt,
+        skippedAnswers: UInt,
         generateXp: Boolean
     ) {
         var newXp = 0u
@@ -218,7 +221,10 @@ class LocalUserServiceImpl @Inject constructor(
         // Generate xp if needed
         if (generateXp) {
             // Generate and get the new xp
-            newXp = comparisonQuizXpGenerator.generateXp(endPosition)
+            newXp = comparisonQuizXpGenerator.generateXp(
+                endPosition = endPosition,
+                skippedAnswers = skippedAnswers
+            )
             saveNewXP(newXp)
         }
 
@@ -230,7 +236,8 @@ class LocalUserServiceImpl @Inject constructor(
                 categoryId = categoryId,
                 comparisonMode = comparisonMode,
                 endPosition = endPosition.toInt(),
-                highestPosition = highestPosition.toInt()
+                highestPosition = highestPosition.toInt(),
+                skippedAnswers = skippedAnswers.toInt()
             )
         )
     }

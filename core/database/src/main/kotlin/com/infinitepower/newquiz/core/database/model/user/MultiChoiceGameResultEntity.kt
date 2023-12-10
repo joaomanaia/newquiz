@@ -15,6 +15,8 @@ data class MultiChoiceGameResultEntity(
     override val gameId: Int = 0,
     @ColumnInfo(name = "correct_answers")
     val correctAnswers: Int,
+    @ColumnInfo(name = "skipped_questions")
+    val skippedQuestions: Int,
     @ColumnInfo(name = "question_count")
     val questionCount: Int,
     @ColumnInfo(name = "average_answer_time")

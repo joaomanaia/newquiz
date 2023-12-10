@@ -7,7 +7,7 @@ import com.infinitepower.newquiz.core.remote_config.get
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.ValueSource
+import org.junit.jupiter.params.provider.CsvSource
 import kotlin.test.BeforeTest
 
 /**
@@ -25,12 +25,21 @@ internal class ComparisonQuizXpGeneratorImplTest {
         every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_DEFAULT_XP_REWARD) } returns 10
     }
 
-    @ParameterizedTest(name = "test getXpForPosition with endPosition = {0}")
-    @ValueSource(ints = [0, 1, 2, 3, 4, 5])
-    fun `test getXpForPosition`(endPosition: Int) {
-        val xp = comparisonQuizXpGeneratorImpl.generateXp(endPosition.toUInt())
+    @ParameterizedTest(name = "test getXpForPosition with endPosition = {0} and skippedAnswers = {1}")
+    @CsvSource("""
+        1, 0
+    """)
+    fun `test getXpForPosition`(
+        endPosition: Int,
+        skippedAnswers: Int
+    ) {
+        val xp = comparisonQuizXpGeneratorImpl.generateXp(
+            endPosition = endPosition.toUInt(),
+            skippedAnswers = 0u
+        )
 
-        val expectedXp = endPosition.toUInt() * comparisonQuizXpGeneratorImpl.getDefaultXpForAnswer()
+        val answersNotSkipped = endPosition - skippedAnswers - 1
+        val expectedXp = comparisonQuizXpGeneratorImpl.getDefaultXpForAnswer() * answersNotSkipped.toUInt()
 
         assertThat(xp).isEqualTo(expectedXp)
     }

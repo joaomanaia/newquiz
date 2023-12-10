@@ -158,7 +158,7 @@ class QuizScreenViewModel @Inject constructor(
             val correctAnswer = currentQuestionStep?.question?.correctAns ?: return@launch
 
             selectAnswer(SelectedAnswer.fromIndex(correctAnswer))
-            verifyQuestion()
+            verifyQuestion(skipped = true)
 
             userService.addRemoveDiamonds(-currentState.skipCost)
             analyticsHelper.logEvent(AnalyticsEvent.SpendDiamonds(currentState.skipCost, "skip_multichoicequestion"))
@@ -285,7 +285,7 @@ class QuizScreenViewModel @Inject constructor(
         }
     }
 
-    private fun verifyQuestion() {
+    private fun verifyQuestion(skipped: Boolean = false) {
         timer.cancel()
 
         _uiState.update { currentState ->
@@ -319,9 +319,10 @@ class QuizScreenViewModel @Inject constructor(
                         }
 
                         val completedQuestionStep = currentQuestionStep.changeToCompleted(
-                            questionCorrect,
-                            currentState.selectedAnswer,
-                            questionTime
+                            correct = questionCorrect,
+                            selectedAnswer = currentState.selectedAnswer,
+                            questionTime = questionTime,
+                            skipped = skipped
                         )
                         set(currentQuestionIndex, completedQuestionStep)
                     }

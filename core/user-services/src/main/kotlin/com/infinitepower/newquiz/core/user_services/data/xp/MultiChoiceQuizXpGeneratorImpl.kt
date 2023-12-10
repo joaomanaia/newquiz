@@ -29,8 +29,9 @@ class MultiChoiceQuizXpGeneratorImpl @Inject constructor(
         val defaultXpReward = getDefaultXpReward()
 
         return questionSteps
-            .filter(MultiChoiceQuestionStep.Completed::correct)
-            .sumOf { step ->
+            .filter { step ->
+                step.correct && !step.skipped
+            }.sumOf { step ->
                 val difficulty = step.question.difficulty
 
                 defaultXpReward[difficulty] ?: 0u

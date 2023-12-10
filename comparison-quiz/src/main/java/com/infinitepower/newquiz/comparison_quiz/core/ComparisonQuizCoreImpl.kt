@@ -1,10 +1,12 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
+import android.util.Log
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.InitializationData
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore.QuizData
+import com.infinitepower.newquiz.core.game.GameOverException
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
@@ -13,8 +15,11 @@ import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQui
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+
+private const val TAG = "ComparisonQuizCoreImpl"
 
 /**
  * Represents the implementation of the [ComparisonQuizCore] interface.
@@ -33,7 +38,15 @@ class ComparisonQuizCoreImpl @Inject constructor(
     override suspend fun initializeGame(initializationData: InitializationData) {
         comparisonQuizRepository.getQuestions(
             category = initializationData.category
-        ).collect { res ->
+        ).onCompletion { err ->
+            if (err != null) {
+                Log.e(TAG, "Error getting questions", err)
+                endGame()
+            } else {
+                Log.d(TAG, "Successfully got questions, starting game")
+                startGame()
+            }
+        }.collect { res ->
             when {
                 res.isLoading() -> _quizData.emit(QuizData())
                 res.isSuccess() && res.data != null && res.data?.isNotEmpty() == true -> {
@@ -59,16 +72,18 @@ class ComparisonQuizCoreImpl @Inject constructor(
 
                     _quizData.emit(quizData)
                 }
-                res.isError() -> _quizData.emit(QuizData(isGameOver = true))
+                res.isError() -> return@collect endGame()
             }
         }
-
-        startGame()
     }
 
     override fun startGame() {
         _quizData.update { currentData ->
-            getNextQuestionData(currentData)
+            try {
+                currentData.getNextQuestion()
+            } catch (e: GameOverException) {
+                return endGame()
+            }
         }
     }
 
@@ -78,23 +93,16 @@ class ComparisonQuizCoreImpl @Inject constructor(
 
             // If the current question is null or the answer is correct, get the next question
             if (currentQuestion == null || currentQuestion.isCorrectAnswer(answer, currentData.comparisonMode)) {
-                getNextQuestionData(currentData)
+                try {
+                    currentData.getNextQuestion()
+                } catch (e: GameOverException) {
+                    return endGame()
+                }
             } else {
-                currentData.copy(
-                    currentQuestion = null,
-                    isGameOver = true
-                )
+                // Otherwise, end the game
+                return endGame()
             }
         }
-    }
-
-    private fun getNextQuestionData(currentData: QuizData) = try {
-        currentData.getNextQuestion()
-    } catch (e: IllegalStateException) {
-        currentData.copy(
-            currentQuestion = null,
-            isGameOver = true
-        )
     }
 
     override fun endGame() {
@@ -112,6 +120,8 @@ class ComparisonQuizCoreImpl @Inject constructor(
     override suspend fun getUserDiamonds(): UInt = userService.getUserDiamonds()
 
     override suspend fun skip() {
+        Log.d(TAG, "Skipping question")
+
         // Check if the user has enough diamonds to skip the question
         if (!canSkip()) {
             throw RuntimeException("You don't have enough diamonds to skip this question")
@@ -121,6 +131,12 @@ class ComparisonQuizCoreImpl @Inject constructor(
         userService.addRemoveDiamonds(-skipCost.toInt())
 
         // Update the quiz data to the next question
-        _quizData.update(this::getNextQuestionData)
+        _quizData.update { currentData ->
+            try {
+                currentData.getNextQuestion(skipped = true)
+            } catch (e: GameOverException) {
+                return endGame()
+            }
+        }
     }
 }

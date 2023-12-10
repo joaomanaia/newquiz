@@ -2,6 +2,10 @@ package com.infinitepower.newquiz.core.game
 
 import kotlinx.coroutines.flow.StateFlow
 
+class GameOverException(
+    override val message: String
+) : Exception(message)
+
 /**
  * Represents the core functionality of a game, providing the basic structure and operations.
  *
