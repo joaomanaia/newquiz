@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 4,
-    "identityHash": "ca501a93f18f0b24e9772858b9dd5ee8",
+    "version": 5,
+    "identityHash": "4e64a492cda5cf6ef8b21c3c9599482a",
     "entities": [
       {
         "tableName": "saved_multi_choice_questions",
@@ -281,12 +281,186 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "multi_choice_game_results",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `correct_answers` INTEGER NOT NULL, `skipped_questions` INTEGER NOT NULL, `question_count` INTEGER NOT NULL, `average_answer_time` REAL NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "correctAnswers",
+            "columnName": "correct_answers",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "skippedQuestions",
+            "columnName": "skipped_questions",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "questionCount",
+            "columnName": "question_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averageAnswerTime",
+            "columnName": "average_answer_time",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedXp",
+            "columnName": "earned_xp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playedAt",
+            "columnName": "played_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "game_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "wordle_game_results",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL, `word_length` INTEGER NOT NULL, `rows_used` INTEGER NOT NULL, `max_rows` INTEGER NOT NULL, `category_id` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedXp",
+            "columnName": "earned_xp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playedAt",
+            "columnName": "played_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wordLength",
+            "columnName": "word_length",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rowsUsed",
+            "columnName": "rows_used",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxRows",
+            "columnName": "max_rows",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "game_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "comparison_quiz_game_results",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL, `category_id` TEXT NOT NULL, `comparison_mode` TEXT NOT NULL, `end_position` INTEGER NOT NULL, `highest_position` INTEGER NOT NULL, `skipped_answers` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedXp",
+            "columnName": "earned_xp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playedAt",
+            "columnName": "played_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comparisonMode",
+            "columnName": "comparison_mode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endPosition",
+            "columnName": "end_position",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "highestPosition",
+            "columnName": "highest_position",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "skippedAnswers",
+            "columnName": "skipped_answers",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "game_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ca501a93f18f0b24e9772858b9dd5ee8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4e64a492cda5cf6ef8b21c3c9599482a')"
     ]
   }
 }
