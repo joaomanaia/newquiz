@@ -99,9 +99,9 @@
     <string name="current_xp">XP actual</string>
     <string name="required_xp_to_next_level">Requirió XP al siguiente nivel</string>
     <string name="photo_of_s">Foto de %1$s</string>
-    <string name="good_morning">Buen día</string>
+    <string name="good_morning">Buenos días</string>
     <string name="good_afternoon">Buenas tardes</string>
-    <string name="good_evening">Buenas noches</string>
+    <string name="good_evening">Buenas tardes</string>
     <string name="good_night">Buenas noches</string>
     <string name="no_diamonds">Sin diamantes</string>
     <string name="skip_question_q">¿Skip Pregunta?</string>
@@ -283,4 +283,8 @@
     <string name="none">Ninguno</string>
     <string name="both">Ambos</string>
     <string name="show_category_connection_info">Mostrar información de conexión de categoría</string>
+    <string name="xp">XP</string>
+    <string name="total_xp">XP total</string>
+    <string name="this_week">Esta semana</string>
+    <string name="today">Hoy</string>
 </resources>
