@@ -16,8 +16,8 @@ android {
         applicationId = "com.infinitepower.newquiz"
         minSdk = 21
         targetSdk = 34
-        versionCode = 15
-        versionName = "1.6.2"
+        versionCode = 16
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -120,13 +120,14 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.translation)
     implementation(projects.core.remoteConfig)
+    implementation(projects.core.userServices)
+    implementation(projects.core.userServices.ui)
     implementation(projects.model)
     implementation(projects.multiChoiceQuiz)
     implementation(projects.settingsPresentation)
     implementation(projects.wordle)
     implementation(projects.data)
     implementation(projects.domain)
-    implementation(projects.onlineServices)
     implementation(projects.mazeQuiz)
     implementation(projects.comparisonQuiz)
     implementation(projects.dailyChallenge)

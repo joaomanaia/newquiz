@@ -26,9 +26,9 @@ dependencies {
     implementation(projects.model)
     implementation(projects.core)
     implementation(projects.core.analytics)
-    implementation(projects.core.database)
+    api(projects.core.database)
+    api(projects.core.datastore)
     implementation(projects.core.remoteConfig)
     implementation(projects.data)
     implementation(projects.domain)
-    implementation(projects.onlineServices)
 }

@@ -46,9 +46,10 @@ dependencies {
     implementation(projects.core.analytics)
     implementation(projects.core.datastore)
     implementation(projects.core.translation)
+    implementation(projects.core.userServices)
+    implementation(projects.core.remoteConfig)
     implementation(projects.model)
     implementation(projects.domain)
     implementation(projects.data)
-    implementation(projects.onlineServices)
     androidTestImplementation(projects.core.testing)
 }

@@ -11,13 +11,11 @@ import androidx.compose.material.icons.rounded.Animation
 import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.ClearAll
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Help
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.ListAlt
 import androidx.compose.material.icons.rounded.MonitorHeart
 import androidx.compose.material.icons.rounded.Password
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Translate
@@ -57,7 +55,6 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             General.key -> General
             MultiChoiceQuiz.key -> MultiChoiceQuiz
             Wordle.key -> Wordle
-            User.key -> User
             Translation.key -> Translation
             AboutAndHelp.key -> AboutAndHelp
             Analytics.key -> Analytics
@@ -77,7 +74,6 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             inMainPage: Boolean,
             currentScreenKey: ScreenKey,
             translatorAvailable: Boolean,
-            userIsSignedIn: Boolean,
             navigateToScreen: (screenKey: ScreenKey) -> Unit
         ) = listOf(
             // General
@@ -109,17 +105,6 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 itemSelected = currentScreenKey == Wordle.key,
                 screenExpanded = screenExpanded,
                 inMainPage = inMainPage
-            ),
-            // User
-            Preference.PreferenceItem.NavigationButton(
-                title = stringResource(id = User.stringRes),
-                iconImageVector = Icons.Rounded.Person,
-                screenKey = User.key,
-                onClick = { navigateToScreen(User.key) },
-                itemSelected = currentScreenKey == User.key,
-                screenExpanded = screenExpanded,
-                inMainPage = inMainPage,
-                visible = userIsSignedIn
             ),
             // Translation
             Preference.PreferenceItem.NavigationButton(
@@ -158,18 +143,6 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
             navigateToScreen: (screenKey: ScreenKey) -> Unit,
             cleanRecentCategories: () -> Unit
         ) = listOf(
-            Preference.PreferenceItem.SwitchPreference(
-                request = SettingsCommon.ShowLoginCard,
-                title = stringResource(id = CoreR.string.show_login_card),
-                summary = stringResource(id = CoreR.string.show_login_card_at_home_screen),
-                singleLineTitle = true,
-                icon = {
-                    Icon(
-                        imageVector = Icons.Rounded.Visibility,
-                        contentDescription = stringResource(id = CoreR.string.show_login_card)
-                    )
-                }
-            ),
             Preference.PreferenceItem.TextPreference(
                 title = stringResource(id = CoreR.string.clear_settings),
                 summary = stringResource(id = CoreR.string.remove_all_saved_settings),
@@ -381,30 +354,6 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                         visible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                     ),
                 )
-            )
-        )
-    }
-
-    data object User : SettingsScreenPageData(key = ScreenKey("user")) {
-        override val stringRes: Int
-            get() = CoreR.string.user
-
-        @Composable
-        @ReadOnlyComposable
-        fun items(
-            userIsSignedIn: Boolean,
-            signOut: () -> Unit
-        ) = listOf(
-            Preference.PreferenceItem.TextPreference(
-                title = stringResource(id = CoreR.string.sign_out),
-                onClick = signOut,
-                enabled = userIsSignedIn,
-                icon = {
-                    Icon(
-                        imageVector = Icons.Rounded.ExitToApp,
-                        contentDescription = stringResource(id = CoreR.string.sign_out),
-                    )
-                }
             )
         )
     }

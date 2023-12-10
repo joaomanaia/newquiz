@@ -3,4 +3,5 @@ google-services.json
 
 *.apk
 *.aab
+*.dm
 output-metadata.json

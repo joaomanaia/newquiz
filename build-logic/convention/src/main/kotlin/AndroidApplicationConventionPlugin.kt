@@ -29,17 +29,12 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             // Apply the Firebase plugin only for the "Normal" build type
             val gradleTaskRequests = gradle.startParameter.taskRequests.toString()
             val normalFlavor = NewQuizFlavor.normal.name.uppercaseFirstChar()
-            val fossFlavor = NewQuizFlavor.foss.name.uppercaseFirstChar()
 
             // Check if the flavor name is in the gradle task requests,
             // like "assembleNormalDebug" or "assembleFossDebug"
             if (gradleTaskRequests.contains(normalFlavor)) {
                 apply(plugin = "newquiz.android.application.firebase")
                 logger.info("Applied Firebase plugin for normal build type")
-            } else if (gradleTaskRequests.contains(fossFlavor)) {
-                // TODO: Remove this once the firebase is completely removed from foss builds
-                apply(plugin = "com.google.gms.google-services")
-                logger.warn("Applied Google Services plugin for foss build type, it will be removed once the firebase is completely removed from foss builds")
             }
 
             tasks.register("testAllUnitTest") {

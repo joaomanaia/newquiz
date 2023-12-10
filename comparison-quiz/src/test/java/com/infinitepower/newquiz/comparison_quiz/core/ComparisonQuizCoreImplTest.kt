@@ -1,11 +1,25 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
+import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.analytics.NoOpAnalyticsHelper
+import com.infinitepower.newquiz.core.database.dao.GameResultDao
+import com.infinitepower.newquiz.core.datastore.common.LocalUserCommon
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.datastore.manager.PreferencesDatastoreManager
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
+import com.infinitepower.newquiz.core.testing.domain.FakeGameResultDao
+import com.infinitepower.newquiz.core.user_services.LocalUserServiceImpl
+import com.infinitepower.newquiz.core.user_services.UserService
+import com.infinitepower.newquiz.core.user_services.data.xp.ComparisonQuizXpGeneratorImpl
+import com.infinitepower.newquiz.core.user_services.data.xp.MultiChoiceQuizXpGeneratorImpl
+import com.infinitepower.newquiz.core.user_services.data.xp.WordleXpGeneratorImpl
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
@@ -15,45 +29,80 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
-import com.infinitepower.newquiz.online_services.domain.user.UserRepository
-import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
-import io.mockk.runs
+import io.mockk.mockkStatic
 import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.io.TempDir
+import java.io.File
 import java.net.URI
 
 /**
  * Unit tests for [ComparisonQuizCoreImpl].
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class ComparisonQuizCoreImplTest {
+    private lateinit var comparisonQuizCoreImpl: ComparisonQuizCoreImpl
+
     private val comparisonQuizRepository = mockk<ComparisonQuizRepository>()
-    private val userRepository = mockk<UserRepository>()
     private val remoteConfig = mockk<RemoteConfig>()
 
-    private lateinit var comparisonQuizCoreImpl: ComparisonQuizCoreImpl
+    private lateinit var userService: UserService
+
+    @TempDir
+    lateinit var tmpDir: File
+
+    private val testDispatcher = UnconfinedTestDispatcher()
+    private val testScope = TestScope(testDispatcher + Job())
+
+    private lateinit var dataStoreManager: DataStoreManager
+    private lateinit var gameResultDao: GameResultDao
 
     @BeforeEach
     fun setup() {
+        val testDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.create(
+            scope = testScope,
+            produceFile = { File(tmpDir, "user.preferences_pb") }
+        )
+
+        dataStoreManager = PreferencesDatastoreManager(testDataStore)
+
+        gameResultDao = FakeGameResultDao()
+
+        userService = LocalUserServiceImpl(
+            dataStoreManager = dataStoreManager,
+            remoteConfig = remoteConfig,
+            gameResultDao = gameResultDao,
+            multiChoiceXpGenerator = MultiChoiceQuizXpGeneratorImpl(remoteConfig),
+            wordleXpGenerator = WordleXpGeneratorImpl(remoteConfig),
+            comparisonQuizXpGenerator = ComparisonQuizXpGeneratorImpl(remoteConfig)
+        )
+
         comparisonQuizCoreImpl = ComparisonQuizCoreImpl(
             comparisonQuizRepository = comparisonQuizRepository,
-            userRepository = userRepository,
             remoteConfig = remoteConfig,
-            analyticsHelper = NoOpAnalyticsHelper
+            analyticsHelper = NoOpAnalyticsHelper,
+            userService = userService
         )
+
+        mockkStatic(Log::class)
+        every { Log.d(any(), any()) } returns 0
+        every { Log.e(any(), any(), any()) } returns 0
     }
 
     @Test
-    fun `initializeGame should emit correct data`() = runTest {
+    fun `initializeGame should emit correct data`() = testScope.runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
 
@@ -101,7 +150,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `initializeGame should end game when error in data request`() = runTest {
+    fun `initializeGame should end game when error in data request`() = testScope.runTest {
         val initialData = getInitializationData()
 
         every {
@@ -116,7 +165,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `onAnswerClicked should check the correct answer and move to the next question`() = runTest {
+    fun `onAnswerClicked should check the correct answer and move to the next question`() = testScope.runTest {
         val initialData = getInitializationData(
             comparisonMode = ComparisonMode.LESSER
         )
@@ -192,7 +241,7 @@ internal class ComparisonQuizCoreImplTest {
 
     // Test when the user gets the answer wrong
     @Test
-    fun `onAnswerClicked should check the wrong answer and move to the next question`() = runTest {
+    fun `onAnswerClicked should check the wrong answer and move to the next question`() = testScope.runTest {
         val initialData = getInitializationData(
             comparisonMode = ComparisonMode.LESSER
         )
@@ -261,7 +310,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `onAnswerClicked should end the game when no more questions is remaining`() = runTest {
+    fun `onAnswerClicked should end the game when no more questions is remaining`() = testScope.runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
 
@@ -313,7 +362,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `endGame() should end the game`() = runTest {
+    fun `endGame() should end the game`() = testScope.runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
 
@@ -365,46 +414,49 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `canSkip should return true when user has enough diamonds`() = runTest {
-        val skipCost = 10u
+    fun `canSkip should return true when user has enough diamonds`() = testScope.runTest {
+        val skipCost = 10
         val userDiamonds = 15
 
-        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost.toInt()
-        coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
+        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost
+        every { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns userDiamonds
+        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(userDiamonds).key, userDiamonds)
 
         val result = comparisonQuizCoreImpl.canSkip()
 
         // Verify interactions
         verify { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
-        coVerify { userRepository.getLocalUserDiamonds() }
-        confirmVerified(remoteConfig, userRepository)
+        verify { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) }
+        confirmVerified(remoteConfig)
 
         // Verify result
         assertThat(result).isTrue()
     }
 
     @Test
-    fun `canSkip should return false when user doesn't have enough diamonds`() = runTest {
-        val skipCost = 10u
+    fun `canSkip should return false when user doesn't have enough diamonds`() = testScope.runTest {
+        val skipCost = 10
         val userDiamonds = 5
 
-        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost.toInt()
-        coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
+        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost
+        every { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns userDiamonds
+        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(userDiamonds).key, userDiamonds)
 
         val result = comparisonQuizCoreImpl.canSkip()
 
         // Verify interactions
         verify { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
-        coVerify { userRepository.getLocalUserDiamonds() }
-        confirmVerified(remoteConfig, userRepository)
+        verify { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) }
 
         // Verify result
         assertThat(result).isFalse()
+
+        confirmVerified(remoteConfig)
     }
 
     @Test
-    fun `skip() should deduct diamonds and update quiz data`() = runTest {
-        val skipCost = 1u
+    fun `skip() should deduct diamonds and update quiz data`() = testScope.runTest {
+        val skipCost = 1
         val userDiamonds = 10
 
         val initialData = getInitializationData()
@@ -414,9 +466,9 @@ internal class ComparisonQuizCoreImplTest {
             remoteConfig.getString("comparison_quiz_first_item_helper_value")
         } returns firstItemHelperValueState.name
 
-        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost.toInt()
-        coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
-        coEvery { userRepository.addLocalUserDiamonds(-skipCost.toInt()) } just runs
+        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost
+        every { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns userDiamonds
+        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(userDiamonds).key, userDiamonds)
 
         val uriMock = getUriMock()
 
@@ -454,6 +506,7 @@ internal class ComparisonQuizCoreImplTest {
         assertThat(quizData.firstItemHelperValueState).isEqualTo(firstItemHelperValueState)
 
         assertThat(quizData.isGameOver).isFalse()
+        assertThat(quizData.skippedAnswers).isEqualTo(0)
         assertThat(currentQuestion).isNotNull()
         require(currentQuestion != null)
 
@@ -462,13 +515,11 @@ internal class ComparisonQuizCoreImplTest {
         // Verify that we called this twice, one for checking if can skip and one for actually skipping
         verify(exactly = 2) { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
 
-        coVerify(exactly = 1) { userRepository.getLocalUserDiamonds() }
-        coVerify(exactly = 1) { userRepository.addLocalUserDiamonds(-skipCost.toInt()) }
-
         val newQuizData = comparisonQuizCoreImpl.quizDataFlow.first()
         val newCurrentQuestion = newQuizData.currentQuestion
 
         assertThat(newQuizData.isGameOver).isFalse()
+        assertThat(newQuizData.skippedAnswers).isEqualTo(1)
         assertThat(newCurrentQuestion).isNotNull()
         require(newCurrentQuestion != null)
 
@@ -480,15 +531,21 @@ internal class ComparisonQuizCoreImplTest {
         // Check if the helper value is changed
         assertThat(newQuizData.firstItemHelperValueState).isNotEqualTo(firstItemHelperValueState)
         assertThat(newQuizData.firstItemHelperValueState).isEqualTo(ComparisonQuizHelperValueState.NORMAL)
+
+        verify { remoteConfig.getString("comparison_quiz_first_item_helper_value") }
+        verify { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) }
+
+        confirmVerified(remoteConfig)
     }
 
     @Test
-    fun `skip should throw exception when user doesn't have enough diamonds`() = runTest {
-        val skipCost = 10u
+    fun `skip should throw exception when user doesn't have enough diamonds`() = testScope.runTest {
+        val skipCost = 10
         val userDiamonds = 5
 
-        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost.toInt()
-        coEvery { userRepository.getLocalUserDiamonds() } returns userDiamonds
+        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost
+        every { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns userDiamonds
+        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(userDiamonds).key, userDiamonds)
 
         // Assert exception is thrown
         assertThrows<RuntimeException> {
@@ -500,10 +557,8 @@ internal class ComparisonQuizCoreImplTest {
         // Verify that we called this once, one for checking if can skip
         // We don't call it again because we don't have enough diamonds
         verify(exactly = 1) { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
-
-        coVerify(exactly = 1) { userRepository.getLocalUserDiamonds() }
-        coVerify(exactly = 0) { userRepository.addLocalUserDiamonds(any()) }
-        confirmVerified(remoteConfig, userRepository)
+        verify(exactly = 1) { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) }
+        confirmVerified(remoteConfig)
     }
 
     private fun getInitializationData(

@@ -148,7 +148,7 @@ internal fun ComparisonQuizScreenImpl(
                 verticalContent = verticalContent,
                 onBackClick = onBackClick,
                 gameCategory = uiState.gameCategory,
-                isSignedIn = uiState.isSignedIn,
+                userAvailable = uiState.userAvailable,
                 firstItemHelperValueState = uiState.firstItemHelperValueState,
                 animationState = animationState,
                 onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) },
@@ -194,7 +194,7 @@ private fun ComparisonQuizContent(
     questionPosition: Int,
     highestPosition: Int,
     verticalContent: Boolean,
-    isSignedIn: Boolean,
+    userAvailable: Boolean,
     firstItemHelperValueState: ComparisonQuizHelperValueState,
     animationState: AnimationState,
     onBackClick: () -> Unit,
@@ -241,7 +241,7 @@ private fun ComparisonQuizContent(
         },
         backIconContent = { BackIconButton(onClick = onBackClick) },
         skipButtonContent = {
-            if (isSignedIn) {
+            if (userAvailable) {
                 SkipIconButton(onClick = onSkipClick)
             }
         },
@@ -472,7 +472,7 @@ private fun ComparisonQuizScreenPreview() {
                         ),
                         formatType = ComparisonQuizFormatType.Number
                     ),
-                    isSignedIn = true
+                    userAvailable = true
                 ),
                 windowSizeClass = windowSizeClass,
                 animationState = AnimationState.Normal

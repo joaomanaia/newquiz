@@ -3,7 +3,7 @@ package com.infinitepower.newquiz.core.ui.text
 import android.icu.text.CompactDecimalFormat
 import android.os.Build
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +20,7 @@ import kotlin.math.pow
 @Composable
 fun CompactDecimalText(
     modifier: Modifier = Modifier,
-    value: Long,
+    value: Int,
     style: TextStyle = LocalTextStyle.current
 ) {
     val text = remember(value) { getCompactDecimalText(value) }
@@ -32,9 +32,7 @@ fun CompactDecimalText(
     )
 }
 
-fun getCompactDecimalText(
-    value: Long
-): String {
+private fun getCompactDecimalText(value: Int): String {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         val formatter = CompactDecimalFormat.getInstance(
             Locale.getDefault(),
@@ -47,7 +45,7 @@ fun getCompactDecimalText(
     }
 }
 
-private fun Long.compactFormat(): String {
+private fun Int.compactFormat(): String {
     if (this < 1000) return toString()
     val exp = (ln(this.toDouble()) / ln(1000.0)).toInt()
     return String.format("%.1f %c", this / 1000.0.pow(exp.toDouble()), "kMGTPE"[exp - 1])

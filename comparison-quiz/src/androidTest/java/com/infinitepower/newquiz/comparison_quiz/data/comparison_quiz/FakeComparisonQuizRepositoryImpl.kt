@@ -7,7 +7,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
@@ -41,11 +41,15 @@ class FakeComparisonQuizRepositoryImpl(
         }
     }
 
-    override fun getHighestPositionFlow(category: ComparisonQuizCategory): Flow<Int> {
+    override suspend fun getHighestPosition(categoryId: String): Int {
+        return highestPosition.first()
+    }
+
+    override fun getHighestPositionFlow(categoryId: String): Flow<Int> {
         return highestPosition.map { it }
     }
 
-    override suspend fun saveHighestPosition(category: ComparisonQuizCategory, position: Int) {
+    override suspend fun saveHighestPosition(categoryId: String, position: Int) {
         highestPosition.emit(position)
     }
 }

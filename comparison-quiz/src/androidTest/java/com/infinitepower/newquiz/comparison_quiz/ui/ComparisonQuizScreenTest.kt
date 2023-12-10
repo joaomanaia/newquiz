@@ -24,8 +24,7 @@ import com.infinitepower.newquiz.comparison_quiz.data.comparison_quiz.FakeCompar
 import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
-import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
-import com.infinitepower.newquiz.core.remote_config.get
+import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
@@ -34,9 +33,9 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
-import com.infinitepower.newquiz.online_services.domain.user.UserRepository
-import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Before
@@ -44,10 +43,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.net.URI
+import javax.inject.Inject
 
 /**
  * Tests for [ComparisonQuizScreen].
  */
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @OptIn(
     ExperimentalMaterial3WindowSizeClassApi::class,
@@ -55,12 +56,15 @@ import java.net.URI
 )
 internal class ComparisonQuizScreenTest {
     @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private lateinit var comparisonQuizRepository: ComparisonQuizRepository
 
-    private val authUserRepository = mockk<AuthUserRepository>(relaxed = true)
-    private val userRepository = mockk<UserRepository>(relaxed = true)
+    @Inject lateinit var userService: UserService
+
     private val remoteConfig = mockk<RemoteConfig>(relaxed = true)
     private val recentCategoriesRepository = mockk<RecentCategoriesRepository>(relaxed = true)
 
@@ -94,6 +98,8 @@ internal class ComparisonQuizScreenTest {
 
     @Before
     fun setUp() {
+        hiltRule.inject()
+
         comparisonQuizRepository = FakeComparisonQuizRepositoryImpl(
             initialQuestions = listOf(
                 ComparisonQuizItem(
@@ -115,17 +121,15 @@ internal class ComparisonQuizScreenTest {
             initialCategories = listOf(category)
         )
 
-        every { authUserRepository.isSignedIn } returns false
-
         every {
             remoteConfig.getString("comparison_quiz_first_item_helper_value")
         } returns firstItemHelperValueState.name
 
         comparisonQuizCore = ComparisonQuizCoreImpl(
             comparisonQuizRepository = comparisonQuizRepository,
-            userRepository = userRepository,
             remoteConfig = remoteConfig,
-            analyticsHelper = LocalDebugAnalyticsHelper()
+            analyticsHelper = LocalDebugAnalyticsHelper(),
+            userService = userService
         )
 
         val context = InstrumentationRegistry.getInstrumentation().context
@@ -149,10 +153,8 @@ internal class ComparisonQuizScreenTest {
             ),
             comparisonQuizRepository = comparisonQuizRepository,
             workManager = workManager,
-            authUserRepository = authUserRepository,
-            userRepository = userRepository,
             recentCategoriesRepository = recentCategoriesRepository,
-            analyticsHelper = LocalDebugAnalyticsHelper()
+            userService = userService
         )
 
         composeTestRule.setContent {

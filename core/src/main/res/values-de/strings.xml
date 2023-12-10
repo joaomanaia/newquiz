@@ -172,16 +172,12 @@
     <string name="user_xp">Anwender Erfahrung</string>
     <string name="level">Level</string>
     <string name="photo_of_s">Foto von %1$s</string>
-    <string name="morning">Morgen</string>
-    <string name="afternoon">Nachmittag</string>
-    <string name="evening">Abend</string>
-    <string name="night">Nacht</string>
-    <string name="good_day_text">Guten %1$s,
-\n</string>
+    <string name="good_morning">Guten Morgen</string>
+    <string name="good_afternoon">Guten nachmittag</string>
+    <string name="good_evening">Guten abend</string>
+    <string name="good_night">Guten nacht</string>
     <string name="no_diamonds">Keine Diamanten</string>
     <string name="skip_question_q">Frage überspringen\?</string>
-    <string name="sign_in">Anmelden</string>
-    <string name="show_login_card">Anmeldekarte anzeigen</string>
     <string name="guess_math_formula">Errate die Matheformel</string>
     <string name="guess_solution">Lösung erraten</string>
     <string name="math_quiz">Mathe-Quiz</string>
@@ -196,7 +192,6 @@
     <string name="custom_maze">Benutzerdefiniertes Labyrinth</string>
     <string name="generate_maze_with_custom_options">Labyrinth mit benutzerdefinierten Optionen generieren</string>
     <string name="user">Benutzer</string>
-    <string name="sign_out">Abmelden</string>
     <string name="about_and_help">Info und Hilfe</string>
     <string name="animations">Animationen</string>
     <string name="animations_enabled">Animationen aktiviert</string>
@@ -216,7 +211,6 @@
     <string name="email">E-Mail</string>
     <string name="password">Passwort</string>
     <string name="next">Nächstes</string>
-    <string name="sign_up">Registrieren</string>
     <string name="quiz_with_random_categories">Quiz mit zufälligen Kategorien</string>
     <string name="see_all_categories">Alle Kategorien anzeigen</string>
     <string name="see_less_categories">Weniger Kategorien anzeigen</string>
@@ -259,9 +253,7 @@
     <string name="no_diamonds_to_skip_question_description">Du hast nicht genügend Diamanten, um diese Frage zu überspringen!</string>
     <string name="skip">Überspringen</string>
     <string name="save">Speichern</string>
-    <string name="save_you_progress_description">Speichere deinen Fortschritt, verwende Überspringen und sehe die Bestenliste, indem du dich anmeldest!</string>
     <string name="dismiss">Ablehnen</string>
-    <string name="show_login_card_at_home_screen">Anmeldekarte auf dem Startbildschirm anzeigen</string>
     <string name="guess_the_word">Errate das Wort</string>
     <string name="guess_the_number">Errate die Zahl</string>
 </resources>

@@ -23,7 +23,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.ui.components.SignInCard
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
@@ -33,10 +32,7 @@ internal fun NavigationDrawerContent(
     permanent: Boolean = false,
     items: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
-    showLoginCard: Boolean,
-    onItemClick: (item: NavigationItem.Item) -> Unit,
-    onSignInClick: () -> Unit,
-    onSignDismissClick: () -> Unit
+    onItemClick: (item: NavigationItem.Item) -> Unit
 ) {
     NavigationDrawerContainer(
         modifier = modifier,
@@ -46,9 +42,6 @@ internal fun NavigationDrawerContent(
             items = items,
             selectedItem = selectedItem,
             onItemClick = onItemClick,
-            onSignInClick = onSignInClick,
-            onSignDismissClick = onSignDismissClick,
-            showLoginCard = showLoginCard
         )
     }
 }
@@ -79,10 +72,7 @@ private fun NavigationDrawerContent(
     modifier: Modifier = Modifier,
     items: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
-    showLoginCard: Boolean,
     onItemClick: (item: NavigationItem.Item) -> Unit,
-    onSignInClick: () -> Unit,
-    onSignDismissClick: () -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -96,16 +86,6 @@ private fun NavigationDrawerContent(
                     text = stringResource(id = CoreR.string.app_name),
                     style = MaterialTheme.typography.headlineSmall
                 )
-            }
-        }
-
-        if (showLoginCard) {
-            item {
-                SignInCard(
-                    onSignInClick = onSignInClick,
-                    onDismissClick = onSignDismissClick
-                )
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             }
         }
 

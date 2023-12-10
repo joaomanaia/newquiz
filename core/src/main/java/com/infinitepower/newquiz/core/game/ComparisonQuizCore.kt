@@ -28,6 +28,8 @@ interface ComparisonQuizCore :
      * @property comparisonMode The comparison mode for the quiz.
      * @property currentPosition The current position in the quiz.
      * @property isGameOver A flag indicating if the game is over.
+     * @property firstItemHelperValueState The state of the first item helper value.
+     * @property skippedAnswers The number of skipped answers.
      */
     @Keep
     data class QuizData(
@@ -37,7 +39,8 @@ interface ComparisonQuizCore :
         val comparisonMode: ComparisonMode = ComparisonMode.GREATER,
         val currentPosition: Int = 0,
         val isGameOver: Boolean = false,
-        val firstItemHelperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN
+        val firstItemHelperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN,
+        val skippedAnswers: Int = 0
     ) {
         /**
          * Returns the next question and updates the current question.
@@ -49,12 +52,12 @@ interface ComparisonQuizCore :
          * retrieve the first question from the questions list and remove it from the list.
          *
          * @return The next question.
-         * @throws IllegalStateException If the questions list is empty.
-         * @throws IllegalStateException If the questions list has less than two items.
+         * @throws GameOverException If the questions list is empty.
+         * @throws GameOverException If the questions list has less than two items.
          */
-        fun getNextQuestion(): QuizData {
+        fun getNextQuestion(skipped: Boolean = false): QuizData {
             if (questions.isEmpty()) {
-                throw IllegalStateException("Questions list is empty")
+                throw GameOverException("Questions list is empty")
             }
 
             val newQuestions = questions.toMutableList()
@@ -64,7 +67,7 @@ interface ComparisonQuizCore :
             val newCurrentQuestion = if (currentQuestion == null) {
                 // Check if there is at least two questions
                 if (newQuestions.size < 2) {
-                    throw IllegalStateException("Questions list has less than two items")
+                    throw GameOverException("Questions list has less than two items")
                 }
 
                 val firstQuestion = newQuestions.first()
@@ -95,6 +98,12 @@ interface ComparisonQuizCore :
                     firstItemHelperValueState
                 } else {
                     ComparisonQuizHelperValueState.NORMAL
+                },
+                // If the question was skipped, then it should increment the skipped questions
+                skippedAnswers = if (skipped) {
+                    this.skippedAnswers + 1
+                } else {
+                    this.skippedAnswers
                 }
             )
         }

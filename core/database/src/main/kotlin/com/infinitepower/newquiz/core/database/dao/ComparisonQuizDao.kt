@@ -9,7 +9,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ComparisonQuizDao {
     @Query("SELECT * FROM comparison_quiz_highest_position WHERE categoryId = :categoryId LIMIT 1")
-    fun getHighestPosition(
+    suspend fun getHighestPosition(categoryId: String): ComparisonQuizHighestPosition?
+
+    @Query("SELECT * FROM comparison_quiz_highest_position WHERE categoryId = :categoryId LIMIT 1")
+    fun getHighestPositionFlow(
         categoryId: String
     ): Flow<ComparisonQuizHighestPosition?>
 

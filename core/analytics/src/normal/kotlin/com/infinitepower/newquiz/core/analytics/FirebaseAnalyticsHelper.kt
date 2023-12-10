@@ -1,8 +1,8 @@
 package com.infinitepower.newquiz.core.analytics
 
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.ParametersBuilder
-import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.analytics.ParametersBuilder
+import com.google.firebase.analytics.logEvent
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.perf.FirebasePerformance
 import javax.inject.Inject

@@ -7,9 +7,9 @@ import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.AnimationsEnabled
+import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
-import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,10 +21,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    authUserRepository: AuthUserRepository,
     dailyChallengeRepository: DailyChallengeRepository,
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
+    private val userService: UserService
 ) : ViewModel() {
     private val animationsEnabledFlow = combine(
         settingsDataStoreManager.getPreferenceFlow(SettingsCommon.GlobalAnimationsEnabled),
@@ -39,19 +39,17 @@ class MainViewModel @Inject constructor(
     }
 
     val uiState: StateFlow<MainScreenUiState> = combine(
-        authUserRepository.isSignedInFlow,
         animationsEnabledFlow,
-        settingsDataStoreManager.getPreferenceFlow(SettingsCommon.ShowLoginCard),
         settingsDataStoreManager.getPreferenceFlow(SettingsCommon.DataAnalyticsConsent),
-        dailyChallengeRepository.getClaimableTasksCountFlow()
-    ) { signedIn, animationsEnabled, showLoginCard, dataAnalyticsDialogConsent, dailyChallengeClaimableCount ->
+        dailyChallengeRepository.getClaimableTasksCountFlow(),
+        userService.getUserDiamondsFlow()
+    ) { animationsEnabled, dataAnalyticsDialogConsent, dailyChallengeClaimableCount, userDiamonds ->
         MainScreenUiState(
             loading = false,
-            signedIn = signedIn,
             animationsEnabled = animationsEnabled,
-            settingsShowLoginCard = showLoginCard,
             dialogConsent = DataAnalyticsConsentState.valueOf(dataAnalyticsDialogConsent),
-            dailyChallengeClaimableCount = dailyChallengeClaimableCount
+            dailyChallengeClaimableCount = dailyChallengeClaimableCount,
+            userDiamonds = userDiamonds
         )
     }.stateIn(
         scope = viewModelScope,
@@ -62,11 +60,6 @@ class MainViewModel @Inject constructor(
     fun onEvent(event: MainScreenUiEvent) {
         when (event) {
             is MainScreenUiEvent.OnAgreeDisagreeClick -> updateDataConsent(event.agreed)
-            is MainScreenUiEvent.DismissLoginCard -> {
-                viewModelScope.launch(Dispatchers.IO) {
-                    settingsDataStoreManager.editPreference(SettingsCommon.ShowLoginCard.key, false)
-                }
-            }
         }
     }
 

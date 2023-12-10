@@ -63,8 +63,7 @@ internal fun PreferencesScreen(
                 screenExpanded = screenExpanded,
                 inMainPage = uiState.screenKey == SettingsScreenPageData.MainPage.key,
                 currentScreenKey = uiState.screenKey,
-                translatorAvailable = uiState.translatorAvailable,
-                userIsSignedIn = uiState.userIsSignedIn
+                translatorAvailable = uiState.translatorAvailable
             )
             is SettingsScreenPageData.General -> page.items(
                 scope = scope,
@@ -85,10 +84,6 @@ internal fun PreferencesScreen(
                 translationModelState = uiState.translationModelState,
                 downloadTranslationModel = { onEvent(SettingsScreenUiEvent.DownloadTranslationModel) },
                 deleteTranslationModel = { onEvent(SettingsScreenUiEvent.DeleteTranslationModel) }
-            )
-            is SettingsScreenPageData.User -> page.items(
-                userIsSignedIn = uiState.userIsSignedIn,
-                signOut = { onEvent(SettingsScreenUiEvent.SignOut) }
             )
             is SettingsScreenPageData.AboutAndHelp -> page.items()
             is SettingsScreenPageData.Analytics -> page.items(

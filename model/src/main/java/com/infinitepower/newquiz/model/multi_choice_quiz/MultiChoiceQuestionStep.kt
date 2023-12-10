@@ -24,8 +24,9 @@ sealed class MultiChoiceQuestionStep : java.io.Serializable {
         fun changeToCompleted(
             correct: Boolean,
             selectedAnswer: SelectedAnswer,
-            questionTime: Long
-        ) = Completed(question, correct, selectedAnswer, questionTime)
+            questionTime: Long,
+            skipped: Boolean
+        ) = Completed(question, correct, selectedAnswer, questionTime, skipped)
     }
 
     @Keep
@@ -34,7 +35,8 @@ sealed class MultiChoiceQuestionStep : java.io.Serializable {
         override val question: MultiChoiceQuestion,
         val correct: Boolean,
         val selectedAnswer: SelectedAnswer = SelectedAnswer.NONE,
-        val questionTime: Long = 0
+        val questionTime: Long = 0,
+        val skipped: Boolean = false
     ) : MultiChoiceQuestionStep(), java.io.Serializable
 
     fun asCurrent() = Current(question)

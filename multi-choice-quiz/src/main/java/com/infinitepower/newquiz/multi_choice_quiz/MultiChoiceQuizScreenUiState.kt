@@ -16,7 +16,8 @@ data class MultiChoiceQuizScreenUiState(
     val remainingTime: RemainingTime = RemainingTime.ZERO,
     val userDiamonds: Int = -1,
     val userDiamondsLoading: Boolean = false,
-    val userSignedIn: Boolean = false
+    val skipsAvailable: Boolean = false,
+    val skipCost: Int = 1,
 ) {
     val currentQuestionStep: MultiChoiceQuestionStep.Current? = questionSteps.getOrNull(currentQuestionIndex)?.asCurrent()
 

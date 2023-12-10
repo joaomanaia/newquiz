@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewExpandedNightLight
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.ui.components.DiamondsCounter
 import com.ramcosta.composedestinations.navigation.navigate
 
 /**
@@ -30,9 +31,7 @@ internal fun ExpandedContainer(
     navController: NavController,
     navigationItems: List<NavigationItem>,
     selectedItem: NavigationItem.Item?,
-    showLoginCard: Boolean,
-    onSignInClick: () -> Unit,
-    onSignDismissClick: () -> Unit,
+    userDiamonds: UInt = 0u,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
@@ -53,9 +52,6 @@ internal fun ExpandedContainer(
                 onItemClick = { item ->
                     navController.navigate(item.direction)
                 },
-                onSignInClick = onSignInClick,
-                onSignDismissClick = onSignDismissClick,
-                showLoginCard = showLoginCard
             )
         }
     ) {
@@ -66,7 +62,13 @@ internal fun ExpandedContainer(
                     title = {
                         Text(text = text)
                     },
-                    scrollBehavior = scrollBehavior
+                    scrollBehavior = scrollBehavior,
+                    actions = {
+                        DiamondsCounter(
+                            diamonds = userDiamonds,
+                            modifier = Modifier
+                        )
+                    }
                 )
             },
             content = content
@@ -91,9 +93,7 @@ private fun MediumContainerPreview() {
                 },
                 navigationItems = getNavigationItems(),
                 selectedItem = selectedItem,
-                onSignInClick = {},
-                onSignDismissClick = {},
-                showLoginCard = true
+                userDiamonds = 100u
             )
         }
     }

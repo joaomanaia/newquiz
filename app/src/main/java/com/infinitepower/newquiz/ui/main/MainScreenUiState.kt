@@ -12,15 +12,11 @@ import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 @Keep
 data class MainScreenUiState(
     val loading: Boolean = true,
-    val signedIn: Boolean = false,
-    val settingsShowLoginCard: Boolean = false,
     val dialogConsent: DataAnalyticsConsentState = DataAnalyticsConsentState.NONE,
     val dailyChallengeClaimableCount: Int = 0,
-    val animationsEnabled: AnimationsEnabled = AnimationsEnabled()
-) {
-    val showLoginCard: Boolean
-        get() = settingsShowLoginCard && !signedIn
-}
+    val animationsEnabled: AnimationsEnabled = AnimationsEnabled(),
+    val userDiamonds: UInt = 0u
+)
 
 /*
 sealed interface MainScreenUiState {

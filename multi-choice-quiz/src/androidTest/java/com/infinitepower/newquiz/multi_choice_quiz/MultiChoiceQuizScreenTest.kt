@@ -30,15 +30,14 @@ import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.testing.utils.setTestContent
+import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
-import com.infinitepower.newquiz.online_services.domain.user.auth.AuthUserRepository
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import org.junit.Rule
 import org.junit.runner.RunWith
@@ -63,7 +62,7 @@ internal class MultiChoiceQuizScreenTest {
     private lateinit var workManager: WorkManager
     private lateinit var getRandomQuestionUseCase: GetRandomMultiChoiceQuestionUseCase
 
-    private val authUserRepository = mockk<AuthUserRepository>()
+    private val userService = mockk<UserService>()
     private val settingsDataStoreManager = mockk<DataStoreManager>()
 
     @BeforeTest
@@ -99,8 +98,6 @@ internal class MultiChoiceQuizScreenTest {
     @Test
     @Ignore("Mockk problems")
     fun testMultiChoiceQuizScreen() {
-        every { authUserRepository.isSignedIn } returns true
-
         coEvery {
             settingsDataStoreManager.getPreference(SettingsCommon.MultiChoiceQuizQuestionsSize)
         } returns 5
@@ -127,10 +124,9 @@ internal class MultiChoiceQuizScreenTest {
                     ),
                     translationUtil = mockk(relaxed = true),
                     workManager = workManager,
-                    userRepository = mockk(),
-                    authUserRepository = authUserRepository,
                     isQuestionSavedUseCase = mockk(relaxed = true),
-                    analyticsHelper = LocalDebugAnalyticsHelper()
+                    analyticsHelper = LocalDebugAnalyticsHelper(),
+                    userService = userService
                 )
             )
         }

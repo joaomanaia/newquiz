@@ -100,7 +100,7 @@ fun MultiChoiceQuizScreen(
 
     SkipQuestionDialog(
         userDiamonds = uiState.userDiamonds,
-        skipCost = 1,
+        skipCost = uiState.skipCost,
         loading = uiState.userDiamondsLoading,
         onSkipClick = { viewModel.onEvent(MultiChoiceQuizScreenUiEvent.SkipQuestion) },
         onDismissClick = { viewModel.onEvent(MultiChoiceQuizScreenUiEvent.CleanUserSkipQuestionDiamonds) }
@@ -136,7 +136,7 @@ private fun MultiChoiceQuizScreenImpl(
             QuizTopBar(
                 remainingTime = uiState.remainingTime,
                 windowHeightSizeClass = windowSizeClass.heightSizeClass,
-                userSignedIn = uiState.userSignedIn,
+                skipsAvailable = uiState.skipsAvailable,
                 onBackClick = onBackClick,
                 onSkipClick = { onEvent(MultiChoiceQuizScreenUiEvent.GetUserSkipQuestionDiamonds) },
                 onSaveClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) },
