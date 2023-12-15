@@ -1,7 +1,5 @@
 package com.infinitepower.newquiz.wordle.list
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -22,9 +20,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
-import com.infinitepower.newquiz.core.ui.home_card.components.HomeLargeCard
-import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
-import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
+import com.infinitepower.newquiz.core.ui.home_card.components.PlayRandomQuizCard
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
@@ -64,17 +60,16 @@ private fun WordleListScreenImpl(
         }
 
         item {
-            HomeLargeCard(
+            PlayRandomQuizCard(
                 modifier = Modifier.fillParentMaxWidth(),
-                data = HomeCardItem.LargeCard(
-                    title = CoreR.string.quiz_with_random_categories,
-                    icon = CardIcon.Icon(Icons.Rounded.QuestionMark),
-                    backgroundPrimary = true,
-                    onClick = {
-                        val randomCategory = WordleCategories.random(uiState.internetConnectionAvailable)
-                        navigateToWordleQuiz(randomCategory.wordleQuizType)
-                    }
-                )
+                title = stringResource(id = CoreR.string.quiz_with_random_categories),
+                buttonTitle = stringResource(id = CoreR.string.random_quiz),
+                containerMainColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    val randomCategory = WordleCategories.random(uiState.internetConnectionAvailable)
+                    navigateToWordleQuiz(randomCategory.wordleQuizType)
+                },
+                enabled = uiState.internetConnectionAvailable,
             )
         }
 

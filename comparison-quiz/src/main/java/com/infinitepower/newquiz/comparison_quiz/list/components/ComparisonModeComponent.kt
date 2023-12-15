@@ -106,7 +106,7 @@ internal fun ComparisonModeComponent(
 }
 
 object ComparisonModeDefaults {
-    val shape: Shape @Composable get() = MaterialTheme.shapes.medium
+    val shape: Shape @Composable get() = MaterialTheme.shapes.large
 
     @Composable
     fun defaultColors(

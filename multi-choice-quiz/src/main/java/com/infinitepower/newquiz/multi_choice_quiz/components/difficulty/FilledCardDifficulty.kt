@@ -90,7 +90,8 @@ private fun FilledCardDifficultyContainer(
             contentColor = contentColor
         ),
         enabled = enabled,
-        onClick = onClick
+        onClick = onClick,
+        shape = MaterialTheme.shapes.large
     ) {
         content()
     }

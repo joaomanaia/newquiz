@@ -18,7 +18,6 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
@@ -27,8 +26,8 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
-import com.infinitepower.newquiz.core.ui.home_card.components.HomeLargeCard
 import com.infinitepower.newquiz.core.ui.home_card.components.HomeMediumCard
+import com.infinitepower.newquiz.core.ui.home_card.components.PlayRandomQuizCard
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 import com.infinitepower.newquiz.model.multi_choice_quiz.toBaseCategory
@@ -91,19 +90,17 @@ private fun MultiChoiceQuizListScreenImpl(
         }
 
         item {
-            HomeLargeCard(
+            PlayRandomQuizCard(
                 modifier = Modifier
                     .fillParentMaxWidth()
                     .padding(horizontal = spaceMedium),
-                data = HomeCardItem.LargeCard(
-                    title = CoreR.string.quiz_with_random_categories,
-                    icon = CardIcon.Lottie(LottieCompositionSpec.RawRes(CoreR.raw.quick_quiz)),
-                    backgroundPrimary = true,
-                    onClick = {
-                        navigator.navigate(MultiChoiceQuizScreenDestination(difficulty = selectedDifficulty?.id))
-                    },
-                    enabled = uiState.internetConnectionAvailable
-                )
+                title = stringResource(id = CoreR.string.quiz_with_random_categories),
+                buttonTitle = stringResource(id = CoreR.string.random_quiz),
+                containerMainColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    navigator.navigate(MultiChoiceQuizScreenDestination(difficulty = selectedDifficulty?.id))
+                },
+                enabled = uiState.internetConnectionAvailable,
             )
         }
 

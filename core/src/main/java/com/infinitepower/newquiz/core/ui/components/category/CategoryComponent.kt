@@ -39,7 +39,7 @@ fun CategoryComponent(
     textStyle: TextStyle = MaterialTheme.typography.headlineLarge,
     onClick: () -> Unit = {}
 ) {
-    val shapeMedium = MaterialTheme.shapes.medium
+    val shapeMedium = MaterialTheme.shapes.large
 
     val containerOverlayColor = if (isSystemInDarkTheme()) {
         MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
