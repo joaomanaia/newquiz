@@ -19,29 +19,23 @@ data class User(
     val level: UInt
         get() = floor(sqrt(totalXp / 100.0)).roundToUInt()
 
-    fun getNextLevelXp(): UInt {
-        val nextLevel = level + 1u
+    fun getNextLevelXp(): UInt = getRequiredXpForLevel(level + 1u)
 
-        return nextLevel.pow(2) * 100u
-    }
+    private fun getRequiredXpForLevel(level: UInt): UInt = level.pow(2) * 100u
 
     fun getLevelProgress(): Float {
-        return totalXp / getNextLevelXp().toFloat()
+        val currentLevelXp = getRequiredXpForLevel(level)
+        val nextLevelXp = getNextLevelXp()
+
+        val requiredXp = nextLevelXp - currentLevelXp
+        val currentXp = totalXp - currentLevelXp
+
+        return currentXp.toFloat() / requiredXp.toFloat()
     }
 
     fun getRequiredXP(): ULong = getNextLevelXp() - totalXp
 
-    fun isNewLevel(newXp: ULong): Boolean {
-        val newTotalXP = totalXp + newXp
-        val newUser = copy(totalXp = newTotalXP)
+    fun isNewLevel(newXp: ULong): Boolean = getLevelAfter(newXp) > level
 
-        return newUser.level > level
-    }
-
-    fun getLevelAfter(newXp: ULong): UInt {
-        val newTotalXP = totalXp + newXp
-        val newUser = copy(totalXp = newTotalXP)
-
-        return newUser.level
-    }
+    fun getLevelAfter(newXp: ULong): UInt = copy(totalXp = totalXp + newXp).level
 }

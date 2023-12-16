@@ -52,17 +52,22 @@ internal class UserTest {
         assertThat(user.getNextLevelXp()).isEqualTo(100u)
     }
 
-    @Test
-    fun `test get level progress`() {
-        val user = getTestUser(totalXp = 0u)
+    @CsvSource(
+        "0, 0.0",
+        "50, 0.5",
+        "99, 0.99",
+        "100, 0.0", // New level 1
+        "399, 0.99",
+        "400, 0.0" // New level 2
+    )
+    @ParameterizedTest(name = "totalXp = {0} should have progress = {1}")
+    fun `test get level progress`(
+        totalXp: Long,
+        expectedProgress: Float,
+    ) {
+        val user = getTestUser(totalXp = totalXp.toULong())
 
-        // For level 0, next level xp is 100
-        assertThat(user.getLevelProgress()).isEqualTo(0f)
-
-        val user2 = getTestUser(totalXp = 100u)
-
-        // For level 1, next level xp is 400, so progress is 0.25
-        assertThat(user2.getLevelProgress()).isEqualTo(0.25f)
+        assertThat(user.getLevelProgress()).isWithin(0.01f).of(expectedProgress)
     }
 
     @Test
