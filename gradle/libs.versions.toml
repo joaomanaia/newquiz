@@ -2,50 +2,49 @@
 
 androidDesugarJdkLibs = "2.0.4"
 androidGradlePlugin = "8.3.0-alpha16"
-androidxAnnotation = "1.7.0"
-androidxActivity = "1.8.1"
+androidxAnnotation = "1.7.1"
+androidxActivity = "1.8.2"
 androidxAppCompat = "1.7.0-alpha03"
 androidxCoreKtx = "1.12.0"
 androidxCoreSplashscreen = "1.0.1"
-androidxComposeCompiler = "1.5.4"
+androidxComposeCompiler = "1.5.6"
 androidxComposeBom = "2023.10.01"
-androidxComposeRuntime = "1.5.0-beta02"
-androidxComposeMaterial3 = "1.2.0-alpha12"
+androidxComposeMaterial3 = "1.2.0-beta01"
 androidxDataStore = "1.0.0"
 androidxStartup = "1.1.1"
 androidxLifecycle = "2.6.1"
-androidxNavigation = "2.7.5"
-androidxWork = "2.9.0-rc01"
+androidxNavigation = "2.7.6"
+androidxWork = "2.9.0"
 androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
-androidxTracing = "1.1.0"
+androidxTracing = "1.2.0"
 coil = "2.5.0"
 composeDestinations = "1.9.55"
 constraintlayoutCompose = "1.0.1"
 firebaseCrashlyticsPlugin = "2.9.9"
 firebasePerfPlugin = "1.4.2"
 gmsPlugin = "4.4.0"
-googleMaterial = "1.10.0"
+googleMaterial = "1.11.0"
 googleTruth = "1.1.5"
 googleOss = "17.0.1"
 googleOssPlugin = "0.10.6"
-hilt = "2.48.1"
+hilt = "2.49"
 hiltExt = "1.1.0"
-kotlin = "1.9.20"
+kotlin = "1.9.21"
 kotlinxCoroutines = "1.7.3"
 kotlinxDatetime = "0.4.0"
-kotlinxSerializationJson = "1.6.1"
-ksp = "1.9.20-1.0.14"
-ktor = "2.3.6"
+kotlinxSerializationJson = "1.6.2"
+ksp = "1.9.21-1.0.16"
+ktor = "2.3.7"
 lottie = "6.2.0"
-firebaseBom = "32.6.0"
+firebaseBom = "32.7.0"
 slf4j = "2.0.9"
 junitJupiter = "5.10.1"
 mockk = "1.13.3"
-room = "2.6.0"
+room = "2.6.1"
 javaxInject = "1"
 firebaseUi = "8.0.2"
-vico = "1.13.0"
+vico = "1.13.1"
 mlKitTranslate = "17.0.2"
 turbine = "1.0.0"
 
@@ -66,9 +65,9 @@ androidx-compose-material3-windowSizeClass = { group = "androidx.compose.materia
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "androidxComposeRuntime" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxComposeRuntime" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
