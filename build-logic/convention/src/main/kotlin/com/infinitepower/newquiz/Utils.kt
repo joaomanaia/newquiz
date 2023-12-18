@@ -22,3 +22,6 @@ internal fun DependencyHandler.normalImplementation(dependencyNotation: Any) =
 
 internal fun DependencyHandler.coreLibraryDesugaring(dependencyNotation: Any) =
     add("coreLibraryDesugaring", dependencyNotation)
+
+internal fun DependencyHandler.debugImplementation(dependencyNotation: Any) =
+    add("debugImplementation", dependencyNotation)

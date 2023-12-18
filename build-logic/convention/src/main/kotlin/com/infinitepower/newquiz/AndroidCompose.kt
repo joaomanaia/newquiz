@@ -20,6 +20,8 @@ internal fun Project.configureAndroidCompose(
             val bom = libs.findLibrary("androidx-compose-bom").get()
             implementation(platform(bom))
             androidTestImplementation(platform(bom))
+            // Add ComponentActivity to debug manifest
+            debugImplementation(libs.findLibrary("androidx.compose.ui.testManifest").get())
         }
     }
 }
