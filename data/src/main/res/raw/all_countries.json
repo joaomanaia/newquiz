@@ -2,7 +2,7 @@
   {
     "countryCode": "AF",
     "capital": "Kabul",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Afghanistan",
     "continent": "Asia"
   },
@@ -23,7 +23,7 @@
   {
     "countryCode": "AD",
     "capital": "Andorra la Vella",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Andorra",
     "continent": "Europe"
   },
@@ -44,14 +44,14 @@
   {
     "countryCode": "AR",
     "capital": "Buenos Aires",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Argentina",
     "continent": "South America"
   },
   {
     "countryCode": "AM",
     "capital": "Yerevan",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Armenia",
     "continent": "Asia"
   },
@@ -79,14 +79,14 @@
   {
     "countryCode": "BS",
     "capital": "Nassau",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Bahamas",
     "continent": "North America"
   },
   {
     "countryCode": "BH",
     "capital": "Manama",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Bahrain",
     "continent": "Asia"
   },
@@ -107,7 +107,7 @@
   {
     "countryCode": "BY",
     "capital": "Minsk",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Belarus",
     "continent": "Europe"
   },
@@ -121,21 +121,21 @@
   {
     "countryCode": "BZ",
     "capital": "Belmopan",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Belize",
     "continent": "North America"
   },
   {
     "countryCode": "BJ",
     "capital": "Porto-Novo",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Benin",
     "continent": "Africa"
   },
   {
     "countryCode": "BT",
     "capital": "Thimphu",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Bhutan",
     "continent": "Asia"
   },
@@ -149,7 +149,7 @@
   {
     "countryCode": "BA",
     "capital": "Sarajevo",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Bosnia and Herzegovina",
     "continent": "Europe"
   },
@@ -163,7 +163,7 @@
   {
     "countryCode": "BR",
     "capital": "Brasília",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Brazil",
     "continent": "South America"
   },
@@ -198,7 +198,7 @@
   {
     "countryCode": "KH",
     "capital": "Phnom Penh",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Cambodia",
     "continent": "Asia"
   },
@@ -233,7 +233,7 @@
   {
     "countryCode": "TD",
     "capital": "N'Djamena",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Chad",
     "continent": "Africa"
   },
@@ -247,7 +247,7 @@
   {
     "countryCode": "CN",
     "capital": "Beijing",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "China",
     "continent": "Asia"
   },
@@ -261,21 +261,21 @@
   {
     "countryCode": "KM",
     "capital": "Moroni",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Comoros",
     "continent": "Africa"
   },
   {
     "countryCode": "CD",
     "capital": "Kinshasa",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Democratic Republic of the Congo",
     "continent": "Africa"
   },
   {
     "countryCode": "CG",
     "capital": "Brazzaville",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Republic of the Congo",
     "continent": "Africa"
   },
@@ -296,7 +296,7 @@
   {
     "countryCode": "HR",
     "capital": "Zagreb",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Croatia",
     "continent": "Europe"
   },
@@ -310,14 +310,14 @@
   {
     "countryCode": "CY",
     "capital": "Nicosia",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Cyprus",
     "continent": "Asia"
   },
   {
     "countryCode": "CZ",
     "capital": "Prague",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Czech Republic",
     "continent": "Europe"
   },
@@ -338,7 +338,7 @@
   {
     "countryCode": "DM",
     "capital": "Roseau",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Dominica",
     "continent": "North America"
   },
@@ -373,7 +373,7 @@
   {
     "countryCode": "GQ",
     "capital": "Malabo",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Equatorial Guinea",
     "continent": "Africa"
   },
@@ -401,7 +401,7 @@
   {
     "countryCode": "FJ",
     "capital": "Suva",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Fiji",
     "continent": "Oceania"
   },
@@ -415,35 +415,35 @@
   {
     "countryCode": "FR",
     "capital": "Paris",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "France",
     "continent": "Europe"
   },
   {
     "countryCode": "GA",
     "capital": "Libreville",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Gabon",
     "continent": "Africa"
   },
   {
     "countryCode": "GM",
     "capital": "Banjul",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Gambia",
     "continent": "Africa"
   },
   {
     "countryCode": "GE",
     "capital": "Tbilisi",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Georgia",
     "continent": "Asia"
   },
   {
     "countryCode": "DE",
     "capital": "Berlin",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Germany",
     "continent": "Europe"
   },
@@ -457,14 +457,14 @@
   {
     "countryCode": "GR",
     "capital": "Athens",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Greece",
     "continent": "Europe"
   },
   {
     "countryCode": "GD",
     "capital": "St. George's",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Grenada",
     "continent": "North America"
   },
@@ -527,7 +527,7 @@
   {
     "countryCode": "IN",
     "capital": "New Delhi",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "India",
     "continent": "Asia"
   },
@@ -555,7 +555,7 @@
   {
     "countryCode": "IE",
     "capital": "Dublin",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Ireland",
     "continent": "Europe"
   },
@@ -569,7 +569,7 @@
   {
     "countryCode": "IT",
     "capital": "Rome",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Italy",
     "continent": "Europe"
   },
@@ -583,14 +583,14 @@
   {
     "countryCode": "JP",
     "capital": "Tokyo",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Japan",
     "continent": "Asia"
   },
   {
     "countryCode": "JO",
     "capital": "Amman",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Jordan",
     "continent": "Asia"
   },
@@ -611,7 +611,7 @@
   {
     "countryCode": "KI",
     "capital": "Tarawa",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Kiribati",
     "continent": "Oceania"
   },
@@ -625,7 +625,7 @@
   {
     "countryCode": "KR",
     "capital": "Seoul",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "South Korea",
     "continent": "Asia"
   },
@@ -639,7 +639,7 @@
   {
     "countryCode": "KG",
     "capital": "Bishkek",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Kyrgyzstan",
     "continent": "Asia"
   },
@@ -688,7 +688,7 @@
   {
     "countryCode": "LI",
     "capital": "Vaduz",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Liechtenstein",
     "continent": "Europe"
   },
@@ -716,7 +716,7 @@
   {
     "countryCode": "MW",
     "capital": "Lilongwe",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Malawi",
     "continent": "Africa"
   },
@@ -744,14 +744,14 @@
   {
     "countryCode": "MT",
     "capital": "Valletta",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Malta",
     "continent": "Europe"
   },
   {
     "countryCode": "MH",
     "capital": "Majuro",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Marshall Islands",
     "continent": "Oceania"
   },
@@ -772,7 +772,7 @@
   {
     "countryCode": "MX",
     "capital": "Mexico City",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Mexico",
     "continent": "North America"
   },
@@ -828,14 +828,14 @@
   {
     "countryCode": "MM",
     "capital": "Naypyidaw",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Myanmar (Burma)",
     "continent": "Asia"
   },
   {
     "countryCode": "NA",
     "capital": "Windhoek",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Namibia",
     "continent": "Africa"
   },
@@ -856,7 +856,7 @@
   {
     "countryCode": "NL",
     "capital": "Amsterdam",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Netherlands",
     "continent": "Europe"
   },
@@ -870,14 +870,14 @@
   {
     "countryCode": "NI",
     "capital": "Managua",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Nicaragua",
     "continent": "North America"
   },
   {
     "countryCode": "NE",
     "capital": "Niamey",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Niger",
     "continent": "Africa"
   },
@@ -889,13 +889,6 @@
     "continent": "Africa"
   },
   {
-    "countryCode": "KP",
-    "capital": "Pyongyang",
-    "difficulty": "hard",
-    "countryName": "North Korea",
-    "continent": "Asia"
-  },
-  {
     "countryCode": "MK",
     "capital": "Skopje",
     "difficulty": "medium",
@@ -905,14 +898,14 @@
   {
     "countryCode": "NO",
     "capital": "Oslo",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Norway",
     "continent": "Europe"
   },
   {
     "countryCode": "OM",
     "capital": "Muscat",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Oman",
     "continent": "Asia"
   },
@@ -940,7 +933,7 @@
   {
     "countryCode": "PG",
     "capital": "Port Moresby",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Papua New Guinea",
     "continent": "Oceania"
   },
@@ -975,7 +968,7 @@
   {
     "countryCode": "PT",
     "capital": "Lisbon",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Portugal",
     "continent": "Europe"
   },
@@ -996,7 +989,7 @@
   {
     "countryCode": "RU",
     "capital": "Moscow",
-    "difficulty": "hard",
+    "difficulty": "easy",
     "countryName": "Russia",
     "continent": "Europe"
   },
@@ -1010,28 +1003,28 @@
   {
     "countryCode": "KN",
     "capital": "Basseterre",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Saint Kitts and Nevis",
     "continent": "North America"
   },
   {
     "countryCode": "LC",
     "capital": "Castries",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Saint Lucia",
     "continent": "North America"
   },
   {
     "countryCode": "VC",
     "capital": "Kingstown",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Saint Vincent and the Grenadines",
     "continent": "North America"
   },
   {
     "countryCode": "WS",
     "capital": "Apia",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Samoa",
     "continent": "Oceania"
   },
@@ -1073,7 +1066,7 @@
   {
     "countryCode": "SC",
     "capital": "Victoria",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Seychelles",
     "continent": "Africa"
   },
@@ -1087,7 +1080,7 @@
   {
     "countryCode": "SG",
     "capital": "Singapore",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Singapore",
     "continent": "Asia"
   },
@@ -1108,14 +1101,14 @@
   {
     "countryCode": "SB",
     "capital": "Honiara",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Solomon Islands",
     "continent": "Oceania"
   },
   {
     "countryCode": "SO",
     "capital": "Mogadishu",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Somalia",
     "continent": "Africa"
   },
@@ -1127,13 +1120,6 @@
     "continent": "Africa"
   },
   {
-    "countryCode": "KR",
-    "capital": "Seoul",
-    "difficulty": "medium",
-    "countryName": "South Korea",
-    "continent": "Asia"
-  },
-  {
     "countryCode": "SS",
     "capital": "Juba",
     "difficulty": "medium",
@@ -1143,7 +1129,7 @@
   {
     "countryCode": "ES",
     "capital": "Madrid",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "Spain",
     "continent": "Europe"
   },
@@ -1157,7 +1143,7 @@
   {
     "countryCode": "SD",
     "capital": "Khartoum",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Sudan",
     "continent": "Africa"
   },
@@ -1171,7 +1157,7 @@
   {
     "countryCode": "SZ",
     "capital": "Mbabane",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Eswatini",
     "continent": "Africa"
   },
@@ -1206,14 +1192,14 @@
   {
     "countryCode": "TJ",
     "capital": "Dushanbe",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Tajikistan",
     "continent": "Asia"
   },
   {
     "countryCode": "TZ",
     "capital": "Dodoma",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Tanzania",
     "continent": "Africa"
   },
@@ -1227,7 +1213,7 @@
   {
     "countryCode": "TL",
     "capital": "Dili",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Timor-Leste",
     "continent": "Asia"
   },
@@ -1269,21 +1255,21 @@
   {
     "countryCode": "TM",
     "capital": "Ashgabat",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Turkmenistan",
     "continent": "Asia"
   },
   {
     "countryCode": "TV",
     "capital": "Funafuti",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Tuvalu",
     "continent": "Oceania"
   },
   {
     "countryCode": "UG",
     "capital": "Kampala",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Uganda",
     "continent": "Africa"
   },
@@ -1304,14 +1290,14 @@
   {
     "countryCode": "GB",
     "capital": "London",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "United Kingdom",
     "continent": "Europe"
   },
   {
     "countryCode": "US",
     "capital": "Washington D.C.",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "countryName": "United States of America",
     "continent": "North America"
   },
@@ -1360,21 +1346,21 @@
   {
     "countryCode": "YE",
     "capital": "Sana'a",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Yemen",
     "continent": "Asia"
   },
   {
     "countryCode": "ZM",
     "capital": "Lusaka",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Zambia",
     "continent": "Africa"
   },
   {
     "countryCode": "ZW",
     "capital": "Harare",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "countryName": "Zimbabwe",
     "continent": "Africa"
   }

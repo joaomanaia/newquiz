@@ -22,11 +22,17 @@ class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor(
         difficulty: String?,
         random: Random
     ): List<MultiChoiceQuestion> {
-        val allCountries = countryRepository.getAllCountries()
+        val questionDifficulty = difficulty?.let { QuestionDifficulty.from(it) }
 
+        val allCountries = countryRepository.getAllCountries()
         val allCountriesCapitalNames = allCountries.map(Country::capital)
 
-        return allCountries
+        // Filter countries by difficulty
+        val countriesFiltered = questionDifficulty?.let {
+            allCountries.filter { country -> country.difficulty == it }
+        } ?: allCountries // if difficulty is null, then return all countries
+
+        return countriesFiltered
             .sortedBy { it.countryName }
             .shuffled(random)
             .take(amount)
@@ -51,7 +57,7 @@ class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor(
             answers = answers,
             correctAns = answers.indexOf(capital),
             category = MultiChoiceBaseCategory.CountryCapitalFlags,
-            difficulty = QuestionDifficulty.Medium,
+            difficulty = difficulty,
             lang = QuestionLanguage.EN,
             type = MultiChoiceQuestionType.MULTIPLE
         )

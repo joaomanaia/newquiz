@@ -1,11 +1,13 @@
 package com.infinitepower.newquiz.data.repository.multi_choice_quiz
 
-import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.data.repository.country.TestCountryRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.CountryRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
+import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -59,5 +61,24 @@ internal class CountryCapitalFlagsQuizRepositoryImplTest {
 
             assertThat(capitalAnswer).isEqualTo(country.capital)
         }
+    }
+
+    @ParameterizedTest(name = "getRandomQuestions returns questions filtered by difficulty: {0}")
+    @ValueSource(strings = ["easy", "medium", "hard"])
+    fun `getRandomQuestions() returns questions filtered by difficulty`(
+        difficulty: String
+    ) = runTest {
+        val questionSize = 5
+
+        val questions = repository.getRandomQuestions(
+            amount = questionSize,
+            category = MultiChoiceBaseCategory.CountryCapitalFlags,
+            difficulty = difficulty
+        )
+
+        assertThat(questions).hasSize(questionSize)
+
+        // Check if the questions difficulty is correct
+        assertThat(questions.all { it.difficulty == QuestionDifficulty.from(difficulty) }).isTrue()
     }
 }
