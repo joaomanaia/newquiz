@@ -48,8 +48,4 @@ class FakeComparisonQuizRepositoryImpl(
     override fun getHighestPositionFlow(categoryId: String): Flow<Int> {
         return highestPosition.map { it }
     }
-
-    override suspend fun saveHighestPosition(categoryId: String, position: Int) {
-        highestPosition.emit(position)
-    }
 }

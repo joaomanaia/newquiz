@@ -21,8 +21,6 @@ data class ComparisonQuizGameResultEntity(
     val comparisonMode: String,
     @ColumnInfo(name = "end_position")
     val endPosition: Int,
-    @ColumnInfo(name = "highest_position")
-    val highestPosition: Int,
     @ColumnInfo(name = "skipped_answers")
     val skippedAnswers: Int
 ) : BaseGameResultEntity

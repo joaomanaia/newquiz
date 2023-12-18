@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlin.random.Random
 
@@ -47,6 +48,21 @@ class FakeGameResultDao : GameResultDao {
     }
 
     override suspend fun getComparisonQuizResults(): List<ComparisonQuizGameResultEntity> = comparisonQuizResults.first()
+
+    override suspend fun getComparisonQuizHighestPosition(categoryId: String): Int {
+        return comparisonQuizResults.first()
+            .filter { it.categoryId == categoryId }
+            .maxOfOrNull { it.endPosition }
+            ?: 0
+    }
+
+    override fun getComparisonQuizHighestPositionFlow(categoryId: String): Flow<Int> {
+        return comparisonQuizResults.map { results ->
+            results.filter { it.categoryId == categoryId }
+                .maxOfOrNull { it.endPosition }
+                ?: 0
+        }
+    }
 
     override suspend fun getXpForDateRange(
         startDate: Long,

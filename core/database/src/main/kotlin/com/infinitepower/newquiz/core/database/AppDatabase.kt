@@ -3,16 +3,15 @@ package com.infinitepower.newquiz.core.database
 import android.annotation.SuppressLint
 import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteColumn
 import androidx.room.DeleteTable
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
-import com.infinitepower.newquiz.core.database.dao.ComparisonQuizDao
 import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
 import com.infinitepower.newquiz.core.database.dao.SavedMultiChoiceQuestionsDao
-import com.infinitepower.newquiz.core.database.model.ComparisonQuizHighestPosition
 import com.infinitepower.newquiz.core.database.model.DailyChallengeTaskEntity
 import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
 import com.infinitepower.newquiz.core.database.model.MultiChoiceQuestionEntity
@@ -36,12 +35,11 @@ import com.infinitepower.newquiz.core.database.util.converters.QuestionDifficult
         MultiChoiceQuestionEntity::class,
         MazeQuizItemEntity::class,
         DailyChallengeTaskEntity::class,
-        ComparisonQuizHighestPosition::class,
         MultiChoiceGameResultEntity::class,
         WordleGameResultEntity::class,
         ComparisonQuizGameResultEntity::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -51,7 +49,12 @@ import com.infinitepower.newquiz.core.database.util.converters.QuestionDifficult
             spec = AppDatabase.RemoveDailyWordleTableMigration::class
         ),
         AutoMigration(from = 3, to = 4),
-        AutoMigration(from = 4, to = 5)
+        AutoMigration(from = 4, to = 5),
+        AutoMigration(
+            from = 5,
+            to = 6,
+            spec = AppDatabase.RemoveComparisonQuizHighestPositionTableMigration::class
+        )
     ]
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -61,8 +64,6 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun dailyChallengeDao(): DailyChallengeDao
 
-    abstract fun comparisonQuizDao(): ComparisonQuizDao
-
     abstract fun gameResultDao(): GameResultDao
 
     companion object {
@@ -71,5 +72,12 @@ abstract class AppDatabase : RoomDatabase() {
 
     @DeleteTable(tableName = "wordle_daily_calendar")
     class RemoveDailyWordleTableMigration : AutoMigrationSpec
+
+    @DeleteColumn(
+        tableName = "comparison_quiz_game_results",
+        columnName = "highest_position"
+    )
+    @DeleteTable(tableName = "comparison_quiz_highest_position")
+    class RemoveComparisonQuizHighestPositionTableMigration : AutoMigrationSpec
 }
 

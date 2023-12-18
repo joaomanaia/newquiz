@@ -1,8 +1,7 @@
 package com.infinitepower.newquiz.data.repository.comparison_quiz
 
 import com.infinitepower.newquiz.core.common.BaseApiUrls
-import com.infinitepower.newquiz.core.database.dao.ComparisonQuizDao
-import com.infinitepower.newquiz.core.database.model.ComparisonQuizHighestPosition
+import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
@@ -22,7 +21,6 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,7 +29,7 @@ import javax.inject.Singleton
 class ComparisonQuizRepositoryImpl @Inject constructor(
     private val client: HttpClient,
     private val remoteConfig: RemoteConfig,
-    private val comparisonQuizDao: ComparisonQuizDao
+    private val gameResultDao: GameResultDao
 ) : ComparisonQuizRepository {
     private val categoriesCache: MutableList<ComparisonQuizCategory> = mutableListOf()
 
@@ -69,26 +67,20 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
             emit(Resource.Success(questions))
         } catch (e: Exception) {
             e.printStackTrace()
-            emit(Resource.Error(e.localizedMessage ?: "An unknown error occurred while fetching comparison quiz data"))
+            emit(
+                Resource.Error(
+                    e.localizedMessage
+                        ?: "An unknown error occurred while fetching comparison quiz data"
+                )
+            )
         }
     }
 
     override suspend fun getHighestPosition(categoryId: String): Int {
-        val entity = comparisonQuizDao.getHighestPosition(categoryId)
-
-        return entity?.highestPosition ?: 0
+        return gameResultDao.getComparisonQuizHighestPosition(categoryId)
     }
 
-    override fun getHighestPositionFlow(categoryId: String): Flow<Int> = comparisonQuizDao
-        .getHighestPositionFlow(categoryId)
-        .map { it?.highestPosition ?: 0 }
-
-    override suspend fun saveHighestPosition(categoryId: String, position: Int) {
-        val entity = ComparisonQuizHighestPosition(
-            categoryId = categoryId,
-            highestPosition = position
-        )
-
-        comparisonQuizDao.upsert(entity)
+    override fun getHighestPositionFlow(categoryId: String): Flow<Int> {
+        return gameResultDao.getComparisonQuizHighestPositionFlow(categoryId)
     }
 }

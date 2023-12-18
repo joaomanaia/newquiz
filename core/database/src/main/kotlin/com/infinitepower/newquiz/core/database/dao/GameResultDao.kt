@@ -31,6 +31,28 @@ interface GameResultDao {
     @Query("SELECT * FROM comparison_quiz_game_results")
     suspend fun getComparisonQuizResults(): List<ComparisonQuizGameResultEntity>
 
+    @Query("""
+        SELECT end_position
+        FROM comparison_quiz_game_results
+        WHERE category_id = :categoryId
+        ORDER BY end_position DESC
+        LIMIT 1
+    """)
+    suspend fun getComparisonQuizHighestPosition(
+        categoryId: String
+    ): Int
+
+    @Query("""
+        SELECT end_position
+        FROM comparison_quiz_game_results
+        WHERE category_id = :categoryId
+        ORDER BY end_position DESC
+        LIMIT 1
+    """)
+    fun getComparisonQuizHighestPositionFlow(
+        categoryId: String
+    ): Flow<Int>
+
     @Keep
     data class XpForPlayedAt(
         @ColumnInfo(name = "earned_xp")

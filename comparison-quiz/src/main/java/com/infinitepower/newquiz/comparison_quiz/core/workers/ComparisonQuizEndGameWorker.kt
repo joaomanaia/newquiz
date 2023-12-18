@@ -10,7 +10,6 @@ import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.user_services.UserService
-import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -21,7 +20,6 @@ class ComparisonQuizEndGameWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val analyticsHelper: AnalyticsHelper,
     private val userService: UserService,
-    private val comparisonQuizRepository: ComparisonQuizRepository,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
         private const val CATEGORY_ID = "category_id"
@@ -65,13 +63,10 @@ class ComparisonQuizEndGameWorker @AssistedInject constructor(
             )
         )
 
-        val highestPosition = comparisonQuizRepository.getHighestPosition(categoryId = categoryId)
-
         userService.saveComparisonQuizGame(
             categoryId = categoryId,
             comparisonMode = comparisonModeName,
             endPosition = endPosition.toUInt(),
-            highestPosition = highestPosition.toUInt(),
             skippedAnswers = skippedAnswers.toUInt(),
             generateXp = true
         )

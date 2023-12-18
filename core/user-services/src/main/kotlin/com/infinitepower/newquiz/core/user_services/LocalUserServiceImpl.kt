@@ -212,7 +212,6 @@ class LocalUserServiceImpl @Inject constructor(
         categoryId: String,
         comparisonMode: String,
         endPosition: UInt,
-        highestPosition: UInt,
         skippedAnswers: UInt,
         generateXp: Boolean
     ) {
@@ -236,7 +235,6 @@ class LocalUserServiceImpl @Inject constructor(
                 categoryId = categoryId,
                 comparisonMode = comparisonMode,
                 endPosition = endPosition.toInt(),
-                highestPosition = highestPosition.toInt(),
                 skippedAnswers = skippedAnswers.toInt()
             )
         )

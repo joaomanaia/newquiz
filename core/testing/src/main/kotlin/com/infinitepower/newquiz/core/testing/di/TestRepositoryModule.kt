@@ -4,6 +4,7 @@ import com.infinitepower.newquiz.core.testing.data.repository.comparison_quiz.Fa
 import com.infinitepower.newquiz.core.testing.data.repository.multi_choice_quiz.TestMultiChoiceQuestionRepositoryImpl
 import com.infinitepower.newquiz.core.testing.data.repository.numbers.FakeNumberTriviaQuestionApiImpl
 import com.infinitepower.newquiz.data.di.RepositoryModule
+import com.infinitepower.newquiz.data.repository.country.CountryRepositoryImpl
 import com.infinitepower.newquiz.data.repository.daily_challenge.DailyChallengeRepositoryImpl
 import com.infinitepower.newquiz.data.repository.home.RecentCategoriesRepositoryImpl
 import com.infinitepower.newquiz.data.repository.math_quiz.MathQuizCoreRepositoryImpl
@@ -13,9 +14,9 @@ import com.infinitepower.newquiz.data.repository.multi_choice_quiz.FlagQuizRepos
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.GuessMathSolutionRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.LogoQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepositoryImpl
-import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionApiImpl
 import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.WordleRepositoryImpl
+import com.infinitepower.newquiz.domain.repository.CountryRepository
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
@@ -82,4 +83,7 @@ abstract class TestRepositoryModule {
 
     @Binds
     abstract fun bindRecentCategoriesRepository(impl: RecentCategoriesRepositoryImpl): RecentCategoriesRepository
+
+    @Binds
+    abstract fun bindCountryRepository(impl: CountryRepositoryImpl): CountryRepository
 }

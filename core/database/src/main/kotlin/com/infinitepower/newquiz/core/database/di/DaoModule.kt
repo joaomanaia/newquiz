@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.core.database.di
 
 import com.infinitepower.newquiz.core.database.AppDatabase
-import com.infinitepower.newquiz.core.database.dao.ComparisonQuizDao
 import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
@@ -28,11 +27,6 @@ object DaoModule {
     fun provideDailyChallengeDao(
         appDatabase: AppDatabase
     ): DailyChallengeDao = appDatabase.dailyChallengeDao()
-
-    @Provides
-    fun provideComparisonQuizDao(
-        appDatabase: AppDatabase
-    ): ComparisonQuizDao = appDatabase.comparisonQuizDao()
 
     @Provides
     fun provideGameResultDao(

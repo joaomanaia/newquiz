@@ -106,34 +106,18 @@ class ComparisonQuizViewModel @Inject constructor(
                 if (quizData.isGameOver) {
                     Log.d(TAG, "Game over, with position ${quizData.currentPosition}")
 
-                    // Save highest position when game is over.
-                    viewModelScope.launch {
-                        val highestPosition = comparisonQuizRepository.getHighestPosition(
-                            categoryId = getCategory().id
-                        )
+                    UpdateGlobalEventDataWorker.enqueueWork(
+                        workManager = workManager,
+                        GameEvent.ComparisonQuiz.PlayAndGetScore(quizData.currentPosition)
+                    )
 
-                        if (quizData.currentPosition > highestPosition) {
-                            comparisonQuizRepository.saveHighestPosition(
-                                categoryId = getCategory().id,
-                                position = quizData.currentPosition
-                            )
-                        }
-                    }
-
-                    viewModelScope.launch {
-                        UpdateGlobalEventDataWorker.enqueueWork(
-                            workManager = workManager,
-                            GameEvent.ComparisonQuiz.PlayAndGetScore(quizData.currentPosition)
-                        )
-
-                        ComparisonQuizEndGameWorker.enqueueWork(
-                            workManager = workManager,
-                            categoryId = getCategory().id,
-                            comparisonMode = getComparisonMode(),
-                            endPosition = quizData.currentPosition,
-                            skippedAnswers = quizData.skippedAnswers
-                        )
-                    }
+                    ComparisonQuizEndGameWorker.enqueueWork(
+                        workManager = workManager,
+                        categoryId = getCategory().id,
+                        comparisonMode = getComparisonMode(),
+                        endPosition = quizData.currentPosition,
+                        skippedAnswers = quizData.skippedAnswers
+                    )
                 }
             }.launchIn(viewModelScope)
     }

@@ -446,7 +446,6 @@ internal class LocalUserServiceImplUnitTest {
             categoryId = "category",
             comparisonMode = ComparisonMode.GREATER.name,
             endPosition = endPosition,
-            highestPosition = 10u,
             skippedAnswers = 1u,
             generateXp = true
         )
@@ -479,7 +478,6 @@ internal class LocalUserServiceImplUnitTest {
         gameResults.first().apply {
             assertThat(comparisonMode).isEqualTo(ComparisonMode.GREATER.name)
             assertThat(this.endPosition).isEqualTo(endPosition.toInt())
-            assertThat(highestPosition).isEqualTo(10)
             assertThat(earnedXp).isEqualTo(newXp.toInt())
         }
     }
@@ -498,7 +496,6 @@ internal class LocalUserServiceImplUnitTest {
             categoryId = "category",
             comparisonMode = ComparisonMode.GREATER.name,
             endPosition = endPosition,
-            highestPosition = 10u,
             skippedAnswers = 0u,
             generateXp = false
         )
@@ -581,7 +578,6 @@ internal class LocalUserServiceImplUnitTest {
                 playedAt = (now - 4.minutes).toEpochMilliseconds(), // today
                 comparisonMode = ComparisonMode.GREATER.name,
                 endPosition = 5,
-                highestPosition = 10,
                 categoryId = "category",
                 skippedAnswers = 0
             )

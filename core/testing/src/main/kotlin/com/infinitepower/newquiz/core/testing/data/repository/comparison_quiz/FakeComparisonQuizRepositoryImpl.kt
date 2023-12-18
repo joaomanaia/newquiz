@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
 import java.net.URI
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -59,12 +58,4 @@ class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRep
     }
 
     override fun getHighestPositionFlow(categoryId: String): Flow<Int> = highestPosition.map { it.getOrDefault(categoryId, 0)}
-
-    override suspend fun saveHighestPosition(categoryId: String, position: Int) {
-        highestPosition.update { currentHighestPosition ->
-            currentHighestPosition.toMutableMap().apply {
-                set(categoryId, position)
-            }
-        }
-    }
 }

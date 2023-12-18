@@ -22,9 +22,4 @@ interface ComparisonQuizRepository {
     fun getHighestPositionFlow(
         categoryId: String
     ): Flow<Int>
-
-    suspend fun saveHighestPosition(
-        categoryId: String,
-        position: Int
-    )
 }
