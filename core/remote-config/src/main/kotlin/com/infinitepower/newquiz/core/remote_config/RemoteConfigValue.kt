@@ -9,8 +9,6 @@ value class RemoteConfigValue<T>(
     val key: String
 ) {
     companion object {
-        val COUNTRIES_AND_CAPITALS = RemoteConfigValue<String>("countries_and_capitals")
-
         val MAZE_QUIZ_GENERATED_QUESTIONS = RemoteConfigValue<Int>("maze_quiz_generated_questions")
 
         val FLAG_BASE_URL = RemoteConfigValue<String>("flag_base_url")

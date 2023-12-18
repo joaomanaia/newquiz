@@ -2,6 +2,7 @@
 package com.infinitepower.newquiz.data.di
 
 import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizRepositoryImpl
+import com.infinitepower.newquiz.data.repository.country.CountryRepositoryImpl
 import com.infinitepower.newquiz.data.repository.daily_challenge.DailyChallengeRepositoryImpl
 import com.infinitepower.newquiz.data.repository.home.RecentCategoriesRepositoryImpl
 import com.infinitepower.newquiz.data.repository.math_quiz.MathQuizCoreRepositoryImpl
@@ -15,6 +16,7 @@ import com.infinitepower.newquiz.data.repository.multi_choice_quiz.saved_questio
 import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionApiImpl
 import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.WordleRepositoryImpl
+import com.infinitepower.newquiz.domain.repository.CountryRepository
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
@@ -78,4 +80,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindRecentCategoriesRepository(impl: RecentCategoriesRepositoryImpl): RecentCategoriesRepository
+
+    @Binds
+    abstract fun bindCountryRepository(impl: CountryRepositoryImpl): CountryRepository
 }
