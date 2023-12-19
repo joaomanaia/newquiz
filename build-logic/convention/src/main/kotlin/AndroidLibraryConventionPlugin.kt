@@ -54,6 +54,13 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 androidTestImplementation(libs.findLibrary("androidx.test.rules").get())
                 androidTestImplementation(libs.findLibrary("androidx.compose.ui.test").get())
                 androidTestImplementation(project(":core:testing"))
+
+                // Fix for problem of duplicate classes with guava
+                modules {
+                    module("com.google.guava:listenablefuture") {
+                        replacedBy("com.google.guava:guava", "listenablefuture is part of guava")
+                    }
+                }
             }
 
             tasks.withType<Test> {

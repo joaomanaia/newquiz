@@ -3,6 +3,7 @@ package com.infinitepower.newquiz.multi_choice_quiz
 import androidx.activity.ComponentActivity
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertAll
 import androidx.compose.ui.test.assertContentDescriptionEquals
@@ -29,6 +30,7 @@ import androidx.work.testing.WorkManagerTestInitHelper
 import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
+import com.infinitepower.newquiz.core.remote_config.LocalDefaultsRemoteConfig
 import com.infinitepower.newquiz.core.testing.utils.setTestContent
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
@@ -109,6 +111,8 @@ internal class MultiChoiceQuizScreenTest {
         composeTestRule.setTestContent {
             val windowSizeClass = calculateWindowSizeClass(composeTestRule.activity)
 
+            val context = LocalContext.current
+
             MultiChoiceQuizScreen(
                 navigator = EmptyDestinationsNavigator,
                 windowSizeClass = windowSizeClass,
@@ -126,7 +130,8 @@ internal class MultiChoiceQuizScreenTest {
                     workManager = workManager,
                     isQuestionSavedUseCase = mockk(relaxed = true),
                     analyticsHelper = LocalDebugAnalyticsHelper(),
-                    userService = userService
+                    userService = userService,
+                    remoteConfig = LocalDefaultsRemoteConfig(context)
                 )
             )
         }

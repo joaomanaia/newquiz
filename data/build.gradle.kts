@@ -40,11 +40,4 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.model)
     androidTestImplementation(projects.core.testing)
-
-    // Fix for problem of duplicate classes with guava
-    modules {
-        module("com.google.guava:listenablefuture") {
-            replacedBy("com.google.guava:guava", "listenablefuture is part of guava")
-        }
-    }
 }
