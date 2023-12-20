@@ -1,5 +1,7 @@
 package com.infinitepower.newquiz.core.analytics
 
+import kotlinx.coroutines.flow.Flow
+
 /**
  * Interface for logging analytics events.
  */
@@ -20,11 +22,13 @@ interface AnalyticsHelper {
      */
     fun setUserProperty(userProperty: UserProperty)
 
-    fun enableAll(enabled: Boolean)
-
     fun setGeneralAnalyticsEnabled(enabled: Boolean)
 
     fun setCrashlyticsEnabled(enabled: Boolean)
 
     fun setPerformanceEnabled(enabled: Boolean)
+
+    val showDataAnalyticsConsentDialog: Flow<Boolean>
+
+    suspend fun updateDataConsent(agreed: Boolean)
 }

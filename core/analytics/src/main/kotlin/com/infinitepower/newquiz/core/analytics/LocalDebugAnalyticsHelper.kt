@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.core.analytics
 
 import android.util.Log
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,10 +18,6 @@ class LocalDebugAnalyticsHelper @Inject constructor() : AnalyticsHelper {
         Log.d(TAG, "Received user property: $userProperty")
     }
 
-    override fun enableAll(enabled: Boolean) {
-        Log.d(TAG, "enableAll: $enabled")
-    }
-
     override fun setGeneralAnalyticsEnabled(enabled: Boolean) {
         Log.d(TAG, "enableGeneralAnalytics: $enabled")
     }
@@ -30,5 +28,12 @@ class LocalDebugAnalyticsHelper @Inject constructor() : AnalyticsHelper {
 
     override fun setPerformanceEnabled(enabled: Boolean) {
         Log.d(TAG, "enablePerformanceMonitoring: $enabled")
+    }
+
+    // Because this is a local debug analytics helper, we don't want to show the dialog to the user
+    override val showDataAnalyticsConsentDialog: Flow<Boolean> = flowOf(false)
+
+    override suspend fun updateDataConsent(agreed: Boolean) {
+        Log.d(TAG, "updateDataConsent: $agreed")
     }
 }

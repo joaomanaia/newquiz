@@ -25,7 +25,6 @@ import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.navigation.AppNavigation
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import com.infinitepower.newquiz.ui.components.DataCollectionConsentDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -85,10 +84,10 @@ class MainActivity : ComponentActivity() {
                             userDiamonds = uiState.userDiamonds,
                         )
 
-                        if (uiState.dialogConsent == DataAnalyticsConsentState.NONE && !uiState.loading) {
+                        if (uiState.showDataAnalyticsConsentDialog && !uiState.loading) {
                             DataCollectionConsentDialog(
-                                onAgreeClick = { viewModel.onEvent(MainScreenUiEvent.OnAgreeDisagreeClick(true)) },
-                                onDisagreeClick = { viewModel.onEvent(MainScreenUiEvent.OnAgreeDisagreeClick(false)) }
+                                onAgreeClick = { viewModel.onEvent(MainScreenUiEvent.OnDataAnalyticsConsentClick(true)) },
+                                onDisagreeClick = { viewModel.onEvent(MainScreenUiEvent.OnDataAnalyticsConsentClick(false)) }
                             )
                         }
                     }

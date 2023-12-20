@@ -2,7 +2,6 @@ package com.infinitepower.newquiz.ui.main
 
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.core.theme.AnimationsEnabled
-import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 
 /**
  * Represents the state of the main screen.
@@ -12,27 +11,8 @@ import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 @Keep
 data class MainScreenUiState(
     val loading: Boolean = true,
-    val dialogConsent: DataAnalyticsConsentState = DataAnalyticsConsentState.NONE,
+    val showDataAnalyticsConsentDialog: Boolean = false,
     val dailyChallengeClaimableCount: Int = 0,
     val animationsEnabled: AnimationsEnabled = AnimationsEnabled(),
     val userDiamonds: UInt = 0u
 )
-
-/*
-sealed interface MainScreenUiState {
-    data object Loading : MainScreenUiState
-
-    @Keep
-    data class Success(
-        val signedIn: Boolean = false,
-        val settingsShowLoginCard: Boolean = false,
-        val dialogConsent: DataAnalyticsConsentState = DataAnalyticsConsentState.NONE,
-        val dailyChallengeClaimableCount: Int = 0,
-        val animationsEnabled: AnimationsEnabled = AnimationsEnabled()
-    ) : MainScreenUiState {
-        val showLoginCard: Boolean
-            get() = settingsShowLoginCard && !signedIn
-    }
-}
-
- */

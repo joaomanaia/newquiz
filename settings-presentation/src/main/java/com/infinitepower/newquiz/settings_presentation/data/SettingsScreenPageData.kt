@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
+import com.infinitepower.newquiz.core.datastore.common.DataAnalyticsCommon
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.spacing
@@ -393,16 +394,16 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         ) = listOf(
             // Global analytics dependency
             Preference.PreferenceItem.SwitchPreference(
-                request = SettingsCommon.DataAnalyticsCollectionEnabled,
+                request = DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled,
                 title = stringResource(id = CoreR.string.analytics_collection_enabled),
                 onCheckChange = enableLoggingAnalytics,
                 primarySwitch = true
             ),
             Preference.PreferenceItem.SwitchPreference(
-                request = SettingsCommon.GeneralAnalyticsEnabled,
+                request = DataAnalyticsCommon.GeneralAnalyticsEnabled,
                 title = stringResource(id = CoreR.string.general_analytics_enabled),
                 summary = stringResource(id = CoreR.string.general_analytics_description_enabled),
-                dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
+                dependency = listOf(DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled),
                 icon = {
                     Icon(
                         imageVector = Icons.Rounded.Analytics,
@@ -412,10 +413,10 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 onCheckChange = analyticsHelper::setGeneralAnalyticsEnabled
             ),
             Preference.PreferenceItem.SwitchPreference(
-                request = SettingsCommon.CrashlyticsEnabled,
+                request = DataAnalyticsCommon.CrashlyticsEnabled,
                 title = stringResource(id = CoreR.string.crash_analytics_enabled),
                 summary = stringResource(id = CoreR.string.crash_analytics_description_enabled),
-                dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
+                dependency = listOf(DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled),
                 icon = {
                     Icon(
                         imageVector = Icons.Rounded.BugReport,
@@ -425,10 +426,10 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
                 onCheckChange = analyticsHelper::setCrashlyticsEnabled
             ),
             Preference.PreferenceItem.SwitchPreference(
-                request = SettingsCommon.PerformanceMonitoringEnabled,
+                request = DataAnalyticsCommon.PerformanceMonitoringEnabled,
                 title = stringResource(id = CoreR.string.performance_monitoring_enabled),
                 summary = stringResource(id = CoreR.string.performance_monitoring_description_enabled),
-                dependency = listOf(SettingsCommon.DataAnalyticsCollectionEnabled),
+                dependency = listOf(DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled),
                 icon = {
                     Icon(
                         imageVector = Icons.Rounded.MonitorHeart,

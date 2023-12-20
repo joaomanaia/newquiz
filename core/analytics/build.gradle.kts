@@ -14,4 +14,7 @@ dependencies {
     normalImplementation(libs.firebase.analytics)
     normalImplementation(libs.firebase.crashlytics)
     normalImplementation(libs.firebase.perf)
+
+    normalImplementation(projects.model)
+    normalImplementation(projects.core.datastore)
 }

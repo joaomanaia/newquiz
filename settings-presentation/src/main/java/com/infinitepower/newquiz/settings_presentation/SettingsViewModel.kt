@@ -4,7 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
+import com.infinitepower.newquiz.core.datastore.common.DataAnalyticsCommon
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.di.DataAnalyticsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.translation.TranslatorModelState
@@ -30,9 +32,10 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val translatorUtil: TranslatorUtil,
-    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
     private val recentCategoriesRepository: RecentCategoriesRepository,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
+    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
+    @DataAnalyticsDataStoreManager private val dataAnalyticsDataStoreManager: DataStoreManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = combine(
@@ -128,21 +131,21 @@ class SettingsViewModel @Inject constructor(
             DataAnalyticsConsentState.DISAGREED
         }
 
-        settingsDataStoreManager.editPreference(
-            key = SettingsCommon.DataAnalyticsConsent.key,
+        dataAnalyticsDataStoreManager.editPreference(
+            key = DataAnalyticsCommon.DataAnalyticsConsent.key,
             newValue = consentState.name
         )
 
         // Enable general analytics
-        val generalEnabled = settingsDataStoreManager.getPreference(SettingsCommon.GeneralAnalyticsEnabled)
+        val generalEnabled = dataAnalyticsDataStoreManager.getPreference(DataAnalyticsCommon.GeneralAnalyticsEnabled)
         analyticsHelper.setGeneralAnalyticsEnabled(generalEnabled && enabled)
 
         // Enable crashlytics
-        val crashlyticsEnabled = settingsDataStoreManager.getPreference(SettingsCommon.CrashlyticsEnabled)
+        val crashlyticsEnabled = dataAnalyticsDataStoreManager.getPreference(DataAnalyticsCommon.CrashlyticsEnabled)
         analyticsHelper.setCrashlyticsEnabled(crashlyticsEnabled && enabled)
 
         // Enable performance monitoring
-        val performanceMonitoringEnabled = settingsDataStoreManager.getPreference(SettingsCommon.PerformanceMonitoringEnabled)
+        val performanceMonitoringEnabled = dataAnalyticsDataStoreManager.getPreference(DataAnalyticsCommon.PerformanceMonitoringEnabled)
         analyticsHelper.setPerformanceEnabled(performanceMonitoringEnabled && enabled)
     }
 }

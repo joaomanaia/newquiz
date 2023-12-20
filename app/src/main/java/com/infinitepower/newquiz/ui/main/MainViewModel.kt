@@ -9,7 +9,6 @@ import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.theme.AnimationsEnabled
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
-import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,14 +39,14 @@ class MainViewModel @Inject constructor(
 
     val uiState: StateFlow<MainScreenUiState> = combine(
         animationsEnabledFlow,
-        settingsDataStoreManager.getPreferenceFlow(SettingsCommon.DataAnalyticsConsent),
+        analyticsHelper.showDataAnalyticsConsentDialog,
         dailyChallengeRepository.getClaimableTasksCountFlow(),
         userService.getUserDiamondsFlow()
-    ) { animationsEnabled, dataAnalyticsDialogConsent, dailyChallengeClaimableCount, userDiamonds ->
+    ) { animationsEnabled, showDataAnalyticsConsentDialog, dailyChallengeClaimableCount, userDiamonds ->
         MainScreenUiState(
             loading = false,
             animationsEnabled = animationsEnabled,
-            dialogConsent = DataAnalyticsConsentState.valueOf(dataAnalyticsDialogConsent),
+            showDataAnalyticsConsentDialog = showDataAnalyticsConsentDialog,
             dailyChallengeClaimableCount = dailyChallengeClaimableCount,
             userDiamonds = userDiamonds
         )
@@ -59,45 +58,9 @@ class MainViewModel @Inject constructor(
 
     fun onEvent(event: MainScreenUiEvent) {
         when (event) {
-            is MainScreenUiEvent.OnAgreeDisagreeClick -> updateDataConsent(event.agreed)
-        }
-    }
-
-    private fun updateDataConsent(agreed: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val consentState = if (agreed) {
-                DataAnalyticsConsentState.AGREED
-            } else {
-                DataAnalyticsConsentState.DISAGREED
+            is MainScreenUiEvent.OnDataAnalyticsConsentClick -> viewModelScope.launch(Dispatchers.IO) {
+                analyticsHelper.updateDataConsent(event.agreed)
             }
-
-            settingsDataStoreManager.editPreference(
-                key = SettingsCommon.DataAnalyticsConsent.key,
-                newValue = consentState.name
-            )
-
-            // Update all data analytics settings
-            settingsDataStoreManager.editPreference(
-                key = SettingsCommon.DataAnalyticsCollectionEnabled.key,
-                newValue = agreed
-            )
-
-            settingsDataStoreManager.editPreference(
-                key = SettingsCommon.GeneralAnalyticsEnabled.key,
-                newValue = agreed
-            )
-
-            settingsDataStoreManager.editPreference(
-                key = SettingsCommon.CrashlyticsEnabled.key,
-                newValue = agreed
-            )
-
-            settingsDataStoreManager.editPreference(
-                key = SettingsCommon.PerformanceMonitoringEnabled.key,
-                newValue = agreed
-            )
-
-            analyticsHelper.enableAll(agreed)
         }
     }
 }

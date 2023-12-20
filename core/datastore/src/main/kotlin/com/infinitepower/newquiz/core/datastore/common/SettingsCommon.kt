@@ -11,7 +11,6 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.infinitepower.newquiz.core.datastore.PreferenceRequest
-import com.infinitepower.newquiz.model.DataAnalyticsConsentState
 import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 import com.infinitepower.newquiz.core.R as CoreR
 import java.util.Locale
@@ -19,17 +18,6 @@ import java.util.Locale
 val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 object SettingsCommon {
-    // Data Analytics
-    object DataAnalyticsCollectionEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("dataAnalyticsEnabled"), false)
-
-    object DataAnalyticsConsent : PreferenceRequest<String>(stringPreferencesKey("dataAnalyticsConsent"), DataAnalyticsConsentState.NONE.name)
-
-    object GeneralAnalyticsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("generalAnalyticsEnabled"), false)
-
-    object CrashlyticsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("crashlyticsEnabled"), false)
-
-    object PerformanceMonitoringEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("performanceMonitoringEnabled"), false)
-
     object MultiChoiceQuizQuestionsSize :
         PreferenceRequest<Int>(intPreferencesKey("quickQuizQuestionsSize"), 5)
 
