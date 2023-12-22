@@ -125,7 +125,6 @@ dependencies {
     implementation(projects.feature.settings)
     implementation(projects.model)
     implementation(projects.multiChoiceQuiz)
-    implementation(projects.settingsPresentation)
     implementation(projects.wordle)
     implementation(projects.data)
     implementation(projects.domain)
