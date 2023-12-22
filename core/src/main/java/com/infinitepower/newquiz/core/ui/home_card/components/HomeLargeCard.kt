@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,7 @@ import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLigh
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.compose.StatusWrapper
+import com.infinitepower.newquiz.core.ui.DISABLED_ALPHA
 import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 
@@ -84,16 +85,14 @@ fun HomeLargeCard(
                     is CardIcon.Lottie -> {
                         val composition by rememberLottieComposition(spec = data.icon.spec)
 
-                        StatusWrapper(
-                            enabled = data.enabled,
-                        ) {
-                            LottieAnimation(
-                                composition = composition,
-                                modifier = Modifier.size(100.dp),
-                                iterations = LottieConstants.IterateForever,
-                                isPlaying = data.enabled
-                            )
-                        }
+                        LottieAnimation(
+                            composition = composition,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .alpha(if (data.enabled) 1f else DISABLED_ALPHA),
+                            iterations = LottieConstants.IterateForever,
+                            isPlaying = data.enabled
+                        )
                     }
                 }
             }
@@ -105,11 +104,9 @@ fun HomeLargeCard(
 private fun getPrimaryCardColors(): CardColors = CardDefaults.cardColors(
     containerColor = MaterialTheme.colorScheme.primary,
     contentColor = MaterialTheme.colorScheme.onPrimary,
-    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = DisabledAlpha),
+    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_ALPHA),
     disabledContentColor = MaterialTheme.colorScheme.onPrimary,
 )
-
-private const val DisabledAlpha = 0.38f
 
 @Composable
 @PreviewNightLight

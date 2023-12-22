@@ -2,12 +2,13 @@ package com.infinitepower.newquiz.feature.settings.components.preferences.widget
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
-import com.infinitepower.newquiz.core.ui.StatusWrapper
+import com.infinitepower.newquiz.core.ui.DisabledContentEmphasis
 import com.infinitepower.newquiz.feature.settings.model.Preference
 
 @Composable
@@ -21,7 +22,7 @@ internal fun TextPreferenceWidget(
 
     val summaryText = summary ?: preference.summary
 
-    StatusWrapper(enabled = isEnabled) {
+    DisabledContentEmphasis(enabled = isEnabled) {
         if (summaryText == null) {
             ListItem(
                 headlineContent = {
@@ -36,6 +37,7 @@ internal fun TextPreferenceWidget(
                     onClick = onClick
                 ),
                 trailingContent = trailing,
+                colors = listItemColors()
             )
         } else {
             ListItem(
@@ -56,7 +58,8 @@ internal fun TextPreferenceWidget(
                     enabled = isEnabled,
                     onClick = onClick
                 ),
-                trailingContent = trailing
+                trailingContent = trailing,
+                colors = listItemColors()
             )
         }
     }
@@ -71,7 +74,7 @@ internal fun TextPreferenceWidgetRes(
 ) {
     val isEnabled = LocalPreferenceEnabledStatus.current && preference.enabled
 
-    StatusWrapper(enabled = isEnabled) {
+    DisabledContentEmphasis(enabled = isEnabled) {
         ListItem(
             headlineContent = {
                 Text(
@@ -94,6 +97,7 @@ internal fun TextPreferenceWidgetRes(
                 onClick = onClick
             ),
             trailingContent = trailing,
+            colors = listItemColors()
         )
     }
 }
@@ -107,13 +111,12 @@ internal fun TextPreferenceWidget(
 ) {
     val isEnabled = LocalPreferenceEnabledStatus.current && preference.enabled
 
-    StatusWrapper(enabled = isEnabled) {
+    DisabledContentEmphasis(enabled = isEnabled) {
         ListItem(
             headlineContent = {
                 Text(
                     text = preference.title,
-                    maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE,
-                    style = MaterialTheme.typography.titleMedium
+                    maxLines = if (preference.singleLineTitle) 1 else Int.MAX_VALUE
                 )
             },
             supportingContent = summary,
@@ -123,6 +126,12 @@ internal fun TextPreferenceWidget(
                 onClick = onClick
             ),
             trailingContent = trailing,
+            colors = listItemColors()
         )
     }
 }
+
+@Composable
+private fun listItemColors() = ListItemDefaults.colors(
+    containerColor = Color.Transparent
+)

@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -25,7 +26,7 @@ import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
-import com.infinitepower.newquiz.core.ui.compose.StatusWrapper
+import com.infinitepower.newquiz.core.ui.DISABLED_ALPHA
 import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 
 @Composable
@@ -47,43 +48,39 @@ fun CategoryComponent(
         MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
     }
 
-    StatusWrapper(
+    Surface(
+        modifier = modifier.alpha(if (enabled) 1f else DISABLED_ALPHA),
+        shape = shapeMedium,
+        onClick = onClick,
         enabled = enabled
     ) {
-        Surface(
-            modifier = modifier,
-            shape = shapeMedium,
-            onClick = onClick,
-            enabled = enabled
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = stringResource(id = R.string.image_category_of_s, title),
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(MaterialTheme.shapes.medium),
+            contentScale = ContentScale.Crop
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(containerOverlayColor),
+            contentAlignment = Alignment.Center
         ) {
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = stringResource(id = R.string.image_category_of_s, title),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(MaterialTheme.shapes.medium),
-                contentScale = ContentScale.Crop
+            Text(
+                text = title,
+                style = textStyle,
+                color = Color.White,
+                textAlign = TextAlign.Center
             )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(containerOverlayColor),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = title,
-                    style = textStyle,
-                    color = Color.White,
-                    textAlign = TextAlign.Center
+            if (showConnectionInfo.shouldShowBadge(requireInternetConnection)) {
+                CategoryConnectionInfoBadge(
+                    modifier = Modifier
+                        .padding(MaterialTheme.spacing.default)
+                        .align(Alignment.TopEnd),
+                    requireConnection = requireInternetConnection
                 )
-                if (showConnectionInfo.shouldShowBadge(requireInternetConnection)) {
-                    CategoryConnectionInfoBadge(
-                        modifier = Modifier
-                            .padding(MaterialTheme.spacing.default)
-                            .align(Alignment.TopEnd),
-                        requireConnection = requireInternetConnection
-                    )
-                }
             }
         }
     }

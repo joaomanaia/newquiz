@@ -6,8 +6,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
+import com.infinitepower.newquiz.core.datastore.PreferenceRequest
+import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.feature.settings.model.Preference
 
@@ -46,7 +52,7 @@ private fun SwitchPreferenceContainer(
 ) {
     if (isPrimary) {
         val containerColor = if (checked) {
-            MaterialTheme.colorScheme.primary
+            MaterialTheme.colorScheme.primaryContainer
         } else {
             MaterialTheme.colorScheme.surfaceVariant
         }
@@ -62,5 +68,29 @@ private fun SwitchPreferenceContainer(
         )
     } else {
         content()
+    }
+}
+
+@Composable
+@PreviewNightLight
+private fun SwitchPreferencePreview(
+    @PreviewParameter(BooleanPreviewParameterProvider::class) checked: Boolean
+) {
+    NewQuizTheme {
+        Surface {
+            SwitchPreferenceWidget(
+                preference = Preference.PreferenceItem.SwitchPreference(
+                    request = PreferenceRequest(
+                        key = booleanPreferencesKey("switch_preference"),
+                        defaultValue = false
+                    ),
+                    title = "Switch Preference",
+                    enabled = true,
+                    primarySwitch = true
+                ),
+                checked = checked,
+                onCheckChange = {}
+            )
+        }
     }
 }
