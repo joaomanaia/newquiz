@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.feature.settings.components.preferences.widgets
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

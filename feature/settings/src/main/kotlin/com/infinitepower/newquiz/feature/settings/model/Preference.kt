@@ -2,7 +2,6 @@ package com.infinitepower.newquiz.feature.settings.model
 
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.infinitepower.newquiz.core.datastore.PreferenceRequest
 
 /**
