@@ -74,5 +74,9 @@ gradlePlugin {
             id = "newquiz.android.compose.destinations"
             implementationClass = "AndroidComposeDestinationsConventionPlugin"
         }
+        register("androidFeature") {
+            id = "newquiz.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
     }
 }

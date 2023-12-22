@@ -36,6 +36,8 @@ include(":core:remote-config")
 include(":core:user-services")
 include(":core:user-services:ui")
 
+include(":feature:settings")
+
 include(":model")
 include(":domain")
 include(":data")

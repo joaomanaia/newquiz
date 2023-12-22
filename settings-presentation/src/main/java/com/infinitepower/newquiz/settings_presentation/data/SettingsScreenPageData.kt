@@ -131,9 +131,11 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         )
     }
 
+    @Deprecated("-----------------")
     data object General : SettingsScreenPageData(key = ScreenKey("general")) {
         override val stringRes: Int
             get() = CoreR.string.general
+
 
         @Composable
         @ReadOnlyComposable
@@ -215,6 +217,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         )
     }
 
+    @Deprecated("---------------")
     data object MultiChoiceQuiz : SettingsScreenPageData(key = ScreenKey("multi_choice_quiz")) {
         override val stringRes: Int
             get() = CoreR.string.multi_choice_quiz
@@ -237,6 +240,7 @@ sealed class SettingsScreenPageData(val key: ScreenKey) {
         )
     }
 
+    @Deprecated("---------------")
     data object Wordle : SettingsScreenPageData(key = ScreenKey("wordle")) {
         override val stringRes: Int
             get() = CoreR.string.wordle

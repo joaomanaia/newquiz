@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -33,7 +32,6 @@ import com.infinitepower.newquiz.core.util.rememberAppVersion
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
-@ExperimentalMaterial3Api
 fun AppNameWithLogo(
     modifier: Modifier = Modifier
 ) {
@@ -68,7 +66,6 @@ internal fun AppNameWithLogo(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 private fun AppNameWithVersion(
     modifier: Modifier = Modifier,
     appName: String,
@@ -90,7 +87,7 @@ private fun AppNameWithVersion(
 }
 
 @Composable
-fun AppLogo(
+private fun AppLogo(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -126,7 +123,6 @@ fun AppLogo(
 
 @Composable
 @PreviewNightLight
-@OptIn(ExperimentalMaterial3Api::class)
 private fun AppNameWithLogoPreview() {
     NewQuizTheme {
         Surface {

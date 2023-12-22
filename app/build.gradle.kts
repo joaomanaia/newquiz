@@ -122,6 +122,7 @@ dependencies {
     implementation(projects.core.remoteConfig)
     implementation(projects.core.userServices)
     implementation(projects.core.userServices.ui)
+    implementation(projects.feature.settings)
     implementation(projects.model)
     implementation(projects.multiChoiceQuiz)
     implementation(projects.settingsPresentation)

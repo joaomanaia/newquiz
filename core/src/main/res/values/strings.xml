@@ -281,4 +281,9 @@
     <string name="total_xp">Total XP</string>
     <string name="today">Today</string>
     <string name="this_week">This Week</string>
+    <string name="general_settings_summary">Categories, Animations</string>
+    <string name="multi_choice_settings_summary">Question count</string>
+    <string name="wordle_settings_summary">Hard mode, Quiz language, Letter hints</string>
+    <string name="translation_settings_summary">Translation language</string>
+    <string name="about_and_help_settings_summary">Version, Contact, Open source licences</string>
 </resources>

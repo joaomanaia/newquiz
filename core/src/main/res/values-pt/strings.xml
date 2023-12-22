@@ -287,4 +287,9 @@
     <string name="total_xp">Total de XP</string>
     <string name="today">Hoje</string>
     <string name="this_week">Esta Semana</string>
+    <string name="general_settings_summary">Categorias, Animações</string>
+    <string name="multi_choice_settings_summary">Contagem de perguntas</string>
+    <string name="wordle_settings_summary">Modo difícil, Linguagem do questionário, Dicas de palavras</string>
+    <string name="translation_settings_summary">Idioma de tradução</string>
+    <string name="about_and_help_settings_summary">Versão, Contacto, Licenças de código aberto</string>
 </resources>
