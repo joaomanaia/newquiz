@@ -1,7 +1,6 @@
 name: Android CI
 
 on:
-  workflow_dispatch:
   push:
     branches: [ "main" ]
     paths-ignore:
@@ -11,6 +10,10 @@ on:
     paths-ignore:
       - '**.md'
 
+concurrency:
+  group: android-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   checks: write
@@ -18,19 +21,24 @@ permissions:
 
 env:
   JAVA_VERSION: "17"
-  JAVA_DISTR: 'corretto'
+  JAVA_DISTR: 'zulu'
 
 jobs:
-  test:
-    name: "🤖 Unit Tests"
+  tests_and_apk:
+    name: "🤖 Local Tests and 📦 APKs"
     runs-on: ubuntu-20.04
+
+    timeout-minutes: 60
 
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: ${{ env.JAVA_DISTR }}
           java-version: ${{ env.JAVA_VERSION }}
@@ -47,48 +55,16 @@ jobs:
         run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
 
       - name: Setup gradle
-        uses: gradle/gradle-build-action@v2.5.1
+        uses: gradle/gradle-build-action@v2
 
-      - name: Run tests
+      - name: Run unit tests
         run: ./gradlew testAllUnitTest --stacktrace
-#        run: ./gradlew testNormalDebug testFossDebug --stacktrace
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: '**/build/test-results/test*/TEST-*.xml'
-
-  android-lint:
-    name: "🔍 Android Lint"
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: ${{ env.JAVA_DISTR }}
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Create google-services.json file
-        run: cat /home/runner/work/newquiz/newquiz/app/google-services.json | base64
-
-      - name: Put google-services.json data
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
-
-      - name: Increase gradle daemon memory
-        run: "echo \"org.gradle.jvmargs=-Xmx4096m\" >> gradle.properties"
-
-      - name: Workaround for Android Gradle Plugin issue
-        run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
-
-      - name: Setup gradle
-        uses: gradle/gradle-build-action@v2.5.1
 
       - name: Lint sources
         run: ./gradlew lint --stacktrace
@@ -98,43 +74,11 @@ jobs:
         with:
           report-path: '**/build/reports/*.xml'
 
-  assemble-apk:
-    name: "📦 Assemble APKs"
-    needs:
-      - test
-      - android-lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: ${{ env.JAVA_DISTR }}
-          java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Create google-services.json file
-        run: cat /home/runner/work/newquiz/newquiz/app/google-services.json | base64
-
-      - name: Put google-services.json data
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA > /home/runner/work/newquiz/newquiz/app/google-services.json
-
-      - name: Workaround for Android Gradle Plugin issue
-        run: 'echo "ndk.dir=${ANDROID_HOME}/ndk-bundle" > local.properties'
-
-      - name: Setup gradle
-        uses: gradle/gradle-build-action@v2.5.1
-
       - name: Assemble debug APKs
         run: ./gradlew assembleNormalDebug assembleFossDebug --stacktrace
 
       - name: Upload APKs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: APKs
           path: app/build/outputs/apk/**/app-*-universal-debug.apk
-#                app/build/outputs/apk/debug/app-universal-debug.apk
