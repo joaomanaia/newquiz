@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -49,6 +51,7 @@ internal fun WordleKeyBoard(
     wordleQuizType: WordleQuizType,
     keys: CharArray,
     disabledKeys: Set<Char>,
+    contentPadding: PaddingValues = PaddingValues(),
     onKeyClick: (key: Char) -> Unit
 ) {
     val spaceSmall = MaterialTheme.spacing.small
@@ -61,7 +64,9 @@ internal fun WordleKeyBoard(
 
     if (wordleQuizType == WordleQuizType.TEXT) {
         FlowRow(
-            modifier = modifier.fillMaxWidth(maxWidth),
+            modifier = modifier
+                .padding(contentPadding)
+                .fillMaxWidth(maxWidth),
             verticalArrangement = Arrangement.spacedBy(spaceSmall),
             horizontalArrangement = Arrangement.spacedBy(spaceSmall, Alignment.CenterHorizontally)
         ) {
@@ -84,6 +89,7 @@ internal fun WordleKeyBoard(
             userScrollEnabled = false,
             horizontalArrangement = Arrangement.spacedBy(spaceSmall, Alignment.CenterHorizontally),
             verticalArrangement = Arrangement.spacedBy(spaceSmall, Alignment.CenterVertically),
+            contentPadding = contentPadding
         ) {
             items(items = keyList) { key ->
                 WordleKeyboardKey(

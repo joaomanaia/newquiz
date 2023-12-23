@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.*
@@ -27,7 +26,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -37,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.animationsEnabled
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.core.util.asString
 import com.infinitepower.newquiz.data.util.translation.getWordleTitle
 import com.infinitepower.newquiz.model.wordle.WordleChar
@@ -129,14 +128,7 @@ private fun WordleScreenImpl(
         topBar = {
             TopAppBar(
                 title = { Text(text = screenTitle.asString()) },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Rounded.ArrowBack,
-                            contentDescription = stringResource(id = CoreR.string.back)
-                        )
-                    }
-                },
+                navigationIcon = { BackIconButton(onClick = onBackClick) },
                 actions = {
                     IconButton(onClick = { setInfoDialogVisibility(true) }) {
                         Icon(
@@ -224,8 +216,8 @@ private fun WordleScreenImpl(
                 if (!uiState.loading && !uiState.isGamedEnded) {
                     WordleKeyBoard(
                         modifier = Modifier
-                            .padding(horizontal = MaterialTheme.spacing.small)
-                            .padding(bottom = keyboardBottomPadding)
+                            // .padding(horizontal = MaterialTheme.spacing.small)
+                            // .padding(bottom = keyboardBottomPadding)
                             .testTag(WordleScreenTestTags.KEYBOARD),
                         rowLayout = rowLayout,
                         keys = uiState.wordleKeys,
@@ -234,7 +226,12 @@ private fun WordleScreenImpl(
                             onEvent(WordleScreenUiEvent.OnKeyClick(key))
                         },
                         wordleQuizType = uiState.wordleQuizType ?: WordleQuizType.TEXT,
-                        windowWidthSizeClass = windowSizeClass.widthSizeClass
+                        windowWidthSizeClass = windowSizeClass.widthSizeClass,
+                        contentPadding = PaddingValues(
+                            start = MaterialTheme.spacing.small,
+                            end = MaterialTheme.spacing.small,
+                            bottom = keyboardBottomPadding
+                        )
                     )
                 }
 
@@ -494,11 +491,6 @@ internal object WordleScreenTestTags {
 
 @Composable
 @PreviewScreenSizes
-@Preview(
-    showBackground = true,
-    device = "spec:width=1280dp,height=800dp,dpi=480,orientation=portrait",
-    group = "Expanded"
-)
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 private fun WordleScreenPreview() {
     val rowItems = listOf(
@@ -525,7 +517,7 @@ private fun WordleScreenPreview() {
                 rows = rowItems,
                 currentRowPosition = 0,
                 loading = false,
-                wordleQuizType = WordleQuizType.TEXT,
+                wordleQuizType = WordleQuizType.MATH_FORMULA,
                 textHelper = "Wordle text helper for word."
             ),
             onEvent = {},
