@@ -7,8 +7,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.user_services.TimeRange
 import com.infinitepower.newquiz.core.user_services.XpEarnedByDateTime
@@ -100,7 +100,7 @@ private val axisTitleMarginValue = 4.dp
 private val startAxisTitleMargins = dimensionsOf(end = axisTitleMarginValue)
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun XpTodayCardPreview() {
     val now = Clock.System.now()
     val tz = TimeZone.currentSystemDefault()
@@ -121,7 +121,7 @@ private fun XpTodayCardPreview() {
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun XpThisWeekCardPreview() {
     val now = Clock.System.now()
     val tz = TimeZone.currentSystemDefault()

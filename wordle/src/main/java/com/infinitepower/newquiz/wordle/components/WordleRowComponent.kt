@@ -23,9 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.R as CoreR
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.extendedColors
@@ -295,7 +295,7 @@ internal object WordleRowComponentTestingTags {
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun WordleComponentPreview() {
     val item = WordleItem.fromChar('A')
 
@@ -316,7 +316,7 @@ private fun WordleComponentPreview() {
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun WordleRowComponentPreview() {
     val item = WordleRowItem(
         items = listOf(

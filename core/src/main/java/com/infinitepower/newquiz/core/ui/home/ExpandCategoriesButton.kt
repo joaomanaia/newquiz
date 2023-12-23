@@ -21,9 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 
@@ -76,7 +76,7 @@ internal fun ExpandCategoriesButton(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun ExpandCategoriesButtonPreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) seeAllCategories: Boolean
 ) {

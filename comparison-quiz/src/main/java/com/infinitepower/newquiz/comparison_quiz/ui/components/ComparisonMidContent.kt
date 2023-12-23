@@ -14,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.comparison_quiz.ui.AnimationState
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.R as CoreR
 
@@ -81,7 +81,7 @@ private fun ComparisonMidContainer(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun ComparisonMidContentPreview() {
     NewQuizTheme {
         Surface {

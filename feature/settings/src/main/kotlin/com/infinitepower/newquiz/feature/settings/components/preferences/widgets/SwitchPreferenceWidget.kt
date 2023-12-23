@@ -6,10 +6,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
 import com.infinitepower.newquiz.core.datastore.PreferenceRequest
@@ -72,7 +72,7 @@ private fun SwitchPreferenceContainer(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun SwitchPreferencePreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) checked: Boolean
 ) {

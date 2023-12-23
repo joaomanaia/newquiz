@@ -27,11 +27,11 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
@@ -265,7 +265,7 @@ private fun getContentColor(
 private fun Offset.toMazePoint(): MazePoint = MazePoint(x, y)
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun MazeComponentPreview() {
     val completedItems = List(9) {
         MazeQuiz.MazeItem.Wordle(

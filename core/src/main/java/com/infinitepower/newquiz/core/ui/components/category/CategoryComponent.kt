@@ -20,10 +20,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.DISABLED_ALPHA
@@ -87,7 +87,7 @@ fun CategoryComponent(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun CategoryPreview() {
     NewQuizTheme {
         Surface {

@@ -24,13 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -109,7 +109,7 @@ private fun getPrimaryCardColors(): CardColors = CardDefaults.cardColors(
 )
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class)
 private fun HomeLargeCardPreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) enabled: Boolean
@@ -130,7 +130,7 @@ private fun HomeLargeCardPreview(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class)
 private fun PrimaryHomeLargeCardPreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) enabled: Boolean

@@ -21,8 +21,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import kotlinx.datetime.Instant
@@ -158,7 +158,7 @@ internal fun DailyChallengeCard(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class)
 private fun DailyChallengeCardPreview() {
     NewQuizTheme {

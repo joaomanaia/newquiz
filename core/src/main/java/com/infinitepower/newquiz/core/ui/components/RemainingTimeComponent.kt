@@ -25,7 +25,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.model.RemainingTime
 import kotlin.time.Duration
@@ -185,7 +185,7 @@ internal object RemainingTimeComponentTestTags {
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun RemainingTimeComponentPreview() {
     NewQuizTheme {
         Surface {

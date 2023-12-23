@@ -15,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.core.R as CoreR
@@ -100,7 +100,7 @@ private fun SelectableListItem(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun SelectableListItemPreview() {
     NewQuizTheme {
         Surface {

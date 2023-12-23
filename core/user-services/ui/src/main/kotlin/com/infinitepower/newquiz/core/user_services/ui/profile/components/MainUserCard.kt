@@ -31,11 +31,11 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.infinitepower.newquiz.core.common.DEFAULT_USER_PHOTO
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.R as CoreR
@@ -153,7 +153,7 @@ private fun LevelCard(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun MainUserCardPreview() {
     NewQuizTheme {
         Surface {

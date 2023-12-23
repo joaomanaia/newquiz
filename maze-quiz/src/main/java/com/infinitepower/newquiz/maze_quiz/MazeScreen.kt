@@ -27,9 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.maze_quiz.components.GenerateMazeComponent
@@ -173,7 +173,7 @@ private fun MazeScreenImpl(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class)
 fun MazeScreenPreview() {
     val completedItems = List(9) {

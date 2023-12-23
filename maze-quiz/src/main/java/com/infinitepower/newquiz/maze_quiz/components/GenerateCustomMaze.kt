@@ -41,8 +41,8 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.util.asString
@@ -376,7 +376,7 @@ private fun CategoryComponent(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class)
 private fun GenerateCustomMazePreview() {
     NewQuizTheme {

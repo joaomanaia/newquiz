@@ -20,9 +20,9 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -76,7 +76,7 @@ private fun getIconByCategory(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class)
 private fun SavedMultiChoiceQuestionsScreenPreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) selected: Boolean

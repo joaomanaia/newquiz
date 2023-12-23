@@ -22,10 +22,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -230,8 +230,7 @@ class CardQuestionAnswerColors internal constructor(
 
 
 @Composable
-@PreviewNightLight
-@OptIn(ExperimentalMaterial3Api::class)
+@PreviewLightDark
 private fun CardQuestionsPreview() {
     NewQuizTheme {
         Surface {
@@ -245,8 +244,7 @@ private fun CardQuestionsPreview() {
 }
 
 @Composable
-@PreviewNightLight
-@OptIn(ExperimentalMaterial3Api::class)
+@PreviewLightDark
 private fun CardQuestionOptionPreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) selected: Boolean
 ) {

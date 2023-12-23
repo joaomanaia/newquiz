@@ -23,10 +23,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.R as CoreR
@@ -100,7 +100,7 @@ internal fun FilledIconButton(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun AboutAndHelpButtonsPreview() {
     NewQuizTheme {
         Surface {
@@ -112,7 +112,7 @@ private fun AboutAndHelpButtonsPreview() {
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun PrimaryButtonPreview() {
     NewQuizTheme {
         Surface {

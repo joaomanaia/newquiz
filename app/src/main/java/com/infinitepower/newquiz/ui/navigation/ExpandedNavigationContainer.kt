@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.ui.navigation
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -14,9 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewExpandedNightLight
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.ui.components.DiamondsCounter
@@ -77,7 +78,17 @@ internal fun ExpandedContainer(
 }
 
 @Composable
-@PreviewExpandedNightLight
+@Preview(
+    showBackground = true,
+    device = "spec:width=1280dp,height=800dp,dpi=480",
+    group = "Expanded"
+)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    device = "spec:width=1280dp,height=800dp,dpi=480",
+    group = "Expanded"
+)
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MediumContainerPreview() {
     val selectedItem = getNavigationItems()

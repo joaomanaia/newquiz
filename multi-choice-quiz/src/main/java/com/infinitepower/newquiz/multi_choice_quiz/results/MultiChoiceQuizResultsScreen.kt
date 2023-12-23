@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -45,7 +46,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
@@ -285,7 +285,7 @@ private fun ResultsScreenContainer(
 }
 
 @Composable
-@AllPreviewsNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 private fun MultiChoiceQuizResultsScreenPreview() {
     val questionSteps = listOf(

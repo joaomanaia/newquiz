@@ -13,8 +13,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.R as CoreR
 import kotlinx.datetime.Clock
@@ -80,7 +80,7 @@ private fun GoodDayText(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun GoodDayTextPreview() {
     NewQuizTheme {
         Surface {

@@ -25,9 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
@@ -140,7 +140,7 @@ internal object WordleKeyBoardTestingTags {
 }
 
 @Composable
-@AllPreviewsNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalLayoutApi::class)
 private fun WordKeyBoardPreview() {
     val configuration = LocalConfiguration.current
@@ -169,7 +169,7 @@ private fun WordKeyBoardPreview() {
 }
 
 @Composable
-@AllPreviewsNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalLayoutApi::class)
 private fun WordKeyBoardNumbersPreview() {
     val allNumbers = "1234567890"
@@ -200,7 +200,7 @@ private fun WordKeyBoardNumbersPreview() {
 }
 
 @Composable
-@AllPreviewsNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalLayoutApi::class)
 private fun WordKeyBoardMathFormulaPreview() {
     val allNumbers = "1234567890+-*/="

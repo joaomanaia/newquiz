@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.util.rememberAppVersion
@@ -122,7 +122,7 @@ private fun AppLogo(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun AppNameWithLogoPreview() {
     NewQuizTheme {
         Surface {

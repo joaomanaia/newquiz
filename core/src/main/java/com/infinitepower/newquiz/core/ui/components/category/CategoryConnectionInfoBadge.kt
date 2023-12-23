@@ -24,7 +24,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -95,7 +95,7 @@ internal fun CategoryConnectionInfoBadge(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun CategoryConnectionInfoBadgePreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) requireConnection: Boolean
 ) {

@@ -28,12 +28,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.animationsEnabled
 import com.infinitepower.newquiz.core.theme.spacing
@@ -493,7 +493,7 @@ internal object WordleScreenTestTags {
 }
 
 @Composable
-@AllPreviewsNightLight
+@PreviewScreenSizes
 @Preview(
     showBackground = true,
     device = "spec:width=1280dp,height=800dp,dpi=480,orientation=portrait",

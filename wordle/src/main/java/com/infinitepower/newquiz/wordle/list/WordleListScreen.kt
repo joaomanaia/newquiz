@@ -11,11 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
-import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
@@ -102,7 +102,7 @@ private fun WordleListScreenImpl(
 }
 
 @Composable
-@AllPreviewsNightLight
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class)
 private fun WordleListScreenPreview() {
     NewQuizTheme {

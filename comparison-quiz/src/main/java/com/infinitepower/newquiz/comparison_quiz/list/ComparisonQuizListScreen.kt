@@ -19,7 +19,7 @@ import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScre
 import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonModeComponents
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
-import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
@@ -115,7 +115,7 @@ private fun ComparisonQuizListScreenImpl(
 }
 
 @Composable
-@AllPreviewsNightLight
+@PreviewLightDark
 private fun ComparisonQuizListScreenPreview() {
     NewQuizTheme {
         Surface {

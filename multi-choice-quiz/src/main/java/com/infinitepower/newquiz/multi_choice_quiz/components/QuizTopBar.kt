@@ -24,9 +24,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.infinitepower.newquiz.core.common.annotation.compose.PreviewNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.animationsEnabled
 import com.infinitepower.newquiz.core.theme.spacing
@@ -160,7 +160,7 @@ private fun QuizTopBarContainer(
 }
 
 @Composable
-@PreviewNightLight
+@PreviewLightDark
 private fun QuizTopBarPreview() {
     NewQuizTheme {
         Surface {

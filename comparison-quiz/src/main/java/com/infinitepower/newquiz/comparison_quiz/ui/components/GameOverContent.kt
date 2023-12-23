@@ -32,7 +32,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.infinitepower.newquiz.core.R
-import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.R as CoreR
@@ -158,7 +158,7 @@ internal fun GameOverContent(
 }
 
 @Composable
-@AllPreviewsNightLight
+@PreviewLightDark
 private fun GameOverContentPreview() {
     NewQuizTheme {
         Surface {

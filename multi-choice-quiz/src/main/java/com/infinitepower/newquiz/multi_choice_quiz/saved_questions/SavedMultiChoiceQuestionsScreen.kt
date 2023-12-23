@@ -37,11 +37,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
-import com.infinitepower.newquiz.core.common.annotation.compose.AllPreviewsNightLight
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -323,7 +323,7 @@ private fun SortPopup(
 }
 
 @Composable
-@AllPreviewsNightLight
+@PreviewScreenSizes
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 private fun SavedMultiChoiceQuestionsScreenPreview() {
     val questions = List(10) {
