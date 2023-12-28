@@ -24,7 +24,7 @@ enum class NewQuizFlavor(
 }
 
 fun configureFlavors(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
     flavorConfigurationBlock: ProductFlavor.(flavor: NewQuizFlavor) -> Unit = {}
 ) {
     commonExtension.apply {
