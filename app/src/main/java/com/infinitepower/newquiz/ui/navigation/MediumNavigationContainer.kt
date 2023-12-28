@@ -33,6 +33,7 @@ import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.ui.components.DiamondsCounter
 import com.ramcosta.composedestinations.navigation.navigate
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 /**
@@ -42,8 +43,8 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterial3Api
 internal fun MediumContainer(
     navController: NavController,
-    primaryItems: List<NavigationItem.Item>,
-    navDrawerItems: List<NavigationItem>,
+    primaryItems: ImmutableList<NavigationItem.Item>,
+    otherItems: ImmutableList<NavigationItem>,
     selectedItem: NavigationItem.Item?,
     userDiamonds: UInt = 0u,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
@@ -66,7 +67,7 @@ internal fun MediumContainer(
                 modifier = Modifier.fillMaxHeight(),
                 permanent = false,
                 selectedItem = selectedItem,
-                items = navDrawerItems,
+                items = otherItems,
                 onItemClick = { item ->
                     scope.launch { drawerState.close() }
                     navController.navigate(item.direction)
@@ -139,7 +140,9 @@ internal fun MediumContainer(
 )
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MediumContainerPreview() {
-    val selectedItem = getNavigationItems(dailyChallengeClaimCount = 5)
+    val otherItems = getOtherItems(dailyChallengeClaimCount = 5)
+
+    val selectedItem = otherItems
         .filterIsInstance<NavigationItem.Item>()
         .firstOrNull()
 
@@ -150,8 +153,8 @@ private fun MediumContainerPreview() {
                 content = {
                     Text(text = "NewQuiz")
                 },
-                primaryItems = getNavigationItems().filterIsInstance<NavigationItem.Item>(),
-                navDrawerItems = getNavigationItems(),
+                primaryItems = getPrimaryItems(),
+                otherItems = otherItems,
                 selectedItem = selectedItem,
             )
         }

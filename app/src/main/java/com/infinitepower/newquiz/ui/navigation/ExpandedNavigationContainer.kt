@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -22,6 +23,8 @@ import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.ui.components.DiamondsCounter
 import com.ramcosta.composedestinations.navigation.navigate
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * Container with permanent navigation drawer
@@ -30,7 +33,8 @@ import com.ramcosta.composedestinations.navigation.navigate
 @ExperimentalMaterial3Api
 internal fun ExpandedContainer(
     navController: NavController,
-    navigationItems: List<NavigationItem>,
+    primaryItems: ImmutableList<NavigationItem.Item>,
+    otherItems: ImmutableList<NavigationItem>,
     selectedItem: NavigationItem.Item?,
     userDiamonds: UInt = 0u,
     content: @Composable (PaddingValues) -> Unit
@@ -43,13 +47,17 @@ internal fun ExpandedContainer(
         stringResource(id = id)
     } ?: "NewQuiz"
 
+    val allNavigationItems = remember(primaryItems, otherItems) {
+        (primaryItems + otherItems).toImmutableList()
+    }
+
     PermanentNavigationDrawer(
         drawerContent = {
             NavigationDrawerContent(
                 modifier = Modifier.fillMaxHeight(),
                 permanent = true,
                 selectedItem = selectedItem,
-                items = navigationItems,
+                items = allNavigationItems,
                 onItemClick = { item ->
                     navController.navigate(item.direction)
                 },
@@ -91,7 +99,9 @@ internal fun ExpandedContainer(
 )
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MediumContainerPreview() {
-    val selectedItem = getNavigationItems()
+    val otherItems = getOtherItems()
+
+    val selectedItem = otherItems
         .filterIsInstance<NavigationItem.Item>()
         .firstOrNull()
 
@@ -102,7 +112,8 @@ private fun MediumContainerPreview() {
                 content = {
                     Text(text = "NewQuiz")
                 },
-                navigationItems = getNavigationItems(),
+                primaryItems = getPrimaryItems(),
+                otherItems = otherItems,
                 selectedItem = selectedItem,
                 userDiamonds = 100u
             )

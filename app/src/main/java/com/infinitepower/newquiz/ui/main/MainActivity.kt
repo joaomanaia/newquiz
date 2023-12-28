@@ -86,8 +86,20 @@ class MainActivity : ComponentActivity() {
 
                         if (uiState.showDataAnalyticsConsentDialog && !uiState.loading) {
                             DataCollectionConsentDialog(
-                                onAgreeClick = { viewModel.onEvent(MainScreenUiEvent.OnDataAnalyticsConsentClick(true)) },
-                                onDisagreeClick = { viewModel.onEvent(MainScreenUiEvent.OnDataAnalyticsConsentClick(false)) }
+                                onAgreeClick = {
+                                    viewModel.onEvent(
+                                        MainScreenUiEvent.OnDataAnalyticsConsentClick(
+                                            agreed = true
+                                        )
+                                    )
+                                },
+                                onDisagreeClick = {
+                                    viewModel.onEvent(
+                                        MainScreenUiEvent.OnDataAnalyticsConsentClick(
+                                            agreed = false
+                                        )
+                                    )
+                                }
                             )
                         }
                     }

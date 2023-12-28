@@ -18,7 +18,6 @@ import com.infinitepower.newquiz.core.ui.home_card.model.CardIcon
 import com.infinitepower.newquiz.core.ui.home_card.model.HomeCardItem
 
 @Composable
-@ExperimentalMaterial3Api
 fun HomeMediumCard(
     modifier: Modifier = Modifier,
     data: HomeCardItem.MediumCard
@@ -67,7 +66,6 @@ fun HomeMediumCard(
 
 @Composable
 @PreviewLightDark
-@OptIn(ExperimentalMaterial3Api::class)
 private fun HomeMediumCardPreview() {
     NewQuizTheme {
         Surface {

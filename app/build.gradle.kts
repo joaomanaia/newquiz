@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.newquiz.kotlin.serialization)
     id("kotlin-parcelize")
     id("com.google.android.gms.oss-licenses-plugin")
+    id("newquiz.detekt")
 }
 
 android {
@@ -113,6 +114,8 @@ dependencies {
     implementation(libs.slf4j.simple)
 
     implementation(libs.google.oss.licenses)
+
+    implementation(libs.kotlinx.collections.immutable)
 
     implementation(projects.core)
     implementation(projects.core.analytics)

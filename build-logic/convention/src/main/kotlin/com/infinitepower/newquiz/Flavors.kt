@@ -5,13 +5,13 @@ import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.ProductFlavor
 
-@Suppress("EnumEntryName")
+@Suppress("EnumEntryName", "EnumNaming")
 enum class FlavorDimension {
     distribution,
     // translation
 }
 
-@Suppress("EnumEntryName")
+@Suppress("EnumEntryName", "EnumNaming")
 enum class NewQuizFlavor(
     val dimension: FlavorDimension,
     val applicationIdSuffix: String? = null

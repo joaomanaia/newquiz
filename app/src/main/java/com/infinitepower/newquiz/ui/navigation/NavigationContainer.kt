@@ -32,10 +32,10 @@ import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizL
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
-internal fun getNavigationItems(
-    dailyChallengeClaimCount: Int = 0
-) = listOf(
+internal fun getPrimaryItems(): ImmutableList<NavigationItem.Item> = persistentListOf(
     NavigationItem.Item(
         text = R.string.multi_choice_quiz,
         selectedIcon = Icons.Rounded.ListAlt,
@@ -57,6 +57,11 @@ internal fun getNavigationItems(
         direction = ComparisonQuizListScreenDestination,
         primary = true
     ),
+)
+
+internal fun getOtherItems(
+    dailyChallengeClaimCount: Int = 0
+): ImmutableList<NavigationItem> = persistentListOf(
     NavigationItem.Item(
         text = R.string.maze,
         selectedIcon = Icons.Rounded.Route,
@@ -89,11 +94,9 @@ internal fun getNavigationItems(
     )
 )
 
-private fun getNavigationItemBy(
-    route: DestinationSpec<*>?,
-    dailyChallengeClaimCount: Int = 0
-) = getNavigationItems(dailyChallengeClaimCount)
-    .filterIsInstance<NavigationItem.Item>()
+private fun List<NavigationItem>.getNavigationItemBy(
+    route: DestinationSpec<*>?
+): NavigationItem.Item? = filterIsInstance<NavigationItem.Item>()
     .find { item -> item.direction == route }
 
 @Composable
@@ -107,22 +110,19 @@ internal fun NavigationContainer(
 ) {
     val destination by navController.currentDestinationAsState()
 
-    val selectedItem = remember(destination) { getNavigationItemBy(destination) }
+    val primaryItems = remember { getPrimaryItems() }
 
-    val navigationVisible = selectedItem != null && selectedItem.screenType == ScreenType.NORMAL
-
-    val items = remember(dailyChallengeClaimCount) {
-        getNavigationItems(dailyChallengeClaimCount)
+    val otherItems = remember(dailyChallengeClaimCount) {
+        getOtherItems(dailyChallengeClaimCount)
     }
 
-    val primaryItems = remember(items) {
-        items
-            .filterIsInstance<NavigationItem.Item>()
-            .filter { it.primary }
+    val selectedItem = remember(primaryItems, otherItems, destination) {
+        primaryItems.getNavigationItemBy(destination)
+            ?: otherItems.getNavigationItemBy(destination)
     }
 
-    val otherItems = remember(items, primaryItems) {
-        items - primaryItems.toSet()
+    val navigationVisible = remember(selectedItem) {
+        selectedItem != null && selectedItem.screenType == ScreenType.NORMAL
     }
 
     if (navigationVisible) {
@@ -130,22 +130,25 @@ internal fun NavigationContainer(
             WindowWidthSizeClass.Compact -> CompactContainer(
                 navController = navController,
                 primaryItems = primaryItems,
-                navDrawerItems = otherItems,
+                otherItems = otherItems,
                 selectedItem = selectedItem,
                 userDiamonds = userDiamonds,
                 content = content
             )
+
             WindowWidthSizeClass.Medium -> MediumContainer(
                 navController = navController,
                 primaryItems = primaryItems,
-                navDrawerItems = otherItems,
+                otherItems = otherItems,
                 selectedItem = selectedItem,
                 userDiamonds = userDiamonds,
                 content = content
             )
+
             WindowWidthSizeClass.Expanded -> ExpandedContainer(
                 navController = navController,
-                navigationItems = items,
+                primaryItems = primaryItems,
+                otherItems = otherItems,
                 selectedItem = selectedItem,
                 userDiamonds = userDiamonds,
                 content = content

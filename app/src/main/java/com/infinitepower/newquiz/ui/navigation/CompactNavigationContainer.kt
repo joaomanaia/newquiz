@@ -20,7 +20,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -33,6 +32,7 @@ import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.ui.components.DiamondsCounter
 import com.ramcosta.composedestinations.navigation.navigate
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 /**
@@ -42,8 +42,8 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterial3Api
 internal fun CompactContainer(
     navController: NavController,
-    primaryItems: List<NavigationItem.Item>,
-    navDrawerItems: List<NavigationItem>,
+    primaryItems: ImmutableList<NavigationItem.Item>,
+    otherItems: ImmutableList<NavigationItem>,
     selectedItem: NavigationItem.Item?,
     userDiamonds: UInt = 0u,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
@@ -66,7 +66,7 @@ internal fun CompactContainer(
                 modifier = Modifier.fillMaxHeight(),
                 permanent = false,
                 selectedItem = selectedItem,
-                items = navDrawerItems,
+                items = otherItems,
                 onItemClick = { item ->
                     scope.launch { drawerState.close() }
                     navController.navigate(item.direction)
@@ -103,29 +103,11 @@ internal fun CompactContainer(
                 )
             },
             bottomBar = {
-                NavigationBar {
-                    primaryItems.forEach { item ->
-                        NavigationBarItem(
-                            selected = item == selectedItem,
-                            onClick = {
-                                navController.navigate(item.direction) {
-                                    // Pop up to the start destination of the graph to
-                                    // avoid building up a large stack of destinations
-                                    // on the back stack as users select items
-                                    popUpTo(navController.graph.findStartDestination().id)
-                                    // Avoid multiple copies of the same destination when re-selecting the same item
-                                    launchSingleTop = true
-                                }
-                            },
-                            icon = {
-                                Icon(
-                                    imageVector = item.getIcon(item == selectedItem),
-                                    contentDescription = stringResource(id = item.text)
-                                )
-                            }
-                        )
-                    }
-                }
+                CompactBottomBar(
+                    selectedItem = selectedItem,
+                    primaryItems = primaryItems,
+                    navController = navController
+                )
             },
             content = content
         )
@@ -133,18 +115,48 @@ internal fun CompactContainer(
 }
 
 @Composable
+private fun CompactBottomBar(
+    modifier: Modifier = Modifier,
+    selectedItem: NavigationItem.Item?,
+    primaryItems: ImmutableList<NavigationItem.Item>,
+    navController: NavController
+) {
+    NavigationBar(
+        modifier = modifier,
+    ) {
+        primaryItems.forEach { item ->
+            NavigationBarItem(
+                selected = item == selectedItem,
+                onClick = {
+                    navController.navigate(item.direction) {
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
+                        popUpTo(navController.graph.findStartDestination().id)
+                        // Avoid multiple copies of the same destination when re-selecting the same item
+                        launchSingleTop = true
+                    }
+                },
+                icon = {
+                    Icon(
+                        imageVector = item.getIcon(item == selectedItem),
+                        contentDescription = stringResource(id = item.text)
+                    )
+                }
+            )
+        }
+    }
+}
+
+@Composable
 @PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CompactContainerPreview() {
-    val selectedItem = getNavigationItems()
+    val otherItems = getOtherItems()
+
+    val selectedItem = otherItems
         .filterIsInstance<NavigationItem.Item>()
         .firstOrNull()
-
-    val primaryItems = remember {
-        getNavigationItems()
-            .filterIsInstance<NavigationItem.Item>()
-            .filter { it.primary }
-    }
 
     NewQuizTheme {
         Surface {
@@ -153,8 +165,8 @@ private fun CompactContainerPreview() {
                 content = {
                     Text(text = "NewQuiz")
                 },
-                primaryItems = primaryItems,
-                navDrawerItems = getNavigationItems(),
+                primaryItems = getPrimaryItems(),
+                otherItems = otherItems,
                 selectedItem = selectedItem,
                 userDiamonds = 100u
             )

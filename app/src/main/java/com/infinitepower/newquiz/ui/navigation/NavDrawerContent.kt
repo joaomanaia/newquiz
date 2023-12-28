@@ -23,6 +23,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.spacing
+import kotlinx.collections.immutable.ImmutableList
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
@@ -30,7 +31,7 @@ import com.infinitepower.newquiz.core.R as CoreR
 internal fun NavigationDrawerContent(
     modifier: Modifier = Modifier,
     permanent: Boolean = false,
-    items: List<NavigationItem>,
+    items: ImmutableList<NavigationItem>,
     selectedItem: NavigationItem.Item?,
     onItemClick: (item: NavigationItem.Item) -> Unit
 ) {
@@ -70,7 +71,7 @@ private fun NavigationDrawerContainer(
 @ExperimentalMaterial3Api
 private fun NavigationDrawerContent(
     modifier: Modifier = Modifier,
-    items: List<NavigationItem>,
+    items: ImmutableList<NavigationItem>,
     selectedItem: NavigationItem.Item?,
     onItemClick: (item: NavigationItem.Item) -> Unit,
 ) {

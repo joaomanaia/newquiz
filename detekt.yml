@@ -1,0 +1,30 @@
+config:
+  warningsAsErrors: true
+
+complexity:
+  LongParameterList:
+    # It is suggested to increase this for Compose: https://detekt.dev/docs/introduction/compose/#longparameterlist
+    functionThreshold: 8
+    ignoreDefaultParameters: true
+  LongMethod:
+    active: true
+    threshold: 100
+
+naming:
+  active: true
+  FunctionNaming:
+    active: true
+    ignoreAnnotated: [ 'Composable' ]
+
+style:
+  MagicNumber:
+    excludes: [ '**/test/**', '**/*Test.kt', '**/demos/**', '**/androidUnitTest/**', '**/commonTest/**', '**/desktopTest/**' , '**/jsTest/**' ]
+  MaxLineLength:
+    excludes: [ '**/test/**', '**/*.Test.kt', '**/*.Spec.kt', '**/androidUnitTest/**', '**/commonTest/**', '**/desktopTest/**' , '**/jsTest/**' ]
+    excludeCommentStatements: true
+  UnusedPrivateMember:
+    # https://detekt.dev/docs/introduction/compose#unusedprivatemember
+    ignoreAnnotated: [ 'Preview', 'PreviewScreenSizes', 'PreviewFontScale', 'PreviewLightDark', 'PreviewDynamicColors' ]
+  WildcardImport:
+    active: true
+    excludeImports: [ ]

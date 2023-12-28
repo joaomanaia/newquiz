@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.core.navigation
 
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ramcosta.composedestinations.spec.Direction
 
@@ -11,6 +12,7 @@ sealed class NavigationItem {
 
     abstract val group: NavDrawerItemGroup?
 
+    @Immutable
     data class Label(
         @StringRes override val text: Int,
         override val group: NavDrawerItemGroup? = null
@@ -19,6 +21,7 @@ sealed class NavigationItem {
     /**
      * @param primary items to navigation bar
      */
+    @Immutable
     data class Item(
         @StringRes override val text: Int,
         override val group: NavDrawerItemGroup? = null,

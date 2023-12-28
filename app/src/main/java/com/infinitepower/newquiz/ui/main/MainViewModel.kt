@@ -53,8 +53,12 @@ class MainViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         initialValue = MainScreenUiState(),
-        started = SharingStarted.WhileSubscribed(5_000)
+        started = SharingStarted.WhileSubscribed(UI_STATE_STOP_TIMEOUT)
     )
+
+    companion object {
+        private const val UI_STATE_STOP_TIMEOUT = 5_000L
+    }
 
     fun onEvent(event: MainScreenUiEvent) {
         when (event) {

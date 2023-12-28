@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.detekt)
 }
 
 group = "com.infinitepower.newquiz.buildlogic"
@@ -30,6 +31,12 @@ dependencies {
     compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    implementation(libs.detekt.gradlePlugin)
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    config.from(file("../../detekt.yml"))
 }
 
 gradlePlugin {
@@ -77,6 +84,10 @@ gradlePlugin {
         register("androidFeature") {
             id = "newquiz.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
+        }
+        register("detekt") {
+            id = "newquiz.detekt"
+            implementationClass = "DetektConventionPlugin"
         }
     }
 }
