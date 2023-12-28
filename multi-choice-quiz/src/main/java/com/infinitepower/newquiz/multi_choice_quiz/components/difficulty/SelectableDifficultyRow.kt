@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -23,7 +22,6 @@ import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun SelectableDifficultyRow(
     modifier: Modifier = Modifier,
     selectedDifficulty: QuestionDifficulty?,
@@ -78,7 +76,6 @@ internal fun SelectableDifficultyRow(
 
 @Composable
 @PreviewLightDark
-@OptIn(ExperimentalMaterial3Api::class)
 private fun CardDifficultyPreview() {
     val (selectedItem, setSelectedItem) = remember {
         // When null, difficulty will be random

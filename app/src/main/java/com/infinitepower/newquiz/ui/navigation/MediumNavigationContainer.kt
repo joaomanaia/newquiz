@@ -139,7 +139,7 @@ internal fun MediumContainer(
 )
 @OptIn(ExperimentalMaterial3Api::class)
 private fun MediumContainerPreview() {
-    val selectedItem = getNavigationItems(5)
+    val selectedItem = getNavigationItems(dailyChallengeClaimCount = 5)
         .filterIsInstance<NavigationItem.Item>()
         .firstOrNull()
 

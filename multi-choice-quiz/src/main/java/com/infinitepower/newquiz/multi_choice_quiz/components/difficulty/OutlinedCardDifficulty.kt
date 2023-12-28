@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
@@ -22,7 +21,6 @@ import com.infinitepower.newquiz.core.util.model.getText
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun OutlinedCardDifficulty(
     modifier: Modifier = Modifier,
     multiChoiceQuizDifficulty: QuestionDifficulty,
@@ -43,7 +41,6 @@ internal fun OutlinedCardDifficulty(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun OutlinedCardDifficulty(
     modifier: Modifier = Modifier,
     text: String,
@@ -60,7 +57,6 @@ internal fun OutlinedCardDifficulty(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 private fun OutlinedCardDifficultyContainer(
     modifier: Modifier = Modifier,
     color: Color,
@@ -73,7 +69,8 @@ private fun OutlinedCardDifficultyContainer(
             contentColor = color
         ),
         onClick = onClick,
-        border = BorderStroke(1.dp, color)
+        border = BorderStroke(1.dp, color),
+        shape = MaterialTheme.shapes.large
     ) {
         content()
     }
@@ -81,7 +78,6 @@ private fun OutlinedCardDifficultyContainer(
 
 @Composable
 @PreviewLightDark
-@OptIn(ExperimentalMaterial3Api::class)
 private fun OutlinedCardDifficultyPreview() {
     NewQuizTheme {
         Surface {

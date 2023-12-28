@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -21,7 +20,6 @@ import com.infinitepower.newquiz.core.util.model.getText
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun FilledCardDifficulty(
     modifier: Modifier = Modifier,
     multiChoiceQuizDifficulty: QuestionDifficulty,
@@ -53,7 +51,6 @@ internal fun FilledCardDifficulty(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 internal fun FilledCardDifficulty(
     modifier: Modifier = Modifier,
     text: String,
@@ -74,7 +71,6 @@ internal fun FilledCardDifficulty(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 private fun FilledCardDifficultyContainer(
     modifier: Modifier = Modifier,
     containerColor: Color,
@@ -99,7 +95,6 @@ private fun FilledCardDifficultyContainer(
 
 @Composable
 @PreviewLightDark
-@OptIn(ExperimentalMaterial3Api::class)
 private fun CardDifficultyPreview() {
     NewQuizTheme {
         Surface {
