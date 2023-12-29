@@ -5,17 +5,19 @@ import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.wordle.WordleCategory
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 
 @Keep
 data class HomeCategories <T> (
-    val recentCategories: List<T>,
-    val otherCategories: List<T>
+    val recentCategories: ImmutableList<T>,
+    val otherCategories: ImmutableList<T>
 )
 
 fun <T> emptyHomeCategories() = HomeCategories<T>(
-    recentCategories = emptyList(),
-    otherCategories = emptyList()
+    recentCategories = persistentListOf(),
+    otherCategories = persistentListOf()
 )
 
 typealias HomeCategoriesFlow <T> = Flow<HomeCategories<T>>

@@ -28,6 +28,20 @@ fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
     onCategoryClick: (T) -> Unit,
     onSeeAllCategoriesClick: () -> Unit,
 ) {
+    if (recentCategories.isEmpty() && otherCategories.isEmpty()) {
+        item {
+            Box(
+                modifier = Modifier.fillParentMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(id = R.string.no_categories_available),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+    }
+
     items(
         items = recentCategories,
         key = { category -> "recent_category_${category.id}" }
@@ -46,20 +60,10 @@ fun <T : BaseCategory> LazyListScope.homeCategoriesItems(
         )
     }
 
-    if (recentCategories.isEmpty() && otherCategories.isEmpty()) {
-        item {
-            Box(
-                modifier = Modifier.fillParentMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(id = R.string.no_categories_available),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
-    } else if (recentCategories.isNotEmpty() && otherCategories.isNotEmpty()) {
-        item {
+    if (recentCategories.isNotEmpty() && otherCategories.isNotEmpty()) {
+        item(
+            key = "see_all_categories_button",
+        ) {
             ExpandCategoriesButton(
                 modifier = Modifier.fillParentMaxWidth(),
                 seeAllCategories = seeAllCategories,

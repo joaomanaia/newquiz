@@ -31,6 +31,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
 import com.infinitepower.newquiz.model.toUiText
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.collections.immutable.persistentListOf
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
@@ -122,7 +123,7 @@ private fun ComparisonQuizListScreenPreview() {
             ComparisonQuizListScreenImpl(
                 uiState = ComparisonQuizListScreenUiState(
                     homeCategories = HomeCategories(
-                        recentCategories = listOf(
+                        recentCategories = persistentListOf(
                             ComparisonQuizCategory(
                                 id = "test",
                                 description = "Description",
@@ -135,7 +136,7 @@ private fun ComparisonQuizListScreenPreview() {
                                 formatType = ComparisonQuizFormatType.Number
                             )
                         ),
-                        otherCategories = emptyList()
+                        otherCategories = persistentListOf()
                     )
                 ),
                 onCategoryClick = {},

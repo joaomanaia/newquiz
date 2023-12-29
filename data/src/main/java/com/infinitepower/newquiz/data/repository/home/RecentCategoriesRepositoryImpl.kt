@@ -20,6 +20,7 @@ import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
 import com.infinitepower.newquiz.model.wordle.WordleCategory
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -110,8 +111,8 @@ class RecentCategoriesRepositoryImpl @Inject constructor(
         val otherCategories = allCategories - recentCategories.toSet()
 
         return HomeCategories(
-            recentCategories = recentCategories,
-            otherCategories = otherCategories.sortByInternetConnection(isInternetAvailable)
+            recentCategories = recentCategories.toImmutableList(),
+            otherCategories = otherCategories.sortByInternetConnection(isInternetAvailable).toImmutableList()
         )
     }
 

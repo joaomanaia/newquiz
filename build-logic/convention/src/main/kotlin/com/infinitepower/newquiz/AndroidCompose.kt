@@ -3,6 +3,8 @@ package com.infinitepower.newquiz
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.configureAndroidCompose(
     applicationExtension: CommonExtension<*, *, *, *, *, *>
@@ -13,7 +15,8 @@ internal fun Project.configureAndroidCompose(
         }
 
         composeOptions {
-            kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
+            kotlinCompilerExtensionVersion =
+                libs.findVersion("androidxComposeCompiler").get().toString()
         }
 
         dependencies {
@@ -24,4 +27,45 @@ internal fun Project.configureAndroidCompose(
             debugImplementation(libs.findLibrary("androidx.compose.ui.testManifest").get())
         }
     }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + buildComposeMetricsParameters()
+        }
+    }
+}
+
+private fun Project.buildComposeMetricsParameters(): List<String> {
+    val metricParameters = mutableListOf<String>()
+    val enableMetricsProvider = project.providers.gradleProperty("enableComposeCompilerMetrics")
+    val relativePath = projectDir.relativeTo(rootDir)
+    val buildDir = layout.buildDirectory.get().asFile
+    val enableMetrics = (enableMetricsProvider.orNull == "true")
+    if (enableMetrics) {
+        val metricsFolder = buildDir.resolve("compose-metrics").resolve(relativePath)
+        metricParameters.add("-P")
+        metricParameters.add(
+            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" + metricsFolder.absolutePath
+        )
+    }
+
+    val enableReportsProvider = project.providers.gradleProperty("enableComposeCompilerReports")
+    val enableReports = (enableReportsProvider.orNull == "true")
+    if (enableReports) {
+        val reportsFolder = buildDir.resolve("compose-reports").resolve(relativePath)
+        metricParameters.add("-P")
+        metricParameters.add(
+            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" + reportsFolder.absolutePath
+        )
+    }
+
+    // Add stability configuration file
+    val stabilityConfigurationFile = rootDir.resolve("compose_compiler_config.conf")
+
+    metricParameters.add("-P")
+    metricParameters.add(
+        "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" + stabilityConfigurationFile.absolutePath
+    )
+
+    return metricParameters.toList()
 }
