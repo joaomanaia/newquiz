@@ -125,6 +125,7 @@ dependencies {
     implementation(projects.core.userServices)
     implementation(projects.core.userServices.ui)
     implementation(projects.feature.settings)
+    implementation(projects.feature.maze)
     implementation(projects.model)
     implementation(projects.multiChoiceQuiz)
     implementation(projects.wordle)

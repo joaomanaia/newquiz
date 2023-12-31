@@ -38,4 +38,6 @@ dependencies {
     implementation(projects.model)
     implementation(projects.data)
     implementation(projects.domain)
+
+    implementation(projects.feature.maze)
 }
