@@ -6,6 +6,7 @@ import com.infinitepower.newquiz.core.database.model.toEntity
 import com.infinitepower.newquiz.core.database.model.toMazeQuizItem
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.model.maze.MazeQuiz
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class MazeQuizRepositoryImpl @Inject constructor(
     override fun getSavedMazeQuizFlow(): Flow<MazeQuiz> = mazeQuizDao
         .getAllMazeItemsFlow()
         .map { entities -> entities.map(MazeQuizItemEntity::toMazeQuizItem) }
-        .map { mazeItems -> MazeQuiz(items = mazeItems) }
+        .map { mazeItems -> MazeQuiz(items = mazeItems.toPersistentList()) }
 
     override suspend fun countAllItems(): Int = mazeQuizDao.countAllItems()
 

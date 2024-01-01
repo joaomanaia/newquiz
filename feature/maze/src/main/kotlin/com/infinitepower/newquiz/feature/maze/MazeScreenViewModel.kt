@@ -44,13 +44,19 @@ class MazeScreenViewModel @Inject constructor(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(UISTATE_STOP_TIMEOUT),
         initialValue = MazeScreenUiState()
     )
 
+    companion object {
+        private const val UISTATE_STOP_TIMEOUT = 5000L
+    }
+
     init {
         viewModelScope.launch {
-            val autoScrollToCurrentItem = settingsDataStoreManager.getPreference(SettingsCommon.MazeAutoScrollToCurrentItem)
+            val autoScrollToCurrentItem = settingsDataStoreManager.getPreference(
+                preferenceEntry = SettingsCommon.MazeAutoScrollToCurrentItem
+            )
 
             _uiState.update { currentState ->
                 currentState.copy(autoScrollToCurrentItem = autoScrollToCurrentItem)
@@ -60,7 +66,12 @@ class MazeScreenViewModel @Inject constructor(
 
     fun onEvent(event: MazeScreenUiEvent) {
         when (event) {
-            is MazeScreenUiEvent.GenerateMaze -> generateMaze(event.seed, event.selectedMultiChoiceCategories, event.selectedWordleCategories)
+            is MazeScreenUiEvent.GenerateMaze -> generateMaze(
+                seed = event.seed,
+                selectedMultiChoiceCategories = event.selectedMultiChoiceCategories,
+                selectedWordleCategories = event.selectedWordleCategories
+            )
+
             is MazeScreenUiEvent.RestartMaze -> cleanSavedMaze()
         }
     }

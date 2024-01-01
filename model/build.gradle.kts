@@ -12,6 +12,8 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.datetime)
+
+    api(libs.kotlinx.collections.immutable)
 }
 
 tasks.withType<Test> {

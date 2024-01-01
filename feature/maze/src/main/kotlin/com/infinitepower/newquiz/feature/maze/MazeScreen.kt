@@ -39,6 +39,7 @@ import com.infinitepower.newquiz.model.wordle.WordleWord
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.collections.immutable.toPersistentList
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
@@ -182,7 +183,7 @@ fun MazeScreenPreview() {
         )
     }
 
-    val mazeItems = completedItems + otherItems
+    val mazeItems = (completedItems + otherItems).toPersistentList()
 
     NewQuizTheme {
         MazeScreenImpl(
