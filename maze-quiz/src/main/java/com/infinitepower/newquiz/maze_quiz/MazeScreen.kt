@@ -34,7 +34,6 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.feature.maze.components.MazePath
 import com.infinitepower.newquiz.maze_quiz.components.GenerateMazeComponent
-import com.infinitepower.newquiz.maze_quiz.components.MazeComponent
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.MazeQuiz.MazeItem
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
@@ -47,11 +46,6 @@ import kotlin.random.Random
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
-@Destination(
-    deepLinks = [
-        DeepLink(uriPattern = "newquiz://maze")
-    ]
-)
 @OptIn(ExperimentalMaterial3Api::class)
 fun MazeScreen(
     navigator: DestinationsNavigator,
@@ -174,7 +168,6 @@ private fun MazeScreenImpl(
                 MazePath(
                     modifier = Modifier.fillMaxSize(),
                     items = formulas,
-                    random = Random(0),
                     onItemClick = onItemClick,
                 )
             }

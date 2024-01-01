@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -55,18 +56,22 @@ import kotlin.random.Random
 fun MazePath(
     modifier: Modifier = Modifier,
     items: List<MazeQuiz.MazeItem>,
+    startScrollToCurrentItem: Boolean = true,
     colors: MazeColors = MazeDefaults.defaultColors(),
     horizontalPadding: Dp = MazeDefaults.horizontalPadding,
     verticalPadding: Dp = MazeDefaults.verticalPadding,
-    random: Random = Random.Default,
+    mazeSeed: Int = 0,
     onItemClick: (item: MazeQuiz.MazeItem) -> Unit = {},
 ) {
+    val random = remember(mazeSeed) { Random(mazeSeed) }
+
     val localDensity = LocalDensity.current
     val horizontalPaddingPx = with(localDensity) { horizontalPadding.toPx() }
     val verticalPaddingPx = with(localDensity) { verticalPadding.toPx() }
 
     val yPointsSize = items.size
 
+    // Find the index of the current play item.
     val currentPlayItemIndex = remember(items) {
         items.indexOfFirstOrNull { !it.played }
     }
@@ -79,6 +84,7 @@ fun MazePath(
 
         val points: List<Offset> = remember(yPointsSize) {
             List(yPointsSize) { i ->
+                // Get a random number between 2 and 5 to make the horizontal offset of the points more random
                 val r = random.nextDouble(2.0, 5.0).toFloat()
 
                 val x = sin((i.toFloat() / 2) * PI).toFloat() * (screenWidth - horizontalPaddingPx) / r + screenWidth / 2
@@ -92,6 +98,7 @@ fun MazePath(
             }
         }
 
+        // Calculate the height of the graph based on the number of points.
         val graphHeight = remember(yPointsSize) {
             with(localDensity) { PointSpacing.toPx() * (yPointsSize - 1) } + 2 * verticalPaddingPx
         }
@@ -110,9 +117,34 @@ fun MazePath(
         val playedPainter = rememberVectorPainter(image = Icons.Rounded.Check)
         val lockPainter = rememberVectorPainter(image = Icons.Rounded.Lock)
 
-        var lastTapOffset by remember { mutableStateOf(Offset.Zero) }
         var pressedOffset by remember { mutableStateOf(Offset.Zero) }
-        var graphLastTapOffset by remember { mutableStateOf(Offset.Zero) }
+
+        // If the startScrollToCurrentItem is true, scroll to the current item.
+        LaunchedEffect(key1 = Unit) {
+            if (startScrollToCurrentItem) {
+                currentPlayItemIndex?.let { index ->
+                    // Get the current play item's y position.
+                    val currentPlayItemY = points[index].y
+                    // Get the height of the screen divided by 2.
+                    // This is used to center the current play item on the screen.
+                    val halfScreenHeight = screenHeight / 2
+
+                    val newTopScroll = -currentPlayItemY + halfScreenHeight
+
+                    // If the top scroll is less than 0, it means that the current play item is
+                    // not above the screen. In this case, we don't need to scroll.
+                    if (newTopScroll >= 0) {
+                        val newGraphHeight = graphHeight - newTopScroll
+
+                        topScroll = if (newGraphHeight >= screenHeight) {
+                            newTopScroll
+                        } else {
+                            graphHeight - screenHeight
+                        }
+                    }
+                }
+            }
+        }
 
         Canvas(
             modifier = modifier
@@ -131,13 +163,6 @@ fun MazePath(
                 .pointerInput(currentPlayItemIndex) {
                     detectTapGestures(
                         onTap = { tapOffset ->
-                            lastTapOffset = tapOffset
-
-                            val topScreenGraph = graphHeight - screenHeight - topScroll
-                            graphLastTapOffset = tapOffset.copy(
-                                y = topScreenGraph + tapOffset.y
-                            )
-
                             // Find the index of the item that was tapped
                             val tapIndex = points.indexOfFirstOrNull { point ->
                                 val realMazePoint = point.copy(y = point.y + topScroll)
@@ -151,7 +176,9 @@ fun MazePath(
                             }
                         },
                         onPress = { pressOffset ->
-                            pressedOffset = pressOffset
+                            pressedOffset = pressOffset.copy(
+                                y = pressOffset.y - topScroll
+                            )
                             awaitRelease()
                             pressedOffset = Offset.Zero
                         }
@@ -262,8 +289,8 @@ fun MazePath(
                     ) {
                         with(
                             when {
-                                !isPlayableItem && !itemPlayed -> lockPainter
-                                !isPlayableItem && itemPlayed -> playedPainter
+                                !isPlayableItem && !itemPlayed -> lockPainter // Locked
+                                !isPlayableItem && itemPlayed -> playedPainter // Played
                                 else -> playPainter
                             }
                         ) {
@@ -284,6 +311,9 @@ fun MazePath(
     }
 }
 
+/**
+ * Returns true if the [Offset] is inside the circle with the given [center] and [radius].
+ */
 private fun Offset.isInsideCircle(
     center: Offset,
     radius: Float
@@ -444,7 +474,7 @@ private fun MazeComponentPreview() {
             ) {
                 MazePath(
                     items = completedItems + otherItems,
-                    random = Random(0)
+                    startScrollToCurrentItem = false,
                 )
             }
         }
