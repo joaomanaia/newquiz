@@ -112,6 +112,16 @@ internal fun GeneralScreen(
                 )
             )
         ),
+        Preference.PreferenceGroup(
+            title = "Maze",
+            preferenceItems = listOf(
+                Preference.PreferenceItem.SwitchPreference(
+                    title = "Auto scroll to current question",
+                    summary = "Automatically scroll to the current question when entering the maze page.",
+                    request = SettingsCommon.MazeAutoScrollToCurrentItem,
+                )
+            )
+        ),
         Preference.PreferenceItem.TextPreference(
             title = stringResource(id = R.string.animations),
             icon = {

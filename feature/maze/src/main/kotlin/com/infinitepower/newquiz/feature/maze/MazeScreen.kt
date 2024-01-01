@@ -152,6 +152,7 @@ private fun MazeScreenImpl(
                     items = uiState.maze.items,
                     mazeSeed = uiState.mazeSeed ?: 0,
                     onItemClick = onItemClick,
+                    startScrollToCurrentItem = uiState.autoScrollToCurrentItem
                 )
             }
         }

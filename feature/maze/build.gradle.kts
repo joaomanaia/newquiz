@@ -14,6 +14,7 @@ dependencies {
 
     implementation(libs.androidx.compose.material.iconsExtended)
 
+    implementation(projects.core.datastore)
     implementation(projects.data)
     implementation(projects.domain)
 }

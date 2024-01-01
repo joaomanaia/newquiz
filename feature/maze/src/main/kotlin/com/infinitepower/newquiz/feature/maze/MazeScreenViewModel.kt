@@ -7,6 +7,9 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
+import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.data.worker.maze.CleanMazeQuizWorker
 import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
@@ -20,13 +23,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MazeScreenViewModel @Inject constructor(
     mazeMathQuizRepository: MazeQuizRepository,
     private val workManager: WorkManager,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
+    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MazeScreenUiState())
     val uiState = combine(
@@ -42,6 +47,16 @@ class MazeScreenViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = MazeScreenUiState()
     )
+
+    init {
+        viewModelScope.launch {
+            val autoScrollToCurrentItem = settingsDataStoreManager.getPreference(SettingsCommon.MazeAutoScrollToCurrentItem)
+
+            _uiState.update { currentState ->
+                currentState.copy(autoScrollToCurrentItem = autoScrollToCurrentItem)
+            }
+        }
+    }
 
     fun onEvent(event: MazeScreenUiEvent) {
         when (event) {

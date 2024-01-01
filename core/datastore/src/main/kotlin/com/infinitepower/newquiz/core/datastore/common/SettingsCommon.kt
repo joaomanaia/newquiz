@@ -55,6 +55,8 @@ object SettingsCommon {
     object WordleAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("wordle_animations_enabled"), true)
     object MultiChoiceAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("multi_choice_animations_enabled"), true)
 
+    object MazeAutoScrollToCurrentItem : PreferenceRequest<Boolean>(booleanPreferencesKey("mazeAutoScrollToCurrentItem"), true)
+
     /**
      * The translation settings.
      */
