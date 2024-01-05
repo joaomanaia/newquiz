@@ -1,9 +1,7 @@
 package com.infinitepower.newquiz.feature.maze
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
@@ -11,16 +9,11 @@ import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.data.worker.maze.CleanMazeQuizWorker
-import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
-import com.infinitepower.newquiz.model.wordle.WordleCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
