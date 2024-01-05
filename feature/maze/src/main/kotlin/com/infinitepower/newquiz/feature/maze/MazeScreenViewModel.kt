@@ -66,41 +66,8 @@ class MazeScreenViewModel @Inject constructor(
 
     fun onEvent(event: MazeScreenUiEvent) {
         when (event) {
-            is MazeScreenUiEvent.GenerateMaze -> generateMaze(
-                seed = event.seed,
-                selectedMultiChoiceCategories = event.selectedMultiChoiceCategories,
-                selectedWordleCategories = event.selectedWordleCategories
-            )
-
             is MazeScreenUiEvent.RestartMaze -> cleanSavedMaze()
         }
-    }
-
-    private fun generateMaze(
-        seed: Int?,
-        selectedMultiChoiceCategories: List<MultiChoiceCategory>,
-        selectedWordleCategories: List<WordleCategory>
-    ) {
-        val workId = GenerateMazeQuizWorker.enqueue(
-            workManager = workManager,
-            seed = seed,
-            multiChoiceCategories = selectedMultiChoiceCategories,
-            wordleCategories = selectedWordleCategories
-        )
-
-        workManager
-            .getWorkInfoByIdLiveData(workId)
-            .asFlow()
-            .onEach { workInfo ->
-                _uiState.update { currentState ->
-                    val loading = when (workInfo.state) {
-                        WorkInfo.State.SUCCEEDED -> false
-                        else -> true
-                    }
-
-                    currentState.copy(loading = loading)
-                }
-            }.launchIn(viewModelScope)
     }
 
     private fun cleanSavedMaze() {

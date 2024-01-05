@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -31,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.feature.maze.components.MazePath
+import com.infinitepower.newquiz.feature.maze.generate.GenerateMazeScreen
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.MazeQuiz.MazeItem
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
@@ -67,6 +69,26 @@ fun MazeScreen(
 @Composable
 @ExperimentalMaterial3Api
 private fun MazeScreenImpl(
+    uiState: MazeScreenUiState,
+    navigateBack: () -> Unit,
+    uiEvent: (event: MazeScreenUiEvent) -> Unit,
+    onItemClick: (item: MazeItem) -> Unit
+) {
+    when {
+        uiState.loading  -> CircularProgressIndicator()
+        !uiState.loading && uiState.isMazeEmpty -> GenerateMazeScreen(onBackClick = navigateBack)
+        !uiState.loading && !uiState.isMazeEmpty -> MazePathScreen(
+            uiState = uiState,
+            navigateBack = navigateBack,
+            uiEvent = uiEvent,
+            onItemClick = onItemClick
+        )
+    }
+}
+
+@Composable
+@ExperimentalMaterial3Api
+private fun MazePathScreen(
     uiState: MazeScreenUiState,
     navigateBack: () -> Unit,
     uiEvent: (event: MazeScreenUiEvent) -> Unit,
@@ -133,20 +155,6 @@ private fun MazeScreenImpl(
             modifier = Modifier
                 .padding(innerPadding)
         ) {
-            if (uiState.loading || uiState.generatingMaze) CircularProgressIndicator()
-
-            if (!uiState.loading && uiState.isMazeEmpty) {
-                /*
-                GenerateMazeComponent(
-                    modifier = Modifier.fillMaxSize(),
-                    onGenerateClick = { seed, multiChoiceCategories, wordleCategories ->
-                        uiEvent(MazeScreenUiEvent.GenerateMaze(seed, multiChoiceCategories, wordleCategories))
-                    }
-                )
-
-                 */
-            }
-
             if (!uiState.isMazeEmpty) {
                 MazePath(
                     modifier = Modifier.fillMaxSize(),
@@ -163,7 +171,7 @@ private fun MazeScreenImpl(
 @Composable
 @PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class)
-fun MazeScreenPreview() {
+private fun MazeScreenPreview() {
     val completedItems = List(3) {
         MazeItem.Wordle(
             wordleWord = WordleWord("1+1=2"),
@@ -186,14 +194,16 @@ fun MazeScreenPreview() {
     val mazeItems = (completedItems + otherItems).toPersistentList()
 
     NewQuizTheme {
-        MazeScreenImpl(
-            uiState = MazeScreenUiState(
-                loading = false,
-                maze = MazeQuiz(items = mazeItems)
-            ),
-            navigateBack = {},
-            uiEvent = {},
-            onItemClick = {}
-        )
+        Surface {
+            MazeScreenImpl(
+                uiState = MazeScreenUiState(
+                    loading = false,
+                    maze = MazeQuiz(items = mazeItems)
+                ),
+                navigateBack = {},
+                uiEvent = {},
+                onItemClick = {}
+            )
+        }
     }
 }

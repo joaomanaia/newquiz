@@ -30,7 +30,6 @@ import com.infinitepower.newquiz.model.UiText
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
-import com.infinitepower.newquiz.model.multi_choice_quiz.toBaseCategory
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleCategory
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
@@ -129,28 +128,26 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         fun enqueue(
             workManager: WorkManager,
             seed: Int?,
-            multiChoiceCategories: List<MultiChoiceCategory>,
-            wordleCategories: List<WordleCategory>,
+            multiChoiceCategories: List<BaseCategory>,
+            wordleCategories: List<BaseCategory>,
             questionSize: Int? = null
         ): UUID {
             val cleanSavedMazeRequest = OneTimeWorkRequestBuilder<CleanMazeQuizWorker>().build()
 
-            val multiChoiceBaseCategories = multiChoiceCategories.map { category ->
-                category.toBaseCategory()
-            }
-            val multiChoiceBaseCategoriesStr = Json.encodeToString(multiChoiceBaseCategories)
+            val multiChoiceCategoriesId = multiChoiceCategories.map { category ->
+                category.id
+            }.toTypedArray()
 
-            val wordleQuizTypes = wordleCategories.map { category ->
-                category.wordleQuizType
-            }
-            val wordleQuizTypesStr = Json.encodeToString(wordleQuizTypes)
+            val wordleCategoriesIds = wordleCategories.map { category ->
+                category.id
+            }.toTypedArray()
 
             val generateMazeRequest = OneTimeWorkRequestBuilder<GenerateMazeQuizWorker>()
                 .setInputData(
                     workDataOf(
                         INPUT_SEED to seed,
-                        INPUT_MULTI_CHOICE_CATEGORIES to multiChoiceBaseCategoriesStr,
-                        INPUT_WORDLE_QUIZ_TYPES to wordleQuizTypesStr,
+                        INPUT_MULTI_CHOICE_CATEGORIES to multiChoiceCategoriesId,
+                        INPUT_WORDLE_QUIZ_TYPES to wordleCategoriesIds,
                         INPUT_QUESTION_SIZE to questionSize
                     )
                 ).build()
@@ -167,20 +164,18 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         val seed = inputData.getInt(INPUT_SEED, Random.nextInt())
 
-        val multiChoiceCategoriesStr = inputData.getString(INPUT_MULTI_CHOICE_CATEGORIES)
+        val multiChoiceCategoriesIds = inputData.getStringArray(INPUT_MULTI_CHOICE_CATEGORIES)
             ?: throw RuntimeException("Multi choice categories is null")
-        val multiChoiceCategories =
-            Json.decodeFromString<List<MultiChoiceBaseCategory>>(multiChoiceCategoriesStr)
 
-        Log.i(TAG, "Multi choice categories: $multiChoiceCategoriesStr")
+        Log.i(TAG, "Multi choice categories: $multiChoiceCategoriesIds")
 
-        val wordleQuizTypesStr = inputData.getString(INPUT_WORDLE_QUIZ_TYPES)
+        val wordleCategoriesIds = inputData.getStringArray(INPUT_WORDLE_QUIZ_TYPES)
             ?: throw RuntimeException("Wordle categories is null")
-        val wordleQuizTypes = Json.decodeFromString<List<WordleQuizType>>(wordleQuizTypesStr)
 
-        Log.i(TAG, "Wordle quiz types: $wordleQuizTypesStr")
+        Log.i(TAG, "Wordle quiz types: $wordleCategoriesIds")
 
-        val remoteConfigQuestionSize = remoteConfig.get(RemoteConfigValue.MAZE_QUIZ_GENERATED_QUESTIONS)
+        val remoteConfigQuestionSize =
+            remoteConfig.get(RemoteConfigValue.MAZE_QUIZ_GENERATED_QUESTIONS)
 
         val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, remoteConfigQuestionSize)
 
@@ -188,7 +183,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         val random = Random(seed)
 
         // Get the questions size per mode, this is the size of the questions that will be generated per mode
-        val allCategoryCount = multiChoiceCategories.count() + wordleQuizTypes.count()
+        val allCategoryCount = multiChoiceCategoriesIds.count() + wordleCategoriesIds.count()
         val questionSizePerMode = questionSize / allCategoryCount
 
         Log.i(
@@ -196,16 +191,20 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
             "Generating maze with seed: $seed, question size: $questionSize, question size per mode: $questionSizePerMode"
         )
 
-        val multiChoiceMazeQuestions = multiChoiceCategories.map { category ->
+        val multiChoiceMazeQuestions = multiChoiceCategoriesIds.map { categoryId ->
+            val quizType = MultiChoiceBaseCategory.fromId(categoryId)
+
             generateMultiChoiceMazeItems(
                 mazeSeed = seed,
                 questionSize = questionSizePerMode,
-                multiChoiceQuizType = category,
+                multiChoiceQuizType = quizType,
                 random = random
             )
         }
 
-        val wordleMazeQuestions = wordleQuizTypes.map { wordleQuizType ->
+        val wordleMazeQuestions = wordleCategoriesIds.map { categoryId ->
+            val wordleQuizType = WordleQuizType.valueOf(categoryId)
+
             generateWordleMazeItems(
                 mazeSeed = seed,
                 questionSize = questionSizePerMode,
@@ -323,6 +322,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
 
                         WordleWord(formula.fullFormula)
                     }
+
                     else -> throw RuntimeException("Wordle quiz type not supported")
                 }
             }

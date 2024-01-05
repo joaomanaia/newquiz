@@ -1,6 +1,6 @@
 package com.infinitepower.newquiz.model
 
-interface BaseCategory {
+interface BaseCategory : GameModeCategory {
     val id: String
 
     val name: UiText
