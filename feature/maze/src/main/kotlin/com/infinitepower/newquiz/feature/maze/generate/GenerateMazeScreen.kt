@@ -71,11 +71,15 @@ internal fun GenerateMazeScreenImpl(
     onBackClick: () -> Unit = {}
 ) {
     val showGenerateButton = remember(
-        key1 = uiState.selectedMultiChoiceCategories.size,
-        key2 = uiState.selectedWordleCategories.size
+        uiState.selectedMultiChoiceCategories.size,
+        uiState.selectedWordleCategories.size,
+        uiState.loading,
+        uiState.generatingMaze
     ) {
         derivedStateOf {
-            uiState.selectedMultiChoiceCategories.isNotEmpty() || uiState.selectedWordleCategories.isNotEmpty()
+            val anySelectCategory = uiState.selectedMultiChoiceCategories.isNotEmpty() || uiState.selectedWordleCategories.isNotEmpty()
+
+            !uiState.loading && !uiState.generatingMaze && anySelectCategory
         }
     }
 
