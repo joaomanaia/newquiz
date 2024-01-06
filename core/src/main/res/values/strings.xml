@@ -286,4 +286,5 @@
     <string name="wordle_settings_summary">Hard mode, Quiz language, Letter hints</string>
     <string name="translation_settings_summary">Translation language</string>
     <string name="about_and_help_settings_summary">Version, Contact, Open source licences</string>
+    <string name="select_only_offline">Select only Offline</string>
 </resources>

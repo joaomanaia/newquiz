@@ -31,6 +31,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,6 +41,7 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.core.util.asString
+import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.model.BaseCategory
@@ -86,7 +88,7 @@ internal fun GenerateMazeScreenImpl(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Create Maze") },
+                title = { Text(text = stringResource(id = CoreR.string.generate_maze)) },
                 navigationIcon = { BackIconButton(onClick = onBackClick) }
             )
         },
@@ -97,7 +99,7 @@ internal fun GenerateMazeScreenImpl(
                         onEvent(GenerateMazeScreenUiEvent.GenerateMaze(seed = null))
                     },
                 ) {
-                    Text(text = "Generate")
+                    Text(text = stringResource(id = CoreR.string.generate))
                 }
             }
         }
@@ -149,12 +151,15 @@ private fun CategoriesContent(
         categories = wordleCategories
     )
 
+    val multiChoiceHeader = stringResource(id = CoreR.string.multi_choice_quiz)
+    val wordleHeader = stringResource(id = CoreR.string.wordle)
+
     LazyColumn(
         contentPadding = PaddingValues(vertical = MaterialTheme.spacing.medium),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
     ) {
         categoriesStickyHeader(
-            title = "Multi Choice",
+            title = multiChoiceHeader,
             parentBoxState = multiChoiceParentBoxState,
             onSelectAllClick = { selectAll ->
                 onEvent(
@@ -176,7 +181,7 @@ private fun CategoriesContent(
         )
 
         categoriesStickyHeader(
-            title = "Wordle",
+            title = wordleHeader,
             parentBoxState = wordleParentBoxState,
             onSelectAllClick = { selectAll ->
                 onEvent(
@@ -309,7 +314,7 @@ private fun HelperChipsRow(
             AssistChip(
                 onClick = onSelectAllClick,
                 label = {
-                    Text(text = "Select All")
+                    Text(text = stringResource(id = CoreR.string.select_all))
                 },
                 leadingIcon = {
                     Icon(
@@ -324,7 +329,7 @@ private fun HelperChipsRow(
             AssistChip(
                 onClick = onOnlyOfflineClick,
                 label = {
-                    Text(text = "Select only Offline")
+                    Text(text = stringResource(id = CoreR.string.select_only_offline))
                 },
                 leadingIcon = {
                     Icon(
