@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.maze_quiz
+package com.infinitepower.newquiz.feature.maze
 
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 

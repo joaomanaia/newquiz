@@ -10,6 +10,7 @@ import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoi
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.BaseCategory
+import com.infinitepower.newquiz.model.GameMode
 import com.infinitepower.newquiz.model.UiText
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
@@ -62,6 +63,7 @@ internal class RecentCategoriesRepositoryImplTest {
     }
 
     private data class TestCategory(
+        override val gameMode: GameMode,
         override val id: String,
         override val name: UiText,
         override val image: String,
@@ -70,6 +72,7 @@ internal class RecentCategoriesRepositoryImplTest {
 
     private val testCategories = List(10) {
         TestCategory(
+            gameMode = GameMode.MULTI_CHOICE,
             id = "id$it",
             name = "name$it".toUiText(),
             image = "image$it",
@@ -188,6 +191,7 @@ internal class RecentCategoriesRepositoryImplTest {
     fun `getCategories should return expected result, when connection not available and have no recent categories and all categories require internet`() = runTest {
         val testCategories = List(10) {
             TestCategory(
+                gameMode = GameMode.MULTI_CHOICE,
                 id = "id$it",
                 name = "name$it".toUiText(),
                 image = "image$it",

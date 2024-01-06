@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Wifi
 import androidx.compose.material.icons.rounded.WifiOff
 import androidx.compose.material3.Icon
@@ -21,10 +22,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.R
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
@@ -36,16 +37,12 @@ import com.infinitepower.newquiz.core.theme.spacing
  * @param modifier The modifier to be applied to the component.
  * @param requireConnection Whether the category requires an internet connection or not.
  * @param showTextByDefault Whether the text should be shown by default.
- * @param color The color of the badge.
- * @param shape The shape of the badge.
  */
 @Composable
 internal fun CategoryConnectionInfoBadge(
     modifier: Modifier = Modifier,
     requireConnection: Boolean = true,
     showTextByDefault: Boolean = false,
-    color: Color = MaterialTheme.colorScheme.tertiaryContainer,
-    shape: Shape = MaterialTheme.shapes.medium,
 ) {
     val (showText, setShowText) = remember {
         mutableStateOf(showTextByDefault)
@@ -59,10 +56,8 @@ internal fun CategoryConnectionInfoBadge(
         }
     )
 
-    Surface(
+    CategoryBadge(
         modifier = modifier,
-        color = color,
-        shape = shape,
         onClick = { setShowText(!showText) }
     ) {
         Row(
@@ -84,7 +79,10 @@ internal fun CategoryConnectionInfoBadge(
                 },
                 contentDescription = null
             )
-            AnimatedVisibility(visible = showText) {
+            AnimatedVisibility(
+                visible = showText,
+                label = "Connection info text"
+            ) {
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodySmall
@@ -92,6 +90,44 @@ internal fun CategoryConnectionInfoBadge(
             }
         }
     }
+}
+
+/**
+ * A badge that indicates that the category is checked.
+ */
+@Composable
+internal fun CategoryCheckedBadge(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    CategoryBadge(
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.primary,
+        onClick = onClick
+    ) {
+        Icon(
+            imageVector = Icons.Rounded.Check,
+            contentDescription = null,
+            modifier = Modifier.padding(MaterialTheme.spacing.default)
+        )
+    }
+}
+
+@Composable
+private fun CategoryBadge(
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.tertiaryContainer,
+    shape: Shape = MaterialTheme.shapes.medium,
+    onClick: () -> Unit = {},
+    badgeContent: @Composable () -> Unit
+) {
+    Surface(
+        modifier = modifier,
+        color = color,
+        shape = shape,
+        onClick = onClick,
+        content = badgeContent
+    )
 }
 
 @Composable
@@ -104,6 +140,19 @@ private fun CategoryConnectionInfoBadgePreview(
             CategoryConnectionInfoBadge(
                 modifier = Modifier.padding(16.dp),
                 requireConnection = requireConnection
+            )
+        }
+    }
+}
+
+@Composable
+@PreviewLightDark
+private fun CategoryCheckedBadgePreview() {
+    NewQuizTheme {
+        Surface {
+            CategoryCheckedBadge(
+                modifier = Modifier.padding(16.dp),
+                onClick = {}
             )
         }
     }

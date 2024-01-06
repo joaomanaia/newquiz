@@ -13,7 +13,7 @@ import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.user_services.ui.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.daily_challenge.destinations.DailyChallengeScreenDestination
 import com.infinitepower.newquiz.feature.settings.destinations.SettingsScreenDestination
-import com.infinitepower.newquiz.maze_quiz.destinations.MazeScreenDestination
+import com.infinitepower.newquiz.feature.maze.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination

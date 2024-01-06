@@ -1,8 +1,11 @@
 package com.infinitepower.newquiz.core.ui.components.category
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -36,23 +40,31 @@ fun CategoryComponent(
     imageUrl: Any,
     requireInternetConnection: Boolean = false,
     showConnectionInfo: ShowCategoryConnectionInfo = ShowCategoryConnectionInfo.NONE,
+    checked: Boolean = false,
     enabled: Boolean = true,
     textStyle: TextStyle = MaterialTheme.typography.headlineLarge,
-    onClick: () -> Unit = {}
+    shape: Shape = MaterialTheme.shapes.large,
+    onClick: () -> Unit = {},
+    onCheckClick: () -> Unit = {}
 ) {
-    val shapeMedium = MaterialTheme.shapes.large
-
     val containerOverlayColor = if (isSystemInDarkTheme()) {
-        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+        MaterialTheme.colorScheme.primaryContainer
     } else {
-        MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-    }
+        MaterialTheme.colorScheme.primary
+    }.copy(alpha = if (checked) 0.6f else 0.5f)
 
     Surface(
-        modifier = modifier.alpha(if (enabled) 1f else DISABLED_ALPHA),
-        shape = shapeMedium,
+        modifier = modifier
+            .height(120.dp)
+            .alpha(if (enabled) 1f else DISABLED_ALPHA),
+        shape = shape,
         onClick = onClick,
-        enabled = enabled
+        enabled = enabled,
+        border = if (checked) {
+            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+        } else {
+            null
+        }
     ) {
         AsyncImage(
             model = imageUrl,
@@ -74,13 +86,25 @@ fun CategoryComponent(
                 color = Color.White,
                 textAlign = TextAlign.Center
             )
-            if (showConnectionInfo.shouldShowBadge(requireInternetConnection)) {
-                CategoryConnectionInfoBadge(
-                    modifier = Modifier
-                        .padding(MaterialTheme.spacing.default)
-                        .align(Alignment.TopEnd),
-                    requireConnection = requireInternetConnection
-                )
+
+            Row(
+                modifier = Modifier
+                    .padding(MaterialTheme.spacing.default)
+                    .align(Alignment.TopEnd),
+            ) {
+                if (showConnectionInfo.shouldShowBadge(requireInternetConnection)) {
+                    CategoryConnectionInfoBadge(
+                        requireConnection = requireInternetConnection
+                    )
+                }
+                AnimatedVisibility(
+                    visible = checked,
+                    label = "Checked badge"
+                ) {
+                    CategoryCheckedBadge(
+                        onClick = onCheckClick
+                    )
+                }
             }
         }
     }
@@ -96,8 +120,10 @@ private fun CategoryPreview() {
                 imageUrl = "",
                 modifier = Modifier
                     .padding(16.dp)
-                    .height(200.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                requireInternetConnection = true,
+                showConnectionInfo = ShowCategoryConnectionInfo.BOTH,
+                checked = true
             )
         }
     }

@@ -5,10 +5,12 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Keep
 data class MazeQuiz(
-    val items: List<MazeItem>
+    val items: ImmutableList<MazeItem>
 ) {
     sealed interface MazeItem {
         val id: Int
@@ -37,7 +39,7 @@ data class MazeQuiz(
     }
 }
 
-fun emptyMaze(): MazeQuiz = MazeQuiz(items = emptyList())
+fun emptyMaze(): MazeQuiz = MazeQuiz(items = persistentListOf())
 
 /**
  * Check if an item at a given index in a list of MazeItem objects is playable.

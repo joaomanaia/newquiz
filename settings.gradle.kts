@@ -37,12 +37,12 @@ include(":core:user-services")
 include(":core:user-services:ui")
 
 include(":feature:settings")
+include(":feature:maze")
 
 include(":model")
 include(":domain")
 include(":data")
 include(":multi-choice-quiz")
 include(":wordle")
-include(":maze-quiz")
 include(":comparison-quiz")
 include(":daily_challenge")

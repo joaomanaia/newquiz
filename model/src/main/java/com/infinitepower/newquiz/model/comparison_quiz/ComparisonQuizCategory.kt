@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.model.comparison_quiz
 
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.BaseCategory
+import com.infinitepower.newquiz.model.GameMode
 import com.infinitepower.newquiz.model.UiText
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -35,6 +36,8 @@ data class ComparisonQuizCategory(
     val helperValueSuffix: String? = null,
     val dataSourceAttribution: DataSourceAttribution? = null
 ) : BaseCategory, java.io.Serializable {
+    override val gameMode: GameMode = GameMode.COMPARISON_QUIZ
+
     fun formatValueToString(value: Double): String {
         return formatType.formatValueToString(value, helperValueSuffix)
     }

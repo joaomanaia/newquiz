@@ -292,4 +292,5 @@
     <string name="wordle_settings_summary">Modo difícil, Linguagem do questionário, Dicas de palavras</string>
     <string name="translation_settings_summary">Idioma de tradução</string>
     <string name="about_and_help_settings_summary">Versão, Contacto, Licenças de código aberto</string>
+    <string name="select_only_offline">Seleciona apenas Offline</string>
 </resources>
