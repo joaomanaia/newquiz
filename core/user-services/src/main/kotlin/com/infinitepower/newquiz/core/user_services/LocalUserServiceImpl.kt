@@ -130,7 +130,8 @@ class LocalUserServiceImpl @Inject constructor(
     }
 
     private suspend fun saveNewXP(newXp: UInt) {
-        val currentUser = getUser() ?: throw IllegalStateException("User not found")
+        val currentUser = getUser()
+        checkNotNull(currentUser) { "User not found" }
 
         val newTotalXp = currentUser.totalXp + newXp
 

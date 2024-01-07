@@ -30,7 +30,7 @@ fun setTestDeviceLocale(
 @TestOnly
 @Composable
 @VisibleForTesting
-@SuppressLint("ComposableNaming")
+@Suppress("ComposableNaming")
 fun setTestDeviceLocale(
     locale: Locale = Locale.ENGLISH
 ) {

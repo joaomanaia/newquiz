@@ -25,13 +25,14 @@ import com.infinitepower.newquiz.feature.settings.components.preferences.Prefere
 import com.infinitepower.newquiz.feature.settings.components.preferences.PreferenceItem
 import com.infinitepower.newquiz.feature.settings.components.preferences.widgets.CustomPreferenceWidget
 import com.infinitepower.newquiz.feature.settings.model.Preference
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 @ExperimentalMaterial3Api
 fun PreferenceScreen(
     modifier: Modifier = Modifier,
     title: String,
-    items: List<Preference>,
+    items: ImmutableList<Preference>,
     dataStoreManager: DataStoreManager,
     isScreenExpanded: Boolean,
     onBackClick: () -> Unit
@@ -62,14 +63,14 @@ fun PreferenceScreen(
 
 /**
  * Preference Screen composable which contains a list of [Preference] items
- * @param items [Preference] items which should be displayed on the preference screen. An item can be a single [PreferenceItem] or a group ([PreferenceGroup])
+ * @param items [Preference] items which should be displayed on the preference screen. An item can be a single [PreferenceItem] or a group ([Preference.PreferenceGroup])
  * @param dataStoreManager a [DataStoreManager] responsible for the dataStore backing the preference screen
  * @param modifier [Modifier] to be applied to the preferenceScreen layout
  */
 @Composable
 internal fun PreferenceScreen(
     modifier: Modifier = Modifier,
-    items: List<Preference>,
+    items: ImmutableList<Preference>,
     dataStoreManager: DataStoreManager,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {

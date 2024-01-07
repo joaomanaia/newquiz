@@ -41,9 +41,15 @@ inline fun <reified T> RemoteConfig.get(removeConfigValue: RemoteConfigValue<T>)
         Long::class -> getLong(removeConfigValue.key) as T
         Int::class -> getInt(removeConfigValue.key) as T
         Boolean::class -> getBoolean(removeConfigValue.key) as T
-        ShowCategoryConnectionInfo::class -> ShowCategoryConnectionInfo.valueOf(getString(removeConfigValue.key)) as T
-        ComparisonQuizHelperValueState::class -> ComparisonQuizHelperValueState.valueOf(getString(removeConfigValue.key)) as T
-        QuestionDifficulty::class -> QuestionDifficulty.from(getString(removeConfigValue.key)) as T
+        ShowCategoryConnectionInfo::class -> {
+            ShowCategoryConnectionInfo.valueOf(getString(removeConfigValue.key)) as T
+        }
+        ComparisonQuizHelperValueState::class -> {
+            ComparisonQuizHelperValueState.valueOf(getString(removeConfigValue.key)) as T
+        }
+        QuestionDifficulty::class -> {
+            QuestionDifficulty.from(getString(removeConfigValue.key)) as T
+        }
         else -> throw IllegalArgumentException("Unsupported type ${T::class}")
     }
 }

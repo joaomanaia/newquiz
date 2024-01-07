@@ -13,7 +13,9 @@ value class RemoteConfigValue<T>(
 
         val FLAG_BASE_URL = RemoteConfigValue<String>("flag_base_url")
 
-        val DEFAULT_SHOW_CATEGORY_CONNECTION_INFO = RemoteConfigValue<ShowCategoryConnectionInfo>("default_show_category_connection_info")
+        val DEFAULT_SHOW_CATEGORY_CONNECTION_INFO = RemoteConfigValue<ShowCategoryConnectionInfo>(
+            key = "default_show_category_connection_info"
+        )
 
         val DAILY_CHALLENGE_TASKS_TO_GENERATE = RemoteConfigValue<Int>("daily_challenge_tasks_to_generate")
 
@@ -23,7 +25,9 @@ value class RemoteConfigValue<T>(
 
         val COMPARISON_QUIZ_SKIP_COST = RemoteConfigValue<Int>("comparison_quiz_skip_cost")
 
-        val COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE = RemoteConfigValue<ComparisonQuizHelperValueState>("comparison_quiz_first_item_helper_value")
+        val COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE = RemoteConfigValue<ComparisonQuizHelperValueState>(
+            key = "comparison_quiz_first_item_helper_value"
+        )
 
         val USER_INITIAL_DIAMONDS = RemoteConfigValue<Int>("user_initial_diamonds")
 

@@ -42,10 +42,12 @@ fun SemanticsNodeInteraction.assertMatchesGolden(
     golden.compare(bitmap)
 }
 
+private const val SCREENSHOT_QUALITY = 100
+
 private fun saveScreenshot(filename: String, bmp: Bitmap) {
     val path = InstrumentationRegistry.getInstrumentation().targetContext.filesDir.canonicalPath
     FileOutputStream("$path/$filename.png").use { out ->
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, out)
+        bmp.compress(Bitmap.CompressFormat.PNG, SCREENSHOT_QUALITY, out)
     }
     println("Saved screenshot to $path/$filename.png")
 }

@@ -57,5 +57,7 @@ class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRep
         return highestPosition.value.getOrDefault(categoryId, 0)
     }
 
-    override fun getHighestPositionFlow(categoryId: String): Flow<Int> = highestPosition.map { it.getOrDefault(categoryId, 0)}
+    override fun getHighestPositionFlow(categoryId: String): Flow<Int> {
+        return highestPosition.map { it.getOrDefault(categoryId, 0)}
+    }
 }

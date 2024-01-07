@@ -21,6 +21,12 @@ complexity:
     threshold: 15
     ignoreAnnotated:
       - "Composable"
+  TooManyFunctions:
+    active: true
+    thresholdInClasses: 20
+    ignoreAnnotated:
+      - "InstallIn"
+      - "TestInstallIn"
 
 naming:
   active: true
@@ -44,6 +50,9 @@ style:
     excludes: [ '**/test/**', '**/*Test.kt', '**/demos/**', '**/androidUnitTest/**', '**/commonTest/**', '**/desktopTest/**' , '**/jsTest/**' ]
   MaxLineLength:
     excludes: [ '**/test/**', '**/*.Test.kt', '**/*.Spec.kt', '**/androidUnitTest/**', '**/commonTest/**', '**/desktopTest/**' , '**/jsTest/**' ]
+    ignoreAnnotated:
+      - "InstallIn"
+      - "TestInstallIn"
     excludeCommentStatements: true
   UnusedPrivateMember:
     # https://detekt.dev/docs/introduction/compose#unusedprivatemember

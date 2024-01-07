@@ -16,6 +16,7 @@ internal object RemoteConfigXmlParser {
     private const val XML_TAG_KEY = "key"
     private const val XML_TAG_VALUE = "value"
 
+    @Suppress("NestedBlockDepth", "TooGenericExceptionCaught")
     fun parse(
         context: Context,
         xmlResId: Int

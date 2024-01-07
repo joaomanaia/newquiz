@@ -18,12 +18,12 @@ class GeneralScreenViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    defaultShowCategoryConnectionInfo = recentCategoriesRepository.getDefaultShowCategoryConnectionInfo(),
-                )
-            }
+        _uiState.update { currentState ->
+            val defaultShowCategoryConnectionInfo = recentCategoriesRepository.getDefaultShowCategoryConnectionInfo()
+
+            currentState.copy(
+                defaultShowCategoryConnectionInfo = defaultShowCategoryConnectionInfo,
+            )
         }
     }
 

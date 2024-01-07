@@ -14,6 +14,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 @ExperimentalMaterial3Api
@@ -24,7 +25,7 @@ internal fun AnimationsScreen(
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
 
-    val items = listOf(
+    val items = persistentListOf(
         Preference.PreferenceItem.SwitchPreference(
             request = SettingsCommon.GlobalAnimationsEnabled,
             title = stringResource(id = CoreR.string.animations_enabled),
@@ -34,13 +35,13 @@ internal fun AnimationsScreen(
             request = SettingsCommon.WordleAnimationsEnabled,
             title = stringResource(id = CoreR.string.wordle_animations_enabled),
             summary = stringResource(id = CoreR.string.wordle_animations_enabled_description),
-            dependency = listOf(SettingsCommon.GlobalAnimationsEnabled)
+            dependency = persistentListOf(SettingsCommon.GlobalAnimationsEnabled)
         ),
         Preference.PreferenceItem.SwitchPreference(
             request = SettingsCommon.MultiChoiceAnimationsEnabled,
             title = stringResource(id = CoreR.string.multi_choice_animations_enabled),
             summary = stringResource(id = CoreR.string.multi_choice_animations_enabled_description),
-            dependency = listOf(SettingsCommon.GlobalAnimationsEnabled)
+            dependency = persistentListOf(SettingsCommon.GlobalAnimationsEnabled)
         )
     )
 

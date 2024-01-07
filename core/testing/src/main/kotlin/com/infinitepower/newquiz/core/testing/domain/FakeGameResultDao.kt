@@ -47,7 +47,9 @@ class FakeGameResultDao : GameResultDao {
         }
     }
 
-    override suspend fun getComparisonQuizResults(): List<ComparisonQuizGameResultEntity> = comparisonQuizResults.first()
+    override suspend fun getComparisonQuizResults(): List<ComparisonQuizGameResultEntity> {
+        return comparisonQuizResults.first()
+    }
 
     override suspend fun getComparisonQuizHighestPosition(categoryId: String): Int {
         return comparisonQuizResults.first()

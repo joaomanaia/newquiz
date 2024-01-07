@@ -27,6 +27,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.model.DataAnalyticsConsentState
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 @Composable
@@ -51,7 +52,7 @@ internal fun AnalyticsScreen(
 
     val analyticsHelper = LocalAnalyticsHelper.current
 
-    val items = listOf(
+    val items = persistentListOf(
         // Global analytics dependency
         Preference.PreferenceItem.SwitchPreference(
             request = DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled,
@@ -71,7 +72,7 @@ internal fun AnalyticsScreen(
             request = DataAnalyticsCommon.GeneralAnalyticsEnabled,
             title = stringResource(id = CoreR.string.general_analytics_enabled),
             summary = stringResource(id = CoreR.string.general_analytics_description_enabled),
-            dependency = listOf(DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled),
+            dependency = persistentListOf(DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled),
             icon = {
                 Icon(
                     imageVector = Icons.Rounded.Analytics,
@@ -84,7 +85,7 @@ internal fun AnalyticsScreen(
             request = DataAnalyticsCommon.CrashlyticsEnabled,
             title = stringResource(id = CoreR.string.crash_analytics_enabled),
             summary = stringResource(id = CoreR.string.crash_analytics_description_enabled),
-            dependency = listOf(DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled),
+            dependency = persistentListOf(DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled),
             icon = {
                 Icon(
                     imageVector = Icons.Rounded.BugReport,
@@ -97,7 +98,7 @@ internal fun AnalyticsScreen(
             request = DataAnalyticsCommon.PerformanceMonitoringEnabled,
             title = stringResource(id = CoreR.string.performance_monitoring_enabled),
             summary = stringResource(id = CoreR.string.performance_monitoring_description_enabled),
-            dependency = listOf(DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled),
+            dependency = persistentListOf(DataAnalyticsCommon.GloballyAnalyticsCollectionEnabled),
             icon = {
                 Icon(
                     imageVector = Icons.Rounded.MonitorHeart,

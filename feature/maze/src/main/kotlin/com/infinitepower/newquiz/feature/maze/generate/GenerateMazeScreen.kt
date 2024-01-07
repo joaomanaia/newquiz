@@ -79,7 +79,8 @@ internal fun GenerateMazeScreenImpl(
         uiState.generatingMaze
     ) {
         derivedStateOf {
-            val anySelectCategory = uiState.selectedMultiChoiceCategories.isNotEmpty() || uiState.selectedWordleCategories.isNotEmpty()
+            val anySelectCategory = uiState.selectedMultiChoiceCategories.isNotEmpty()
+                    || uiState.selectedWordleCategories.isNotEmpty()
 
             !uiState.loading && !uiState.generatingMaze && anySelectCategory
         }

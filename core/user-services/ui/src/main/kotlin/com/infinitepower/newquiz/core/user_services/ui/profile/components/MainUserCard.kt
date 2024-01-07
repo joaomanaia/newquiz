@@ -103,7 +103,7 @@ private fun LevelCard(
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             CircularProgressIndicator(
                 progress = { levelProgressAnimated.value },

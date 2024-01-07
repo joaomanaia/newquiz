@@ -16,12 +16,16 @@ data class User(
     val totalXp: ULong = 0u,
     val diamonds: UInt = 0u,
 ) {
+    companion object {
+        private const val XP_FACTOR = 100
+    }
+
     val level: UInt
-        get() = floor(sqrt(totalXp / 100.0)).roundToUInt()
+        get() = floor(sqrt(totalXp / XP_FACTOR.toDouble())).roundToUInt()
 
     fun getNextLevelXp(): UInt = getRequiredXpForLevel(level + 1u)
 
-    private fun getRequiredXpForLevel(level: UInt): UInt = level.pow(2) * 100u
+    private fun getRequiredXpForLevel(level: UInt): UInt = level.pow(2) * XP_FACTOR.toUInt()
 
     fun getLevelProgress(): Float {
         val currentLevelXp = getRequiredXpForLevel(level)

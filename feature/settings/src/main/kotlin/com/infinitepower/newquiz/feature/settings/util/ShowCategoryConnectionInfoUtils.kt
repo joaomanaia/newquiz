@@ -14,7 +14,9 @@ internal fun ShowCategoryConnectionInfo.getTitle(): UiText {
         ShowCategoryConnectionInfo.NONE -> UiText.StringResource(CoreR.string.none)
         ShowCategoryConnectionInfo.BOTH -> UiText.StringResource(CoreR.string.both)
         ShowCategoryConnectionInfo.REQUIRE_CONNECTION -> UiText.StringResource(CoreR.string.require_internet_connection)
-        ShowCategoryConnectionInfo.DONT_REQUIRE_CONNECTION -> UiText.StringResource(CoreR.string.dont_require_internet_connection)
+        ShowCategoryConnectionInfo.DONT_REQUIRE_CONNECTION -> {
+            UiText.StringResource(CoreR.string.dont_require_internet_connection)
+        }
     }
 }
 

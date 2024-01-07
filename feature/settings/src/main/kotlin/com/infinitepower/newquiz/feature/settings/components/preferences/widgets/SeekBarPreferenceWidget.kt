@@ -65,4 +65,6 @@ private fun PreferenceSummary(
     }
 }
 
-private fun ClosedRange<Int>.toClosedFloatingPointRange(): ClosedFloatingPointRange<Float> = (start.toFloat()..endInclusive.toFloat())
+private fun ClosedRange<Int>.toClosedFloatingPointRange(): ClosedFloatingPointRange<Float> {
+    return start.toFloat()..endInclusive.toFloat()
+}

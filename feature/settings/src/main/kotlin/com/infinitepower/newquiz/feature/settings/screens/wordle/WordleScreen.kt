@@ -19,6 +19,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 @ExperimentalMaterial3Api
@@ -31,7 +32,7 @@ internal fun WordleScreen(
 
     val analyticsHelper = LocalAnalyticsHelper.current
 
-    val items = listOf(
+    val items = persistentListOf(
         Preference.PreferenceItem.SwitchPreference(
             request = SettingsCommon.WordleHardMode,
             title = stringResource(id = CoreR.string.hard_mode),
@@ -45,7 +46,9 @@ internal fun WordleScreen(
         Preference.PreferenceItem.SwitchPreference(
             request = SettingsCommon.WordleLetterHints,
             title = stringResource(id = CoreR.string.letter_hints),
-            summary = stringResource(id = CoreR.string.hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word)
+            summary = stringResource(
+                id = CoreR.string.hint_above_the_letter_that_it_appears_twice_or_more_in_the_hidden_word
+            )
         ),
         Preference.PreferenceGroup(
             title = stringResource(id = CoreR.string.wordle_infinite),
@@ -79,7 +82,7 @@ internal fun WordleScreen(
                     title = stringResource(id = CoreR.string.rows_limited),
                     summary = stringResource(id = CoreR.string.wordle_infinite_row_limit_value),
                     valueRange = 2..30,
-                    dependency = listOf(SettingsCommon.WordleInfiniteRowsLimited)
+                    dependency = persistentListOf(SettingsCommon.WordleInfiniteRowsLimited)
                 )
             )
         )

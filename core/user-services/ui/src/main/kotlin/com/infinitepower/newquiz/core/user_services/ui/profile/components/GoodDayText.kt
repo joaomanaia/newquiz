@@ -29,6 +29,18 @@ private sealed class DayState(@StringRes val text: Int) {
     data object Evening : DayState(text = CoreR.string.good_evening)
 
     data object Night : DayState(text = CoreR.string.good_night)
+
+    companion object {
+        @Suppress("MagicNumber")
+        fun fromHour(hour: Int): DayState {
+            return when (hour) {
+                in 6..11 -> Morning
+                in 12..17 -> Afternoon
+                in 18..23 -> Evening
+                else -> Night
+            }
+        }
+    }
 }
 
 @Composable
@@ -36,19 +48,12 @@ internal fun GoodDayText(
     modifier: Modifier = Modifier,
     name: String
 ) {
-    val localTime = remember {
+    val dayText = remember {
         val tz = TimeZone.currentSystemDefault()
         val now = Clock.System.now()
-        now.toLocalDateTime(tz)
-    }
+        val localTime = now.toLocalDateTime(tz)
 
-    val dayText = remember(localTime) {
-        when (localTime.hour) {
-            in 6..11 -> DayState.Morning
-            in 12..17 -> DayState.Afternoon
-            in 18..23 -> DayState.Evening
-            else -> DayState.Night
-        }
+        DayState.fromHour(localTime.hour)
     }
 
     GoodDayText(

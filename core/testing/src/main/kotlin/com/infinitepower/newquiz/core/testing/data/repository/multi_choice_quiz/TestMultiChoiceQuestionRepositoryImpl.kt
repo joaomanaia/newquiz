@@ -12,6 +12,10 @@ import kotlin.random.Random
 
 @Singleton
 class TestMultiChoiceQuestionRepositoryImpl @Inject constructor() : MultiChoiceQuestionRepository {
+    companion object {
+        private const val ANSWER_COUNT = 4
+    }
+
     override suspend fun getRandomQuestions(
         amount: Int,
         category: MultiChoiceBaseCategory.Normal,
@@ -22,7 +26,7 @@ class TestMultiChoiceQuestionRepositoryImpl @Inject constructor() : MultiChoiceQ
             QuestionDifficulty.from(difficultyStr)
         } ?: QuestionDifficulty.random(random)
 
-        val answers =  List(4) { answerNum ->
+        val answers =  List(ANSWER_COUNT) { answerNum ->
             "Answer $answerNum"
         }
 
@@ -31,7 +35,7 @@ class TestMultiChoiceQuestionRepositoryImpl @Inject constructor() : MultiChoiceQ
             answers = answers,
             lang = QuestionLanguage.EN,
             category = category,
-            correctAns = random.nextInt(4),
+            correctAns = random.nextInt(ANSWER_COUNT),
             type = MultiChoiceQuestionType.MULTIPLE,
             difficulty = questionDifficulty
         )

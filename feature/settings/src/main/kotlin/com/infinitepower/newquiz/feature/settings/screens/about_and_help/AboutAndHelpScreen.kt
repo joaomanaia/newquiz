@@ -8,6 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,6 +22,7 @@ import com.infinitepower.newquiz.feature.settings.components.AboutAndHelpButtons
 import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 @ExperimentalMaterial3Api
@@ -31,21 +33,23 @@ internal fun AboutAndHelpScreen(
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
 
-    val items = listOf(
-        Preference.CustomPreference(
-            title = "NewQuiz Logo",
-            content = {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(MaterialTheme.spacing.medium)
-                ) {
-                    AppNameWithLogo()
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
-                    AboutAndHelpButtons()
+    val items = remember {
+        persistentListOf(
+            Preference.CustomPreference(
+                title = "NewQuiz Logo",
+                content = {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(MaterialTheme.spacing.medium)
+                    ) {
+                        AppNameWithLogo()
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
+                        AboutAndHelpButtons()
+                    }
                 }
-            }
+            )
         )
-    )
+    }
 
     PreferenceScreen(
         modifier = modifier,

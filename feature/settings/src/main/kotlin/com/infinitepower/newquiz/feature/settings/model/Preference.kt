@@ -3,6 +3,8 @@ package com.infinitepower.newquiz.feature.settings.model
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import com.infinitepower.newquiz.core.datastore.PreferenceRequest
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * The basic building block that represents an individual setting displayed to a user in the preference hierarchy.
@@ -24,7 +26,7 @@ sealed class Preference {
          * Represents the keys of a SwitchPreference that controls the state of this Preference.
          * When the corresponding switch is turned off, this Preference is disabled and is unable to be modified.
          */
-        abstract val dependency: List<PreferenceRequest<Boolean>>
+        abstract val dependency: ImmutableList<PreferenceRequest<Boolean>>
 
         abstract val icon: @Composable (() -> Unit)?
 
@@ -33,7 +35,7 @@ sealed class Preference {
             override val summary: String? = null,
             override val singleLineTitle: Boolean = true,
             override val singleLineSummary: Boolean = false,
-            override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
+            override val dependency: ImmutableList<PreferenceRequest<Boolean>> = persistentListOf(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
             override val visible: Boolean = true,
@@ -51,7 +53,7 @@ sealed class Preference {
             override val summary: String? = null,
             override val singleLineTitle: Boolean = true,
             override val singleLineSummary: Boolean = false,
-            override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
+            override val dependency: ImmutableList<PreferenceRequest<Boolean>> = persistentListOf(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
             override val visible: Boolean = true,
@@ -73,7 +75,7 @@ sealed class Preference {
             override val summary: String? = null,
             override val singleLineTitle: Boolean = true,
             override val singleLineSummary: Boolean = false,
-            override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
+            override val dependency: ImmutableList<PreferenceRequest<Boolean>> = persistentListOf(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
             override val visible: Boolean = true,
@@ -92,7 +94,7 @@ sealed class Preference {
             override val summary: String? = null,
             override val singleLineTitle: Boolean = true,
             override val singleLineSummary: Boolean = false,
-            override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
+            override val dependency: ImmutableList<PreferenceRequest<Boolean>> = persistentListOf(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
             override val visible: Boolean = true,
@@ -111,7 +113,7 @@ sealed class Preference {
             override val summary: String? = null,
             override val singleLineTitle: Boolean = true,
             override val singleLineSummary: Boolean = false,
-            override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
+            override val dependency: ImmutableList<PreferenceRequest<Boolean>> = persistentListOf(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
             override val visible: Boolean = true,
@@ -128,12 +130,12 @@ sealed class Preference {
             override val summary: String? = null,
             override val singleLineTitle: Boolean = true,
             override val singleLineSummary: Boolean = false,
-            override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
+            override val dependency: ImmutableList<PreferenceRequest<Boolean>> = persistentListOf(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
             override val visible: Boolean = true,
 
-            val valueRange: ClosedRange<Int> = 0..10,
+            val valueRange: ClosedRange<Int>,
             val steps: Int = 0,
             val valueRepresentation: (Int) -> String = { it.toString() }
         ) : PreferenceItem<Int>()
@@ -148,7 +150,7 @@ sealed class Preference {
             override val summary: String? = null,
             override val singleLineTitle: Boolean = true,
             override val singleLineSummary: Boolean = false,
-            override val dependency: List<PreferenceRequest<Boolean>> = emptyList(),
+            override val dependency: ImmutableList<PreferenceRequest<Boolean>> = persistentListOf(),
             override val icon: @Composable (() -> Unit)? = null,
             override val enabled: Boolean = true,
             override val visible: Boolean = true,

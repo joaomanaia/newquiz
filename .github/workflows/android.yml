@@ -74,6 +74,9 @@ jobs:
         with:
           report-path: '**/build/reports/*.xml'
 
+      - name: Run Detekt
+        run: ./gradlew detekt --stacktrace
+
       - name: Assemble debug APKs
         run: ./gradlew assembleNormalDebug assembleFossDebug --stacktrace
 

@@ -9,6 +9,7 @@ import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 @ExperimentalMaterial3Api
@@ -19,7 +20,7 @@ internal fun MultiChoiceQuizScreen(
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
 
-    val items = listOf(
+    val items = persistentListOf(
         Preference.PreferenceItem.SeekBarPreference(
             request = SettingsCommon.MultiChoiceQuizQuestionsSize,
             title = stringResource(id = CoreR.string.quiz_question_size),

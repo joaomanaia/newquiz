@@ -32,9 +32,8 @@ sealed class AnalyticsEvent(
         type = "category_clicked",
         extras = setOf(
             Param("game", game.name.lowercase()),
-            Param("id", categoryId),
-            *otherData.map { Param(it.key, it.value) }.toTypedArray()
-        )
+            Param("id", categoryId)
+        ) + otherData.map { Param(it.key, it.value) }
     )
 
     @Keep

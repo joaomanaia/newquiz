@@ -14,6 +14,7 @@ import com.infinitepower.newquiz.core.translation.TranslatorModelState
 import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 @ExperimentalMaterial3Api
@@ -45,7 +46,7 @@ internal fun TranslationScreen(
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
 
-    val items = listOf(
+    val items = persistentListOf(
         Preference.PreferenceItem.SwitchPreference(
             request = SettingsCommon.Translation.Enabled,
             title = stringResource(id = CoreR.string.translation_enabled),
@@ -57,19 +58,19 @@ internal fun TranslationScreen(
             summary = stringResource(id = CoreR.string.target_language_description),
             entries = uiState.translatorTargetLanguages,
             enabled = uiState.translationModelState == TranslatorModelState.None,
-            dependency = listOf(SettingsCommon.Translation.Enabled)
+            dependency = persistentListOf(SettingsCommon.Translation.Enabled)
         ),
         Preference.PreferenceItem.TextPreference(
             title = stringResource(id = CoreR.string.download_translation_model),
             summary = stringResource(id = CoreR.string.download_translation_model_description),
-            dependency = listOf(SettingsCommon.Translation.Enabled),
+            dependency = persistentListOf(SettingsCommon.Translation.Enabled),
             visible = uiState.translationModelState == TranslatorModelState.None,
             enabled = uiState.translatorTargetLanguage.isNotBlank(),
             onClick = { onEvent(TranslationScreenUiEvent.DownloadTranslationModel) }
         ),
         Preference.PreferenceItem.TextPreference(
             title = stringResource(id = CoreR.string.delete_translation_model),
-            dependency = listOf(SettingsCommon.Translation.Enabled),
+            dependency = persistentListOf(SettingsCommon.Translation.Enabled),
             visible = uiState.translationModelState == TranslatorModelState.Downloaded,
             onClick = { onEvent(TranslationScreenUiEvent.DeleteTranslationModel) }
         ),
@@ -80,13 +81,13 @@ internal fun TranslationScreen(
                     request = SettingsCommon.Translation.RequireWifi,
                     title = stringResource(id = CoreR.string.require_wifi),
                     summary = stringResource(id = CoreR.string.translation_require_wifi_description),
-                    dependency = listOf(SettingsCommon.Translation.Enabled),
+                    dependency = persistentListOf(SettingsCommon.Translation.Enabled),
                 ),
                 Preference.PreferenceItem.SwitchPreference(
                     request = SettingsCommon.Translation.RequireCharging,
                     title = stringResource(id = CoreR.string.require_charging),
                     summary = stringResource(id = CoreR.string.translation_require_charging_description),
-                    dependency = listOf(SettingsCommon.Translation.Enabled),
+                    dependency = persistentListOf(SettingsCommon.Translation.Enabled),
                     visible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                 ),
             )

@@ -21,20 +21,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.feature.settings.model.Preference
+import kotlinx.collections.immutable.ImmutableSet
 
 @Composable
 internal fun MultiSelectListPreferenceWidget(
     preference: Preference.PreferenceItem.MultiSelectListPreference,
-    values: Set<String>,
+    values: ImmutableSet<String>,
     onValuesChange: (Set<String>) -> Unit
 ) {
     val (isDialogShown, showDialog) = remember { mutableStateOf(false) }
 
-    val description = preference
-        .entries
-        .filter { values.contains(it.key) }
-        .map { it.value }
-        .joinToString(separator = ", ", limit = 3)
+    val description = remember(preference.entries, values) {
+        preference
+            .entries
+            .filter { values.contains(it.key) }
+            .map { it.value }
+            .joinToString(separator = ", ", limit = 3)
+    }
 
     TextPreferenceWidget(
         preference = preference,

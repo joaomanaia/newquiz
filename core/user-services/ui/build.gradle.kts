@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.newquiz.android.library.compose)
     alias(libs.plugins.newquiz.android.hilt)
     alias(libs.plugins.newquiz.android.compose.destinations)
+    id("newquiz.detekt")
 }
 
 android {

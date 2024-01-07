@@ -28,6 +28,7 @@ import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.feature.settings.model.ScreenKey
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 @ExperimentalMaterial3Api
@@ -39,7 +40,7 @@ internal fun MainScreen(
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
 
-    val items = listOf(
+    val items = persistentListOf(
         // General
         Preference.PreferenceItem.NavigationButton(
             title = stringResource(id = CoreR.string.general),

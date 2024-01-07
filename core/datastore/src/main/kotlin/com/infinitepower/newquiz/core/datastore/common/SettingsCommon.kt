@@ -18,44 +18,73 @@ import java.util.Locale
 val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 object SettingsCommon {
-    object MultiChoiceQuizQuestionsSize :
-        PreferenceRequest<Int>(intPreferencesKey("quickQuizQuestionsSize"), 5)
+    object MultiChoiceQuizQuestionsSize : PreferenceRequest<Int>(
+        key = intPreferencesKey("quickQuizQuestionsSize"),
+        defaultValue = 5
+    )
 
-    object HideOnlineCategories : PreferenceRequest<Boolean>(booleanPreferencesKey("hideOnlineCategories"), false)
+    object HideOnlineCategories : PreferenceRequest<Boolean>(
+        key = booleanPreferencesKey("hideOnlineCategories"),
+        defaultValue = false
+    )
 
     @Keep
     data class CategoryConnectionInfoBadge(
         val default: ShowCategoryConnectionInfo = ShowCategoryConnectionInfo.NONE
     ) : PreferenceRequest<String>(
-        stringPreferencesKey("categoryConnectionInfoBadge"),
-        default.name
+        key = stringPreferencesKey("categoryConnectionInfoBadge"),
+        defaultValue = default.name
     )
 
     object InfiniteWordleQuizLanguage : PreferenceRequest<String>(
-        stringPreferencesKey("infiniteWordleQuizLanguage"),
-        getInfiniteWordleDefaultLang()
+        key = stringPreferencesKey("infiniteWordleQuizLanguage"),
+        defaultValue = getInfiniteWordleDefaultLang()
     )
 
-    object WordleInfiniteRowsLimited :
-        PreferenceRequest<Boolean>(booleanPreferencesKey("wordleInfiniteRowsLimited"), false)
+    object WordleInfiniteRowsLimited : PreferenceRequest<Boolean>(
+        key = booleanPreferencesKey("wordleInfiniteRowsLimited"),
+        defaultValue = false
+    )
 
-    object WordleInfiniteRowsLimit :
-        PreferenceRequest<Int>(intPreferencesKey("wordleInfiniteRowsLimit"), 6)
+    object WordleInfiniteRowsLimit : PreferenceRequest<Int>(
+        key = intPreferencesKey("wordleInfiniteRowsLimit"),
+        defaultValue = 6
+    )
 
-    object WordleHardMode :
-        PreferenceRequest<Boolean>(booleanPreferencesKey("wordleHardMode"), false)
+    object WordleHardMode : PreferenceRequest<Boolean>(
+        key = booleanPreferencesKey("wordleHardMode"),
+        defaultValue = false
+    )
 
-    object WordleColorBlindMode :
-        PreferenceRequest<Boolean>(booleanPreferencesKey("wordleColorBlindMode"), false)
+    object WordleColorBlindMode : PreferenceRequest<Boolean>(
+        key = booleanPreferencesKey("wordleColorBlindMode"),
+        defaultValue = false
+    )
 
-    object WordleLetterHints :
-        PreferenceRequest<Boolean>(booleanPreferencesKey("wordleLetterHints"), false)
+    object WordleLetterHints : PreferenceRequest<Boolean>(
+        key = booleanPreferencesKey("wordleLetterHints"),
+        defaultValue = false
+    )
 
-    object GlobalAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("animations_enabled"), true)
-    object WordleAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("wordle_animations_enabled"), true)
-    object MultiChoiceAnimationsEnabled : PreferenceRequest<Boolean>(booleanPreferencesKey("multi_choice_animations_enabled"), true)
+    object GlobalAnimationsEnabled : PreferenceRequest<Boolean>(
+        key = booleanPreferencesKey("animations_enabled"),
+        defaultValue = true
+    )
 
-    object MazeAutoScrollToCurrentItem : PreferenceRequest<Boolean>(booleanPreferencesKey("mazeAutoScrollToCurrentItem"), true)
+    object WordleAnimationsEnabled : PreferenceRequest<Boolean>(
+        key = booleanPreferencesKey("wordle_animations_enabled"),
+        defaultValue = true
+    )
+
+    object MultiChoiceAnimationsEnabled : PreferenceRequest<Boolean>(
+        key = booleanPreferencesKey("multi_choice_animations_enabled"),
+        defaultValue = true
+    )
+
+    object MazeAutoScrollToCurrentItem : PreferenceRequest<Boolean>(
+        key = booleanPreferencesKey("mazeAutoScrollToCurrentItem"),
+        defaultValue = true
+    )
 
     /**
      * The translation settings.
@@ -65,8 +94,8 @@ object SettingsCommon {
          * Returns whether the translation is enabled.
          */
         object Enabled : PreferenceRequest<Boolean>(
-            booleanPreferencesKey("translationEnabled"),
-            false
+            key = booleanPreferencesKey("translationEnabled"),
+            defaultValue = false
         )
 
         /**
@@ -74,24 +103,24 @@ object SettingsCommon {
          * When empty, there is no translation target language.
          */
         object TargetLanguage : PreferenceRequest<String>(
-            stringPreferencesKey("translationTargetLanguage"),
-            ""
+            key = stringPreferencesKey("translationTargetLanguage"),
+            defaultValue = ""
         )
 
         /**
          * Preference to store whether the user wants to download the translation model over wifi only.
          */
         object RequireWifi : PreferenceRequest<Boolean>(
-            booleanPreferencesKey("translationRequireWifi"),
-            true
+            key = booleanPreferencesKey("translationRequireWifi"),
+            defaultValue = true
         )
 
         /**
          * Preference to store whether the user wants to download the translation model only when charging.
          */
         object RequireCharging : PreferenceRequest<Boolean>(
-            booleanPreferencesKey("translationRequireCharging"),
-            false
+            key = booleanPreferencesKey("translationRequireCharging"),
+            defaultValue = false
         )
     }
 }

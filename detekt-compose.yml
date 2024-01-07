@@ -1,8 +1,7 @@
 # Deliberately split from the main configuration as the plugins do not use the twitter compose dependency.
 TwitterCompose:
   CompositionLocalAllowlist:
-    active: true
-    allowedCompositionLocals: LocalIntegrationPoint,LocalNode
+    active: false
   CompositionLocalNaming:
     active: true
   ContentEmitterReturningValues:

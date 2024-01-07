@@ -26,6 +26,7 @@ import com.infinitepower.newquiz.feature.settings.model.ScreenKey
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
 import com.infinitepower.newquiz.feature.settings.util.getShowCategoryConnectionInfoEntryMap
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -63,7 +64,7 @@ internal fun GeneralScreen(
     val dataStoreManager = rememberSettingsDataStoreManager()
     val scope = rememberCoroutineScope()
 
-    val items = listOf(
+    val items = persistentListOf(
         Preference.PreferenceItem.TextPreference(
             title = stringResource(id = R.string.clear_settings),
             summary = stringResource(id = R.string.remove_all_saved_settings),
