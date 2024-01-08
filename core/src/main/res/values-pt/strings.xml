@@ -293,4 +293,6 @@
     <string name="translation_settings_summary">Idioma de tradução</string>
     <string name="about_and_help_settings_summary">Versão, Contacto, Licenças de código aberto</string>
     <string name="select_only_offline">Seleciona apenas Offline</string>
+    <string name="maze_settings_auto_scroll_title">Desloca-se automaticamente para a pergunta atual</string>
+    <string name="maze_settings_auto_scroll_summary">Desloca-se automaticamente para a pergunta atual ao jogar o labirinto.</string>
 </resources>
