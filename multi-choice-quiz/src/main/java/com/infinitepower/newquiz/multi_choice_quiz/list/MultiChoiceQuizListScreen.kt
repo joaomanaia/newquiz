@@ -76,16 +76,10 @@ private fun MultiChoiceQuizListScreenImpl(
 
     HomeLazyColumn(
         contentPadding = PaddingValues(
+            top = MaterialTheme.spacing.medium,
             bottom = MaterialTheme.spacing.large
         )
     ) {
-        item {
-            HomeGroupTitle(
-                title = stringResource(id = CoreR.string.random_quiz),
-                modifier = Modifier.padding(horizontal = spaceMedium)
-            )
-        }
-
         item {
             PlayRandomQuizCard(
                 modifier = Modifier

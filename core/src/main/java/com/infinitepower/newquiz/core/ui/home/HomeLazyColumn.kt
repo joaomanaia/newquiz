@@ -15,6 +15,7 @@ fun HomeLazyColumn(
     modifier: Modifier = Modifier,
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(MaterialTheme.spacing.medium),
     contentPadding: PaddingValues = PaddingValues(
+        top = MaterialTheme.spacing.medium,
         start = MaterialTheme.spacing.medium,
         end = MaterialTheme.spacing.medium,
         bottom = MaterialTheme.spacing.large,

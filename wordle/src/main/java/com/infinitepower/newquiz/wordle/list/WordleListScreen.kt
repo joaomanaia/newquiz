@@ -19,7 +19,6 @@ import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
-import com.infinitepower.newquiz.core.ui.home_card.components.HomeGroupTitle
 import com.infinitepower.newquiz.core.ui.home_card.components.PlayRandomQuizCard
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
@@ -55,10 +54,6 @@ private fun WordleListScreenImpl(
     var seeAllCategories by remember { mutableStateOf(false) }
 
     HomeLazyColumn {
-        item {
-            HomeGroupTitle(title = stringResource(id = CoreR.string.wordle_infinite))
-        }
-
         item {
             PlayRandomQuizCard(
                 modifier = Modifier.fillParentMaxWidth(),
