@@ -1,5 +1,6 @@
 package com.infinitepower.newquiz.feature.settings.components.preferences.widgets
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,8 +9,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.infinitepower.newquiz.core.compose.preferences.LocalPreferenceEnabledStatus
@@ -23,7 +26,7 @@ internal fun SeekBarPreferenceWidget(
     value: Int,
     onValueChange: (Int) -> Unit,
 ) {
-    val (currentValue, setCurrentValue) = remember(value) { mutableIntStateOf(value) }
+    var currentValue by remember(value) { mutableIntStateOf(value) }
 
     TextPreferenceWidget(
         preference = preference,
@@ -31,7 +34,7 @@ internal fun SeekBarPreferenceWidget(
             PreferenceSummary(
                 preference = preference,
                 sliderValue = currentValue,
-                onValueChange = setCurrentValue,
+                onValueChange = { currentValue = it },
                 onValueChangeEnd = { onValueChange(currentValue) }
             )
         }
