@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
+import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
@@ -69,9 +71,11 @@ private fun DailyChallengeScreen(
     val now by produceState(initialValue = Clock.System.now()) {
         while (true) {
             value = Clock.System.now()
-            delay(1000)
+            delay(timeMillis = 1000)
         }
     }
+
+    val analyticsHelper = LocalAnalyticsHelper.current
 
     Scaffold(
         topBar = {
@@ -101,8 +105,20 @@ private fun DailyChallengeScreen(
                     modifier = Modifier.fillParentMaxWidth(),
                     diamondsReward = task.diamondsReward,
                     userCanClaim = uiState.userAvailable,
-                    onClaimClick = { onEvent(DailyChallengeScreenUiEvent.OnClaimTaskClick(task.event)) },
+                    onClaimClick = {
+                        analyticsHelper.logEvent(
+                            AnalyticsEvent.DailyChallengeItemClaim(
+                                event = task.event,
+                                steps = task.currentValue.toInt()
+                            ),
+                            AnalyticsEvent.EarnDiamonds(earned = task.diamondsReward.toInt())
+                        )
+                        onEvent(DailyChallengeScreenUiEvent.OnClaimTaskClick(task.event))
+                    },
                     onCardClick = {
+                        analyticsHelper.logEvent(
+                            AnalyticsEvent.DailyChallengeItemClick(event = task.event)
+                        )
                         navigateToGame(task.event, uiState.comparisonQuizCategories)
                     }
                 )

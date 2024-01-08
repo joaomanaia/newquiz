@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.core.analytics
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.model.global_event.GameEvent
 
 sealed class AnalyticsEvent(
     val type: String,
@@ -213,6 +214,29 @@ sealed class AnalyticsEvent(
             Param("category", category),
             Param("comparison_mode", comparisonMode),
             Param("score", score)
+        )
+    )
+
+    // Daily challenge
+    @Keep
+    data class DailyChallengeItemClick(
+        val event: GameEvent
+    ) : AnalyticsEvent(
+        type = "daily_challenge_item_click",
+        extras = setOf(
+            Param("event", event.toString())
+        )
+    )
+
+    @Keep
+    data class DailyChallengeItemClaim(
+        val event: GameEvent,
+        val steps: Int
+    ) : AnalyticsEvent(
+        type = "daily_challenge_item_claim",
+        extras = setOf(
+            Param("event", event.toString()),
+            Param("steps", steps)
         )
     )
 }
