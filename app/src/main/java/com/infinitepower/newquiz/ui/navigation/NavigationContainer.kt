@@ -25,7 +25,7 @@ import com.infinitepower.newquiz.core.navigation.NavDrawerBadgeItem
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.navigation.ScreenType
 import com.infinitepower.newquiz.core.user_services.ui.profile.destinations.ProfileScreenDestination
-import com.infinitepower.newquiz.daily_challenge.destinations.DailyChallengeScreenDestination
+import com.infinitepower.newquiz.feature.daily_challenge.destinations.DailyChallengeScreenDestination
 import com.infinitepower.newquiz.feature.settings.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.feature.maze.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination

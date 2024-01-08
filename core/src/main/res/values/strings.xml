@@ -289,4 +289,6 @@
     <string name="select_only_offline">Select only Offline</string>
     <string name="maze_settings_auto_scroll_title">Auto scroll to current question</string>
     <string name="maze_settings_auto_scroll_summary">Automatically scroll to current question when playing maze.</string>
+    <string name="remaining_time">Remaining: %1$s</string>
+    <string name="claim_n_diamonds">Claim %1$d \uD83D\uDC8E</string>
 </resources>

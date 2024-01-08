@@ -124,6 +124,7 @@ dependencies {
     implementation(projects.core.remoteConfig)
     implementation(projects.core.userServices)
     implementation(projects.core.userServices.ui)
+    implementation(projects.feature.dailyChallenge)
     implementation(projects.feature.settings)
     implementation(projects.feature.maze)
     implementation(projects.model)
@@ -132,5 +133,4 @@ dependencies {
     implementation(projects.data)
     implementation(projects.domain)
     implementation(projects.comparisonQuiz)
-    implementation(projects.dailyChallenge)
 }

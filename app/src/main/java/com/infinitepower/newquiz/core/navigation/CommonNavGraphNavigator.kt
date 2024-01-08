@@ -5,7 +5,7 @@ import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScre
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
-import com.infinitepower.newquiz.daily_challenge.DailyChallengeScreenNavigator
+import com.infinitepower.newquiz.feature.daily_challenge.DailyChallengeScreenNavigator
 import com.infinitepower.newquiz.feature.maze.MazeScreenNavigator
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory

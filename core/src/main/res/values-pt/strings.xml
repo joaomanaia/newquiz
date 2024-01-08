@@ -295,4 +295,6 @@
     <string name="select_only_offline">Seleciona apenas Offline</string>
     <string name="maze_settings_auto_scroll_title">Desloca-se automaticamente para a pergunta atual</string>
     <string name="maze_settings_auto_scroll_summary">Desloca-se automaticamente para a pergunta atual ao jogar o labirinto.</string>
+    <string name="remaining_time">Restante: %1$s</string>
+    <string name="claim_n_diamonds">Reivindique %1$d \uD83D\uDC8E</string>
 </resources>

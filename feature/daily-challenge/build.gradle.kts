@@ -8,4 +8,10 @@ android {
     namespace = "com.infinitepower.newquiz.feature.daily_challenge"
 }
 
-dependencies {}
+dependencies {
+    implementation(libs.kotlinx.datetime)
+
+    implementation(projects.core.userServices)
+    implementation(projects.domain)
+    implementation(projects.data)
+}
