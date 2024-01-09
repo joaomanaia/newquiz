@@ -293,4 +293,8 @@
     <string name="about_and_help_settings_summary">Versión, Contacto, Licencias de código abierto</string>
     <string name="multi_choice_settings_summary">Recuento de preguntas</string>
     <string name="select_only_offline">Seleccione solo sin conexión</string>
+    <string name="maze_settings_auto_scroll_title">Desplazamiento automático a la pregunta actual</string>
+    <string name="maze_settings_auto_scroll_summary">Desplazarse automáticamente a la pregunta actual al jugar al laberinto.</string>
+    <string name="remaining_time">Queda: %1$s</string>
+    <string name="claim_n_diamonds">Reclamar %1$d 💎</string>
 </resources>
