@@ -29,7 +29,7 @@ import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQui
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
@@ -86,7 +86,7 @@ internal class ComparisonQuizScreenTest {
                 greater = "Which number is greater?",
                 less = "Which number is lesser?",
             ),
-            formatType = ComparisonQuizFormatType.Number,
+            formatType = NumberFormatType.DEFAULT,
             dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
                 text = "NewQuiz API",
                 logo = ""

@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.model.comparison_quiz
 
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.toUiText
 import org.junit.jupiter.api.Test
 
@@ -18,7 +19,7 @@ internal class ComparisonQuizCategoryTest {
             description = "Category Description",
             image = "https://example.com/image.png",
             questionDescription = questionDescription,
-            formatType = ComparisonQuizFormatType.Number,
+            formatType = NumberFormatType.DEFAULT,
             helperValueSuffix = null,
             dataSourceAttribution = null
         )
@@ -40,7 +41,7 @@ internal class ComparisonQuizCategoryTest {
             description = "Category Description",
             image = "https://example.com/image.png",
             questionDescription = questionDescription,
-            formatType = ComparisonQuizFormatType.Number,
+            formatType = NumberFormatType.DEFAULT,
             helperValueSuffix = null,
             dataSourceAttribution = null
         )

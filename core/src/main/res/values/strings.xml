@@ -291,4 +291,12 @@
     <string name="maze_settings_auto_scroll_summary">Automatically scroll to current question when playing maze.</string>
     <string name="remaining_time">Remaining: %1$s</string>
     <string name="claim_n_diamonds">Claim %1$d \uD83D\uDC8E</string>
+    <string name="regional_preferences">Regional Preferences</string>
+    <string name="temperature_unit">Temperature Unit</string>
+    <string name="system_default">System Default</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="distance_unit">Distance Unit</string>
+    <string name="metric">Metric</string>
+    <string name="imperial">Imperial</string>
 </resources>

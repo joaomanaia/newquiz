@@ -4,7 +4,7 @@ import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQui
 import com.infinitepower.newquiz.model.FlowResource
 import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
 import kotlinx.coroutines.flow.Flow
@@ -34,7 +34,7 @@ class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRep
                     greater = "Greater",
                     less = "Less"
                 ),
-                formatType = ComparisonQuizFormatType.Number
+                formatType = NumberFormatType.DEFAULT
             )
         }
     }

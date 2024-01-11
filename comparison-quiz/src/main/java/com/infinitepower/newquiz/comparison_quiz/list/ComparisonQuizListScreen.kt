@@ -27,7 +27,7 @@ import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.domain.repository.home.HomeCategories
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.toUiText
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -133,7 +133,7 @@ private fun ComparisonQuizListScreenPreview() {
                                     greater = "Greater",
                                     less = "Less"
                                 ),
-                                formatType = ComparisonQuizFormatType.Number
+                                formatType = NumberFormatType.DEFAULT
                             )
                         ),
                         otherCategories = persistentListOf()

@@ -297,4 +297,12 @@
     <string name="maze_settings_auto_scroll_summary">Desloca-se automaticamente para a pergunta atual ao jogar o labirinto.</string>
     <string name="remaining_time">Restante: %1$s</string>
     <string name="claim_n_diamonds">Reivindique %1$d \uD83D\uDC8E</string>
+    <string name="regional_preferences">Preferências regionais</string>
+    <string name="temperature_unit">Unidade de Temperatura</string>
+    <string name="system_default">Padrão do sistema</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="distance_unit">Unidade de distância</string>
+    <string name="metric">Métrica</string>
+    <string name="imperial">Imperiais</string>
 </resources>

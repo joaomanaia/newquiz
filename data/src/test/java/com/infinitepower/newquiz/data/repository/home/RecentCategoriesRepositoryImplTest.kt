@@ -13,7 +13,7 @@ import com.infinitepower.newquiz.model.BaseCategory
 import com.infinitepower.newquiz.model.GameMode
 import com.infinitepower.newquiz.model.UiText
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.toUiText
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -553,7 +553,7 @@ internal class RecentCategoriesRepositoryImplTest {
                     greater = "Which number is greater?",
                     less = "Which number is lesser?",
                 ),
-                formatType = ComparisonQuizFormatType.Number,
+                formatType = NumberFormatType.DEFAULT,
                 dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
                     text = "NewQuiz API",
                     logo = ""
@@ -569,7 +569,7 @@ internal class RecentCategoriesRepositoryImplTest {
                     greater = "Which country is bigger?",
                     less = "Which country is smaller?",
                 ),
-                formatType = ComparisonQuizFormatType.Number,
+                formatType = NumberFormatType.DEFAULT,
                 dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
                     text = "NewQuiz API",
                     logo = ""
@@ -585,7 +585,7 @@ internal class RecentCategoriesRepositoryImplTest {
                     greater = "Which city is bigger?",
                     less = "Which city is smaller?",
                 ),
-                formatType = ComparisonQuizFormatType.Number,
+                formatType = NumberFormatType.DEFAULT,
                 dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
                     text = "NewQuiz API",
                     logo = ""
@@ -601,7 +601,7 @@ internal class RecentCategoriesRepositoryImplTest {
                     greater = "Which planet is bigger?",
                     less = "Which planet is smaller?",
                 ),
-                formatType = ComparisonQuizFormatType.Number,
+                formatType = NumberFormatType.DEFAULT,
                 dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
                     text = "NewQuiz API",
                     logo = ""

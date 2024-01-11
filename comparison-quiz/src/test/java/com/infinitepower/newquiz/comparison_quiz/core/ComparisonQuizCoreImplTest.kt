@@ -25,7 +25,7 @@ import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
@@ -573,7 +573,7 @@ internal class ComparisonQuizCoreImplTest {
                 greater = "greater",
                 less = "less"
             ),
-            formatType = ComparisonQuizFormatType.Number,
+            formatType = NumberFormatType.DEFAULT,
             helperValueSuffix = "helperValueSuffix",
             dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
                 text = "text",

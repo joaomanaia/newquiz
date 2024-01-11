@@ -18,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -35,28 +34,22 @@ import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParam
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.util.toAndroidUri
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 
 @Composable
 internal fun ComparisonItem(
     modifier: Modifier = Modifier,
-    category: ComparisonQuizCategory,
     item: ComparisonQuizItem,
     helperContentAlignment: Alignment,
     helperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN,
     onClick: () -> Unit
 ) {
-    val helperValue = remember(item.value) {
-        category.formatValueToString(item.value)
-    }
-
     ComparisonItem(
         modifier = modifier,
         title = item.title,
         image = item.imgUri.toAndroidUri(),
-        helperValue = helperValue,
+        helperValue = item.helperValue,
         helperContentAlignment = helperContentAlignment,
         helperValueState = helperValueState,
         onClick = onClick

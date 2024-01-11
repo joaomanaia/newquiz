@@ -5,6 +5,8 @@ import androidx.compose.material.icons.rounded.Analytics
 import androidx.compose.material.icons.rounded.Animation
 import androidx.compose.material.icons.rounded.ClearAll
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Place
+import androidx.compose.material.icons.rounded.Thermostat
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,6 +28,8 @@ import com.infinitepower.newquiz.feature.settings.model.ScreenKey
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
 import com.infinitepower.newquiz.feature.settings.util.getShowCategoryConnectionInfoEntryMap
+import com.infinitepower.newquiz.core.NumberFormatter.Temperature.TemperatureUnit
+import com.infinitepower.newquiz.core.NumberFormatter.Distance.DistanceUnitType
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -111,6 +115,41 @@ internal fun GeneralScreen(
                         )
                     }
                 )
+            )
+        ),
+        Preference.PreferenceGroup(
+            title = stringResource(id = R.string.regional_preferences),
+            preferenceItems = listOf(
+                Preference.PreferenceItem.ListPreference(
+                    title = stringResource(id = R.string.temperature_unit),
+                    request = SettingsCommon.TemperatureUnit,
+                    entries = mapOf(
+                        "" to stringResource(id = R.string.system_default),
+                        TemperatureUnit.CELSIUS.name to stringResource(id = R.string.celsius),
+                        TemperatureUnit.FAHRENHEIT.name to stringResource(id = R.string.fahrenheit),
+                    ),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Thermostat,
+                            contentDescription = stringResource(id = R.string.temperature_unit)
+                        )
+                    }
+                ),
+                Preference.PreferenceItem.ListPreference(
+                    title = stringResource(id = R.string.distance_unit),
+                    request = SettingsCommon.DistanceUnitType,
+                    entries = mapOf(
+                        "" to stringResource(id = R.string.system_default),
+                        DistanceUnitType.METRIC.name to stringResource(id = R.string.metric),
+                        DistanceUnitType.IMPERIAL.name to stringResource(id = R.string.imperial),
+                    ),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Place,
+                            contentDescription = stringResource(id = R.string.distance_unit)
+                        )
+                    }
+                ),
             )
         ),
         Preference.PreferenceGroup(

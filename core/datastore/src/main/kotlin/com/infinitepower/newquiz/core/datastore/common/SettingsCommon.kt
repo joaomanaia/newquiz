@@ -86,6 +86,16 @@ object SettingsCommon {
         defaultValue = true
     )
 
+    object TemperatureUnit : PreferenceRequest<String>(
+        key = stringPreferencesKey("temperatureUnit"),
+        defaultValue = ""
+    )
+
+    object DistanceUnitType : PreferenceRequest<String>(
+        key = stringPreferencesKey("distanceUnitType"),
+        defaultValue = ""
+    )
+
     /**
      * The translation settings.
      */

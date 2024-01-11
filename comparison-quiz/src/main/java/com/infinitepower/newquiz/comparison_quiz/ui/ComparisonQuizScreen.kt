@@ -62,7 +62,7 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizFormatType
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
@@ -219,7 +219,6 @@ private fun ComparisonQuizContent(
                 onClick = { onAnswerClick(currentQuestion.questions.first) },
                 helperContentAlignment = Alignment.BottomCenter,
                 helperValueState = firstItemHelperValueState,
-                category = gameCategory
             )
         },
         secondQuestionContent = {
@@ -228,7 +227,6 @@ private fun ComparisonQuizContent(
                 onClick = { onAnswerClick(currentQuestion.questions.second) },
                 helperContentAlignment = if (verticalContent) Alignment.TopCenter else Alignment.BottomCenter,
                 helperValueState = ComparisonQuizHelperValueState.HIDDEN,
-                category = gameCategory
             )
         },
         midContent = {
@@ -470,7 +468,7 @@ private fun ComparisonQuizScreenPreview() {
                         dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
                             text = "Data from NewQuiz"
                         ),
-                        formatType = ComparisonQuizFormatType.Number
+                        formatType = NumberFormatType.DEFAULT
                     ),
                     userAvailable = true
                 ),

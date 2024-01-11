@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.model.comparison_quiz
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.toUiText
 import kotlinx.serialization.Serializable
 
@@ -13,7 +14,7 @@ data class ComparisonQuizCategoryEntity(
     val requireInternetConnection: Boolean = true,
     val description: String,
     val questionDescription: ComparisonQuizCategory.QuestionDescription,
-    val formatType: ComparisonQuizFormatType,
+    val formatType: String,
     val helperValueSuffix: String? = null,
     val dataSourceAttribution: ComparisonQuizCategory.DataSourceAttribution? = null
 ) : java.io.Serializable {
@@ -24,7 +25,7 @@ data class ComparisonQuizCategoryEntity(
         requireInternetConnection = requireInternetConnection,
         description = description,
         questionDescription = questionDescription,
-        formatType = formatType,
+        formatType = NumberFormatType.valueOf(formatType.uppercase()),
         helperValueSuffix = helperValueSuffix,
         dataSourceAttribution = dataSourceAttribution
     )
