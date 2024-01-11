@@ -12,11 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -120,11 +119,7 @@ internal fun ComparisonItem(
                     )
                     if (helperValueState == ComparisonQuizHelperValueState.NORMAL) {
                         Spacer(modifier = Modifier.width(spaceExtraSmall))
-                        Divider(
-                            modifier = Modifier
-                                .height(24.dp)
-                                .width(DividerDefaults.Thickness)
-                        )
+                        VerticalDivider(modifier = Modifier.height(24.dp))
                         Spacer(modifier = Modifier.width(spaceExtraSmall))
                         AnimatedContent(
                             targetState = helperValue,
