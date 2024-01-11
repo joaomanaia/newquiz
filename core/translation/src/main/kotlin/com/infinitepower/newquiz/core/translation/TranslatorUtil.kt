@@ -4,9 +4,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface TranslatorUtil {
     /**
-     * @return true if the translator is available, false otherwise
+     * @return true if the translator is ready to translate, when the model is downloaded
+     * and the target language is set and the translation is enabled, false otherwise
      */
-    val isTranslatorAvailable: Boolean
+    suspend fun isReadyToTranslate(): Boolean
 
     /**
      * @return true if the model is downloaded, false otherwise

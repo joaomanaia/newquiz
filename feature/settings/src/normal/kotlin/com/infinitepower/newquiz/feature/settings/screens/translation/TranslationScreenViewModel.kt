@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.feature.settings.screens.translation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.common.TranslationCommon
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.translation.TranslatorModelState
@@ -27,9 +27,7 @@ class TranslationScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(TranslationScreenUiState())
     val uiState = combine(
         _uiState,
-        settingsDataStoreManager.getPreferenceFlow(
-            SettingsCommon.Translation.TargetLanguage
-        )
+        settingsDataStoreManager.getPreferenceFlow(TranslationCommon.TargetLanguage)
     ) { uiState, targetLanguage ->
         uiState.copy(
             translatorTargetLanguage = targetLanguage
@@ -50,7 +48,6 @@ class TranslationScreenViewModel @Inject constructor(
                 }
 
                 currentState.copy(
-                    translatorAvailable = translatorUtil.isTranslatorAvailable,
                     translationModelState = translationModelState,
                     translatorTargetLanguages = translatorUtil.availableTargetLanguages,
                 )
@@ -70,15 +67,15 @@ class TranslationScreenViewModel @Inject constructor(
     }
 
     private fun downloadTranslationModel() = viewModelScope.launch {
-        val targetLanguage = settingsDataStoreManager.getPreference(SettingsCommon.Translation.TargetLanguage)
+        val targetLanguage = settingsDataStoreManager.getPreference(TranslationCommon.TargetLanguage)
 
         // Check if the target language is picked by the user
         if (targetLanguage.isEmpty()) {
             return@launch
         }
 
-        val requireWifi = settingsDataStoreManager.getPreference(SettingsCommon.Translation.RequireWifi)
-        val requireCharging = settingsDataStoreManager.getPreference(SettingsCommon.Translation.RequireCharging)
+        val requireWifi = settingsDataStoreManager.getPreference(TranslationCommon.RequireWifi)
+        val requireCharging = settingsDataStoreManager.getPreference(TranslationCommon.RequireCharging)
 
         translatorUtil.downloadModel(
             targetLanguage = targetLanguage,

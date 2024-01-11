@@ -7,7 +7,6 @@ import com.infinitepower.newquiz.core.translation.TranslatorTargetLanguages
 @Keep
 data class TranslationScreenUiState(
     val translationModelState: TranslatorModelState = TranslatorModelState.None,
-    val translatorAvailable: Boolean = false,
     val translatorTargetLanguages: TranslatorTargetLanguages = emptyMap(),
     val translatorTargetLanguage: String = "",
 )

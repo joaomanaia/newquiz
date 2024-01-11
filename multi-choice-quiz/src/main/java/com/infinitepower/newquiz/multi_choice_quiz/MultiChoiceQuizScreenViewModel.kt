@@ -189,12 +189,8 @@ class QuizScreenViewModel @Inject constructor(
     }
 
     private suspend fun List<MultiChoiceQuestion>.getOrTranslateQuestions(): List<MultiChoiceQuestion> {
-        val translationEnabled =
-            settingsDataStoreManager.getPreference(SettingsCommon.Translation.Enabled)
-        val translationModelDownloaded = translationUtil.isModelDownloaded()
-        val translateQuestions = translationEnabled && translationModelDownloaded
-
-        if (!translateQuestions) return this
+        // If is not ready to translate or translation not enabled, return the same list
+        if (!translationUtil.isReadyToTranslate()) return this
 
         return map { question ->
             question translateQuestionWith translationUtil

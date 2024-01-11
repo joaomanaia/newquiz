@@ -13,7 +13,7 @@ class NoTranslatorAvailableException : RuntimeException("No translator available
  */
 @Singleton
 class NoTranslatorUtil @Inject constructor() : TranslatorUtil {
-    override val isTranslatorAvailable: Boolean = false
+    override suspend fun isReadyToTranslate(): Boolean = false
 
     override suspend fun isModelDownloaded(): Boolean = false
 

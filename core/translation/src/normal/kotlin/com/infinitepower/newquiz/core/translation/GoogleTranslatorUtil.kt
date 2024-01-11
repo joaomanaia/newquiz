@@ -8,7 +8,7 @@ import com.google.mlkit.nl.translate.TranslateRemoteModel
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
-import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.common.TranslationCommon
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +22,11 @@ import javax.inject.Singleton
 class GoogleTranslatorUtil @Inject constructor(
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager
 ) : TranslatorUtil {
-    override val isTranslatorAvailable: Boolean = true
+    override suspend fun isReadyToTranslate(): Boolean {
+        val translationEnabled = settingsDataStoreManager.getPreference(TranslationCommon.Enabled)
+
+        return translationEnabled && isModelDownloaded()
+    }
 
     override suspend fun isModelDownloaded(): Boolean {
         val localeLanguage = getTargetLanguageCode()
@@ -61,7 +65,7 @@ class GoogleTranslatorUtil @Inject constructor(
     }
 
     override suspend fun getTargetLanguageCode(): String {
-        return settingsDataStoreManager.getPreference(SettingsCommon.Translation.TargetLanguage)
+        return settingsDataStoreManager.getPreference(TranslationCommon.TargetLanguage)
     }
 
     suspend fun getTranslator(): Translator {

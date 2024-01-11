@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.core.translation
 
 import com.google.common.truth.Truth.assertThat
 import com.google.mlkit.nl.translate.TranslateLanguage
-import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
+import com.infinitepower.newquiz.core.datastore.common.TranslationCommon
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -29,18 +29,13 @@ internal class GoogleTranslatorUtilTest {
         )
     }
 
-    @Test
-    fun `should return true for isTranslatorAvailable`() {
-        assertThat(translatorUtil.isTranslatorAvailable).isTrue()
-    }
-
     @ParameterizedTest
     @ValueSource(strings = ["", "en", "fr", "de"])
     fun `getTargetLanguageCode should return the target language`(
         targetLanguage: String
     ) = runTest {
         coEvery {
-            settingsDataStoreManager.getPreference(SettingsCommon.Translation.TargetLanguage)
+            settingsDataStoreManager.getPreference(TranslationCommon.TargetLanguage)
         } returns targetLanguage
 
         assertThat(translatorUtil.getTargetLanguageCode()).isEqualTo(targetLanguage)
@@ -79,7 +74,7 @@ internal class GoogleTranslatorUtilTest {
     fun `getTranslator should throw IllegalStateException when target language is empty`() =
         runTest {
             coEvery {
-                settingsDataStoreManager.getPreference(SettingsCommon.Translation.TargetLanguage)
+                settingsDataStoreManager.getPreference(TranslationCommon.TargetLanguage)
             } returns ""
 
             assertThrows<IllegalStateException> {
@@ -91,7 +86,7 @@ internal class GoogleTranslatorUtilTest {
     fun `getTranslator should throw IllegalStateException when target language is English`() =
         runTest {
             coEvery {
-                settingsDataStoreManager.getPreference(SettingsCommon.Translation.TargetLanguage)
+                settingsDataStoreManager.getPreference(TranslationCommon.TargetLanguage)
             } returns TranslateLanguage.ENGLISH
 
             assertThrows<IllegalStateException> {

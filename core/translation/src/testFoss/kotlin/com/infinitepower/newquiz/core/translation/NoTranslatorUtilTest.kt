@@ -19,10 +19,9 @@ internal class NoTranslatorUtilTest {
 
     @Test
     fun `translator should not be available and downloaded`() {
-        assertThat(translatorUtil.isTranslatorAvailable).isFalse()
-
         runTest {
             assertThat(translatorUtil.isModelDownloaded()).isFalse()
+            assertThat(translatorUtil.isReadyToTranslate()).isFalse()
         }
     }
 
