@@ -299,7 +299,7 @@ sealed class NumberFormatter(
 
             companion object {
                 fun fromKey(key: String): DistanceUnit = entries
-                    .firstOrNull { it.key == key }
+                    .firstOrNull { it.key == key || it.value == key }
                     ?: throw IllegalArgumentException("Unknown distance unit: $key")
 
                 private const val FOOT_TO_METER_MULTIPLIER = 0.3048
