@@ -13,7 +13,9 @@ internal data class CountryEntity(
     val countryName: String,
     val capital: String,
     val continent: String,
-    val difficulty: String
+    val difficulty: String,
+    val population: Long,
+    val area: Double,
 ) : java.io.Serializable
 
 internal fun CountryEntity.toModel(flagBaseUrl: String): Country {
@@ -24,6 +26,8 @@ internal fun CountryEntity.toModel(flagBaseUrl: String): Country {
         countryCode = countryCode,
         countryName = countryName,
         capital = capital,
+        population = population,
+        area = area,
         continent = Continent.from(continent),
         difficulty = QuestionDifficulty.from(difficulty),
         flagUrl = flagUrl
