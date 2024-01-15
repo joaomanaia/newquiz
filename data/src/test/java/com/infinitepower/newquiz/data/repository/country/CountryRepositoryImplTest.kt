@@ -29,7 +29,9 @@ internal class CountryRepositoryImplTest {
                 countryName = "Test Country $it",
                 capital = "Test Capital $it",
                 continent = "Europe",
-                difficulty = "easy"
+                difficulty = "easy",
+                population = 1000,
+                area = 1000.0
             )
         }
 

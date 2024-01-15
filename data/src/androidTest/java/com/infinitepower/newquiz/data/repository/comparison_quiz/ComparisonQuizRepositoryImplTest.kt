@@ -4,6 +4,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.database.model.user.ComparisonQuizGameResultEntity
+import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -37,6 +39,10 @@ internal class ComparisonQuizRepositoryImplTest {
 
     @Inject lateinit var gameResultDao: GameResultDao
 
+    @Inject
+    @SettingsDataStoreManager
+    lateinit var settingsDataStoreManager: DataStoreManager
+
     private lateinit var repository: ComparisonQuizRepositoryImpl
 
     @BeforeTest
@@ -56,7 +62,8 @@ internal class ComparisonQuizRepositoryImplTest {
         repository = ComparisonQuizRepositoryImpl(
             client = client,
             remoteConfig = remoteConfig,
-            gameResultDao = gameResultDao
+            gameResultDao = gameResultDao,
+            settingsDataStoreManager = settingsDataStoreManager
         )
     }
 

@@ -2,6 +2,7 @@ package com.infinitepower.newquiz.model.country
 
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
+import java.net.URI
 
 /**
  * Data class representing a country.
@@ -13,7 +14,7 @@ import com.infinitepower.newquiz.model.question.QuestionDifficulty
  * @property area The area of the country, in square kilometers.
  * @property continent The continent the country is in.
  * @property difficulty The difficulty of the question.
- * @property flagUrl The URL of the flag of the country.
+ * @property flagImage The flag image of the country.
  */
 @Keep
 data class Country(
@@ -24,5 +25,5 @@ data class Country(
     val area: Double,
     val continent: Continent,
     val difficulty: QuestionDifficulty,
-    val flagUrl: String
+    val flagImage: URI
 )

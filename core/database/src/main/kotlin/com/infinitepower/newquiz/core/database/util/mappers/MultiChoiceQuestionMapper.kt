@@ -6,12 +6,13 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionType
 import com.infinitepower.newquiz.model.multi_choice_quiz.QuestionLanguage
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
+import java.net.URI
 
 fun MultiChoiceQuestion.toEntity(): MultiChoiceQuestionEntity {
     return MultiChoiceQuestionEntity(
         id = id,
         description = description,
-        imageUrl = imageUrl,
+        imageUrl = image?.toASCIIString(),
         answers = answers,
         lang = lang.name,
         category = category.toString(),
@@ -24,7 +25,7 @@ fun MultiChoiceQuestion.toEntity(): MultiChoiceQuestionEntity {
 fun MultiChoiceQuestionEntity.toModel(): MultiChoiceQuestion = MultiChoiceQuestion(
     id = id,
     description = description,
-    imageUrl = imageUrl,
+    image = imageUrl?.let { URI.create(it) },
     answers = answers,
     lang = QuestionLanguage.EN,
     category = MultiChoiceBaseCategory.fromId(category),

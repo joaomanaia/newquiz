@@ -5,6 +5,7 @@ import com.infinitepower.newquiz.model.country.Continent
 import com.infinitepower.newquiz.model.country.Country
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlinx.serialization.Serializable
+import java.net.URI
 
 @Keep
 @Serializable
@@ -30,6 +31,6 @@ internal fun CountryEntity.toModel(flagBaseUrl: String): Country {
         area = area,
         continent = Continent.from(continent),
         difficulty = QuestionDifficulty.from(difficulty),
-        flagUrl = flagUrl
+        flagImage = URI.create(flagUrl)
     )
 }

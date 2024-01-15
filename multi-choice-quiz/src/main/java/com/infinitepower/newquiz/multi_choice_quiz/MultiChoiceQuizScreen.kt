@@ -30,6 +30,7 @@ import coil.decode.SvgDecoder
 import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipQuestionDialog
+import com.infinitepower.newquiz.core.util.toAndroidUri
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
@@ -166,7 +167,7 @@ private fun MultiChoiceQuizScreenImpl(
             }
         },
         questionImageContent = {
-            currentQuestion?.imageUrl?.let { imageUrl ->
+            currentQuestion?.image?.let { image ->
                 val imageScale = if (currentQuestion.category == MultiChoiceBaseCategory.Logo) {
                     ContentScale.FillHeight
                 } else ContentScale.Crop
@@ -177,7 +178,7 @@ private fun MultiChoiceQuizScreenImpl(
                     modifier = Modifier.fillMaxWidth(maxWidth)
                 ) {
                     AsyncImage(
-                        model = imageUrl,
+                        model = image.toAndroidUri(),
                         contentDescription = "Image",
                         modifier = Modifier
                             .aspectRatio(16 / 9f)

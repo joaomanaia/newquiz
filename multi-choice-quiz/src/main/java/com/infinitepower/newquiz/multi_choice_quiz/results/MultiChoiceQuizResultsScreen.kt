@@ -203,7 +203,7 @@ private fun MultiChoiceQuizResultsScreenImpl(
             text = {
                 LazyColumn {
                     // Question image, if exists
-                    question.imageUrl?.let { imageUrl ->
+                    question.image?.let { imageUrl ->
                         item {
                             Spacer(modifier = Modifier.height(spaceMedium))
                             AsyncImage(

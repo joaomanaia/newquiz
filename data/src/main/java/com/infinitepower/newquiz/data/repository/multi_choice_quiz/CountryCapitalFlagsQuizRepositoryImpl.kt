@@ -53,7 +53,7 @@ class CountryCapitalFlagsQuizRepositoryImpl @Inject constructor(
 
         return MultiChoiceQuestion(
             description = "What is the capital of $countryName?",
-            imageUrl = flagUrl,
+            image = flagImage,
             answers = answers,
             correctAns = answers.indexOf(capital),
             category = MultiChoiceBaseCategory.CountryCapitalFlags,

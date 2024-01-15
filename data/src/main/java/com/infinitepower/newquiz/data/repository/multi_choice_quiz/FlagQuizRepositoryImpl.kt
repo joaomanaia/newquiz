@@ -54,7 +54,7 @@ class FlagQuizRepositoryImpl @Inject constructor(
 
         return MultiChoiceQuestion(
             description = "What is the country of this flag?",
-            imageUrl = flagUrl,
+            image = flagImage,
             answers = answers,
             correctAns = answers.indexOf(countryName),
             category = MultiChoiceBaseCategory.Flag,
