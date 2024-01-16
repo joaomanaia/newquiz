@@ -11,12 +11,9 @@ import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.database.AppDatabase
 import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
-import com.infinitepower.newquiz.model.multi_choice_quiz.toBaseCategory
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.junit.Rule
 import org.junit.runner.RunWith
 import javax.inject.Inject
