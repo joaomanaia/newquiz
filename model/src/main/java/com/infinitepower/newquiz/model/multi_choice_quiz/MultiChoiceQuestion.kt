@@ -2,7 +2,7 @@ package com.infinitepower.newquiz.model.multi_choice_quiz
 
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
-import kotlinx.serialization.Contextual
+import com.infinitepower.newquiz.model.util.serializers.URISerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -14,7 +14,7 @@ import kotlin.random.Random
 data class MultiChoiceQuestion(
     val id: Int,
     val description: String,
-    @Contextual
+    @Serializable(with = URISerializer::class)
     val image: URI? = null,
     val answers: List<String>,
     val lang: QuestionLanguage,
