@@ -4,6 +4,8 @@ import com.infinitepower.newquiz.core.testing.data.repository.comparison_quiz.Fa
 import com.infinitepower.newquiz.core.testing.data.repository.multi_choice_quiz.TestMultiChoiceQuestionRepositoryImpl
 import com.infinitepower.newquiz.core.testing.data.repository.numbers.FakeNumberTriviaQuestionApiImpl
 import com.infinitepower.newquiz.data.di.RepositoryModule
+import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizApi
+import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizApiImpl
 import com.infinitepower.newquiz.data.repository.country.CountryRepositoryImpl
 import com.infinitepower.newquiz.data.repository.daily_challenge.DailyChallengeRepositoryImpl
 import com.infinitepower.newquiz.data.repository.home.RecentCategoriesRepositoryImpl
@@ -86,4 +88,7 @@ abstract class TestRepositoryModule {
 
     @Binds
     abstract fun bindCountryRepository(impl: CountryRepositoryImpl): CountryRepository
+
+    @Binds
+    abstract fun bindComparisonQuizApi(impl: ComparisonQuizApiImpl): ComparisonQuizApi
 }

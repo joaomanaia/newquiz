@@ -66,25 +66,23 @@ internal class GenerateMazeQuizWorkerTest {
 
         val multiChoiceCategories = GenerateMazeQuizWorker.GameModes.MultiChoice.categories
 
-        val multiChoiceBaseCategories = multiChoiceCategories.map { category ->
-            category.toBaseCategory()
-        }
-        val multiChoiceBaseCategoriesStr = Json.encodeToString(multiChoiceBaseCategories)
+        val multiChoiceCategoriesId = multiChoiceCategories.map { category ->
+            category.id
+        }.toTypedArray()
 
         val wordleCategories = GenerateMazeQuizWorker.GameModes.Wordle.categories
 
-        val wordleQuizTypes = wordleCategories.map { category ->
-            category.wordleQuizType
-        }
-        val wordleQuizTypesStr = Json.encodeToString(wordleQuizTypes)
+        val wordleCategoriesIds = wordleCategories.map { category ->
+            category.id
+        }.toTypedArray()
 
         val generateMazeQuizRequest = TestListenableWorkerBuilder<GenerateMazeQuizWorker>(context)
             .setWorkerFactory(workerFactory)
             .setInputData(
                 workDataOf(
                     GenerateMazeQuizWorker.INPUT_SEED to seed,
-                    GenerateMazeQuizWorker.INPUT_MULTI_CHOICE_CATEGORIES to multiChoiceBaseCategoriesStr,
-                    GenerateMazeQuizWorker.INPUT_WORDLE_QUIZ_TYPES to wordleQuizTypesStr,
+                    GenerateMazeQuizWorker.INPUT_MULTI_CHOICE_CATEGORIES to multiChoiceCategoriesId,
+                    GenerateMazeQuizWorker.INPUT_WORDLE_QUIZ_TYPES to wordleCategoriesIds,
                     GenerateMazeQuizWorker.INPUT_QUESTION_SIZE to questionSize
                 )
             ).build()
@@ -98,7 +96,7 @@ internal class GenerateMazeQuizWorkerTest {
         // Check if the items were inserted correctly.
         val mazeQuizItems = mazeQuizDao.getAllMazeItems()
 
-        val allCategoryCount = multiChoiceCategories.count() + wordleQuizTypes.count()
+        val allCategoryCount = multiChoiceCategories.count() + wordleCategories.count()
         val questionSizePerMode = questionSize / allCategoryCount
         // Get the real generated question size.
         // The real generated question size may be different from the input question size

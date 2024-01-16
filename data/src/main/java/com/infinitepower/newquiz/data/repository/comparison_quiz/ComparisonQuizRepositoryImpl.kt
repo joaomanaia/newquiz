@@ -1,8 +1,6 @@
 package com.infinitepower.newquiz.data.repository.comparison_quiz
 
-import androidx.annotation.Keep
 import com.infinitepower.newquiz.core.NumberFormatter
-import com.infinitepower.newquiz.core.common.BaseApiUrls
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
@@ -11,33 +9,25 @@ import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.FlowResource
-import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.core.NumberFormatter.Temperature.TemperatureUnit
 import com.infinitepower.newquiz.core.NumberFormatter.Distance.DistanceUnitType
-import io.ktor.client.HttpClient
-import io.ktor.client.request.headers
-import io.ktor.client.request.request
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.net.URI
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class ComparisonQuizRepositoryImpl @Inject constructor(
-    private val client: HttpClient,
     private val remoteConfig: RemoteConfig,
     private val gameResultDao: GameResultDao,
-    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager
+    @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
+    private val comparisonQuizApi: ComparisonQuizApi
 ) : ComparisonQuizRepository {
     private val categoriesCache: MutableList<ComparisonQuizCategory> = mutableListOf()
 
@@ -53,60 +43,37 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
         return categoriesCache
     }
 
-    @Keep
-    @Serializable
-    data class ComparisonQuizItemEntity(
-        val title: String,
-        val value: Double,
-        val imgUrl: String
-    ) : java.io.Serializable
-
     override fun getQuestions(
-        category: ComparisonQuizCategory
-    ): FlowResource<List<ComparisonQuizItem>> = flow {
-        try {
-            emit(Resource.Loading())
+        category: ComparisonQuizCategory,
+        size: Int,
+        random: Random
+    ): Flow<List<ComparisonQuizItem>> = flow {
+        val entityQuestions = comparisonQuizApi.generateQuestions(
+            category = category,
+            size = size,
+            random = random
+        )
 
-            val apiUrl = "${BaseApiUrls.NEWQUIZ}/api/comparisonquiz/${category.id}"
+        val userConfig = getUserConfig()
 
-            val response: HttpResponse = client.request(apiUrl) {
-                headers {
-                    append(HttpHeaders.Accept, "application/json")
-                }
-            }
+        val questions = entityQuestions.map { entity ->
+            val valueFormatter = NumberFormatter.from(category.formatType)
 
-            val textResponse = response.bodyAsText()
-            val entityQuestions: List<ComparisonQuizItemEntity> = Json.decodeFromString(textResponse)
+            val helperValue = valueFormatter.formatValueToString(
+                value = entity.value,
+                helperValueSuffix = category.helperValueSuffix,
+                regionalPreferences = userConfig
+            )
 
-            val userConfig = getUserConfig()
-
-            val questions = entityQuestions.map { entity ->
-                val valueFormatter = NumberFormatter.from(category.formatType)
-
-                val helperValue = valueFormatter.formatValueToString(
-                    value = entity.value,
-                    helperValueSuffix = category.helperValueSuffix,
-                    regionalPreferences = userConfig
-                )
-
-                ComparisonQuizItem(
-                    title = entity.title,
-                    value = entity.value,
-                    helperValue = helperValue,
-                    imgUri = URI.create(entity.imgUrl)
-                )
-            }
-
-            emit(Resource.Success(questions))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(
-                Resource.Error(
-                    e.localizedMessage
-                        ?: "An unknown error occurred while fetching comparison quiz data"
-                )
+            ComparisonQuizItem(
+                title = entity.title,
+                value = entity.value,
+                helperValue = helperValue,
+                imgUri = URI.create(entity.imgUrl)
             )
         }
+
+        emit(questions)
     }
 
     private suspend fun getUserConfig(): NumberFormatter.RegionalPreferences {
