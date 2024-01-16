@@ -14,12 +14,14 @@ val multiChoiceQuestionCategories = listOf(
     MultiChoiceCategory(
         id = MultiChoiceBaseCategory.Flag.id,
         name = UiText.StringResource(CoreR.string.flag_quiz),
-        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fflags_illustration.png?alt=media&token=ec6b2820-1d26-4352-9c54-201bd387ae94"
+        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fflags_illustration.png?alt=media&token=ec6b2820-1d26-4352-9c54-201bd387ae94",
+        requireInternetConnection = false
     ),
     MultiChoiceCategory(
         id = MultiChoiceBaseCategory.CountryCapitalFlags.id,
         name = UiText.StringResource(CoreR.string.country_capital_flags),
-        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fflags_illustration.png?alt=media&token=ec6b2820-1d26-4352-9c54-201bd387ae94"
+        image = "https://firebasestorage.googleapis.com/v0/b/newquiz-app.appspot.com/o/Illustrations%2Fflags_illustration.png?alt=media&token=ec6b2820-1d26-4352-9c54-201bd387ae94",
+        requireInternetConnection = false
     ),
     MultiChoiceCategory(
         id = MultiChoiceBaseCategory.GuessMathSolution.id,

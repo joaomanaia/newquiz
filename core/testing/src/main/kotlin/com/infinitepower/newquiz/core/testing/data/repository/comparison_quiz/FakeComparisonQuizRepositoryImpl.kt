@@ -1,8 +1,6 @@
 package com.infinitepower.newquiz.core.testing.data.repository.comparison_quiz
 
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.FlowResource
-import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
@@ -17,7 +15,6 @@ import javax.inject.Singleton
 import kotlin.random.Random
 
 private const val CATEGORIES_TO_GENERATE = 1
-private const val QUESTIONS_TO_GENERATE = 10
 
 @Singleton
 class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRepository {
@@ -39,18 +36,20 @@ class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRep
         }
     }
 
-    override fun getQuestions(category: ComparisonQuizCategory): FlowResource<List<ComparisonQuizItem>> = flow {
-        emit(Resource.Loading())
-
-        val questions = List(QUESTIONS_TO_GENERATE) { id ->
+    override fun getQuestions(
+        category: ComparisonQuizCategory,
+        size: Int,
+        random: Random
+    ): Flow<List<ComparisonQuizItem>> = flow {
+        val questions = List(size) { id ->
             ComparisonQuizItem(
                 title = "Question $id",
-                value = Random.nextDouble(),
+                value = random.nextDouble(),
                 imgUri = URI("")
             )
         }
 
-        emit(Resource.Success(questions))
+        emit(questions)
     }
 
     override suspend fun getHighestPosition(categoryId: String): Int {

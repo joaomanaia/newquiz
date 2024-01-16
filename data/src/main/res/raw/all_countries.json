@@ -4,1364 +4,1754 @@
     "capital": "Kabul",
     "difficulty": "hard",
     "countryName": "Afghanistan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 40218234,
+    "area": 652230
   },
   {
     "countryCode": "AL",
     "capital": "Tirana",
     "difficulty": "medium",
     "countryName": "Albania",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 2837743,
+    "area": 28748
   },
   {
     "countryCode": "DZ",
     "capital": "Algiers",
     "difficulty": "medium",
     "countryName": "Algeria",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 44700000,
+    "area": 2381741
   },
   {
     "countryCode": "AD",
     "capital": "Andorra la Vella",
     "difficulty": "easy",
     "countryName": "Andorra",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 77265,
+    "area": 468
   },
   {
     "countryCode": "AO",
     "capital": "Luanda",
     "difficulty": "medium",
     "countryName": "Angola",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 32866268,
+    "area": 1246700
   },
   {
     "countryCode": "AG",
     "capital": "St. John's",
     "difficulty": "hard",
     "countryName": "Antigua and Barbuda",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 97928,
+    "area": 442
   },
   {
     "countryCode": "AR",
     "capital": "Buenos Aires",
     "difficulty": "easy",
     "countryName": "Argentina",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 45376763,
+    "area": 2780400
   },
   {
     "countryCode": "AM",
     "capital": "Yerevan",
     "difficulty": "hard",
     "countryName": "Armenia",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 2963234,
+    "area": 29743
   },
   {
     "countryCode": "AU",
     "capital": "Canberra",
     "difficulty": "medium",
     "countryName": "Australia",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 25687041,
+    "area": 7692024
   },
   {
     "countryCode": "AT",
     "capital": "Vienna",
     "difficulty": "easy",
     "countryName": "Austria",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 8917205,
+    "area": 83871
   },
   {
     "countryCode": "AZ",
     "capital": "Baku",
     "difficulty": "medium",
     "countryName": "Azerbaijan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 10110116,
+    "area": 86600
   },
   {
     "countryCode": "BS",
     "capital": "Nassau",
     "difficulty": "hard",
     "countryName": "Bahamas",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 393248,
+    "area": 13943
   },
   {
     "countryCode": "BH",
     "capital": "Manama",
     "difficulty": "hard",
     "countryName": "Bahrain",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 1701583,
+    "area": 765
   },
   {
     "countryCode": "BD",
     "capital": "Dhaka",
     "difficulty": "medium",
     "countryName": "Bangladesh",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 164689383,
+    "area": 147570
   },
   {
     "countryCode": "BB",
     "capital": "Bridgetown",
     "difficulty": "hard",
     "countryName": "Barbados",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 287371,
+    "area": 430
   },
   {
     "countryCode": "BY",
     "capital": "Minsk",
     "difficulty": "hard",
     "countryName": "Belarus",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 9398861,
+    "area": 207600
   },
   {
     "countryCode": "BE",
     "capital": "Brussels",
     "difficulty": "easy",
     "countryName": "Belgium",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 11555997,
+    "area": 30528
   },
   {
     "countryCode": "BZ",
     "capital": "Belmopan",
     "difficulty": "hard",
     "countryName": "Belize",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 397621,
+    "area": 22966
   },
   {
     "countryCode": "BJ",
     "capital": "Porto-Novo",
     "difficulty": "hard",
     "countryName": "Benin",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 12123198,
+    "area": 112622
   },
   {
     "countryCode": "BT",
     "capital": "Thimphu",
     "difficulty": "hard",
     "countryName": "Bhutan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 771612,
+    "area": 38394
   },
   {
     "countryCode": "BO",
     "capital": "La Paz",
     "difficulty": "hard",
     "countryName": "Bolivia",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 11673029,
+    "area": 1098581
   },
   {
     "countryCode": "BA",
     "capital": "Sarajevo",
     "difficulty": "hard",
     "countryName": "Bosnia and Herzegovina",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 3280815,
+    "area": 51209
   },
   {
     "countryCode": "BW",
     "capital": "Gaborone",
     "difficulty": "medium",
     "countryName": "Botswana",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 2351625,
+    "area": 582000
   },
   {
     "countryCode": "BR",
     "capital": "Brasília",
     "difficulty": "easy",
     "countryName": "Brazil",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 212559409,
+    "area": 8515767
   },
   {
     "countryCode": "BN",
     "capital": "Bandar Seri Begawan",
     "difficulty": "hard",
     "countryName": "Brunei",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 437483,
+    "area": 5765
   },
   {
     "countryCode": "BG",
     "capital": "Sofia",
     "difficulty": "easy",
     "countryName": "Bulgaria",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 6927288,
+    "area": 110879
   },
   {
     "countryCode": "BF",
     "capital": "Ouagadougou",
     "difficulty": "medium",
     "countryName": "Burkina Faso",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 20903278,
+    "area": 272967
   },
   {
     "countryCode": "BI",
     "capital": "Bujumbura",
     "difficulty": "hard",
     "countryName": "Burundi",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 11890781,
+    "area": 27834
   },
   {
     "countryCode": "KH",
     "capital": "Phnom Penh",
     "difficulty": "hard",
     "countryName": "Cambodia",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 16718971,
+    "area": 181035
   },
   {
     "countryCode": "CM",
     "capital": "Yaoundé",
     "difficulty": "medium",
     "countryName": "Cameroon",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 26545864,
+    "area": 475442
   },
   {
     "countryCode": "CA",
     "capital": "Ottawa",
     "difficulty": "easy",
     "countryName": "Canada",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 38005238,
+    "area": 9984670
   },
   {
     "countryCode": "CV",
     "capital": "Praia",
     "difficulty": "medium",
     "countryName": "Cape Verde",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 555988,
+    "area": 4033
   },
   {
     "countryCode": "CF",
     "capital": "Bangui",
     "difficulty": "medium",
     "countryName": "Central African Republic",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 4829764,
+    "area": 622984
   },
   {
     "countryCode": "TD",
     "capital": "N'Djamena",
     "difficulty": "hard",
     "countryName": "Chad",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 16425859,
+    "area": 1284000
   },
   {
     "countryCode": "CL",
     "capital": "Santiago",
     "difficulty": "medium",
     "countryName": "Chile",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 19116209,
+    "area": 756102
   },
   {
     "countryCode": "CN",
     "capital": "Beijing",
     "difficulty": "easy",
     "countryName": "China",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 1402112000,
+    "area": 9706961
   },
   {
     "countryCode": "CO",
     "capital": "Bogotá",
     "difficulty": "medium",
     "countryName": "Colombia",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 50882884,
+    "area": 1141748
   },
   {
     "countryCode": "KM",
     "capital": "Moroni",
     "difficulty": "hard",
     "countryName": "Comoros",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 869595,
+    "area": 1862
   },
   {
     "countryCode": "CD",
     "capital": "Kinshasa",
     "difficulty": "hard",
     "countryName": "Democratic Republic of the Congo",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 108407721,
+    "area": 2344858
   },
   {
     "countryCode": "CG",
     "capital": "Brazzaville",
     "difficulty": "hard",
     "countryName": "Republic of the Congo",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 5657000,
+    "area": 342000
   },
   {
     "countryCode": "CR",
     "capital": "San José",
     "difficulty": "medium",
     "countryName": "Costa Rica",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 5094114,
+    "area": 51100
   },
   {
     "countryCode": "CI",
     "capital": "Yamoussoukro",
     "difficulty": "medium",
     "countryName": "Côte d'Ivoire",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 26378275,
+    "area": 322463
   },
   {
     "countryCode": "HR",
     "capital": "Zagreb",
     "difficulty": "easy",
     "countryName": "Croatia",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 4047200,
+    "area": 56594
   },
   {
     "countryCode": "CU",
     "capital": "Havana",
     "difficulty": "medium",
     "countryName": "Cuba",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 11326616,
+    "area": 109884
   },
   {
     "countryCode": "CY",
     "capital": "Nicosia",
     "difficulty": "hard",
     "countryName": "Cyprus",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 1207361,
+    "area": 9251
   },
   {
     "countryCode": "CZ",
     "capital": "Prague",
     "difficulty": "easy",
     "countryName": "Czech Republic",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 10698896,
+    "area": 78865
   },
   {
     "countryCode": "DK",
     "capital": "Copenhagen",
     "difficulty": "easy",
     "countryName": "Denmark",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 5831404,
+    "area": 43094
   },
   {
     "countryCode": "DJ",
     "capital": "Djibouti",
     "difficulty": "hard",
     "countryName": "Djibouti",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 988002,
+    "area": 23200
   },
   {
     "countryCode": "DM",
     "capital": "Roseau",
     "difficulty": "hard",
     "countryName": "Dominica",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 71991,
+    "area": 751
   },
   {
     "countryCode": "DO",
     "capital": "Santo Domingo",
     "difficulty": "medium",
     "countryName": "Dominican Republic",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 10847904,
+    "area": 48671
   },
   {
     "countryCode": "EC",
     "capital": "Quito",
     "difficulty": "medium",
     "countryName": "Ecuador",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 17643060,
+    "area": 276841
   },
   {
     "countryCode": "EG",
     "capital": "Cairo",
     "difficulty": "medium",
     "countryName": "Egypt",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 102334403,
+    "area": 1002450
   },
   {
     "countryCode": "SV",
     "capital": "San Salvador",
     "difficulty": "medium",
     "countryName": "El Salvador",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 6486201,
+    "area": 21041
   },
   {
     "countryCode": "GQ",
     "capital": "Malabo",
     "difficulty": "hard",
     "countryName": "Equatorial Guinea",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 1402985,
+    "area": 28051
   },
   {
     "countryCode": "ER",
     "capital": "Asmara",
     "difficulty": "hard",
     "countryName": "Eritrea",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 5352000,
+    "area": 117600
   },
   {
     "countryCode": "EE",
     "capital": "Tallinn",
     "difficulty": "medium",
     "countryName": "Estonia",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 1331057,
+    "area": 45227
   },
   {
     "countryCode": "ET",
     "capital": "Addis Ababa",
     "difficulty": "hard",
     "countryName": "Ethiopia",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 114963583,
+    "area": 1104300
   },
   {
     "countryCode": "FJ",
     "capital": "Suva",
     "difficulty": "hard",
     "countryName": "Fiji",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 896444,
+    "area": 18272
   },
   {
     "countryCode": "FI",
     "capital": "Helsinki",
     "difficulty": "medium",
     "countryName": "Finland",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 5530719,
+    "area": 338424
   },
   {
     "countryCode": "FR",
     "capital": "Paris",
     "difficulty": "easy",
     "countryName": "France",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 67391582,
+    "area": 551695
   },
   {
     "countryCode": "GA",
     "capital": "Libreville",
     "difficulty": "hard",
     "countryName": "Gabon",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 2225728,
+    "area": 267668
   },
   {
     "countryCode": "GM",
     "capital": "Banjul",
     "difficulty": "hard",
     "countryName": "Gambia",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 2416664,
+    "area": 10689
   },
   {
     "countryCode": "GE",
     "capital": "Tbilisi",
     "difficulty": "hard",
     "countryName": "Georgia",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 3714000,
+    "area": 69700
   },
   {
     "countryCode": "DE",
     "capital": "Berlin",
     "difficulty": "easy",
     "countryName": "Germany",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 83240525,
+    "area": 357114
   },
   {
     "countryCode": "GH",
     "capital": "Accra",
     "difficulty": "medium",
     "countryName": "Ghana",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 31072945,
+    "area": 238533
   },
   {
     "countryCode": "GR",
     "capital": "Athens",
     "difficulty": "easy",
     "countryName": "Greece",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 10715549,
+    "area": 131990
   },
   {
     "countryCode": "GD",
     "capital": "St. George's",
     "difficulty": "hard",
     "countryName": "Grenada",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 112519,
+    "area": 344
   },
   {
     "countryCode": "GT",
     "capital": "Guatemala City",
     "difficulty": "medium",
     "countryName": "Guatemala",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 16858333,
+    "area": 108889
   },
   {
     "countryCode": "GN",
     "capital": "Conakry",
     "difficulty": "medium",
     "countryName": "Guinea",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 13132792,
+    "area": 245857
   },
   {
     "countryCode": "GW",
     "capital": "Bissau",
     "difficulty": "medium",
     "countryName": "Guinea-Bissau",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 1967998,
+    "area": 36125
   },
   {
     "countryCode": "GY",
     "capital": "Georgetown",
     "difficulty": "medium",
     "countryName": "Guyana",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 786559,
+    "area": 214969
   },
   {
     "countryCode": "HT",
     "capital": "Port-au-Prince",
     "difficulty": "medium",
     "countryName": "Haiti",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 11402533,
+    "area": 27750
   },
   {
     "countryCode": "HN",
     "capital": "Tegucigalpa",
     "difficulty": "medium",
     "countryName": "Honduras",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 9904608,
+    "area": 112492
   },
   {
     "countryCode": "HU",
     "capital": "Budapest",
     "difficulty": "medium",
     "countryName": "Hungary",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 9749763,
+    "area": 93028
   },
   {
     "countryCode": "IS",
     "capital": "Reykjavik",
     "difficulty": "medium",
     "countryName": "Iceland",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 366425,
+    "area": 103000
   },
   {
     "countryCode": "IN",
     "capital": "New Delhi",
     "difficulty": "easy",
     "countryName": "India",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 1380004385,
+    "area": 3287590
   },
   {
     "countryCode": "ID",
     "capital": "Jakarta",
     "difficulty": "medium",
     "countryName": "Indonesia",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 273523621,
+    "area": 1904569
   },
   {
     "countryCode": "IR",
     "capital": "Tehran",
     "difficulty": "hard",
     "countryName": "Iran",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 83992953,
+    "area": 1648195
   },
   {
     "countryCode": "IQ",
     "capital": "Baghdad",
     "difficulty": "hard",
     "countryName": "Iraq",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 40222503,
+    "area": 438317
   },
   {
     "countryCode": "IE",
     "capital": "Dublin",
     "difficulty": "easy",
     "countryName": "Ireland",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 4994724,
+    "area": 70273
   },
   {
     "countryCode": "IL",
     "capital": "Jerusalem",
     "difficulty": "medium",
     "countryName": "Israel",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 9216900,
+    "area": 20770
   },
   {
     "countryCode": "IT",
     "capital": "Rome",
     "difficulty": "easy",
     "countryName": "Italy",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 59554023,
+    "area": 301336
   },
   {
     "countryCode": "JM",
     "capital": "Kingston",
     "difficulty": "medium",
     "countryName": "Jamaica",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 2961161,
+    "area": 10991
   },
   {
     "countryCode": "JP",
     "capital": "Tokyo",
     "difficulty": "easy",
     "countryName": "Japan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 125836021,
+    "area": 377930
   },
   {
     "countryCode": "JO",
     "capital": "Amman",
     "difficulty": "hard",
     "countryName": "Jordan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 10203140,
+    "area": 89342
   },
   {
     "countryCode": "KZ",
     "capital": "Nur-Sultan",
     "difficulty": "medium",
     "countryName": "Kazakhstan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 18754440,
+    "area": 2724900
   },
   {
     "countryCode": "KE",
     "capital": "Nairobi",
     "difficulty": "medium",
     "countryName": "Kenya",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 53771300,
+    "area": 580367
   },
   {
     "countryCode": "KI",
     "capital": "Tarawa",
     "difficulty": "hard",
     "countryName": "Kiribati",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 119446,
+    "area": 811
   },
   {
     "countryCode": "KP",
     "capital": "Pyongyang",
     "difficulty": "hard",
     "countryName": "North Korea",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 25778815,
+    "area": 120538
   },
   {
     "countryCode": "KR",
     "capital": "Seoul",
     "difficulty": "easy",
     "countryName": "South Korea",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 51780579,
+    "area": 100210
   },
   {
     "countryCode": "KW",
     "capital": "Kuwait City",
     "difficulty": "medium",
     "countryName": "Kuwait",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 4270563,
+    "area": 17818
   },
   {
     "countryCode": "KG",
     "capital": "Bishkek",
     "difficulty": "hard",
     "countryName": "Kyrgyzstan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 6591600,
+    "area": 199951
   },
   {
     "countryCode": "LA",
     "capital": "Vientiane",
     "difficulty": "hard",
     "countryName": "Laos",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 7275556,
+    "area": 236800
   },
   {
     "countryCode": "LV",
     "capital": "Riga",
     "difficulty": "medium",
     "countryName": "Latvia",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 1901548,
+    "area": 64559
   },
   {
     "countryCode": "LB",
     "capital": "Beirut",
     "difficulty": "medium",
     "countryName": "Lebanon",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 6825442,
+    "area": 10452
   },
   {
     "countryCode": "LS",
     "capital": "Maseru",
     "difficulty": "medium",
     "countryName": "Lesotho",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 2142252,
+    "area": 30355
   },
   {
     "countryCode": "LR",
     "capital": "Monrovia",
     "difficulty": "medium",
     "countryName": "Liberia",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 5057677,
+    "area": 111369
   },
   {
     "countryCode": "LY",
     "capital": "Tripoli",
     "difficulty": "hard",
     "countryName": "Libya",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 6871287,
+    "area": 1759540
   },
   {
     "countryCode": "LI",
     "capital": "Vaduz",
     "difficulty": "hard",
     "countryName": "Liechtenstein",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 38137,
+    "area": 160
   },
   {
     "countryCode": "LT",
     "capital": "Vilnius",
     "difficulty": "medium",
     "countryName": "Lithuania",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 2794700,
+    "area": 65300
   },
   {
     "countryCode": "LU",
     "capital": "Luxembourg City",
     "difficulty": "medium",
     "countryName": "Luxembourg",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 632275,
+    "area": 2586
   },
   {
     "countryCode": "MG",
     "capital": "Antananarivo",
     "difficulty": "medium",
     "countryName": "Madagascar",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 27691019,
+    "area": 587041
   },
   {
     "countryCode": "MW",
     "capital": "Lilongwe",
     "difficulty": "hard",
     "countryName": "Malawi",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 19129955,
+    "area": 118484
   },
   {
     "countryCode": "MY",
     "capital": "Kuala Lumpur",
     "difficulty": "medium",
     "countryName": "Malaysia",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 32365998,
+    "area": 330803
   },
   {
     "countryCode": "MV",
     "capital": "Male",
     "difficulty": "medium",
     "countryName": "Maldives",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 540542,
+    "area": 300
   },
   {
     "countryCode": "ML",
     "capital": "Bamako",
     "difficulty": "medium",
     "countryName": "Mali",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 20250834,
+    "area": 1240192
   },
   {
     "countryCode": "MT",
     "capital": "Valletta",
     "difficulty": "hard",
     "countryName": "Malta",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 525285,
+    "area": 316
   },
   {
     "countryCode": "MH",
     "capital": "Majuro",
     "difficulty": "hard",
     "countryName": "Marshall Islands",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 59194,
+    "area": 181
   },
   {
     "countryCode": "MR",
     "capital": "Nouakchott",
     "difficulty": "medium",
     "countryName": "Mauritania",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 4649660,
+    "area": 1030700
   },
   {
     "countryCode": "MU",
     "capital": "Port Louis",
     "difficulty": "medium",
     "countryName": "Mauritius",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 1265740,
+    "area": 2040
   },
   {
     "countryCode": "MX",
     "capital": "Mexico City",
     "difficulty": "easy",
     "countryName": "Mexico",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 128932753,
+    "area": 1964375
   },
   {
     "countryCode": "FM",
     "capital": "Palikir",
     "difficulty": "medium",
     "countryName": "Micronesia",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 115021,
+    "area": 702
   },
   {
     "countryCode": "MD",
     "capital": "Chisinau",
     "difficulty": "medium",
     "countryName": "Moldova",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 2617820,
+    "area": 33846
   },
   {
     "countryCode": "MC",
     "capital": "Monaco",
     "difficulty": "medium",
     "countryName": "Monaco",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 39244,
+    "area": 2.02
   },
   {
     "countryCode": "MN",
     "capital": "Ulaanbaatar",
     "difficulty": "medium",
     "countryName": "Mongolia",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 3278292,
+    "area": 1564110
   },
   {
     "countryCode": "ME",
     "capital": "Podgorica",
     "difficulty": "medium",
     "countryName": "Montenegro",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 621718,
+    "area": 13812
   },
   {
     "countryCode": "MA",
     "capital": "Rabat",
     "difficulty": "medium",
     "countryName": "Morocco",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 36910558,
+    "area": 446550
   },
   {
     "countryCode": "MZ",
     "capital": "Maputo",
     "difficulty": "medium",
     "countryName": "Mozambique",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 31255435,
+    "area": 801590
   },
   {
     "countryCode": "MM",
     "capital": "Naypyidaw",
     "difficulty": "hard",
     "countryName": "Myanmar (Burma)",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 54409794,
+    "area": 676578
   },
   {
     "countryCode": "NA",
     "capital": "Windhoek",
     "difficulty": "hard",
     "countryName": "Namibia",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 2540916,
+    "area": 825615
   },
   {
     "countryCode": "NR",
     "capital": "Yaren",
     "difficulty": "hard",
     "countryName": "Nauru",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 10834,
+    "area": 21
   },
   {
     "countryCode": "NP",
     "capital": "Kathmandu",
     "difficulty": "medium",
     "countryName": "Nepal",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 29136808,
+    "area": 147181
   },
   {
     "countryCode": "NL",
     "capital": "Amsterdam",
     "difficulty": "easy",
     "countryName": "Netherlands",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 16655799,
+    "area": 41850
   },
   {
     "countryCode": "NZ",
     "capital": "Wellington",
     "difficulty": "medium",
     "countryName": "New Zealand",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 5084300,
+    "area": 270467
   },
   {
     "countryCode": "NI",
     "capital": "Managua",
     "difficulty": "hard",
     "countryName": "Nicaragua",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 6624554,
+    "area": 130373
   },
   {
     "countryCode": "NE",
     "capital": "Niamey",
     "difficulty": "hard",
     "countryName": "Niger",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 24206636,
+    "area": 1267000
   },
   {
     "countryCode": "NG",
     "capital": "Abuja",
     "difficulty": "medium",
     "countryName": "Nigeria",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 206139587,
+    "area": 923768
   },
   {
     "countryCode": "MK",
     "capital": "Skopje",
     "difficulty": "medium",
     "countryName": "North Macedonia",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 2077132,
+    "area": 25713
   },
   {
     "countryCode": "NO",
     "capital": "Oslo",
     "difficulty": "easy",
     "countryName": "Norway",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 5379475,
+    "area": 323802
   },
   {
     "countryCode": "OM",
     "capital": "Muscat",
     "difficulty": "hard",
     "countryName": "Oman",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 5106622,
+    "area": 309500
   },
   {
     "countryCode": "PK",
     "capital": "Islamabad",
     "difficulty": "medium",
     "countryName": "Pakistan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 220892331,
+    "area": 881912
   },
   {
     "countryCode": "PW",
     "capital": "Ngerulmud",
     "difficulty": "hard",
     "countryName": "Palau",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 18092,
+    "area": 459
   },
   {
     "countryCode": "PA",
     "capital": "Panama City",
     "difficulty": "medium",
     "countryName": "Panama",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 4314768,
+    "area": 75417
   },
   {
     "countryCode": "PG",
     "capital": "Port Moresby",
     "difficulty": "hard",
     "countryName": "Papua New Guinea",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 8947027,
+    "area": 462840
   },
   {
     "countryCode": "PY",
     "capital": "Asunción",
     "difficulty": "medium",
     "countryName": "Paraguay",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 7132530,
+    "area": 406752
   },
   {
     "countryCode": "PE",
     "capital": "Lima",
     "difficulty": "medium",
     "countryName": "Peru",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 32971846,
+    "area": 1285216
   },
   {
     "countryCode": "PH",
     "capital": "Manila",
     "difficulty": "medium",
     "countryName": "Philippines",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 109581085,
+    "area": 342353
   },
   {
     "countryCode": "PL",
     "capital": "Warsaw",
     "difficulty": "medium",
     "countryName": "Poland",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 37950802,
+    "area": 312679
   },
   {
     "countryCode": "PT",
     "capital": "Lisbon",
     "difficulty": "easy",
     "countryName": "Portugal",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 10305564,
+    "area": 92090
   },
   {
     "countryCode": "QA",
     "capital": "Doha",
     "difficulty": "medium",
     "countryName": "Qatar",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 2881060,
+    "area": 11586
   },
   {
     "countryCode": "RO",
     "capital": "Bucharest",
     "difficulty": "medium",
     "countryName": "Romania",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 19286123,
+    "area": 238391
   },
   {
     "countryCode": "RU",
     "capital": "Moscow",
     "difficulty": "easy",
     "countryName": "Russia",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 144104080,
+    "area": 17098242
   },
   {
     "countryCode": "RW",
     "capital": "Kigali",
     "difficulty": "medium",
     "countryName": "Rwanda",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 12952209,
+    "area": 26338
   },
   {
     "countryCode": "KN",
     "capital": "Basseterre",
     "difficulty": "hard",
     "countryName": "Saint Kitts and Nevis",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 53192,
+    "area": 261
   },
   {
     "countryCode": "LC",
     "capital": "Castries",
     "difficulty": "hard",
     "countryName": "Saint Lucia",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 183629,
+    "area": 616
   },
   {
     "countryCode": "VC",
     "capital": "Kingstown",
     "difficulty": "hard",
     "countryName": "Saint Vincent and the Grenadines",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 110947,
+    "area": 389
   },
   {
     "countryCode": "WS",
     "capital": "Apia",
     "difficulty": "hard",
     "countryName": "Samoa",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 198410,
+    "area": 2842
   },
   {
     "countryCode": "SM",
     "capital": "San Marino",
     "difficulty": "hard",
     "countryName": "San Marino",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 33938,
+    "area": 61
   },
   {
     "countryCode": "ST",
     "capital": "São Tomé",
     "difficulty": "medium",
     "countryName": "Sao Tome and Principe",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 219161,
+    "area": 964
   },
   {
     "countryCode": "SA",
     "capital": "Riyadh",
     "difficulty": "medium",
     "countryName": "Saudi Arabia",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 34813867,
+    "area": 2149690
   },
   {
     "countryCode": "SN",
     "capital": "Dakar",
     "difficulty": "medium",
     "countryName": "Senegal",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 16743930,
+    "area": 196722
   },
   {
     "countryCode": "RS",
     "capital": "Belgrade",
     "difficulty": "medium",
     "countryName": "Serbia",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 6908224,
+    "area": 88361
   },
   {
     "countryCode": "SC",
     "capital": "Victoria",
     "difficulty": "hard",
     "countryName": "Seychelles",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 98462,
+    "area": 452
   },
   {
     "countryCode": "SL",
     "capital": "Freetown",
     "difficulty": "medium",
     "countryName": "Sierra Leone",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 7976985,
+    "area": 71740
   },
   {
     "countryCode": "SG",
     "capital": "Singapore",
     "difficulty": "easy",
     "countryName": "Singapore",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 5685807,
+    "area": 710
   },
   {
     "countryCode": "SK",
     "capital": "Bratislava",
     "difficulty": "medium",
     "countryName": "Slovakia",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 5458827,
+    "area": 49037
   },
   {
     "countryCode": "SI",
     "capital": "Ljubljana",
     "difficulty": "medium",
     "countryName": "Slovenia",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 2100126,
+    "area": 20273
   },
   {
     "countryCode": "SB",
     "capital": "Honiara",
     "difficulty": "hard",
     "countryName": "Solomon Islands",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 686878,
+    "area": 28896
   },
   {
     "countryCode": "SO",
     "capital": "Mogadishu",
     "difficulty": "hard",
     "countryName": "Somalia",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 15893219,
+    "area": 637657
   },
   {
     "countryCode": "ZA",
     "capital": "Pretoria",
     "difficulty": "medium",
     "countryName": "South Africa",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 59308690,
+    "area": 1221037
   },
   {
     "countryCode": "SS",
     "capital": "Juba",
     "difficulty": "medium",
     "countryName": "South Sudan",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 11193729,
+    "area": 619745
   },
   {
     "countryCode": "ES",
     "capital": "Madrid",
     "difficulty": "easy",
     "countryName": "Spain",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 47351567,
+    "area": 505992
   },
   {
     "countryCode": "LK",
     "capital": "Sri Jayawardenepura Kotte",
     "difficulty": "medium",
     "countryName": "Sri Lanka",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 21919000,
+    "area": 65610
   },
   {
     "countryCode": "SD",
     "capital": "Khartoum",
     "difficulty": "hard",
     "countryName": "Sudan",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 43849269,
+    "area": 1886068
   },
   {
     "countryCode": "SR",
     "capital": "Paramaribo",
     "difficulty": "medium",
     "countryName": "Suriname",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 586634,
+    "area": 163820
   },
   {
     "countryCode": "SZ",
     "capital": "Mbabane",
     "difficulty": "hard",
     "countryName": "Eswatini",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 1160164,
+    "area": 17364
   },
   {
     "countryCode": "SE",
     "capital": "Stockholm",
     "difficulty": "medium",
     "countryName": "Sweden",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 10353442,
+    "area": 450295
   },
   {
     "countryCode": "CH",
     "capital": "Bern",
     "difficulty": "medium",
     "countryName": "Switzerland",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 8654622,
+    "area": 41284
   },
   {
     "countryCode": "SY",
     "capital": "Damascus",
     "difficulty": "medium",
     "countryName": "Syria",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 17500657,
+    "area": 185180
   },
   {
     "countryCode": "TW",
     "capital": "Taipei",
     "difficulty": "medium",
     "countryName": "Taiwan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 23503349,
+    "area": 36193
   },
   {
     "countryCode": "TJ",
     "capital": "Dushanbe",
     "difficulty": "hard",
     "countryName": "Tajikistan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 9537642,
+    "area": 143100
   },
   {
     "countryCode": "TZ",
     "capital": "Dodoma",
     "difficulty": "hard",
     "countryName": "Tanzania",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 59734213,
+    "area": 945087
   },
   {
     "countryCode": "TH",
     "capital": "Bangkok",
     "difficulty": "medium",
     "countryName": "Thailand",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 69799978,
+    "area": 513120
   },
   {
     "countryCode": "TL",
     "capital": "Dili",
     "difficulty": "hard",
     "countryName": "Timor-Leste",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 1318442,
+    "area": 14874
   },
   {
     "countryCode": "TG",
     "capital": "Lomé",
     "difficulty": "medium",
     "countryName": "Togo",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 8278737,
+    "area": 56785
   },
   {
     "countryCode": "TO",
     "capital": "Nuku'alofa",
     "difficulty": "medium",
     "countryName": "Tonga",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 105697,
+    "area": 747
   },
   {
     "countryCode": "TT",
     "capital": "Port of Spain",
     "difficulty": "medium",
     "countryName": "Trinidad and Tobago",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 1399491,
+    "area": 5130
   },
   {
     "countryCode": "TN",
     "capital": "Tunis",
     "difficulty": "medium",
     "countryName": "Tunisia",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 11818618,
+    "area": 163610
   },
   {
     "countryCode": "TR",
     "capital": "Ankara",
     "difficulty": "medium",
     "countryName": "Turkey",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 84339067,
+    "area": 783562
   },
   {
     "countryCode": "TM",
     "capital": "Ashgabat",
     "difficulty": "hard",
     "countryName": "Turkmenistan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 6031187,
+    "area": 488100
   },
   {
     "countryCode": "TV",
     "capital": "Funafuti",
     "difficulty": "hard",
     "countryName": "Tuvalu",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 11792,
+    "area": 26
   },
   {
     "countryCode": "UG",
     "capital": "Kampala",
     "difficulty": "hard",
     "countryName": "Uganda",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 45741000,
+    "area": 241550
   },
   {
     "countryCode": "UA",
     "capital": "Kyiv",
     "difficulty": "medium",
     "countryName": "Ukraine",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 44134693,
+    "area": 603500
   },
   {
     "countryCode": "AE",
     "capital": "Abu Dhabi",
     "difficulty": "medium",
     "countryName": "United Arab Emirates",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 9890400,
+    "area": 83600
   },
   {
     "countryCode": "GB",
     "capital": "London",
     "difficulty": "easy",
     "countryName": "United Kingdom",
-    "continent": "Europe"
+    "continent": "Europe",
+    "population": 67215293,
+    "area": 242900
   },
   {
     "countryCode": "US",
     "capital": "Washington D.C.",
     "difficulty": "easy",
     "countryName": "United States of America",
-    "continent": "North America"
+    "continent": "North America",
+    "population": 329484123,
+    "area": 9372610
   },
   {
     "countryCode": "UY",
     "capital": "Montevideo",
     "difficulty": "medium",
     "countryName": "Uruguay",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 3473727,
+    "area": 181034
   },
   {
     "countryCode": "UZ",
     "capital": "Tashkent",
     "difficulty": "medium",
     "countryName": "Uzbekistan",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 34232050,
+    "area": 447400
   },
   {
     "countryCode": "VU",
     "capital": "Port Vila",
     "difficulty": "medium",
     "countryName": "Vanuatu",
-    "continent": "Oceania"
+    "continent": "Oceania",
+    "population": 307150,
+    "area": 12189
   },
   {
     "countryCode": "VE",
     "capital": "Caracas",
     "difficulty": "medium",
     "countryName": "Venezuela",
-    "continent": "South America"
+    "continent": "South America",
+    "population": 28435943,
+    "area": 916445
   },
   {
     "countryCode": "VN",
     "capital": "Hanoi",
     "difficulty": "medium",
     "countryName": "Vietnam",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 97338583,
+    "area": 331212
   },
   {
     "countryCode": "EH",
     "capital": "El Aaiún",
     "difficulty": "hard",
     "countryName": "Western Sahara",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 510713,
+    "area": 266000
   },
   {
     "countryCode": "YE",
     "capital": "Sana'a",
     "difficulty": "hard",
     "countryName": "Yemen",
-    "continent": "Asia"
+    "continent": "Asia",
+    "population": 29825968,
+    "area": 527968
   },
   {
     "countryCode": "ZM",
     "capital": "Lusaka",
     "difficulty": "hard",
     "countryName": "Zambia",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 18383956,
+    "area": 752612
   },
   {
     "countryCode": "ZW",
     "capital": "Harare",
     "difficulty": "hard",
     "countryName": "Zimbabwe",
-    "continent": "Africa"
+    "continent": "Africa",
+    "population": 14862927,
+    "area": 390757
   }
 ]

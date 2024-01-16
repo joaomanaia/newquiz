@@ -11,6 +11,7 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.QuestionLanguage
 import com.infinitepower.newquiz.model.multi_choice_quiz.logo_quiz.LogoQuizBaseItem
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import kotlinx.serialization.json.Json
+import java.net.URI
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.random.Random
@@ -52,7 +53,7 @@ class LogoQuizRepositoryImpl @Inject constructor(
 
         return MultiChoiceQuestion(
             description = description,
-            imageUrl = imgUrl,
+            image = URI.create(imgUrl),
             answers = answers,
             correctAns = answers.indexOf(name),
             category = MultiChoiceBaseCategory.Logo,

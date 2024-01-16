@@ -4,18 +4,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.database.model.user.ComparisonQuizGameResultEntity
+import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
+import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.ktor.client.HttpClient
 import kotlin.test.BeforeTest
-import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.respond
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.headersOf
-import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.Rule
@@ -37,26 +32,23 @@ internal class ComparisonQuizRepositoryImplTest {
 
     @Inject lateinit var gameResultDao: GameResultDao
 
+    @Inject lateinit var comparisonQuizApi: ComparisonQuizApi
+
+    @Inject
+    @SettingsDataStoreManager
+    lateinit var settingsDataStoreManager: DataStoreManager
+
     private lateinit var repository: ComparisonQuizRepositoryImpl
 
     @BeforeTest
     fun setUp() {
         hiltRule.inject()
 
-        val engine = MockEngine { request ->
-            respond(
-                content = ByteReadChannel.Empty,
-                status = HttpStatusCode.OK,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
-            )
-        }
-
-        val client = HttpClient(engine)
-
         repository = ComparisonQuizRepositoryImpl(
-            client = client,
             remoteConfig = remoteConfig,
-            gameResultDao = gameResultDao
+            gameResultDao = gameResultDao,
+            settingsDataStoreManager = settingsDataStoreManager,
+            comparisonQuizApi = comparisonQuizApi,
         )
     }
 

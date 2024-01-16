@@ -46,33 +46,31 @@ class ComparisonQuizCoreImpl @Inject constructor(
                 Log.d(TAG, "Successfully got questions, starting game")
                 startGame()
             }
-        }.collect { res ->
-            when {
-                res.isLoading() -> _quizData.emit(QuizData())
-                res.isSuccess() && res.data != null && res.data?.isNotEmpty() == true -> {
-                    val category = initializationData.category
-                    val comparisonMode = initializationData.comparisonMode
-                    val questionDescription = category.getQuestionDescription(comparisonMode)
+        }.collect { questions ->
+            if (questions.isNotEmpty()) {
+                val category = initializationData.category
+                val comparisonMode = initializationData.comparisonMode
+                val questionDescription = category.getQuestionDescription(comparisonMode)
 
-                    val firstItemHelperValue = remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE)
+                val firstItemHelperValue = remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE)
 
-                    val quizData = QuizData(
-                        questions = res.data.orEmpty(),
-                        comparisonMode = comparisonMode,
-                        questionDescription = questionDescription,
-                        firstItemHelperValueState = firstItemHelperValue,
+                val quizData = QuizData(
+                    questions = questions,
+                    comparisonMode = comparisonMode,
+                    questionDescription = questionDescription,
+                    firstItemHelperValueState = firstItemHelperValue,
+                )
+
+                analyticsHelper.logEvent(
+                    AnalyticsEvent.ComparisonQuizGameStart(
+                        category = category.id,
+                        comparisonMode = comparisonMode.name,
                     )
+                )
 
-                    analyticsHelper.logEvent(
-                        AnalyticsEvent.ComparisonQuizGameStart(
-                            category = category.id,
-                            comparisonMode = comparisonMode.name,
-                        )
-                    )
-
-                    _quizData.emit(quizData)
-                }
-                res.isError() -> return@collect endGame()
+                _quizData.emit(quizData)
+            } else {
+                return@collect endGame()
             }
         }
     }

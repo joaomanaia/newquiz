@@ -21,7 +21,6 @@ import com.infinitepower.newquiz.core.user_services.data.xp.ComparisonQuizXpGene
 import com.infinitepower.newquiz.core.user_services.data.xp.MultiChoiceQuizXpGeneratorImpl
 import com.infinitepower.newquiz.core.user_services.data.xp.WordleXpGeneratorImpl
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
-import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
@@ -131,7 +130,7 @@ internal class ComparisonQuizCoreImplTest {
 
         every {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(Resource.Success(expectedQuestions))
+        } returns flowOf(expectedQuestions)
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -155,7 +154,7 @@ internal class ComparisonQuizCoreImplTest {
 
         every {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(Resource.Error("error"))
+        } returns flowOf(emptyList())
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -196,7 +195,7 @@ internal class ComparisonQuizCoreImplTest {
 
         every {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(Resource.Success(expectedQuestions))
+        } returns flowOf(expectedQuestions)
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -272,7 +271,7 @@ internal class ComparisonQuizCoreImplTest {
 
         every {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(Resource.Success(expectedQuestions))
+        } returns flowOf(expectedQuestions)
 
         // Loads the initial data and starts the game
         // This will also set the current question
@@ -334,7 +333,7 @@ internal class ComparisonQuizCoreImplTest {
 
         every {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(Resource.Success(expectedQuestions))
+        } returns flowOf(expectedQuestions)
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -386,7 +385,7 @@ internal class ComparisonQuizCoreImplTest {
 
         every {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(Resource.Success(expectedQuestions))
+        } returns flowOf(expectedQuestions)
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -492,7 +491,7 @@ internal class ComparisonQuizCoreImplTest {
 
         every {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(Resource.Success(expectedQuestions))
+        } returns flowOf(expectedQuestions)
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 

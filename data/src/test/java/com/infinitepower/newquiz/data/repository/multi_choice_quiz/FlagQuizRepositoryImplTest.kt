@@ -38,7 +38,7 @@ internal class FlagQuizRepositoryImplTest {
         assertThat(questions).hasSize(questionSize)
 
         // Use imageUrl because it is unique for each question
-        val uniqueQuestions = questions.distinctBy { it.imageUrl }
+        val uniqueQuestions = questions.distinctBy { it.image }
         assertThat(uniqueQuestions).hasSize(questionSize)
 
         // Check if the questions category is correct

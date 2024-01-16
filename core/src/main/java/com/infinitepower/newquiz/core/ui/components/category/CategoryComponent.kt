@@ -53,10 +53,12 @@ fun CategoryComponent(
         MaterialTheme.colorScheme.primary
     }.copy(alpha = if (checked) 0.6f else 0.5f)
 
+    val textColor = Color.White.copy(
+        alpha = if (enabled) 1f else DISABLED_ALPHA
+    )
+
     Surface(
-        modifier = modifier
-            .height(120.dp)
-            .alpha(if (enabled) 1f else DISABLED_ALPHA),
+        modifier = modifier.height(120.dp),
         shape = shape,
         onClick = onClick,
         enabled = enabled,
@@ -71,7 +73,8 @@ fun CategoryComponent(
             contentDescription = stringResource(id = R.string.image_category_of_s, title),
             modifier = Modifier
                 .fillMaxSize()
-                .clip(MaterialTheme.shapes.medium),
+                .clip(MaterialTheme.shapes.medium)
+                .alpha(if (enabled) 1f else DISABLED_ALPHA),
             contentScale = ContentScale.Crop
         )
         Box(
@@ -83,8 +86,8 @@ fun CategoryComponent(
             Text(
                 text = title,
                 style = textStyle,
-                color = Color.White,
-                textAlign = TextAlign.Center
+                color = textColor,
+                textAlign = TextAlign.Center,
             )
 
             Row(

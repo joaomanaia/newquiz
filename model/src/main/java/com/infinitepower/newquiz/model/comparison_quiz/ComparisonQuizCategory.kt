@@ -14,6 +14,7 @@ import kotlinx.serialization.Serializable
  * @param image The url of the image of the category.
  * @param questionDescription The description of the question.
  * @param helperValueSuffix The suffix of the question value.
+ * @param generateQuestionsLocally Whether the questions should be generated locally.
  */
 @Keep
 @Serializable
@@ -22,12 +23,13 @@ data class ComparisonQuizCategory(
     override val name: UiText,
     override val image: String,
     override val requireInternetConnection: Boolean = true,
+    val generateQuestionsLocally: Boolean = false,
     val description: String,
     val questionDescription: QuestionDescription,
     val formatType: NumberFormatType,
     val helperValueSuffix: String? = null,
     val dataSourceAttribution: DataSourceAttribution? = null
-) : BaseCategory, java.io.Serializable {
+) : BaseCategory, java.io.Serializable, Comparable<ComparisonQuizCategory> {
     override val gameMode: GameMode = GameMode.COMPARISON_QUIZ
 
     fun getQuestionDescription(
@@ -35,6 +37,19 @@ data class ComparisonQuizCategory(
     ): String = when (comparisonMode) {
         ComparisonMode.GREATER -> questionDescription.greater
         ComparisonMode.LESSER -> questionDescription.less
+    }
+
+    override fun compareTo(other: ComparisonQuizCategory): Int {
+        return id.compareTo(other.id)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        // The categories are equal if they have the same id.
+        return other is ComparisonQuizCategory && id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
     }
 
     @Keep
@@ -59,6 +74,7 @@ data class ComparisonQuizCategory(
         name = name.toString(),
         image = image,
         requireInternetConnection = requireInternetConnection,
+        generateQuestionsLocally = generateQuestionsLocally,
         description = description,
         questionDescription = questionDescription,
         formatType = formatType.name.lowercase(),

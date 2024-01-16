@@ -2,9 +2,11 @@ package com.infinitepower.newquiz.model.multi_choice_quiz
 
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
+import com.infinitepower.newquiz.model.util.serializers.URISerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.net.URI
 import kotlin.random.Random
 
 @Keep
@@ -12,7 +14,8 @@ import kotlin.random.Random
 data class MultiChoiceQuestion(
     val id: Int,
     val description: String,
-    val imageUrl: String? = null,
+    @Serializable(with = URISerializer::class)
+    val image: URI? = null,
     val answers: List<String>,
     val lang: QuestionLanguage,
     val category: MultiChoiceBaseCategory,
@@ -22,7 +25,7 @@ data class MultiChoiceQuestion(
 ) : java.io.Serializable {
     constructor(
         description: String,
-        imageUrl: String? = null,
+        image: URI? = null,
         answers: List<String>,
         lang: QuestionLanguage,
         category: MultiChoiceBaseCategory,
@@ -33,9 +36,9 @@ data class MultiChoiceQuestion(
         // Generate an id based in all the fields of the question.
         // Answers are sorted to avoid different ids for the same question with different order of answers.
         // Correct answer is not included because it depends on the order of the answers.
-        id = (description + imageUrl + answers.sorted() + lang + category + type + difficulty).hashCode(),
+        id = (description + image?.toString() + answers.sorted() + lang + category + type + difficulty).hashCode(),
         description = description,
-        imageUrl = imageUrl,
+        image = image,
         answers = answers,
         lang = lang,
         category = category,
@@ -70,7 +73,7 @@ fun getBasicMultiChoiceQuestion(
     return MultiChoiceQuestion(
         id = id,
         description = "Question description",
-        imageUrl = null,
+        image = null,
         answers = listOf(
             "Answer 1",
             "Answer 2",

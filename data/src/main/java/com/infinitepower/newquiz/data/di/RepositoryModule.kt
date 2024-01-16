@@ -1,6 +1,8 @@
 @file:Suppress("unused")
 package com.infinitepower.newquiz.data.di
 
+import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizApi
+import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizApiImpl
 import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizRepositoryImpl
 import com.infinitepower.newquiz.data.repository.country.CountryRepositoryImpl
 import com.infinitepower.newquiz.data.repository.daily_challenge.DailyChallengeRepositoryImpl
@@ -83,4 +85,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindCountryRepository(impl: CountryRepositoryImpl): CountryRepository
+
+    @Binds
+    abstract fun bindComparisonQuizApi(impl: ComparisonQuizApiImpl): ComparisonQuizApi
 }
