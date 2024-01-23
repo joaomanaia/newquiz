@@ -228,7 +228,8 @@ private fun QuizScreenPreview() {
             uiState = MultiChoiceQuizScreenUiState(
                 questionSteps = questionSteps,
                 selectedAnswer = SelectedAnswer.fromIndex((0..3).random()),
-                currentQuestionIndex = 2
+                currentQuestionIndex = 2,
+                loading = false
             ),
             windowSizeClass = windowSizeClass,
             onBackClick = {},
