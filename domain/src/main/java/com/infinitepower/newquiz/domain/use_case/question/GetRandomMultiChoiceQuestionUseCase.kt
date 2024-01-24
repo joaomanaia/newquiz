@@ -35,27 +35,35 @@ class GetRandomMultiChoiceQuestionUseCase @Inject constructor(
                     category,
                     difficulty
                 )
+
                 is MultiChoiceBaseCategory.Flag -> flagQuizRepository.getRandomQuestions(
                     amount,
                     category,
                     difficulty
                 )
+
                 is MultiChoiceBaseCategory.Logo -> logoQuizRepository.getRandomQuestions(
                     amount,
                     category,
                     difficulty
                 )
+
                 is MultiChoiceBaseCategory.GuessMathSolution -> guessMathSolutionRepository.getRandomQuestions(
                     amount,
                     category,
                     difficulty
                 )
+
                 is MultiChoiceBaseCategory.CountryCapitalFlags -> countryCapitalFlagsQuizRepository.getRandomQuestions(
                     amount,
                     category,
                     difficulty
                 )
-                is MultiChoiceBaseCategory.NumberTrivia -> numberTriviaQuestionRepository.generateMultiChoiceQuestion(size = amount)
+
+                is MultiChoiceBaseCategory.NumberTrivia -> numberTriviaQuestionRepository.generateMultiChoiceQuestion(
+                    size = amount
+                )
+
                 null -> throw IllegalArgumentException("Quiz type is null")
             }
 
