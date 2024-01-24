@@ -1,10 +1,7 @@
 package com.infinitepower.newquiz.model.util.base64
 
-import com.infinitepower.newquiz.model.util.base64.Base64Encoding
-import com.infinitepower.newquiz.model.util.base64.base64UrlDecoded
-import com.infinitepower.newquiz.model.util.base64.base64UrlDecodedBytes
-import com.infinitepower.newquiz.model.util.base64.base64UrlEncoded
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
 
 internal class Base64UrlTest {

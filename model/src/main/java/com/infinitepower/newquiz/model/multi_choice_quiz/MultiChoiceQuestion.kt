@@ -67,19 +67,20 @@ data class MultiChoiceQuestion(
  */
 fun getBasicMultiChoiceQuestion(
     id: Int = Random.nextInt(),
-    correctAns: Int = (0..3).random(),
+    answers: List<String> = listOf(
+        "Answer 1",
+        "Answer 2",
+        "Answer 3",
+        "Answer 4"
+    ),
+    correctAns: Int = (0..answers.lastIndex).random(),
     difficulty: QuestionDifficulty = QuestionDifficulty.random()
 ): MultiChoiceQuestion {
     return MultiChoiceQuestion(
         id = id,
         description = "Question description",
         image = null,
-        answers = listOf(
-            "Answer 1",
-            "Answer 2",
-            "Answer 3",
-            "Answer 4"
-        ),
+        answers = answers,
         lang = QuestionLanguage.EN,
         category = MultiChoiceBaseCategory.Random,
         correctAns = correctAns,

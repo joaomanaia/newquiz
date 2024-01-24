@@ -3,6 +3,11 @@ package com.infinitepower.newquiz.model.number
 import androidx.annotation.Keep
 import kotlinx.serialization.Serializable
 
+/**
+ * Entity for NumberTriviaQuestions
+ *
+ * @property message error message
+ */
 @Keep
 @Serializable
 data class NumberTriviaQuestionsEntity(
@@ -10,7 +15,7 @@ data class NumberTriviaQuestionsEntity(
     val message: String? = null
 ) : java.io.Serializable {
     fun toNumberTriviaQuestions(): List<NumberTriviaQuestion> {
-        if (message != null) throw Exception(message)
+        if (message != null) error(message)
 
         return questions.map { entity ->
             NumberTriviaQuestion(

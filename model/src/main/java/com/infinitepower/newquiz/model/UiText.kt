@@ -12,7 +12,7 @@ sealed interface UiText {
         val value: String,
         override vararg val args: Any
     ) : UiText {
-        override fun toString(): String = value.format(*args)
+        override fun toString(): String = value.format(args.toList().toTypedArray())
     }
 
     class StringResource(

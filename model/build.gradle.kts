@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.newquiz.jvm.library)
     alias(libs.plugins.newquiz.kotlin.serialization)
+    id("newquiz.detekt")
 }
 
 dependencies {

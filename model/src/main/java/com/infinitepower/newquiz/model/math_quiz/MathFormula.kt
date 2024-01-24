@@ -19,7 +19,7 @@ data class MathFormula(
             leftFormula = value.takeWhile { it != '=' },
             solution = value
                 .takeLastWhile { it != '=' }
-                .toIntOrNull() ?: throw IllegalArgumentException()
+                .toIntOrNull() ?: error("Invalid MathFormula: $value")
         )
     }
 }

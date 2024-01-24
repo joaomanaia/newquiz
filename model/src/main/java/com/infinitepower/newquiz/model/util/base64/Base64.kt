@@ -16,13 +16,20 @@ val ByteArray.base64Encoded: String
  * Decode a Base64 standard encoded [String] to [String].
  */
 val String.base64Decoded: String
-    get() = decodeInternal(Base64Encoding.Standard).map { it.toChar() }.joinToString("").dropLast(count { it == '=' })
+    get() = decodeInternal(Base64Encoding.Standard)
+        .map { it.toChar() }
+        .joinToString("")
+        .dropLast(count { it == '=' })
 
 /**
  * Decode a Base64 standard encoded [String] to [ByteArray].
  */
 val String.base64DecodedBytes: ByteArray
-    get() = decodeInternal(Base64Encoding.Standard).map { it.toByte() }.toList().dropLast(count { it == '=' }).toByteArray()
+    get() = decodeInternal(Base64Encoding.Standard)
+        .map { it.toByte() }
+        .toList()
+        .dropLast(count { it == '=' })
+        .toByteArray()
 
 /**
  * Decode a Base64 standard encoded [ByteArray] to [String].

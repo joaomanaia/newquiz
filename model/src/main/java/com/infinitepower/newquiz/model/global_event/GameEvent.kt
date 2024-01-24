@@ -75,7 +75,7 @@ sealed class GameEvent(
             )
 
             val wordleWithType = Wordle.PlayWordWithCategory(
-                wordleCategory = WordleQuizType.values().random(random)
+                wordleCategory = WordleQuizType.entries.random(random)
             )
 
             val comparisonPlayWithCategory = ComparisonQuiz.PlayQuizWithCategory(
@@ -83,11 +83,11 @@ sealed class GameEvent(
             )
 
             val comparisonPlayWithMode = ComparisonQuiz.PlayWithComparisonMode(
-                mode = ComparisonMode.values().random(random)
+                mode = ComparisonMode.entries.random(random)
             )
 
             val comparisonPlayAndGetScore = ComparisonQuiz.PlayAndGetScore(
-                score = random.nextInt(5, 20)
+                score = random.nextInt(from = 5, until = 20)
             )
 
             val allTypes = eventsWithoutArgs() + listOf(

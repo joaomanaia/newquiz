@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.infinitepower.newquiz.model.util.base64
 
 internal sealed interface Base64Encoding {

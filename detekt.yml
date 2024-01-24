@@ -60,3 +60,7 @@ style:
   WildcardImport:
     active: true
     excludeImports: [ ]
+  ReturnCount:
+    active: true
+    max: 3
+    ignoreAnnotated: [ 'Composable' ]

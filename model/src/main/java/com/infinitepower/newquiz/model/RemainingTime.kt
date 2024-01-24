@@ -17,6 +17,8 @@ value class RemainingTime constructor(val value: Duration) {
             }
             return RemainingTime(millis.milliseconds)
         }
+
+        private const val SECONDS_IN_MINUTE = 60
     }
 
     init {
@@ -36,7 +38,7 @@ value class RemainingTime constructor(val value: Duration) {
      */
     fun toMinuteSecondFormatted(): String {
         val minutes = value.inWholeMinutes
-        val seconds = value.inWholeSeconds % 60
+        val seconds = value.inWholeSeconds % SECONDS_IN_MINUTE
         return if (minutes == 0L) seconds.toString() else "$minutes:$seconds"
     }
 
