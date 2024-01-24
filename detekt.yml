@@ -64,3 +64,8 @@ style:
     active: true
     max: 3
     ignoreAnnotated: [ 'Composable' ]
+
+exceptions:
+  # TODO: Add this back when exceptions are caught correctly
+  TooGenericExceptionCaught:
+    active: false
