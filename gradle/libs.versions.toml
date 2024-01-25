@@ -8,10 +8,8 @@ androidxAppCompat = "1.7.0-alpha03"
 androidxCoreKtx = "1.12.0"
 androidxCoreSplashscreen = "1.0.1"
 androidxComposeCompiler = "1.5.8"
-androidxComposeBom = "2023.10.01"
-androidxComposeMaterial3 = "1.2.0-beta01"
-# TODO: Remove when https://issuetracker.google.com/issues/215116019 is fixed
-androidxComposeUi = "1.6.0-rc01"
+androidxComposeBom = "2024.01.00"
+androidxComposeMaterial3 = "1.2.0-rc01"
 androidxDataStore = "1.0.0"
 androidxStartup = "1.1.1"
 androidxLifecycle = "2.7.0"
@@ -43,7 +41,7 @@ lottie = "6.3.0"
 firebaseBom = "32.7.1"
 slf4j = "2.0.11"
 junitJupiter = "5.10.1"
-mockk = "1.13.3"
+mockk = "1.13.9"
 room = "2.6.1"
 javaxInject = "1"
 firebaseUi = "8.0.2"
@@ -67,7 +65,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
-androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxComposeUi" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
