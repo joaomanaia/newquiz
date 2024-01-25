@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlin.random.Random
 
 class FakeComparisonQuizRepositoryImpl(
     private val initialQuestions: List<ComparisonQuizItem> = emptyList(),
@@ -29,17 +31,11 @@ class FakeComparisonQuizRepositoryImpl(
         categories.addAll(initialCategories)
     }
 
-    override fun getQuestions(category: ComparisonQuizCategory): FlowResource<List<ComparisonQuizItem>> {
-        return flow {
-            try {
-                emit(Resource.Loading())
-
-                emit(Resource.Success(initialQuestions))
-            } catch (e: Exception) {
-                emit(Resource.Error(e.localizedMessage ?: "An unexpected error has occurred"))
-            }
-        }
-    }
+    override fun getQuestions(
+        category: ComparisonQuizCategory,
+        size: Int,
+        random: Random
+    ): Flow<List<ComparisonQuizItem>> = flowOf(questions.take(size))
 
     override suspend fun getHighestPosition(categoryId: String): Int {
         return highestPosition.first()
