@@ -1,14 +1,17 @@
 package com.infinitepower.newquiz.core.user_services.ui.profile.components
 
+import android.graphics.RectF
 import android.graphics.Typeface
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.user_services.TimeRange
 import com.infinitepower.newquiz.core.user_services.XpEarnedByDateTime
@@ -20,7 +23,7 @@ import com.patrykandpatryk.vico.compose.chart.Chart
 import com.patrykandpatryk.vico.compose.chart.column.columnChart
 import com.patrykandpatryk.vico.compose.chart.edges.rememberFadingEdges
 import com.patrykandpatryk.vico.compose.component.shapeComponent
-import com.patrykandpatryk.vico.compose.component.textComponent
+import com.patrykandpatryk.vico.compose.component.textComponent as composeTextComponent
 import com.patrykandpatryk.vico.compose.dimensions.dimensionsOf
 import com.patrykandpatryk.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatryk.vico.compose.style.ProvideChartStyle
@@ -28,7 +31,11 @@ import com.patrykandpatryk.vico.core.axis.AxisItemPlacer
 import com.patrykandpatryk.vico.core.axis.AxisPosition
 import com.patrykandpatryk.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatryk.vico.core.axis.vertical.VerticalAxis
+import com.patrykandpatryk.vico.core.chart.decoration.Decoration
+import com.patrykandpatryk.vico.core.chart.draw.ChartDrawContext
 import com.patrykandpatryk.vico.core.component.shape.Shapes
+import com.patrykandpatryk.vico.core.component.text.TextComponent
+import com.patrykandpatryk.vico.core.component.text.textComponent
 import com.patrykandpatryk.vico.core.entry.entryModelOf
 import com.patrykandpatryk.vico.core.entry.entryOf
 import kotlinx.datetime.Clock
@@ -43,12 +50,37 @@ internal fun XpEarnedByDayCard(
     timeRange: TimeRange,
     xpEarnedByDay: XpEarnedByDateTime
 ) {
-    val xValuesToDates = xpEarnedByDay.keys.associateBy { it.toFloat() }
-    val chartEntryModel = entryModelOf(xValuesToDates.keys.zip(xpEarnedByDay.values, ::entryOf))
-    val horizontalAxisValueFormatter = AxisValueFormatter<AxisPosition.Horizontal.Bottom> { value, _ ->
-        val data = xValuesToDates[value] ?: value.toInt()
+    val xValuesToDates = remember(xpEarnedByDay) {
+        xpEarnedByDay.keys.associateBy { it.toFloat() }
+    }
+    val chartEntryModel = remember(xValuesToDates, xpEarnedByDay) {
+        entryModelOf(xValuesToDates.keys.zip(xpEarnedByDay.values, ::entryOf))
+    }
+    val horizontalAxisValueFormatter = remember(timeRange, xValuesToDates) {
+        AxisValueFormatter<AxisPosition.Horizontal.Bottom> { value, _ ->
+            val data = xValuesToDates[value] ?: value.toInt()
 
-        timeRange.formatValueToString(data)
+            timeRange.formatValueToString(data)
+        }
+    }
+
+    val noDataTextComponent = composeTextComponent(
+        color = MaterialTheme.colorScheme.onSurface,
+        textSize = NO_DATA_TEXT_SIZE
+    )
+    val noDataText = stringResource(CoreR.string.no_data)
+
+    val decorations = remember(xValuesToDates) {
+        if (xValuesToDates.isEmpty()) {
+            listOf(
+                NoDataText(
+                    text = noDataText,
+                    textComponent = noDataTextComponent
+                ),
+            )
+        } else {
+            emptyList()
+        }
     }
 
     ProvideChartStyle(
@@ -59,13 +91,13 @@ internal fun XpEarnedByDayCard(
     ) {
         Chart(
             modifier = modifier,
-            chart = columnChart(),
+            chart = columnChart(decorations = decorations),
             model = chartEntryModel,
             startAxis = rememberStartAxis(
                 valueFormatter = { value, _ -> value.toInt().toString() },
                 itemPlacer = startAxisItemPlacer,
                 horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Outside,
-                titleComponent = textComponent(
+                titleComponent = composeTextComponent(
                     color = MaterialTheme.colorScheme.onPrimary,
                     background = shapeComponent(
                         shape = Shapes.pillShape,
@@ -87,6 +119,20 @@ internal fun XpEarnedByDayCard(
     }
 }
 
+private class NoDataText(
+    val text: String,
+    val textComponent: TextComponent = textComponent(),
+) : Decoration {
+    override fun onDrawAboveChart(context: ChartDrawContext, bounds: RectF) {
+        textComponent.drawText(
+            context = context,
+            text = text,
+            textX = bounds.centerX(),
+            textY = bounds.centerY(),
+        )
+    }
+}
+
 private const val MAX_START_AXIS_ITEM_COUNT = 6
 private val startAxisItemPlacer = AxisItemPlacer.Vertical.default(MAX_START_AXIS_ITEM_COUNT)
 
@@ -98,6 +144,8 @@ private val axisTitlePadding = dimensionsOf(
 )
 private val axisTitleMarginValue = 4.dp
 private val startAxisTitleMargins = dimensionsOf(end = axisTitleMarginValue)
+
+private val NO_DATA_TEXT_SIZE = 18.sp
 
 @Composable
 @PreviewLightDark

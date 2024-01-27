@@ -305,4 +305,5 @@
     <string name="distance_unit">Unidade de distância</string>
     <string name="metric">Métrica</string>
     <string name="imperial">Imperiais</string>
+    <string name="no_data">Sem dados</string>
 </resources>
