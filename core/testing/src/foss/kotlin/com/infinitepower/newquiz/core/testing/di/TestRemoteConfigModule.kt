@@ -16,12 +16,10 @@ import javax.inject.Singleton
     components = [SingletonComponent::class],
     replaces = [RemoteConfigInitializer::class]
 )
-object RemoteConfigModule {
+object TestRemoteConfigModule {
     @Provides
     @Singleton
     fun provideRemoteConfig(
         @ApplicationContext context: Context
-    ): RemoteConfig = LocalDefaultsRemoteConfig(context).apply {
-        initialize()
-    }
+    ): RemoteConfig = LocalDefaultsRemoteConfig(context)
 }
