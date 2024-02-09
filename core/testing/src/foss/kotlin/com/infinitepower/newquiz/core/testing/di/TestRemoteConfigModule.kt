@@ -21,5 +21,7 @@ object TestRemoteConfigModule {
     @Singleton
     fun provideRemoteConfig(
         @ApplicationContext context: Context
-    ): RemoteConfig = LocalDefaultsRemoteConfig(context)
+    ): RemoteConfig = LocalDefaultsRemoteConfig(context).also {
+        it.initialize()
+    }
 }
