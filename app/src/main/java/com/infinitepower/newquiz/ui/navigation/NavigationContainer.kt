@@ -2,11 +2,11 @@ package com.infinitepower.newquiz.ui.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.List
+import androidx.compose.material.icons.automirrored.rounded.ListAlt
 import androidx.compose.material.icons.outlined.Compare
 import androidx.compose.material.icons.outlined.ViewModule
 import androidx.compose.material.icons.rounded.Image
-import androidx.compose.material.icons.rounded.List
-import androidx.compose.material.icons.rounded.ListAlt
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Route
 import androidx.compose.material.icons.rounded.Settings
@@ -38,8 +38,8 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun getPrimaryItems(): ImmutableList<NavigationItem.Item> = persistentListOf(
     NavigationItem.Item(
         text = R.string.multi_choice_quiz,
-        selectedIcon = Icons.Rounded.ListAlt,
-        unselectedIcon = Icons.Rounded.List,
+        selectedIcon = Icons.AutoMirrored.Rounded.ListAlt,
+        unselectedIcon = Icons.AutoMirrored.Rounded.List,
         direction = MultiChoiceQuizListScreenDestination,
         primary = true
     ),

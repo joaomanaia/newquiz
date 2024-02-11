@@ -89,10 +89,10 @@ fun RemainingTimeComponent(
                 modifier = Modifier
                     .size(75.dp)
                     .testTag(RemainingTimeComponentTestTags.PROGRESS_INDICATOR),
-                progress = animatedProgressValue,
-                strokeCap = StrokeCap.Round,
+                progress = { animatedProgressValue },
                 color = progressColor,
                 trackColor = trackProgressColor,
+                strokeCap = StrokeCap.Round,
             )
         }
 
