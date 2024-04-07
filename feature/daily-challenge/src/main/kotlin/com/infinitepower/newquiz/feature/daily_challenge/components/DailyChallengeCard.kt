@@ -177,7 +177,7 @@ private fun DailyChallengeCardPreview() {
                 modifier = Modifier.padding(16.dp),
                 now = now,
                 title = "Daily Challenge",
-                currentValue = 10u,
+                currentValue = 8u,
                 maxValue = 10u,
                 dateRange = now.minus(1.minutes)..now.plus(1.minutes),
                 isCompleted = true,
