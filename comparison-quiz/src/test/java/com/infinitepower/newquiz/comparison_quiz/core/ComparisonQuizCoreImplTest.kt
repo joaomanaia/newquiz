@@ -33,12 +33,8 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -50,7 +46,6 @@ import java.net.URI
 /**
  * Unit tests for [ComparisonQuizCoreImpl].
  */
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class ComparisonQuizCoreImplTest {
     private lateinit var comparisonQuizCoreImpl: ComparisonQuizCoreImpl
 
@@ -62,16 +57,12 @@ internal class ComparisonQuizCoreImplTest {
     @TempDir
     lateinit var tmpDir: File
 
-    private val testDispatcher = UnconfinedTestDispatcher()
-    private val testScope = TestScope(testDispatcher + Job())
-
     private lateinit var dataStoreManager: DataStoreManager
     private lateinit var gameResultDao: GameResultDao
 
     @BeforeEach
     fun setup() {
         val testDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.create(
-            scope = testScope,
             produceFile = { File(tmpDir, "user.preferences_pb") }
         )
 
@@ -101,7 +92,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `initializeGame should emit correct data`() = testScope.runTest {
+    fun `initializeGame should emit correct data`() = runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
 
@@ -149,7 +140,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `initializeGame should end game when error in data request`() = testScope.runTest {
+    fun `initializeGame should end game when error in data request`() = runTest {
         val initialData = getInitializationData()
 
         every {
@@ -164,7 +155,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `onAnswerClicked should check the correct answer and move to the next question`() = testScope.runTest {
+    fun `onAnswerClicked should check the correct answer and move to the next question`() = runTest {
         val initialData = getInitializationData(
             comparisonMode = ComparisonMode.LESSER
         )
@@ -240,7 +231,7 @@ internal class ComparisonQuizCoreImplTest {
 
     // Test when the user gets the answer wrong
     @Test
-    fun `onAnswerClicked should check the wrong answer and move to the next question`() = testScope.runTest {
+    fun `onAnswerClicked should check the wrong answer and move to the next question`() = runTest {
         val initialData = getInitializationData(
             comparisonMode = ComparisonMode.LESSER
         )
@@ -309,7 +300,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `onAnswerClicked should end the game when no more questions is remaining`() = testScope.runTest {
+    fun `onAnswerClicked should end the game when no more questions is remaining`() = runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
 
@@ -361,7 +352,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `endGame() should end the game`() = testScope.runTest {
+    fun `endGame() should end the game`() = runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
 
@@ -413,7 +404,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `canSkip should return true when user has enough diamonds`() = testScope.runTest {
+    fun `canSkip should return true when user has enough diamonds`() = runTest {
         val skipCost = 10
         val userDiamonds = 15
 
@@ -433,7 +424,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `canSkip should return false when user doesn't have enough diamonds`() = testScope.runTest {
+    fun `canSkip should return false when user doesn't have enough diamonds`() = runTest {
         val skipCost = 10
         val userDiamonds = 5
 
@@ -454,7 +445,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `skip() should deduct diamonds and update quiz data`() = testScope.runTest {
+    fun `skip() should deduct diamonds and update quiz data`() = runTest {
         val skipCost = 1
         val userDiamonds = 10
 
@@ -538,7 +529,7 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `skip should throw exception when user doesn't have enough diamonds`() = testScope.runTest {
+    fun `skip should throw exception when user doesn't have enough diamonds`() = runTest {
         val skipCost = 10
         val userDiamonds = 5
 

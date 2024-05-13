@@ -29,10 +29,6 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQues
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -50,13 +46,9 @@ import kotlin.time.measureTimedValue
 /**
  * Tests for [LocalUserServiceImpl]
  */
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class LocalUserServiceImplUnitTest {
     @TempDir
     lateinit var tmpDir: File
-
-    private val testDispatcher = UnconfinedTestDispatcher()
-    private val testScope = TestScope(testDispatcher + Job())
 
     private lateinit var dataStoreManager: DataStoreManager
 
@@ -79,7 +71,6 @@ internal class LocalUserServiceImplUnitTest {
     @BeforeTest
     fun setUp() {
         val testDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.create(
-            scope = testScope,
             produceFile = { File(tmpDir, "user.preferences_pb") }
         )
 
@@ -108,7 +99,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `userAvailable() should return true when uid is not blank`() = testScope.runTest {
+    fun `userAvailable() should return true when uid is not blank`() = runTest {
         dataStoreManager.editPreference(LocalUserCommon.UserUid.key, "uid")
 
         val result = localUserServiceImpl.userAvailable()
@@ -116,7 +107,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `getUserDiamonds() should return the user diamonds`() = testScope.runTest {
+    fun `getUserDiamonds() should return the user diamonds`() = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         dataStoreManager.editPreference(
             LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key,
@@ -129,7 +120,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `getUserDiamonds() should return the initial diamonds when the user diamonds are not set`() = testScope.runTest {
+    fun `getUserDiamonds() should return the initial diamonds when the user diamonds are not set`() = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
 
         val result = localUserServiceImpl.getUserDiamonds()
@@ -138,7 +129,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `getUserDiamondsFlow() should return the user diamonds`() = testScope.runTest {
+    fun `getUserDiamondsFlow() should return the user diamonds`() = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         dataStoreManager.editPreference(
             LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key,
@@ -151,7 +142,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `addRemoveDiamonds() should add diamonds to the user`() = testScope.runTest {
+    fun `addRemoveDiamonds() should add diamonds to the user`() = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         dataStoreManager.editPreference(
             LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key,
@@ -169,7 +160,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `updateNewLevelDiamonds() should update the user diamonds`() = testScope.runTest {
+    fun `updateNewLevelDiamonds() should update the user diamonds`() = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         dataStoreManager.editPreference(
             LocalUserCommon.UserDiamonds(INITIAL_DIAMONDS).key,
@@ -187,7 +178,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `getUser() should return null when uid is blank`() = testScope.runTest {
+    fun `getUser() should return null when uid is blank`() = runTest {
         dataStoreManager.editPreference(LocalUserCommon.UserUid.key, "")
 
         val result = localUserServiceImpl.getUser()
@@ -195,7 +186,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `getUser() should return User when uid is not blank`() = testScope.runTest {
+    fun `getUser() should return User when uid is not blank`() = runTest {
         dataStoreManager.editPreference(LocalUserCommon.UserUid.key, "uid")
         dataStoreManager.editPreference(LocalUserCommon.UserTotalXp.key, 0)
 
@@ -226,7 +217,7 @@ internal class LocalUserServiceImplUnitTest {
     @ParameterizedTest(name = "test getNextLevelXp() when totalXp is {0}")
     fun `test saveMultiChoiceGame when generate xp is enabled`(
         initialXp: Long
-    ) = testScope.runTest {
+    ) = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
 
@@ -293,7 +284,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `test saveMultiChoiceGame when generate xp is disabled`() = testScope.runTest {
+    fun `test saveMultiChoiceGame when generate xp is disabled`() = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
 
@@ -346,7 +337,7 @@ internal class LocalUserServiceImplUnitTest {
     @ParameterizedTest(name = "test saveWordleGame when generate xp is enabled and totalXp is {0}")
     fun `test saveWordleGame when generate xp is enabled`(
         initialXp: Long
-    ) = testScope.runTest {
+    ) = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
 
@@ -394,7 +385,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `test saveWordleGame when generate xp is disabled`() = testScope.runTest {
+    fun `test saveWordleGame when generate xp is disabled`() = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
 
@@ -431,7 +422,7 @@ internal class LocalUserServiceImplUnitTest {
     @ParameterizedTest(name = "test saveComparisonQuizGame when generate xp is enabled and totalXp is {0}")
     fun `test saveComparisonQuizGame when generate xp is enabled`(
         initialXp: Long
-    ) = testScope.runTest {
+    ) = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
 
@@ -483,7 +474,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `test saveComparisonQuizGame when generate xp is disabled`() = testScope.runTest {
+    fun `test saveComparisonQuizGame when generate xp is disabled`() = runTest {
         coEvery { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns INITIAL_DIAMONDS
         coEvery { remoteConfig.get(RemoteConfigValue.NEW_LEVEL_DIAMONDS) } returns NEW_LEVEL_DIAMONDS
 
@@ -514,7 +505,7 @@ internal class LocalUserServiceImplUnitTest {
     }
 
     @Test
-    fun `test getXpEarnedByRange() and getXpEarnedInLastDays()`() = testScope.runTest {
+    fun `test getXpEarnedByRange() and getXpEarnedInLastDays()`() = runTest {
         val now = Clock.System.now()
         val tz = TimeZone.currentSystemDefault()
 
