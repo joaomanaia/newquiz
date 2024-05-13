@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.core.user_services.ui.profile
+package com.infinitepower.newquiz.feature.profile
 
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.core.user_services.TimeRange

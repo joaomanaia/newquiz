@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.user_services.TimeRange
 import com.infinitepower.newquiz.core.user_services.XpEarnedByDateTime
-import com.infinitepower.newquiz.core.user_services.ui.profile.components.chart.rememberMarker
+import com.infinitepower.newquiz.feature.profile.components.chart.rememberMarker
 import com.infinitepower.newquiz.core.R as CoreR
 import com.patrykandpatryk.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatryk.vico.compose.axis.vertical.rememberStartAxis

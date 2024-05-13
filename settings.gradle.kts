@@ -34,11 +34,11 @@ include(":core:remote-config")
 include(":core:testing")
 include(":core:translation")
 include(":core:user-services")
-include(":core:user-services:ui")
 
 include(":feature:daily-challenge")
 include(":feature:maze")
 include(":feature:settings")
+include(":feature:profile")
 
 include(":model")
 include(":domain")
