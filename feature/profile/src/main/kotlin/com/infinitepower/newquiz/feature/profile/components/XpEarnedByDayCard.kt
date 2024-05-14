@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.core.user_services.ui.profile.components
+package com.infinitepower.newquiz.feature.profile.components
 
 import android.graphics.RectF
 import android.graphics.Typeface

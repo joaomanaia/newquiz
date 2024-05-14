@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.core.user_services.ui.profile.components
+package com.infinitepower.newquiz.feature.profile.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding

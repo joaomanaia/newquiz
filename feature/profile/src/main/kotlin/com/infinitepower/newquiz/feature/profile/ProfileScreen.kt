@@ -25,9 +25,9 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.core.user_services.model.User
-import com.infinitepower.newquiz.core.user_services.ui.profile.components.MainUserCard
-import com.infinitepower.newquiz.core.user_services.ui.profile.components.UserXpAndLevelCard
-import com.infinitepower.newquiz.core.user_services.ui.profile.components.XpEarnedByDayCard
+import com.infinitepower.newquiz.feature.profile.components.MainUserCard
+import com.infinitepower.newquiz.feature.profile.components.UserXpAndLevelCard
+import com.infinitepower.newquiz.feature.profile.components.XpEarnedByDayCard
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
