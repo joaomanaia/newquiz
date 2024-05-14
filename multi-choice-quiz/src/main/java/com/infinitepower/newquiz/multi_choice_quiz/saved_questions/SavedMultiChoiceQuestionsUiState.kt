@@ -6,7 +6,8 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 @Keep
 data class SavedMultiChoiceQuestionsUiState(
     val questions: List<MultiChoiceQuestion> = emptyList(),
-    val selectedQuestions: List<MultiChoiceQuestion> = emptyList()
+    val selectedQuestions: List<MultiChoiceQuestion> = emptyList(),
+    val loading: Boolean = true,
 ) {
     fun randomQuestions(limit: Int = 5): List<MultiChoiceQuestion> {
         return questions.shuffled().take(limit)

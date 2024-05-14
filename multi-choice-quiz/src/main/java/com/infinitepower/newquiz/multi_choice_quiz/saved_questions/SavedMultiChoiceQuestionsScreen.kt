@@ -1,8 +1,12 @@
 package com.infinitepower.newquiz.multi_choice_quiz.saved_questions
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -14,10 +18,12 @@ import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Reorder
+import androidx.compose.material.icons.rounded.SaveAlt
 import androidx.compose.material.icons.rounded.SelectAll
 import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,7 +31,10 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -33,16 +42,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.ui.components.RoundedPolygonShape
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.getBasicMultiChoiceQuestion
@@ -106,32 +120,32 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
             )
         },
         bottomBar = {
-            BottomAppBar(
-                actions = {
-                    TopBarActionButton(
-                        imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = stringResource(id = CoreR.string.more_options),
-                        onClick = { setMoreVertPopupExpanded(true) }
-                    )
-                    MoreVertPopup(
-                        expanded = moreVertPopupExpanded,
-                        isQuestionsNotEmpty = uiState.questions.isNotEmpty(),
-                        questionsSelected = uiState.selectedQuestions.isNotEmpty(),
-                        onDismiss = { setMoreVertPopupExpanded(false) },
-                        onSelectAllClick = {
-                            onEvent(SavedMultiChoiceQuestionsUiEvent.SelectAll)
-                            setMoreVertPopupExpanded(false)
-                        },
-                        onDeleteAllSelectedClick = {
-                            onEvent(SavedMultiChoiceQuestionsUiEvent.DeleteAllSelected)
-                            setMoreVertPopupExpanded(false)
-                        },
-                        onDownloadQuestionsClick = {
-                            onEvent(SavedMultiChoiceQuestionsUiEvent.DownloadQuestions)
-                            setMoreVertPopupExpanded(false)
-                        }
-                    )
-                    if (uiState.questions.isNotEmpty()) {
+            if (uiState.questions.isNotEmpty()) {
+                BottomAppBar(
+                    actions = {
+                        TopBarActionButton(
+                            imageVector = Icons.Rounded.MoreVert,
+                            contentDescription = stringResource(id = CoreR.string.more_options),
+                            onClick = { setMoreVertPopupExpanded(true) }
+                        )
+                        MoreVertPopup(
+                            expanded = moreVertPopupExpanded,
+                            isQuestionsNotEmpty = uiState.questions.isNotEmpty(),
+                            questionsSelected = uiState.selectedQuestions.isNotEmpty(),
+                            onDismiss = { setMoreVertPopupExpanded(false) },
+                            onSelectAllClick = {
+                                onEvent(SavedMultiChoiceQuestionsUiEvent.SelectAll)
+                                setMoreVertPopupExpanded(false)
+                            },
+                            onDeleteAllSelectedClick = {
+                                onEvent(SavedMultiChoiceQuestionsUiEvent.DeleteAllSelected)
+                                setMoreVertPopupExpanded(false)
+                            },
+                            onDownloadQuestionsClick = {
+                                onEvent(SavedMultiChoiceQuestionsUiEvent.DownloadQuestions)
+                                setMoreVertPopupExpanded(false)
+                            }
+                        )
                         TopBarActionButton(
                             imageVector = Icons.AutoMirrored.Rounded.Sort,
                             contentDescription = stringResource(id = CoreR.string.sort_questions),
@@ -150,56 +164,120 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
                             contentDescription = stringResource(id = CoreR.string.play_with_random_saved_questions),
                             onClick = { playWithQuestions(uiState.randomQuestions()) }
                         )
-                    }
-                },
-                floatingActionButton = {
-                    if (uiState.selectedQuestions.isNotEmpty()) {
-                        ExtendedFloatingActionButton(
-                            text = { Text(text = stringResource(id = CoreR.string.play)) },
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.PlayArrow,
-                                    contentDescription = stringResource(id = CoreR.string.play_with_selected_questions)
-                                )
-                            },
-                            onClick = {
-                                // Ensure question size is below 50
-                                val playQuestions = uiState.selectedQuestions.take(50)
-                                playWithQuestions(playQuestions)
-                            },
-                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                        )
-                    }
-                }
-            )
-        }
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(innerPadding),
-        ) {
-            items(
-                items = uiState.questions,
-                key = { it.id }
-            ) { question ->
-                val selected = question in uiState.selectedQuestions
-
-                SavedQuestionItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .animateItemPlacement(),
-                    question = question,
-                    selected = selected,
-                    onClick = {
-                        onEvent(SavedMultiChoiceQuestionsUiEvent.SelectQuestion(question))
+                    },
+                    floatingActionButton = {
+                        if (uiState.selectedQuestions.isNotEmpty()) {
+                            ExtendedFloatingActionButton(
+                                text = { Text(text = stringResource(id = CoreR.string.play)) },
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.PlayArrow,
+                                        contentDescription = stringResource(id = CoreR.string.play_with_selected_questions)
+                                    )
+                                },
+                                onClick = {
+                                    // Ensure question size is below 50
+                                    val playQuestions = uiState.selectedQuestions.take(50)
+                                    playWithQuestions(playQuestions)
+                                },
+                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                            )
+                        }
                     }
                 )
             }
         }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (uiState.loading) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            }
+            if (uiState.questions.isEmpty()) {
+                EmptyQuestions(
+                    modifier = Modifier.padding(innerPadding),
+                    onDownloadQuestionsClick = {
+                        onEvent(SavedMultiChoiceQuestionsUiEvent.DownloadQuestions)
+                    },
+                    downloadButtonEnabled = !uiState.loading
+                )
+            } else {
+                LazyColumn {
+                    items(
+                        items = uiState.questions,
+                        key = { it.id }
+                    ) { question ->
+                        val selected = question in uiState.selectedQuestions
+
+                        SavedQuestionItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItemPlacement(),
+                            question = question,
+                            selected = selected,
+                            onClick = {
+                                onEvent(SavedMultiChoiceQuestionsUiEvent.SelectQuestion(question))
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
     }
 }
 
-
+@Composable
+private fun EmptyQuestions(
+    modifier: Modifier = Modifier,
+    onDownloadQuestionsClick: () -> Unit,
+    downloadButtonEnabled: Boolean = true
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(MaterialTheme.spacing.large),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(
+            space = MaterialTheme.spacing.medium,
+            alignment = Alignment.CenterVertically
+        )
+    ) {
+        Surface(
+            tonalElevation = 4.dp,
+            shape = RoundedPolygonShape(sides = 8)
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(170.dp)
+                    .padding(48.dp),
+                imageVector = Icons.Rounded.SaveAlt,
+                contentDescription = null,
+            )
+        }
+        Text(
+            text = stringResource(id = CoreR.string.no_questions_saved_yet),
+            style = MaterialTheme.typography.titleLarge
+        )
+        Text(
+            text = stringResource(id = CoreR.string.no_questions_saved_description),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+            textAlign = TextAlign.Center
+        )
+        Button(
+            onClick = onDownloadQuestionsClick,
+            enabled = downloadButtonEnabled
+        ) {
+            Text(text = stringResource(id = CoreR.string.download_questions))
+        }
+    }
+}
 
 @Composable
 private fun TopBarActionButton(

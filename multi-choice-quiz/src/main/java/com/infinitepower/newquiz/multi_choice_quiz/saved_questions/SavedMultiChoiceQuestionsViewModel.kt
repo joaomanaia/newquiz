@@ -43,7 +43,10 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
                 savedQuestionsRepository.getFlowQuestions(sortBy)
             }.onEach { questions ->
                 _uiState.update { currentState ->
-                    currentState.copy(questions = questions)
+                    currentState.copy(
+                        questions = questions,
+                        loading = false
+                    )
                 }
             }.launchIn(viewModelScope)
     }
@@ -85,6 +88,10 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
     }
 
     private fun downloadQuestions() {
+        _uiState.update {
+            it.copy(loading = true)
+        }
+
         analyticsHelper.logEvent(AnalyticsEvent.MultiChoiceDownloadQuestions)
 
         val downloadQuestionsRequest = OneTimeWorkRequestBuilder<DownloadMultiChoiceQuestionsWorker>()
