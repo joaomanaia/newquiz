@@ -8,6 +8,7 @@ data class SavedMultiChoiceQuestionsUiState(
     val questions: List<MultiChoiceQuestion> = emptyList(),
     val selectedQuestions: List<MultiChoiceQuestion> = emptyList(),
     val loading: Boolean = true,
+    val downloadingQuestions: Boolean = false
 ) {
     fun randomQuestions(limit: Int = 5): List<MultiChoiceQuestion> {
         return questions.shuffled().take(limit)

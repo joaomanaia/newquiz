@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.rounded.Category
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Description
 import androidx.compose.material.icons.rounded.Download
@@ -38,6 +39,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +50,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -111,12 +113,13 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(id = CoreR.string.saved_questions))
-                },
+            SavedQuestionsTopAppBar(
                 scrollBehavior = scrollBehavior,
-                navigationIcon = { BackIconButton(onClick = onBackClick) }
+                selectedQuestionsSize = uiState.selectedQuestions.size,
+                onBackClick = onBackClick,
+                onCleanSelectedClick = {
+                    onEvent(SavedMultiChoiceQuestionsUiEvent.SelectNone)
+                }
             )
         },
         bottomBar = {
@@ -195,41 +198,88 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (uiState.loading) {
+            if (uiState.loading || uiState.downloadingQuestions) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
-            if (uiState.questions.isEmpty()) {
-                EmptyQuestions(
-                    modifier = Modifier.padding(innerPadding),
-                    onDownloadQuestionsClick = {
-                        onEvent(SavedMultiChoiceQuestionsUiEvent.DownloadQuestions)
-                    },
-                    downloadButtonEnabled = !uiState.loading
-                )
-            } else {
-                LazyColumn {
-                    items(
-                        items = uiState.questions,
-                        key = { it.id }
-                    ) { question ->
-                        val selected = question in uiState.selectedQuestions
 
-                        SavedQuestionItem(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .animateItemPlacement(),
-                            question = question,
-                            selected = selected,
-                            onClick = {
-                                onEvent(SavedMultiChoiceQuestionsUiEvent.SelectQuestion(question))
-                            }
-                        )
+            if (!uiState.loading) {
+                if (uiState.questions.isEmpty()) {
+                    EmptyQuestions(
+                        modifier = Modifier.padding(innerPadding),
+                        onDownloadQuestionsClick = {
+                            onEvent(SavedMultiChoiceQuestionsUiEvent.DownloadQuestions)
+                        },
+                        downloadButtonEnabled = !uiState.downloadingQuestions
+                    )
+                } else {
+                    LazyColumn {
+                        items(
+                            items = uiState.questions,
+                            key = { it.id }
+                        ) { question ->
+                            val selected = question in uiState.selectedQuestions
+
+                            SavedQuestionItem(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .animateItemPlacement(),
+                                question = question,
+                                selected = selected,
+                                onClick = {
+                                    onEvent(SavedMultiChoiceQuestionsUiEvent.SelectQuestion(question))
+                                }
+                            )
+                        }
                     }
                 }
             }
         }
-
     }
+}
+
+@Composable
+@ExperimentalMaterial3Api
+private fun SavedQuestionsTopAppBar(
+    modifier: Modifier = Modifier,
+    scrollBehavior: TopAppBarScrollBehavior,
+    selectedQuestionsSize: Int,
+    onBackClick: () -> Unit,
+    onCleanSelectedClick: () -> Unit
+) {
+    val title = if (selectedQuestionsSize == 0) {
+        stringResource(id = CoreR.string.saved_questions)
+    } else {
+        selectedQuestionsSize.toString()
+    }
+
+    val barColors = if (selectedQuestionsSize == 0) {
+        TopAppBarDefaults.topAppBarColors()
+    } else {
+        TopAppBarDefaults.topAppBarColors(
+//            containerColor = MaterialTheme.colorScheme.primary,
+//            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+//            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    }
+
+    TopAppBar(
+        modifier = modifier,
+        title = { Text(text = title) },
+        scrollBehavior = scrollBehavior,
+        navigationIcon = {
+            if (selectedQuestionsSize == 0) {
+                BackIconButton(onClick = onBackClick)
+            } else {
+                IconButton(onClick = onCleanSelectedClick) {
+                    Icon(
+                        imageVector = Icons.Rounded.Close,
+                        contentDescription = null
+                    )
+                }
+            }
+        },
+        colors = barColors
+    )
 }
 
 @Composable
@@ -401,7 +451,7 @@ private fun SortPopup(
 }
 
 @Composable
-@PreviewScreenSizes
+@PreviewLightDark
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 private fun SavedMultiChoiceQuestionsScreenPreview() {
     val questions = List(10) {
@@ -412,7 +462,8 @@ private fun SavedMultiChoiceQuestionsScreenPreview() {
         SavedMultiChoiceQuestionsScreenImpl(
             uiState = SavedMultiChoiceQuestionsUiState(
                 questions = questions,
-                selectedQuestions = questions.take(3)
+                selectedQuestions = questions.take(3),
+                loading = false
             ),
             onBackClick = {},
             onEvent = {},

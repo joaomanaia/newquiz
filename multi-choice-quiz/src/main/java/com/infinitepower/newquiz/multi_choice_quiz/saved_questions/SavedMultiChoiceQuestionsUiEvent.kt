@@ -4,17 +4,19 @@ import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.saved.SortSavedQuestionsBy
 
-sealed class SavedMultiChoiceQuestionsUiEvent {
-    data class SelectQuestion(val question: MultiChoiceQuestion) : SavedMultiChoiceQuestionsUiEvent()
+sealed interface SavedMultiChoiceQuestionsUiEvent {
+    data class SelectQuestion(val question: MultiChoiceQuestion) : SavedMultiChoiceQuestionsUiEvent
 
-    object SelectAll : SavedMultiChoiceQuestionsUiEvent()
+    data object SelectAll : SavedMultiChoiceQuestionsUiEvent
 
-    object DeleteAllSelected : SavedMultiChoiceQuestionsUiEvent()
+    data object SelectNone : SavedMultiChoiceQuestionsUiEvent
 
-    object DownloadQuestions : SavedMultiChoiceQuestionsUiEvent()
+    data object DeleteAllSelected : SavedMultiChoiceQuestionsUiEvent
+
+    data object DownloadQuestions : SavedMultiChoiceQuestionsUiEvent
 
     @Keep
     data class SortQuestions(
         val sortBy: SortSavedQuestionsBy
-    ) : SavedMultiChoiceQuestionsUiEvent()
+    ) : SavedMultiChoiceQuestionsUiEvent
 }

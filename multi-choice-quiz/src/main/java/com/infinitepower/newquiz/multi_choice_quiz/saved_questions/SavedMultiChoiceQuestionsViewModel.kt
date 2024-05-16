@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
@@ -55,6 +56,10 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
         when (event) {
             is SavedMultiChoiceQuestionsUiEvent.SelectQuestion -> selectQuestion(event.question)
             is SavedMultiChoiceQuestionsUiEvent.SelectAll -> selectAllQuestions()
+            is SavedMultiChoiceQuestionsUiEvent.SelectNone -> _uiState.update {
+                it.copy(selectedQuestions = emptyList())
+            }
+
             is SavedMultiChoiceQuestionsUiEvent.DeleteAllSelected -> deleteAllSelected()
             is SavedMultiChoiceQuestionsUiEvent.DownloadQuestions -> downloadQuestions()
             is SavedMultiChoiceQuestionsUiEvent.SortQuestions -> {
@@ -88,24 +93,36 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
     }
 
     private fun downloadQuestions() {
-        _uiState.update {
-            it.copy(loading = true)
-        }
-
         analyticsHelper.logEvent(AnalyticsEvent.MultiChoiceDownloadQuestions)
 
-        val downloadQuestionsRequest = OneTimeWorkRequestBuilder<DownloadMultiChoiceQuestionsWorker>()
-            .setConstraints(
-                Constraints(
-                    requiredNetworkType = NetworkType.CONNECTED
-                )
-            ).build()
+        val downloadQuestionsRequest =
+            OneTimeWorkRequestBuilder<DownloadMultiChoiceQuestionsWorker>()
+                .setConstraints(
+                    Constraints(
+                        requiredNetworkType = NetworkType.CONNECTED
+                    )
+                ).build()
 
         workManager.enqueue(downloadQuestionsRequest)
+
+        workManager
+            .getWorkInfoByIdFlow(downloadQuestionsRequest.id)
+            .onEach { info ->
+                _uiState.update {
+                    it.copy(
+                        downloadingQuestions = info.state == WorkInfo.State.RUNNING
+                                || info.state == WorkInfo.State.ENQUEUED
+                    )
+                }
+            }.launchIn(viewModelScope)
     }
 
     private fun deleteAllSelected() = viewModelScope.launch(Dispatchers.IO) {
         val allSelectedQuestions = uiState.first().selectedQuestions
         savedQuestionsRepository.deleteAllSelected(allSelectedQuestions)
+        // Clear the selected questions after deleting them
+        _uiState.update {
+            it.copy(selectedQuestions = emptyList())
+        }
     }
 }
