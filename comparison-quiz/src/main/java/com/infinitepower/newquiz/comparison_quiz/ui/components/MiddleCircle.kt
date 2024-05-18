@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -49,18 +50,32 @@ internal fun MiddleCircle(
         label = "Middle Circle"
     )
 
-    val greenColor = MaterialTheme.extendedColors.getColorAccentByKey(
+    val correctQuestionContainerColor = MaterialTheme.extendedColors.getColorAccentByKey(
+        key = CustomColor.Keys.Green
+    )
+    val correctQuestionContentColor = MaterialTheme.extendedColors.getColorOnAccentByKey(
         key = CustomColor.Keys.Green
     )
 
-    val color by animationTransition.animateColor(
+    val containerColor by animationTransition.animateColor(
         transitionSpec = { tween(durationMillis = ANIMATION_DURATION_MILLIS) },
-        label = "Color"
+        label = "Container Color"
     ) { state ->
         when (state) {
             AnimationState.StartGame -> MaterialTheme.colorScheme.surface
             AnimationState.Normal -> MaterialTheme.colorScheme.tertiary
-            AnimationState.NextQuestion -> greenColor
+            AnimationState.NextQuestion -> correctQuestionContainerColor
+        }
+    }
+
+    val contentColor by animationTransition.animateColor(
+        transitionSpec = { tween(durationMillis = ANIMATION_DURATION_MILLIS) },
+        label = "Content Color"
+    ) { state ->
+        when (state) {
+            AnimationState.StartGame -> MaterialTheme.colorScheme.onSurface
+            AnimationState.Normal -> MaterialTheme.colorScheme.onTertiary
+            AnimationState.NextQuestion -> correctQuestionContentColor
         }
     }
 
@@ -77,7 +92,8 @@ internal fun MiddleCircle(
     MiddleCircle(
         modifier = modifier,
         animationTransition = animationTransition,
-        color = color,
+        containerColor = containerColor,
+        contentColor = contentColor,
         tonalElevation = tonalElevation
     )
 }
@@ -89,13 +105,15 @@ private val DEFAULT_TONAL_ELEVATION = 2.dp
 private fun MiddleCircle(
     modifier: Modifier = Modifier,
     animationTransition: Transition<AnimationState>,
-    color: Color = MaterialTheme.colorScheme.tertiary,
+    containerColor: Color = MaterialTheme.colorScheme.tertiary,
+    contentColor: Color = contentColorFor(containerColor),
     tonalElevation: Dp = DEFAULT_TONAL_ELEVATION
 ) {
     Surface(
         shape = CircleShape,
         modifier = modifier.size(48.dp),
-        color = color,
+        color = containerColor,
+        contentColor = contentColor,
         tonalElevation = tonalElevation
     ) {
         Box(

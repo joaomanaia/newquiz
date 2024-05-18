@@ -134,8 +134,10 @@ internal fun ComparisonQuizScreenImpl(
     onPlayAgainClick: () -> Unit = {},
     onEvent: (event: ComparisonQuizUiEvent) -> Unit = {}
 ) {
-    val verticalContent = windowSizeClass.heightSizeClass > WindowHeightSizeClass.Compact
-            && windowSizeClass.widthSizeClass < WindowWidthSizeClass.Expanded
+    val verticalContent = remember(windowSizeClass) {
+        windowSizeClass.heightSizeClass > WindowHeightSizeClass.Compact
+                && windowSizeClass.widthSizeClass < WindowWidthSizeClass.Expanded
+    }
 
     when {
         uiState.currentQuestion != null && uiState.gameDescription != null && uiState.gameCategory != null -> {
@@ -280,7 +282,7 @@ private fun ComparisonQuizContainer(
             modifier = modifier
                 .padding(spaceMedium)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -289,7 +291,11 @@ private fun ComparisonQuizContainer(
                 Spacer(modifier = Modifier.width(spaceMedium))
                 descriptionContent()
                 if (skipButtonContent != null) {
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(
+                        modifier = Modifier
+                            .padding(spaceMedium)
+                            .weight(1f)
+                    )
                     skipButtonContent()
                 }
             }
