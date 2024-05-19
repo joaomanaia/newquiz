@@ -129,7 +129,6 @@ private fun WordleRowContainer(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 internal fun WordleComponent(
     modifier: Modifier = Modifier,
     item: WordleItem,
@@ -173,7 +172,6 @@ internal fun WordleComponent(
 }
 
 @Composable
-@ExperimentalMaterial3Api
 fun WordleComponentImpl(
     modifier: Modifier = Modifier,
     item: WordleItem,
