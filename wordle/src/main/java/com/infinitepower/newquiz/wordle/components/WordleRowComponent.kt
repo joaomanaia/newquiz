@@ -236,16 +236,16 @@ internal fun getItemRowBackgroundColor(
     item: WordleItem,
     isColorBlindEnabled: Boolean
 ): Color {
-    val backgroundCorrectColor = MaterialTheme.extendedColors.getColorAccentByKey(
+    val backgroundCorrectColor = MaterialTheme.extendedColors.getColorByKey(
         key = if (isColorBlindEnabled) {
-            CustomColor.Keys.Blue
-        } else CustomColor.Keys.Green
+            CustomColor.Key.Blue
+        } else CustomColor.Key.Green
     )
 
-    val backgroundPresentColor = MaterialTheme.extendedColors.getColorAccentByKey(
+    val backgroundPresentColor = MaterialTheme.extendedColors.getColorByKey(
         key = if (isColorBlindEnabled) {
-            CustomColor.Keys.Red
-        } else CustomColor.Keys.Yellow
+            CustomColor.Key.Red
+        } else CustomColor.Key.Yellow
     )
 
     return when (item) {
@@ -261,16 +261,16 @@ internal fun getItemRowTextColor(
     item: WordleItem,
     isColorBlindEnabled: Boolean
 ): Color {
-    val backgroundCorrectColor = MaterialTheme.extendedColors.getColorOnAccentByKey(
+    val backgroundCorrectColor = MaterialTheme.extendedColors.getOnColorByKey(
         key = if (isColorBlindEnabled) {
-            CustomColor.Keys.Blue
-        } else CustomColor.Keys.Green
+            CustomColor.Key.Blue
+        } else CustomColor.Key.Green
     )
 
-    val backgroundPresentColor = MaterialTheme.extendedColors.getColorOnAccentByKey(
+    val backgroundPresentColor = MaterialTheme.extendedColors.getOnColorByKey(
         key = if (isColorBlindEnabled) {
-            CustomColor.Keys.Red
-        } else CustomColor.Keys.Yellow
+            CustomColor.Key.Red
+        } else CustomColor.Key.Yellow
     )
 
     return when (item) {

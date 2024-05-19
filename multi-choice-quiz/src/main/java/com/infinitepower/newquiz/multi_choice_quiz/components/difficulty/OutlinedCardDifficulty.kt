@@ -26,16 +26,18 @@ internal fun OutlinedCardDifficulty(
     multiChoiceQuizDifficulty: QuestionDifficulty,
     onClick: () -> Unit
 ) {
-    val color = when (multiChoiceQuizDifficulty) {
-        is QuestionDifficulty.Easy -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Green)
-        is QuestionDifficulty.Medium -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Yellow)
-        is QuestionDifficulty.Hard -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Red)
-    }
+    val contentColor = MaterialTheme.extendedColors.getColorByKey(
+        key = when (multiChoiceQuizDifficulty) {
+            is QuestionDifficulty.Easy -> CustomColor.Key.Green
+            is QuestionDifficulty.Medium -> CustomColor.Key.Yellow
+            is QuestionDifficulty.Hard -> CustomColor.Key.Red
+        }
+    )
 
     OutlinedCardDifficulty(
         modifier = modifier,
         text = multiChoiceQuizDifficulty.getText().asString(),
-        color = color,
+        color = contentColor,
         onClick = onClick
     )
 }

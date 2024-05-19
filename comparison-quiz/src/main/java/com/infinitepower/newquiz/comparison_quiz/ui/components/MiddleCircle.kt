@@ -50,11 +50,8 @@ internal fun MiddleCircle(
         label = "Middle Circle"
     )
 
-    val correctQuestionContainerColor = MaterialTheme.extendedColors.getColorAccentByKey(
-        key = CustomColor.Keys.Green
-    )
-    val correctQuestionContentColor = MaterialTheme.extendedColors.getColorOnAccentByKey(
-        key = CustomColor.Keys.Green
+    val correctQuestionColors = MaterialTheme.extendedColors.getColorsByKey(
+        key = CustomColor.Key.Green
     )
 
     val containerColor by animationTransition.animateColor(
@@ -64,7 +61,7 @@ internal fun MiddleCircle(
         when (state) {
             AnimationState.StartGame -> MaterialTheme.colorScheme.surface
             AnimationState.Normal -> MaterialTheme.colorScheme.tertiary
-            AnimationState.NextQuestion -> correctQuestionContainerColor
+            AnimationState.NextQuestion -> correctQuestionColors.color
         }
     }
 
@@ -75,7 +72,7 @@ internal fun MiddleCircle(
         when (state) {
             AnimationState.StartGame -> MaterialTheme.colorScheme.onSurface
             AnimationState.Normal -> MaterialTheme.colorScheme.onTertiary
-            AnimationState.NextQuestion -> correctQuestionContentColor
+            AnimationState.NextQuestion -> correctQuestionColors.onColor
         }
     }
 

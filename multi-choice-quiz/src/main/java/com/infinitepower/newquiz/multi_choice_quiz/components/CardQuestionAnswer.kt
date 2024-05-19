@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -135,10 +134,10 @@ object CardQuestionAnswerDefaults {
         normalContentColor: Color = MaterialTheme.colorScheme.onSurface,
         selectedContainerColor: Color = MaterialTheme.colorScheme.primary,
         selectedContentColor: Color = MaterialTheme.colorScheme.onPrimary,
-        correctContainerColor: Color = MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Green),
-        correctContentColor: Color = MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Green),
-        incorrectContainerColor: Color = MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Red),
-        incorrectContentColor: Color = MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Red)
+        correctContainerColor: Color = MaterialTheme.extendedColors.getColorByKey(key = CustomColor.Key.Green),
+        correctContentColor: Color = MaterialTheme.extendedColors.getOnColorByKey(key = CustomColor.Key.Green),
+        incorrectContainerColor: Color = MaterialTheme.extendedColors.getColorByKey(key = CustomColor.Key.Red),
+        incorrectContentColor: Color = MaterialTheme.extendedColors.getOnColorByKey(key = CustomColor.Key.Red)
     ): CardQuestionAnswerColors = CardQuestionAnswerColors(
         normalContainerColor = normalContainerColor,
         normalContentColor = normalContentColor,

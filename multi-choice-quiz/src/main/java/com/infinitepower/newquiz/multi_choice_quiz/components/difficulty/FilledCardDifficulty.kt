@@ -26,25 +26,19 @@ internal fun FilledCardDifficulty(
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
-    val backgroundColor = when (multiChoiceQuizDifficulty) {
-        is QuestionDifficulty.Easy -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Green)
-        is QuestionDifficulty.Medium -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Yellow)
-        is QuestionDifficulty.Hard -> MaterialTheme.extendedColors.getColorAccentByKey(key = CustomColor.Keys.Red)
-    }
-
-    val textColor = when (multiChoiceQuizDifficulty) {
-        is QuestionDifficulty.Easy -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Green)
-        is QuestionDifficulty.Medium -> MaterialTheme.extendedColors.getColorOnAccentByKey(
-            key = CustomColor.Keys.Yellow
-        )
-        is QuestionDifficulty.Hard -> MaterialTheme.extendedColors.getColorOnAccentByKey(key = CustomColor.Keys.Red)
-    }
+    val colorRoles = MaterialTheme.extendedColors.getColorsByKey(
+        key = when (multiChoiceQuizDifficulty) {
+            is QuestionDifficulty.Easy -> CustomColor.Key.Green
+            is QuestionDifficulty.Medium -> CustomColor.Key.Yellow
+            is QuestionDifficulty.Hard -> CustomColor.Key.Red
+        }
+    )
 
     FilledCardDifficulty(
         modifier = modifier,
         text = multiChoiceQuizDifficulty.getText().asString(),
-        containerColor = backgroundColor,
-        contentColor = textColor,
+        containerColor = colorRoles.color,
+        contentColor = colorRoles.onColor,
         onClick = onClick,
         enabled = enabled
     )
