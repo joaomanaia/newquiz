@@ -2,10 +2,11 @@ package com.infinitepower.newquiz.wordle.components
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -172,27 +173,41 @@ internal fun WordleComponent(
 }
 
 @Composable
-fun WordleComponentImpl(
+private fun WordleComponentImpl(
     modifier: Modifier = Modifier,
     item: WordleItem,
     enabled: Boolean = true,
     isColorBlindEnabled: Boolean = false,
     onClick: () -> Unit
 ) {
-    val backgroundColor = getItemRowBackgroundColor(
-        item = item,
-        isColorBlindEnabled = isColorBlindEnabled
+    val transition = updateTransition(
+        targetState = item,
+        label = "Wordle Component"
     )
-    val backgroundColorAnimated by animateColorAsState(targetValue = backgroundColor)
 
-    val textColor = getItemRowTextColor(
-        item = item,
-        isColorBlindEnabled = isColorBlindEnabled
-    )
-    val textColorAnimated by animateColorAsState(targetValue = textColor)
+    val backgroundColorAnimated by transition.animateColor(
+        label = "Background Color"
+    ) {
+        getItemRowBackgroundColor(
+            item = it,
+            isColorBlindEnabled = isColorBlindEnabled
+        )
+    }
 
-    val elevation = if (item.char.isEmpty()) 0.dp else 8.dp
-    val elevationAnimated by animateDpAsState(targetValue = elevation)
+    val textColorAnimated by transition.animateColor(
+        label = "Text Color"
+    ) {
+        getItemRowTextColor(
+            item = it,
+            isColorBlindEnabled = isColorBlindEnabled
+        )
+    }
+
+    val elevationAnimated by transition.animateDp(
+        label = "Elevation"
+    ) {
+        if (it.char.isEmpty()) 0.dp else 8.dp
+    }
 
     val stroke = if (item.char.isEmpty()) {
         BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
@@ -299,11 +314,6 @@ private fun WordleComponentPreview() {
 
     NewQuizTheme {
         Surface {
-            WordleComponent(
-                modifier = Modifier.padding(16.dp),
-                item = item,
-                onClick = {}
-            )
             WordleComponent(
                 modifier = Modifier.padding(16.dp),
                 item = item,
