@@ -306,4 +306,6 @@
     <string name="imperial">Imperial</string>
     <string name="fahrenheit">Fahrenheit</string>
     <string name="no_data">Sin datos</string>
+    <string name="no_questions_saved_yet">¡Aún no hay preguntas guardadas!</string>
+    <string name="no_questions_saved_description">Guarde o descargue preguntas para comenzar a jugar sin conexión.</string>
 </resources>
