@@ -9,16 +9,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 internal fun Project.configureAndroidCompose(
     applicationExtension: CommonExtension<*, *, *, *, *, *>
 ) {
+    pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+
     applicationExtension.apply {
-        buildFeatures {
-            compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion =
-                libs.findVersion("androidxComposeCompiler").get().toString()
-        }
-
         dependencies {
             val bom = libs.findLibrary("androidx-compose-bom").get()
             implementation(platform(bom))

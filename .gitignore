@@ -42,3 +42,5 @@ out/
 !/.idea/codeStyles/Project.xml
 !/.idea/codeStyles/codeStyleConfig.xml
 !.idea/runConfigurations/
+
+.kotlin

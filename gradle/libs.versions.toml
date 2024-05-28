@@ -29,12 +29,12 @@ googleOss = "17.0.1"
 googleOssPlugin = "0.10.6"
 hilt = "2.51.1"
 hiltExt = "1.2.0"
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 kotlinxCollectionsImmutable = "0.3.7"
 kotlinxCoroutines = "1.8.1"
 kotlinxDatetime = "0.6.0"
 kotlinxSerializationJson = "1.6.3"
-ksp = "1.9.24-1.0.20"
+ksp = "2.0.0-1.0.21"
 ktor = "2.3.11"
 lottie = "6.4.0"
 firebaseBom = "33.0.0"
@@ -146,6 +146,7 @@ detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gr
 
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
