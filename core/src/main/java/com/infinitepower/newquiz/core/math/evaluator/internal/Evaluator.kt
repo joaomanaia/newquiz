@@ -47,7 +47,8 @@ internal class Evaluator : ExprVisitor<BigDecimal> {
             BAR_BAR -> left or right
             AMP_AMP -> left and right
             else -> throw ExpressionException(
-                "Invalid logical operator '${expr.operator.lexeme}'")
+                "Invalid logical operator '${expr.operator.lexeme}'"
+            )
         }
     }
 
@@ -81,6 +82,7 @@ internal class Evaluator : ExprVisitor<BigDecimal> {
             MINUS -> {
                 right.negate()
             }
+
             else -> throw ExpressionException("Invalid unary operator")
         }
     }
@@ -96,8 +98,8 @@ internal class Evaluator : ExprVisitor<BigDecimal> {
 
     override fun visitCallExpr(expr: CallExpr): BigDecimal {
         val name = expr.name
-        val function = functions[name.lowercase()] ?:
-        throw ExpressionException("Undefined function '$name'")
+        val function =
+            functions[name.lowercase()] ?: throw ExpressionException("Undefined function '$name'")
 
         return function.call(expr.arguments.map { eval(it) })
     }
@@ -109,8 +111,8 @@ internal class Evaluator : ExprVisitor<BigDecimal> {
     override fun visitVariableExpr(expr: VariableExpr): BigDecimal {
         val name = expr.name.lexeme
 
-        return variables[name.lowercase()] ?:
-        throw ExpressionException("Undefined variable '$name'")
+        return variables[name.lowercase()]
+            ?: throw ExpressionException("Undefined variable '$name'")
     }
 
     override fun visitGroupingExpr(expr: GroupingExpr): BigDecimal {
@@ -158,5 +160,4 @@ internal class Evaluator : ExprVisitor<BigDecimal> {
 
         return result
     }
-
 }

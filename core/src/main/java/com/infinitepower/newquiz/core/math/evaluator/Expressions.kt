@@ -105,7 +105,6 @@ class Expressions {
             override fun call(arguments: List<BigDecimal>): BigDecimal {
                 return func(arguments)
             }
-
         })
 
         return this
@@ -123,9 +122,12 @@ class Expressions {
      */
     fun evalToString(expression: String): String {
         return try {
-            evaluator.eval(parse(expression)).round(evaluator.mathContext).stripTrailingZeros()
+            evaluator
+                .eval(parse(expression))
+                .round(evaluator.mathContext)
+                .stripTrailingZeros()
                 .toEngineeringString()
-        }catch (e:Throwable){
+        } catch (e: Throwable) {
             e.cause?.message ?: e.message ?: "unknown error"
         }
     }

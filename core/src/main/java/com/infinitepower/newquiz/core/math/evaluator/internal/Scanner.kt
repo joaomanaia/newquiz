@@ -34,6 +34,7 @@ internal class Scanner(
             '\t' -> {
                 // Ignore whitespace.
             }
+
             '+' -> addToken(PLUS)
             '-' -> addToken(MINUS)
             '*' -> addToken(STAR)
@@ -133,5 +134,4 @@ internal class Scanner(
             || this == '!'
 
     private fun Char.isDigit() = this == '.' || this in '0'..'9'
-
 }
