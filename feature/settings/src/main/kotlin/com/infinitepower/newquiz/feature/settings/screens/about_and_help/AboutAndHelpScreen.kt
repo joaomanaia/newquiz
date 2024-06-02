@@ -53,7 +53,7 @@ internal fun AboutAndHelpScreen(
 
     PreferenceScreen(
         modifier = modifier,
-        title = stringResource(id = R.string.wordle),
+        title = stringResource(id = R.string.about_and_help),
         items = items,
         dataStoreManager = dataStoreManager,
         isScreenExpanded = isScreenExpanded,
