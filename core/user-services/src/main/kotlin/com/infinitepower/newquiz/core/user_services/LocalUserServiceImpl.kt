@@ -14,12 +14,11 @@ import com.infinitepower.newquiz.core.user_services.domain.xp.ComparisonQuizXpGe
 import com.infinitepower.newquiz.core.user_services.domain.xp.MultiChoiceQuizXpGenerator
 import com.infinitepower.newquiz.core.user_services.domain.xp.WordleXpGenerator
 import com.infinitepower.newquiz.core.user_services.model.User
+import com.infinitepower.newquiz.model.TimestampWithXP
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -52,49 +51,45 @@ class LocalUserServiceImpl @Inject constructor(
         )
     }
 
-    override suspend fun getXpEarnedBy(
-        start: Instant,
-        end: Instant
-    ): XpEarnedByDateTime {
+    override suspend fun getXpEarnedBy(start: Instant, end: Instant): List<TimestampWithXP> {
         val xpForDateRange = gameResultDao.getXpForDateRange(
             startDate = start.toEpochMilliseconds(),
             endDate = end.toEpochMilliseconds()
         )
 
-        val tz = TimeZone.currentSystemDefault()
-
-        return xpForDateRange.groupBy {
-            Instant.fromEpochMilliseconds(it.playedAt).toLocalDateTime(tz).date.toEpochDays()
-        }.mapValues { (_, xpForDay) ->
-            xpForDay.sumOf { it.earnedXp }
-        }.toSortedMap()
+        return xpForDateRange.map {
+            TimestampWithXP(
+                timestamp = it.playedAt,
+                value = it.earnedXp
+            )
+        }
     }
 
-    override suspend fun getXpEarnedBy(timeRange: TimeRange): XpEarnedByDateTime {
-        val (start, end) = timeRange.getTimeRange()
-
-        val xpForDateRange = gameResultDao.getXpForDateRange(
-            startDate = start.toEpochMilliseconds(),
-            endDate = end.toEpochMilliseconds()
+    override suspend fun getXpEarnedBy(timeRange: TimeRange): List<TimestampWithXP> {
+        return getXpEarnedBy(
+            start = timeRange.first,
+            end = timeRange.second,
         )
-
-        return timeRange.aggregateResults(xpForDateRange)
     }
 
-    override fun getXpEarnedByFlow(timeRange: TimeRange): Flow<XpEarnedByDateTime> {
-        val (start, end) = timeRange.getTimeRange()
-
+    override fun getXpEarnedByFlow(timeRange: TimeRange): Flow<List<TimestampWithXP>> {
         return gameResultDao.getXpForDateRangeFlow(
-            startDate = start.toEpochMilliseconds(),
-            endDate = end.toEpochMilliseconds()
+            startDate = timeRange.first.toEpochMilliseconds(),
+            endDate = timeRange.second.toEpochMilliseconds()
         ).map { xpForDateRange ->
-            timeRange.aggregateResults(xpForDateRange)
+            xpForDateRange.map {
+                TimestampWithXP(
+                    timestamp = it.playedAt,
+                    value = it.earnedXp
+                )
+            }
         }
     }
 
     override suspend fun getUserDiamonds(): UInt {
         val initialDiamonds = remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS)
-        val diamonds = dataStoreManager.getPreference(LocalUserCommon.UserDiamonds(initialDiamonds))
+        val diamonds =
+            dataStoreManager.getPreference(LocalUserCommon.UserDiamonds(initialDiamonds))
 
         return diamonds.toUInt()
     }

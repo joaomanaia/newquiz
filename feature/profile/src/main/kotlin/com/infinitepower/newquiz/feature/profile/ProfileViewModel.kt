@@ -18,9 +18,9 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileScreenUiState())
     val uiState = _uiState.map { state ->
-        state.copy(
-            xpEarnedLast7Days = userService.getXpEarnedBy(state.timeRange)
-        )
+        val dateTimeRange = state.selectedTimeRange.getNowDateTimeRange()
+
+        state.copy(xpEarnedList = userService.getXpEarnedBy(dateTimeRange))
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
@@ -44,9 +44,7 @@ class ProfileViewModel @Inject constructor(
         when (event) {
             is ProfileScreenUiEvent.OnFilterByTimeRangeClick -> {
                 _uiState.update { currentState ->
-                    currentState.copy(
-                        timeRangeIndex = event.timeRangeIndex
-                    )
+                    currentState.copy(selectedTimeRange = event.timeRange)
                 }
             }
         }

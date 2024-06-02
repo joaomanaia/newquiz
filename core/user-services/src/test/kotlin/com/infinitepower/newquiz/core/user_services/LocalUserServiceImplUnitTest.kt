@@ -579,6 +579,7 @@ internal class LocalUserServiceImplUnitTest {
         // 1 result yesterday
         // 1 result before yesterday
         // 1 result 10 days ago (not in the current week, should not be returned)
+        // 5 in total to be returned
 
         // XP for days:
         // today: 25
@@ -593,32 +594,23 @@ internal class LocalUserServiceImplUnitTest {
             )
         }
 
-        val resultLast7Days = localUserServiceImpl.getXpEarnedBy(TimeRange.ThisWeek)
-
-        println("Time taken: ${resultTimed.duration}")
+        val lastWeek = DateTimeRangeFormatter.Week.getNowDateTimeRange(now)
+        val resultLast7Days = localUserServiceImpl.getXpEarnedBy(lastWeek)
 
         val result = resultTimed.value
 
         assertThat(result).isEqualTo(resultLast7Days)
 
-        assertThat(result).hasSize(3)
-        // Check if the results are sorted by playedAt
-        assertThat(result.map { it.key }).isInOrder()
+        assertThat(result).hasSize(5)
 
         result.forEach { (date, _) ->
             // Check if the result from the other week is not returned
-            assertThat(date).isAtLeast(startDate.toEpochDays())
-            assertThat(date).isAtMost(endDate.toEpochDays())
+            assertThat(date).isAtLeast(startInstant.toEpochMilliseconds())
+            assertThat(date).isAtMost(now.toEpochMilliseconds())
         }
 
-        // Check if the xp is correct
-        println(result)
-        assertThat(result[now.toLocalDateTime(tz).date.toEpochDays()]).isEqualTo(25) // today
-        assertThat(result[(now - 1.days).toLocalDateTime(tz).date.toEpochDays()]).isEqualTo(20) // yesterday
-        assertThat(result[(now - 2.days).toLocalDateTime(tz).date.toEpochDays()]).isEqualTo(10) // before yesterday
-
         // Test getXpEarnedByRangeFlow() because it is same as getXpEarnedByRange()
-        localUserServiceImpl.getXpEarnedByFlow(TimeRange.ThisWeek).test {
+        localUserServiceImpl.getXpEarnedByFlow(lastWeek).test {
             assertThat(awaitItem()).isEqualTo(result)
         }
     }

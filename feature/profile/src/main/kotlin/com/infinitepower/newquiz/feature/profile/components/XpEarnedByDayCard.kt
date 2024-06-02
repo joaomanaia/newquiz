@@ -13,9 +13,11 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
-import com.infinitepower.newquiz.core.user_services.TimeRange
-import com.infinitepower.newquiz.core.user_services.XpEarnedByDateTime
+import com.infinitepower.newquiz.core.user_services.DateTimeRangeFormatter
 import com.infinitepower.newquiz.feature.profile.components.chart.rememberMarker
+import com.infinitepower.newquiz.model.TimestampWithXP
+import com.patrykandpatryk.vico.compose.axis.axisGuidelineComponent
+import com.patrykandpatryk.vico.compose.axis.axisLabelComponent
 import com.infinitepower.newquiz.core.R as CoreR
 import com.patrykandpatryk.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatryk.vico.compose.axis.vertical.rememberStartAxis
@@ -39,28 +41,30 @@ import com.patrykandpatryk.vico.core.component.text.textComponent
 import com.patrykandpatryk.vico.core.entry.entryModelOf
 import com.patrykandpatryk.vico.core.entry.entryOf
 import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 
 @Composable
 internal fun XpEarnedByDayCard(
     modifier: Modifier = Modifier,
-    timeRange: TimeRange,
-    xpEarnedByDay: XpEarnedByDateTime
+    formatter: DateTimeRangeFormatter,
+    xpEarnedList: List<TimestampWithXP>
 ) {
-    val xValuesToDates = remember(xpEarnedByDay) {
-        xpEarnedByDay.keys.associateBy { it.toFloat() }
+    val resultsAggregated = remember(formatter, xpEarnedList) {
+        formatter.aggregateResults(xpEarnedList)
     }
-    val chartEntryModel = remember(xValuesToDates, xpEarnedByDay) {
-        entryModelOf(xValuesToDates.keys.zip(xpEarnedByDay.values, ::entryOf))
+
+    val xValuesToDates = remember(resultsAggregated) {
+        resultsAggregated.keys.associateBy { it.toFloat() }
     }
-    val horizontalAxisValueFormatter = remember(timeRange, xValuesToDates) {
+    val chartEntryModel = remember(xValuesToDates, resultsAggregated) {
+        entryModelOf(xValuesToDates.keys.zip(resultsAggregated.values, ::entryOf))
+    }
+    val horizontalAxisValueFormatter = remember(formatter, xValuesToDates) {
         AxisValueFormatter<AxisPosition.Horizontal.Bottom> { value, _ ->
             val data = xValuesToDates[value] ?: value.toInt()
 
-            timeRange.formatValueToString(data)
+            formatter.formatValueToString(data)
         }
     }
 
@@ -94,6 +98,7 @@ internal fun XpEarnedByDayCard(
             chart = columnChart(decorations = decorations),
             model = chartEntryModel,
             startAxis = rememberStartAxis(
+                label = if (resultsAggregated.isEmpty()) null else axisLabelComponent(),
                 valueFormatter = { value, _ -> value.toInt().toString() },
                 itemPlacer = startAxisItemPlacer,
                 horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Outside,
@@ -108,8 +113,10 @@ internal fun XpEarnedByDayCard(
                     typeface = Typeface.MONOSPACE,
                 ),
                 title = stringResource(CoreR.string.xp),
+                guideline = if (resultsAggregated.isEmpty()) null else axisGuidelineComponent()
             ),
             bottomAxis = rememberBottomAxis(
+                label = if (resultsAggregated.isEmpty()) null else axisLabelComponent(),
                 valueFormatter = horizontalAxisValueFormatter,
                 guideline = null
             ),
@@ -149,19 +156,32 @@ private val NO_DATA_TEXT_SIZE = 18.sp
 
 @Composable
 @PreviewLightDark
+private fun EmptyXpCardPreview() {
+    NewQuizTheme {
+        Surface {
+            XpEarnedByDayCard(
+                modifier = Modifier.padding(16.dp),
+                formatter = DateTimeRangeFormatter.Day,
+                xpEarnedList = emptyList()
+            )
+        }
+    }
+}
+
+@Composable
+@PreviewLightDark
 private fun XpTodayCardPreview() {
     val now = Clock.System.now()
-    val tz = TimeZone.currentSystemDefault()
 
     NewQuizTheme {
         Surface {
             XpEarnedByDayCard(
                 modifier = Modifier.padding(16.dp),
-                timeRange = TimeRange.Today,
-                xpEarnedByDay = mapOf(
-                    (now - 4.hours).toLocalDateTime(tz).hour to 10,
-                    (now - 3.hours).toLocalDateTime(tz).hour to 5,
-                    now.toLocalDateTime(tz).hour to 15
+                formatter = DateTimeRangeFormatter.Day,
+                xpEarnedList = listOf(
+                    TimestampWithXP((now - 4.hours).toEpochMilliseconds(), 10),
+                    TimestampWithXP((now - 3.hours).toEpochMilliseconds(), 5),
+                    TimestampWithXP(now.toEpochMilliseconds(), 15)
                 )
             )
         }
@@ -172,19 +192,17 @@ private fun XpTodayCardPreview() {
 @PreviewLightDark
 private fun XpThisWeekCardPreview() {
     val now = Clock.System.now()
-    val tz = TimeZone.currentSystemDefault()
-    val today = now.toLocalDateTime(tz).date
 
     NewQuizTheme {
         Surface {
             XpEarnedByDayCard(
                 modifier = Modifier.padding(16.dp),
-                timeRange = TimeRange.ThisWeek,
-                xpEarnedByDay = mapOf(
-                    (now - 4.days).toLocalDateTime(tz).date.toEpochDays() to 20,
-                    (now - 3.days).toLocalDateTime(tz).date.toEpochDays() to 10,
-                    (now - 1.days).toLocalDateTime(tz).date.toEpochDays() to 30,
-                    today.toEpochDays() to 15
+                formatter = DateTimeRangeFormatter.Week,
+                xpEarnedList = listOf(
+                    TimestampWithXP((now - 4.days).toEpochMilliseconds(), 20),
+                    TimestampWithXP((now - 3.days).toEpochMilliseconds(), 10),
+                    TimestampWithXP((now - 1.days).toEpochMilliseconds(), 30),
+                    TimestampWithXP(now.toEpochMilliseconds(), 15)
                 )
             )
         }

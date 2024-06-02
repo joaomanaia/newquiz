@@ -24,10 +24,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
+import com.infinitepower.newquiz.core.user_services.DateTimeRangeFormatter
 import com.infinitepower.newquiz.core.user_services.model.User
 import com.infinitepower.newquiz.feature.profile.components.MainUserCard
 import com.infinitepower.newquiz.feature.profile.components.UserXpAndLevelCard
 import com.infinitepower.newquiz.feature.profile.components.XpEarnedByDayCard
+import com.infinitepower.newquiz.model.TimestampWithXP
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -59,9 +61,9 @@ private fun ProfileScreen(
     onEvent: (event: ProfileScreenUiEvent) -> Unit,
     onBackClick: () -> Unit
 ) {
-    val options = listOf(
-        stringResource(id = CoreR.string.today),
-        stringResource(id = CoreR.string.this_week)
+    val options = mapOf(
+        DateTimeRangeFormatter.Day to stringResource(id = CoreR.string.today),
+        DateTimeRangeFormatter.Week to stringResource(id = CoreR.string.this_week),
     )
 
     Scaffold(
@@ -104,15 +106,18 @@ private fun ProfileScreen(
                     SingleChoiceSegmentedButtonRow(
                         modifier = Modifier.fillParentMaxWidth(),
                     ) {
-                        options.forEachIndexed { index, label ->
+                        options.onEachIndexed { index, (timeRange, label) ->
                             SegmentedButton(
-                                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
-                                onClick = { onEvent(ProfileScreenUiEvent.OnFilterByTimeRangeClick(index)) },
-                                selected = index == uiState.timeRangeIndex
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = options.size
+                                ),
+                                onClick = {
+                                    onEvent(ProfileScreenUiEvent.OnFilterByTimeRangeClick(timeRange))
+                                },
+                                selected = timeRange == uiState.selectedTimeRange
                             ) {
-                                Text(
-                                    text = label
-                                )
+                                Text(text = label)
                             }
                         }
                     }
@@ -124,8 +129,8 @@ private fun ProfileScreen(
                     ) {
                         XpEarnedByDayCard(
                             modifier = Modifier.padding(MaterialTheme.spacing.medium),
-                            timeRange = uiState.timeRange,
-                            xpEarnedByDay = uiState.xpEarnedLast7Days
+                            formatter = uiState.selectedTimeRange,
+                            xpEarnedList = uiState.xpEarnedList
                         )
                     }
                 }
@@ -140,7 +145,6 @@ private fun ProfileScreen(
 private fun ProfileScreenPreview() {
     val now = Clock.System.now()
     val tz = TimeZone.currentSystemDefault()
-    val today = now.toLocalDateTime(tz).date
 
     NewQuizTheme {
         ProfileScreen(
@@ -150,12 +154,12 @@ private fun ProfileScreenPreview() {
                     uid = "uid",
                     totalXp = 1235u
                 ),
-                timeRangeIndex = 1, // This Week
-                xpEarnedLast7Days = mapOf(
-                    (now - 4.days).toLocalDateTime(tz).date.toEpochDays() to 20,
-                    (now - 3.days).toLocalDateTime(tz).date.toEpochDays() to 10,
-                    (now - 1.days).toLocalDateTime(tz).date.toEpochDays() to 30,
-                    today.toEpochDays() to 15
+                selectedTimeRange = DateTimeRangeFormatter.Week,
+                xpEarnedList = listOf(
+                    TimestampWithXP((now - 4.days).toEpochMilliseconds(), 20),
+                    TimestampWithXP((now - 3.days).toEpochMilliseconds(), 10),
+                    TimestampWithXP((now - 1.days).toEpochMilliseconds(), 30),
+                    TimestampWithXP(now.toEpochMilliseconds(), 15)
                 )
             ),
             onEvent = {},
