@@ -507,11 +507,8 @@ internal class LocalUserServiceImplUnitTest {
     @Test
     fun `test getXpEarnedByRange() and getXpEarnedInLastDays()`() = runTest {
         val now = Clock.System.now()
-        val tz = TimeZone.currentSystemDefault()
 
         val startInstant = now - 7.days // 7 days ago
-        val startDate = startInstant.toLocalDateTime(tz).date
-        val endDate = now.toLocalDateTime(tz).date
 
         // Insert multi choice results
         gameResultDao.insertMultiChoiceResult(

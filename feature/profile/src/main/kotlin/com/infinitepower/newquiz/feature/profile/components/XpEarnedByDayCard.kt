@@ -40,6 +40,8 @@ import com.patrykandpatryk.vico.core.component.text.TextComponent
 import com.patrykandpatryk.vico.core.component.text.textComponent
 import com.patrykandpatryk.vico.core.entry.entryModelOf
 import com.patrykandpatryk.vico.core.entry.entryOf
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.datetime.Clock
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -48,7 +50,7 @@ import kotlin.time.Duration.Companion.hours
 internal fun XpEarnedByDayCard(
     modifier: Modifier = Modifier,
     formatter: DateTimeRangeFormatter,
-    xpEarnedList: List<TimestampWithXP>
+    xpEarnedList: ImmutableList<TimestampWithXP>
 ) {
     val resultsAggregated = remember(formatter, xpEarnedList) {
         formatter.aggregateResults(xpEarnedList)
@@ -162,7 +164,7 @@ private fun EmptyXpCardPreview() {
             XpEarnedByDayCard(
                 modifier = Modifier.padding(16.dp),
                 formatter = DateTimeRangeFormatter.Day,
-                xpEarnedList = emptyList()
+                xpEarnedList = persistentListOf()
             )
         }
     }
@@ -178,7 +180,7 @@ private fun XpTodayCardPreview() {
             XpEarnedByDayCard(
                 modifier = Modifier.padding(16.dp),
                 formatter = DateTimeRangeFormatter.Day,
-                xpEarnedList = listOf(
+                xpEarnedList = persistentListOf(
                     TimestampWithXP((now - 4.hours).toEpochMilliseconds(), 10),
                     TimestampWithXP((now - 3.hours).toEpochMilliseconds(), 5),
                     TimestampWithXP(now.toEpochMilliseconds(), 15)
@@ -198,7 +200,7 @@ private fun XpThisWeekCardPreview() {
             XpEarnedByDayCard(
                 modifier = Modifier.padding(16.dp),
                 formatter = DateTimeRangeFormatter.Week,
-                xpEarnedList = listOf(
+                xpEarnedList = persistentListOf(
                     TimestampWithXP((now - 4.days).toEpochMilliseconds(), 20),
                     TimestampWithXP((now - 3.days).toEpochMilliseconds(), 10),
                     TimestampWithXP((now - 1.days).toEpochMilliseconds(), 30),

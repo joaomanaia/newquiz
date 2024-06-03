@@ -44,17 +44,18 @@ inline fun <reified T> RemoteConfig.get(removeConfigValue: RemoteConfigValue<T>)
             // If the type is an enum with serialization, decode the enum value using the deserialization.
             if (T::class.java.isAnnotationPresent(Serializable::class.java)) {
                 val serializedValue = getString(removeConfigValue.key)
-                Json.decodeFromString(serializedValue)
+
+                return Json.decodeFromString(serializedValue)
             } else if (T::class.java.isEnum) {
                 // If the type is an enum without serialization, decode the enum value using reflection.
                 val enumValue = getString(removeConfigValue.key)
 
-                T::class.java.enumConstants
+                return T::class.java.enumConstants
                     ?.find { it.toString() == enumValue }
                     ?: throw IllegalArgumentException("Invalid enum value: $enumValue")
-            } else {
-                throw IllegalArgumentException("Unsupported type ${T::class}")
             }
+
+            throw IllegalArgumentException("Unsupported type ${T::class}")
         }
     }
 }

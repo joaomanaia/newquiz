@@ -33,9 +33,8 @@ import com.infinitepower.newquiz.model.TimestampWithXP
 import com.infinitepower.newquiz.core.R as CoreR
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.days
 
 @Composable
@@ -144,7 +143,6 @@ private fun ProfileScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun ProfileScreenPreview() {
     val now = Clock.System.now()
-    val tz = TimeZone.currentSystemDefault()
 
     NewQuizTheme {
         ProfileScreen(
@@ -155,7 +153,7 @@ private fun ProfileScreenPreview() {
                     totalXp = 1235u
                 ),
                 selectedTimeRange = DateTimeRangeFormatter.Week,
-                xpEarnedList = listOf(
+                xpEarnedList = persistentListOf(
                     TimestampWithXP((now - 4.days).toEpochMilliseconds(), 20),
                     TimestampWithXP((now - 3.days).toEpochMilliseconds(), 10),
                     TimestampWithXP((now - 1.days).toEpochMilliseconds(), 30),

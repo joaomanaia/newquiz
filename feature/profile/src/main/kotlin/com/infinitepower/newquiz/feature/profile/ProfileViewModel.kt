@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.infinitepower.newquiz.core.user_services.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -20,7 +21,7 @@ class ProfileViewModel @Inject constructor(
     val uiState = _uiState.map { state ->
         val dateTimeRange = state.selectedTimeRange.getNowDateTimeRange()
 
-        state.copy(xpEarnedList = userService.getXpEarnedBy(dateTimeRange))
+        state.copy(xpEarnedList = userService.getXpEarnedBy(dateTimeRange).toPersistentList())
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),

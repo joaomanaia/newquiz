@@ -37,7 +37,6 @@ internal class RemoteConfigTest {
     private val testValue4 = RemoteConfigValue<TestEnum2>("test_value_4")
 
     private data class TestDataClass2(val name: String)
-    private val testData5 = TestDataClass2("test")
     private val testValue5 = RemoteConfigValue<TestDataClass2>("test_value_5")
 
 
