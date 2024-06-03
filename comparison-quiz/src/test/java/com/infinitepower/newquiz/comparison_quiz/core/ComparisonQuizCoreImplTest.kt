@@ -60,6 +60,8 @@ internal class ComparisonQuizCoreImplTest {
     private lateinit var dataStoreManager: DataStoreManager
     private lateinit var gameResultDao: GameResultDao
 
+    private val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
+
     @BeforeEach
     fun setup() {
         val testDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.create(
@@ -89,17 +91,16 @@ internal class ComparisonQuizCoreImplTest {
         mockkStatic(Log::class)
         every { Log.d(any(), any()) } returns 0
         every { Log.e(any(), any(), any()) } returns 0
+
+        every {
+            remoteConfig.getString("comparison_quiz_first_item_helper_value")
+        } returns firstItemHelperValueState.name
     }
 
     @Test
     fun `initializeGame should emit correct data`() = runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
-
-        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
-        every {
-            remoteConfig.getString("comparison_quiz_first_item_helper_value")
-        } returns firstItemHelperValueState.name
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -160,11 +161,6 @@ internal class ComparisonQuizCoreImplTest {
             comparisonMode = ComparisonMode.LESSER
         )
         val uriMock = getUriMock()
-
-        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
-        every {
-            remoteConfig.getString("comparison_quiz_first_item_helper_value")
-        } returns firstItemHelperValueState.name
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -237,11 +233,6 @@ internal class ComparisonQuizCoreImplTest {
         )
         val uriMock = getUriMock()
 
-        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
-        every {
-            remoteConfig.getString("comparison_quiz_first_item_helper_value")
-        } returns firstItemHelperValueState.name
-
         val expectedQuestions = listOf(
             ComparisonQuizItem(
                 title = "Question 1",
@@ -304,11 +295,6 @@ internal class ComparisonQuizCoreImplTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
 
-        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
-        every {
-            remoteConfig.getString("comparison_quiz_first_item_helper_value")
-        } returns firstItemHelperValueState.name
-
         val expectedQuestions = listOf(
             ComparisonQuizItem(
                 title = "Question 1",
@@ -355,11 +341,6 @@ internal class ComparisonQuizCoreImplTest {
     fun `endGame() should end the game`() = runTest {
         val initialData = getInitializationData()
         val uriMock = getUriMock()
-
-        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
-        every {
-            remoteConfig.getString("comparison_quiz_first_item_helper_value")
-        } returns firstItemHelperValueState.name
 
         val expectedQuestions = listOf(
             ComparisonQuizItem(
@@ -450,11 +431,6 @@ internal class ComparisonQuizCoreImplTest {
         val userDiamonds = 10
 
         val initialData = getInitializationData()
-
-        val firstItemHelperValueState = ComparisonQuizHelperValueState.HIDDEN
-        every {
-            remoteConfig.getString("comparison_quiz_first_item_helper_value")
-        } returns firstItemHelperValueState.name
 
         every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost
         every { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns userDiamonds

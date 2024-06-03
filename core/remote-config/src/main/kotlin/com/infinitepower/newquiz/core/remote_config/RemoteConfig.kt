@@ -1,8 +1,7 @@
 package com.infinitepower.newquiz.core.remote_config
 
-import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
-import com.infinitepower.newquiz.model.question.QuestionDifficulty
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 interface RemoteConfig {
     fun initialize(
@@ -27,9 +26,8 @@ interface RemoteConfig {
  * - [Long]
  * - [Int]
  * - [Boolean]
- * - [ShowCategoryConnectionInfo]
- * - [ComparisonQuizHelperValueState]
- * - [QuestionDifficulty]
+ * - [Enum]
+ * - Custom Class (must be annotated with [Serializable] annotation)
  *
  * @param removeConfigValue the value to get from the remote config.
  * @return the value for the given [removeConfigValue].
@@ -41,15 +39,22 @@ inline fun <reified T> RemoteConfig.get(removeConfigValue: RemoteConfigValue<T>)
         Long::class -> getLong(removeConfigValue.key) as T
         Int::class -> getInt(removeConfigValue.key) as T
         Boolean::class -> getBoolean(removeConfigValue.key) as T
-        ShowCategoryConnectionInfo::class -> {
-            ShowCategoryConnectionInfo.valueOf(getString(removeConfigValue.key)) as T
+        else -> {
+            // Check if the type is a custom class with serialization, if so, decode the serialized value.
+            // If the type is an enum with serialization, decode the enum value using the deserialization.
+            if (T::class.java.isAnnotationPresent(Serializable::class.java)) {
+                val serializedValue = getString(removeConfigValue.key)
+                Json.decodeFromString(serializedValue)
+            } else if (T::class.java.isEnum) {
+                // If the type is an enum without serialization, decode the enum value using reflection.
+                val enumValue = getString(removeConfigValue.key)
+
+                T::class.java.enumConstants
+                    ?.find { it.toString() == enumValue }
+                    ?: throw IllegalArgumentException("Invalid enum value: $enumValue")
+            } else {
+                throw IllegalArgumentException("Unsupported type ${T::class}")
+            }
         }
-        ComparisonQuizHelperValueState::class -> {
-            ComparisonQuizHelperValueState.valueOf(getString(removeConfigValue.key)) as T
-        }
-        QuestionDifficulty::class -> {
-            QuestionDifficulty.from(getString(removeConfigValue.key)) as T
-        }
-        else -> throw IllegalArgumentException("Unsupported type ${T::class}")
     }
 }

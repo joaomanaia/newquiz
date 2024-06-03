@@ -1,6 +1,7 @@
 plugins {
     id("newquiz.android.library")
     alias(libs.plugins.newquiz.android.hilt)
+    alias(libs.plugins.newquiz.kotlin.serialization)
     id("newquiz.detekt")
 }
 
