@@ -1,51 +1,41 @@
 import com.infinitepower.newquiz.libs
 import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
 
 class DetektConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            with(pluginManager) {
-                apply("io.gitlab.arturbosch.detekt")
+            pluginManager.apply(
+                libs.findLibrary("detekt.gradlePlugin").get().get().group.toString()
+            )
 
-                withPlugin("io.gitlab.arturbosch.detekt") {
-                    val rootProject = target.rootProject
+            tasks.withType<Detekt> {
+                buildUponDefaultConfig = true
+                basePath = target.rootProject.projectDir.absolutePath
 
-                    target.extensions.configure<DetektExtension> {
-                        buildUponDefaultConfig = true
-                        baseline = target.file("detekt-baseline.xml")
-                        basePath = rootProject.projectDir.absolutePath
+                val localDetektConfig = target.file("detekt.yml")
+                val rootDetektConfig = target.rootProject.file("detekt.yml")
+                val rootDetektComposeConfig = target.rootProject.file("detekt-compose.yml")
+                if (localDetektConfig.exists()) {
+                    config.from(
+                        localDetektConfig,
+                        rootDetektConfig,
+                        rootDetektComposeConfig
+                    )
+                } else {
+                    config.from(rootDetektConfig, rootDetektComposeConfig)
+                }
 
-                        val localDetektConfig = target.file("detekt.yml")
-                        val rootDetektConfig = target.rootProject.file("detekt.yml")
-                        val rootDetektComposeConfig = target.rootProject.file("detekt-compose.yml")
-                        if (localDetektConfig.exists()) {
-                            config.from(
-                                localDetektConfig,
-                                rootDetektConfig,
-                                rootDetektComposeConfig
-                            )
-                        } else {
-                            config.from(rootDetektConfig, rootDetektComposeConfig)
-                        }
-                    }
-
-                    val detektTask = target.tasks.named("detekt", Detekt::class.java)
-                    detektTask.configure {
-                        reports.sarif.required.set(true)
-                    }
+                reports {
+                    sarif.required.set(true)
                 }
             }
 
             dependencies {
-                add(
-                    "detektPlugins",
-                    libs.findLibrary("detekt.compose").get()
-                )
+                add("detektPlugins", libs.findLibrary("detekt.compose").get())
             }
         }
     }

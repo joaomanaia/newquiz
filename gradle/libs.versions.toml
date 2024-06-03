@@ -48,6 +48,7 @@ vico = "1.14.0"
 mlKitTranslate = "17.0.2"
 turbine = "1.1.0"
 detekt = "1.23.4"
+detektCompose = "0.0.26"
 
 [libraries]
 
@@ -132,7 +133,7 @@ vico-compose = { group = "com.patrykandpatryk.vico", name = "compose", version.r
 vico-compose-m3 = { group = "com.patrykandpatryk.vico", name = "compose-m3", version.ref = "vico" }
 google-mlKit-translate = { group = "com.google.mlkit", name = "translate", version.ref = "mlKitTranslate" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-detekt-compose = "com.twitter.compose.rules:detekt:0.0.26"
+detekt-compose = { group = "com.twitter.compose.rules", name = "detekt", version.ref = "detektCompose" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
