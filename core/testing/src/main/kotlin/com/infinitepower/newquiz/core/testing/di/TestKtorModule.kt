@@ -1,7 +1,7 @@
 package com.infinitepower.newquiz.core.testing.di
 
 import com.infinitepower.newquiz.core.common.BaseApiUrls
-import com.infinitepower.newquiz.data.di.KtorModule
+import com.infinitepower.newquiz.core.di.KtorModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent

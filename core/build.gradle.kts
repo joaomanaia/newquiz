@@ -50,6 +50,10 @@ dependencies {
 
     //implementation("androidx.palette:palette-ktx:_")
 
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.serialization)
+
     // Modules
     implementation(projects.model)
     testImplementation(projects.core.testing)

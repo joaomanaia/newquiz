@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.di
+package com.infinitepower.newquiz.core.di
 
 import dagger.Module
 import dagger.Provides
