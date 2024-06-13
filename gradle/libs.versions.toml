@@ -1,7 +1,7 @@
 [versions]
 
 androidDesugarJdkLibs = "2.0.4"
-androidGradlePlugin = "8.4.1"
+androidGradlePlugin = "8.4.2"
 androidxAnnotation = "1.8.0"
 androidxActivity = "1.9.0"
 androidxAppCompat = "1.7.0"
@@ -49,6 +49,10 @@ mlKitTranslate = "17.0.2"
 turbine = "1.1.0"
 detekt = "1.23.4"
 detektCompose = "0.0.26"
+kotlinVersion = "1.9.0"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
 
 [libraries]
 
@@ -143,6 +147,9 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
 [plugins]
 
@@ -168,3 +175,4 @@ newquiz-android-library-compose = { id = "newquiz.android.library.compose", vers
 newquiz-android-room = { id = "newquiz.android.room", version = "unspecified" }
 newquiz-kotlin-serialization = { id = "newquiz.kotlin.serialization", version = "unspecified" }
 newquiz-jvm-library = { id = "newquiz.jvm.library", version = "unspecified" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
