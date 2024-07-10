@@ -86,7 +86,7 @@ internal class PreferencesDatastoreManagerTest {
     }
 
     @Test
-    fun `clearPreferences clears all preferences`() = runTest {
+    fun `test edit and clear multiple preferences`() = runTest {
         val request1 = PreferenceRequest(
             key = stringPreferencesKey("key1"),
             defaultValue = "default1"
@@ -96,8 +96,10 @@ internal class PreferencesDatastoreManagerTest {
             defaultValue = "default2"
         )
 
-        dataStoreManager.editPreference(request1.key, "a")
-        dataStoreManager.editPreference(request2.key, "b")
+        dataStoreManager.editPreferences(
+            request1.key to "a",
+            request2.key to "b"
+        )
 
         // Check that the preferences were set
         assertThat(dataStoreManager.getPreference(request1)).isEqualTo("a")
