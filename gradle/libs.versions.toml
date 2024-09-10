@@ -47,8 +47,8 @@ firebaseUi = "8.0.2"
 vico = "1.15.0"
 mlKitTranslate = "17.0.3"
 turbine = "1.1.0"
-detekt = "1.23.4"
-detektCompose = "0.0.26"
+detekt = "1.23.7"
+detektCompose = "0.4.12"
 kotlinVersion = "1.9.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -137,7 +137,7 @@ vico-compose = { group = "com.patrykandpatryk.vico", name = "compose", version.r
 vico-compose-m3 = { group = "com.patrykandpatryk.vico", name = "compose-m3", version.ref = "vico" }
 google-mlKit-translate = { group = "com.google.mlkit", name = "translate", version.ref = "mlKitTranslate" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-detekt-compose = { group = "com.twitter.compose.rules", name = "detekt", version.ref = "detektCompose" }
+detekt-compose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "detektCompose" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

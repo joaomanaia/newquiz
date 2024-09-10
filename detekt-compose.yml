@@ -1,14 +1,36 @@
-# Deliberately split from the main configuration as the plugins do not use the twitter compose dependency.
-TwitterCompose:
+Compose:
+  ComposableAnnotationNaming:
+    active: true
+  ComposableNaming:
+    active: true
+  ComposableParamOrder:
+    active: false # Modifiers are order first
   CompositionLocalAllowlist:
-    active: false
+    active: true
+    allowedCompositionLocals: LocalAnalyticsHelper
   CompositionLocalNaming:
     active: true
   ContentEmitterReturningValues:
     active: true
+  ContentTrailingLambda:
+    active: true
+  DefaultsVisibility:
+    active: true
+  LambdaParameterInRestartableEffect:
+    active: true
+  Material2:
+    active: false
+  ModifierClickableOrder:
+    active: true
   ModifierComposable:
     active: true
+  ModifierComposed:
+    active: true
   ModifierMissing:
+    active: true
+  ModifierNaming:
+    active: true
+  ModifierNotUsedAtRoot:
     active: true
   ModifierReused:
     active: true
@@ -18,13 +40,23 @@ TwitterCompose:
     active: true
   MutableParams:
     active: true
-  ComposableNaming:
+  MutableStateAutoboxing:
     active: true
-  ComposableParamOrder:
-    active: false
-  PreviewNaming:
+  MutableStateParam:
+    active: true
+  ParameterNaming:
+    active: true
+  PreviewAnnotationNaming:
     active: true
   PreviewPublic:
     active: true
   RememberMissing:
+    active: true
+  RememberContentMissing:
+    active: true
+  UnstableCollections:
+    active: false
+  ViewModelForwarding:
+    active: true
+  ViewModelInjection:
     active: true

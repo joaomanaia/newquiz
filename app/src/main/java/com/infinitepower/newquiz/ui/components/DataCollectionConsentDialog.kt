@@ -60,23 +60,21 @@ private fun DialogConsentContent(
 
     val scrollState = rememberScrollState()
 
-    Surface {
-        Column(
-            modifier = modifier.height(400.dp)
-        ) {
-            Text(
-                text = stringResource(id = CoreR.string.data_collection_consent_description),
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(scrollState)
-            )
-            Spacer(modifier = Modifier.height(spaceLarge))
-            ConsentButtons(
-                onAgreeClick = onAgreeClick,
-                onDisagreeClick = onDisagreeClick
-            )
-        }
+    Column(
+        modifier = modifier.height(400.dp)
+    ) {
+        Text(
+            text = stringResource(id = CoreR.string.data_collection_consent_description),
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(scrollState)
+        )
+        Spacer(modifier = Modifier.height(spaceLarge))
+        ConsentButtons(
+            onAgreeClick = onAgreeClick,
+            onDisagreeClick = onDisagreeClick
+        )
     }
 }
 

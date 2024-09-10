@@ -48,7 +48,7 @@ fun SettingsScreen(
         mainContent = {
             MainScreen(
                 currentScreen = screenKey,
-                onScreenSelected = { key ->
+                onScreenSelect = { key ->
                     navigator.navigate(SettingsScreenDestination(key))
                 },
                 onBackClick = navigator::popBackStack,

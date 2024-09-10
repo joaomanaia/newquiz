@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import kotlinx.datetime.Clock
-import com.infinitepower.newquiz.core.R as CoreR
 import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.minutes
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 internal fun DailyChallengeCard(

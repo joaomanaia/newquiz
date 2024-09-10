@@ -35,7 +35,7 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun MainScreen(
     modifier: Modifier = Modifier,
     currentScreen: ScreenKey?,
-    onScreenSelected: (key: ScreenKey) -> Unit,
+    onScreenSelect: (key: ScreenKey) -> Unit,
     onBackClick: () -> Unit
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
@@ -54,7 +54,7 @@ internal fun MainScreen(
             },
             screenKey = ScreenKey.GENERAL,
             itemSelected = currentScreen == ScreenKey.GENERAL,
-            onClick = { onScreenSelected(ScreenKey.GENERAL) },
+            onClick = { onScreenSelect(ScreenKey.GENERAL) },
         ),
         // Multi Choice Quiz
         Preference.PreferenceItem.NavigationButton(
@@ -69,7 +69,7 @@ internal fun MainScreen(
             },
             screenKey = ScreenKey.MULTI_CHOICE_QUIZ,
             itemSelected = currentScreen == ScreenKey.MULTI_CHOICE_QUIZ,
-            onClick = { onScreenSelected(ScreenKey.MULTI_CHOICE_QUIZ) },
+            onClick = { onScreenSelect(ScreenKey.MULTI_CHOICE_QUIZ) },
         ),
         // Wordle
         Preference.PreferenceItem.NavigationButton(
@@ -84,7 +84,7 @@ internal fun MainScreen(
             },
             screenKey = ScreenKey.WORDLE,
             itemSelected = currentScreen == ScreenKey.WORDLE,
-            onClick = { onScreenSelected(ScreenKey.WORDLE) },
+            onClick = { onScreenSelect(ScreenKey.WORDLE) },
         ),
         // Translation
         Preference.PreferenceItem.NavigationButton(
@@ -99,7 +99,7 @@ internal fun MainScreen(
             },
             screenKey = ScreenKey.TRANSLATION,
             itemSelected = currentScreen == ScreenKey.TRANSLATION,
-            onClick = { onScreenSelected(ScreenKey.TRANSLATION) },
+            onClick = { onScreenSelect(ScreenKey.TRANSLATION) },
             visible = BuildVariant.DISTRIBUTION_FLAVOR == "normal"
         ),
         // About & Help
@@ -115,7 +115,7 @@ internal fun MainScreen(
             },
             screenKey = ScreenKey.ABOUT_AND_HELP,
             itemSelected = currentScreen == ScreenKey.ABOUT_AND_HELP,
-            onClick = { onScreenSelected(ScreenKey.ABOUT_AND_HELP) },
+            onClick = { onScreenSelect(ScreenKey.ABOUT_AND_HELP) },
         ),
     )
 
@@ -148,7 +148,7 @@ private fun MainScreenPreview() {
             MainScreen(
                 modifier = Modifier.padding(16.dp),
                 currentScreen = ScreenKey.GENERAL,
-                onScreenSelected = {},
+                onScreenSelect = {},
                 onBackClick = {}
             )
         }
