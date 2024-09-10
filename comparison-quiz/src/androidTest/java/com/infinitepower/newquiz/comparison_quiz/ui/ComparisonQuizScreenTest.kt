@@ -147,8 +147,8 @@ internal class ComparisonQuizScreenTest {
             comparisonQuizCore = comparisonQuizCore,
             savedStateHandle = SavedStateHandle(
                 mapOf(
-                    ComparisonQuizListScreenNavArg::comparisonMode.name to comparisonMode,
-                    ComparisonQuizListScreenNavArg::category.name to category.toEntity()
+                    ComparisonQuizScreenNavArg::comparisonMode.name to comparisonMode,
+                    ComparisonQuizScreenNavArg::category.name to category.toEntity()
                 )
             ),
             comparisonQuizRepository = comparisonQuizRepository,

@@ -50,19 +50,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonItem
-import com.infinitepower.newquiz.comparison_quiz.ui.components.GameOverContent
 import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonMidContent
+import com.infinitepower.newquiz.comparison_quiz.ui.components.GameOverContent
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipIconButton
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipQuestionDialog
 import com.infinitepower.newquiz.core.util.emptyJavaURI
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
-import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
@@ -70,14 +70,8 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 
-@Keep
-data class ComparisonQuizListScreenNavArg(
-    val category: ComparisonQuizCategoryEntity,
-    val comparisonMode: ComparisonMode = ComparisonMode.GREATER
-)
-
 @Composable
-@Destination(navArgsDelegate = ComparisonQuizListScreenNavArg::class)
+@Destination(navArgsDelegate = ComparisonQuizScreenNavArg::class)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 fun ComparisonQuizScreen(
     windowSizeClass: WindowSizeClass,
@@ -93,7 +87,7 @@ fun ComparisonQuizScreen(
             animationState = AnimationState.Normal
         } else if (uiState.currentPosition > 1) {
             animationState = AnimationState.NextQuestion
-            delay(1000)
+            delay(ANIMATIONS_DELAY)
             animationState = AnimationState.Normal
         }
     }
@@ -122,7 +116,6 @@ fun ComparisonQuizScreen(
     )
 }
 
-
 @Composable
 @ExperimentalMaterial3Api
 @ExperimentalAnimationApi
@@ -135,8 +128,8 @@ internal fun ComparisonQuizScreenImpl(
     onEvent: (event: ComparisonQuizUiEvent) -> Unit = {}
 ) {
     val verticalContent = remember(windowSizeClass) {
-        windowSizeClass.heightSizeClass > WindowHeightSizeClass.Compact
-                && windowSizeClass.widthSizeClass < WindowWidthSizeClass.Expanded
+        windowSizeClass.heightSizeClass > WindowHeightSizeClass.Compact &&
+                windowSizeClass.widthSizeClass < WindowWidthSizeClass.Expanded
     }
 
     when {
@@ -185,6 +178,12 @@ internal fun ComparisonQuizScreenImpl(
         onDismissClick = { onEvent(ComparisonQuizUiEvent.DismissSkipQuestionDialog) }
     )
 }
+
+@Keep
+data class ComparisonQuizScreenNavArg(
+    val category: ComparisonQuizCategoryEntity,
+    val comparisonMode: ComparisonMode = ComparisonMode.GREATER
+)
 
 @Composable
 @ExperimentalAnimationApi
@@ -428,6 +427,8 @@ private fun DataSourceAttributionContent(
         }
     }
 }
+
+private const val ANIMATIONS_DELAY = 1000L
 
 @Composable
 @PreviewScreenSizes

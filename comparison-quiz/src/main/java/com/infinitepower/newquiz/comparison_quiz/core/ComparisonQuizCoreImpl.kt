@@ -80,6 +80,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
             try {
                 currentData.getNextQuestion()
             } catch (e: GameOverException) {
+                e.printStackTrace()
                 return endGame()
             }
         }
@@ -94,6 +95,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
                 try {
                     currentData.getNextQuestion()
                 } catch (e: GameOverException) {
+                    e.printStackTrace()
                     return endGame()
                 }
             } else {
@@ -122,7 +124,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
 
         // Check if the user has enough diamonds to skip the question
         if (!canSkip()) {
-            throw RuntimeException("You don't have enough diamonds to skip this question")
+            return
         }
 
         // Update the user's diamond count
@@ -133,6 +135,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
             try {
                 currentData.getNextQuestion(skipped = true)
             } catch (e: GameOverException) {
+                e.printStackTrace()
                 return endGame()
             }
         }

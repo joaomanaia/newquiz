@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.newquiz.android.hilt)
     alias(libs.plugins.newquiz.android.compose.destinations)
     alias(libs.plugins.newquiz.kotlin.serialization)
+    id("newquiz.detekt")
 }
 
 android {

@@ -148,7 +148,7 @@ class ComparisonQuizViewModel @Inject constructor(
 
     private fun getCategory(): ComparisonQuizCategory {
         val categoryEntity = savedStateHandle
-            .get<ComparisonQuizCategoryEntity>(ComparisonQuizListScreenNavArg::category.name)
+            .get<ComparisonQuizCategoryEntity>(ComparisonQuizScreenNavArg::category.name)
             ?: throw IllegalArgumentException("Category is null")
 
         return categoryEntity.toModel()
@@ -156,7 +156,7 @@ class ComparisonQuizViewModel @Inject constructor(
 
     private fun getComparisonMode(): ComparisonMode {
         return savedStateHandle
-            .get<ComparisonMode>(ComparisonQuizListScreenNavArg::comparisonMode.name)
+            .get<ComparisonMode>(ComparisonQuizScreenNavArg::comparisonMode.name)
             ?: throw IllegalArgumentException("Comparison mode is null")
     }
 
