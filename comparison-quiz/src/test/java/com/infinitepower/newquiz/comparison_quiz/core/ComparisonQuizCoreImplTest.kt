@@ -15,6 +15,7 @@ import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.testing.domain.FakeGameResultDao
+import com.infinitepower.newquiz.core.user_services.InsufficientDiamondsException
 import com.infinitepower.newquiz.core.user_services.LocalUserServiceImpl
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.core.user_services.data.xp.ComparisonQuizXpGeneratorImpl
@@ -385,47 +386,6 @@ internal class ComparisonQuizCoreImplTest {
     }
 
     @Test
-    fun `canSkip should return true when user has enough diamonds`() = runTest {
-        val skipCost = 10
-        val userDiamonds = 15
-
-        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost
-        every { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns userDiamonds
-        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(userDiamonds).key, userDiamonds)
-
-        val result = comparisonQuizCoreImpl.canSkip()
-
-        // Verify interactions
-        verify { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
-        verify { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) }
-        confirmVerified(remoteConfig)
-
-        // Verify result
-        assertThat(result).isTrue()
-    }
-
-    @Test
-    fun `canSkip should return false when user doesn't have enough diamonds`() = runTest {
-        val skipCost = 10
-        val userDiamonds = 5
-
-        every { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) } returns skipCost
-        every { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns userDiamonds
-        dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(userDiamonds).key, userDiamonds)
-
-        val result = comparisonQuizCoreImpl.canSkip()
-
-        // Verify interactions
-        verify { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
-        verify { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) }
-
-        // Verify result
-        assertThat(result).isFalse()
-
-        confirmVerified(remoteConfig)
-    }
-
-    @Test
     fun `skip() should deduct diamonds and update quiz data`() = runTest {
         val skipCost = 1
         val userDiamonds = 10
@@ -478,8 +438,10 @@ internal class ComparisonQuizCoreImplTest {
 
         comparisonQuizCoreImpl.skip()
 
-        // Verify that we called this twice, one for checking if can skip and one for actually skipping
-        verify(exactly = 2) { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
+        verify(exactly = 1) { remoteConfig.getString("comparison_quiz_first_item_helper_value") }
+        verify { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) }
+        verify(exactly = 1) { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
+        confirmVerified(remoteConfig)
 
         val newQuizData = comparisonQuizCoreImpl.quizDataFlow.first()
         val newCurrentQuestion = newQuizData.currentQuestion
@@ -497,15 +459,10 @@ internal class ComparisonQuizCoreImplTest {
         // Check if the helper value is changed
         assertThat(newQuizData.firstItemHelperValueState).isNotEqualTo(firstItemHelperValueState)
         assertThat(newQuizData.firstItemHelperValueState).isEqualTo(ComparisonQuizHelperValueState.NORMAL)
-
-        verify { remoteConfig.getString("comparison_quiz_first_item_helper_value") }
-        verify { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) }
-
-        confirmVerified(remoteConfig)
     }
 
     @Test
-    fun `skip should throw exception when user doesn't have enough diamonds`() = runTest {
+    fun `skip should return when user doesn't have enough diamonds`() = runTest {
         val skipCost = 10
         val userDiamonds = 5
 
@@ -513,18 +470,22 @@ internal class ComparisonQuizCoreImplTest {
         every { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) } returns userDiamonds
         dataStoreManager.editPreference(LocalUserCommon.UserDiamonds(userDiamonds).key, userDiamonds)
 
+        val initialQuizData = comparisonQuizCoreImpl.quizDataFlow.first()
+
         // Assert exception is thrown
-        assertThrows<RuntimeException> {
+        assertThrows<InsufficientDiamondsException> {
             comparisonQuizCoreImpl.skip()
         }
-
-        // Verify interactions
 
         // Verify that we called this once, one for checking if can skip
         // We don't call it again because we don't have enough diamonds
         verify(exactly = 1) { remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_SKIP_COST) }
         verify(exactly = 1) { remoteConfig.get(RemoteConfigValue.USER_INITIAL_DIAMONDS) }
         confirmVerified(remoteConfig)
+
+        // Check if nothing is changed
+        assertThat(userService.getUserDiamonds()).isEqualTo(userDiamonds.toUInt())
+        assertThat(comparisonQuizCoreImpl.quizDataFlow.first()).isEqualTo(initialQuizData)
     }
 
     private fun getInitializationData(

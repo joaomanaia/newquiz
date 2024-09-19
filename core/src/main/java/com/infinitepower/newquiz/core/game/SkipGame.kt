@@ -5,11 +5,5 @@ interface SkipGame {
 
     suspend fun getUserDiamonds(): UInt
 
-    suspend fun canSkip(): Boolean {
-        val userDiamonds = getUserDiamonds()
-
-        return userDiamonds >= skipCost
-    }
-
     suspend fun skip()
 }

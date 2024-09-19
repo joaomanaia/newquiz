@@ -10,6 +10,7 @@ import com.infinitepower.newquiz.core.game.GameOverException
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
+import com.infinitepower.newquiz.core.user_services.InsufficientDiamondsException
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
@@ -52,7 +53,8 @@ class ComparisonQuizCoreImpl @Inject constructor(
                 val comparisonMode = initializationData.comparisonMode
                 val questionDescription = category.getQuestionDescription(comparisonMode)
 
-                val firstItemHelperValue = remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE)
+                val firstItemHelperValue =
+                    remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE)
 
                 val quizData = QuizData(
                     questions = questions,
@@ -91,7 +93,11 @@ class ComparisonQuizCoreImpl @Inject constructor(
             val currentQuestion = currentData.currentQuestion
 
             // If the current question is null or the answer is correct, get the next question
-            if (currentQuestion == null || currentQuestion.isCorrectAnswer(answer, currentData.comparisonMode)) {
+            if (currentQuestion == null || currentQuestion.isCorrectAnswer(
+                    answer,
+                    currentData.comparisonMode
+                )
+            ) {
                 try {
                     currentData.getNextQuestion()
                 } catch (e: GameOverException) {
@@ -122,9 +128,15 @@ class ComparisonQuizCoreImpl @Inject constructor(
     override suspend fun skip() {
         Log.d(TAG, "Skipping question")
 
+        val userDiamonds = getUserDiamonds()
+        val skipCost = skipCost
+
         // Check if the user has enough diamonds to skip the question
-        if (!canSkip()) {
-            return
+        if (userDiamonds < skipCost) {
+            throw InsufficientDiamondsException(
+                diamondsNeeded = skipCost,
+                diamondsAvailable = userDiamonds
+            )
         }
 
         // Update the user's diamond count
