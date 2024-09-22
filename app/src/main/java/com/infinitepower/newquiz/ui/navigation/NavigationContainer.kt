@@ -14,26 +14,33 @@ import androidx.compose.material.icons.rounded.Today
 import androidx.compose.material.icons.rounded.ViewModule
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizListScreenDestination
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.navigation.NavDrawerBadgeItem
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.navigation.ScreenType
+import com.infinitepower.newquiz.core.ui.ObserveAsEvents
+import com.infinitepower.newquiz.core.ui.SnackbarController
 import com.infinitepower.newquiz.feature.daily_challenge.destinations.DailyChallengeScreenDestination
-import com.infinitepower.newquiz.feature.settings.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.feature.maze.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.feature.profile.destinations.ProfileScreenDestination
+import com.infinitepower.newquiz.feature.settings.destinations.SettingsScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizListScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
 
 internal fun getPrimaryItems(): ImmutableList<NavigationItem.Item> = persistentListOf(
     NavigationItem.Item(
@@ -108,6 +115,8 @@ internal fun NavigationContainer(
     userDiamonds: UInt,
     content: @Composable (PaddingValues) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
+
     val destination by navController.currentDestinationAsState()
 
     val primaryItems = remember { getPrimaryItems() }
@@ -125,6 +134,24 @@ internal fun NavigationContainer(
         selectedItem != null && selectedItem.screenType == ScreenType.NORMAL
     }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
+        scope.launch {
+            snackbarHostState.currentSnackbarData?.dismiss()
+
+            val result = snackbarHostState.showSnackbar(
+                message = event.message,
+                actionLabel = event.action?.name,
+                withDismissAction = event.withDismissAction,
+                duration = event.duration
+            )
+
+            if (result == SnackbarResult.ActionPerformed) {
+                event.action?.action?.invoke()
+            }
+        }
+    }
+
     if (navigationVisible) {
         when (windowWidthSize) {
             WindowWidthSizeClass.Compact -> CompactContainer(
@@ -133,6 +160,7 @@ internal fun NavigationContainer(
                 otherItems = otherItems,
                 selectedItem = selectedItem,
                 userDiamonds = userDiamonds,
+                snackbarHostState = snackbarHostState,
                 content = content
             )
 
@@ -142,6 +170,7 @@ internal fun NavigationContainer(
                 otherItems = otherItems,
                 selectedItem = selectedItem,
                 userDiamonds = userDiamonds,
+                snackbarHostState = snackbarHostState,
                 content = content
             )
 
@@ -151,12 +180,16 @@ internal fun NavigationContainer(
                 otherItems = otherItems,
                 selectedItem = selectedItem,
                 userDiamonds = userDiamonds,
+                snackbarHostState = snackbarHostState,
                 content = content
             )
         }
     } else {
         Scaffold(
-            content = content
+            content = content,
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            }
         )
     }
 }

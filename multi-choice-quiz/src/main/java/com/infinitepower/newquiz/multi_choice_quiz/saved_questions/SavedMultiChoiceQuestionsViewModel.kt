@@ -9,6 +9,8 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
+import com.infinitepower.newquiz.core.ui.SnackbarController
+import com.infinitepower.newquiz.core.ui.SnackbarEvent
 import com.infinitepower.newquiz.data.worker.multichoicequiz.DownloadMultiChoiceQuestionsWorker
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -108,6 +110,12 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
         workManager
             .getWorkInfoByIdFlow(downloadQuestionsRequest.id)
             .onEach { info ->
+                if (info.state == WorkInfo.State.SUCCEEDED) {
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(message = "Downloaded successfully")
+                    )
+                }
+
                 _uiState.update {
                     it.copy(
                         downloadingQuestions = info.state == WorkInfo.State.RUNNING

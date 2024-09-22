@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.comparison_quiz.core.workers.ComparisonQuizEndGameWorker
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
+import com.infinitepower.newquiz.core.ui.SnackbarController
+import com.infinitepower.newquiz.core.ui.SnackbarEvent
 import com.infinitepower.newquiz.core.user_services.InsufficientDiamondsException
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
@@ -130,6 +132,7 @@ class ComparisonQuizViewModel @Inject constructor(
                     comparisonQuizCore.onAnswerClicked(event.item)
                 }
             }
+
             is ComparisonQuizUiEvent.ShowSkipQuestionDialog -> getUserDiamonds()
             is ComparisonQuizUiEvent.DismissSkipQuestionDialog -> {
                 _uiState.update { currentState ->
@@ -139,13 +142,16 @@ class ComparisonQuizViewModel @Inject constructor(
                     )
                 }
             }
+
             is ComparisonQuizUiEvent.SkipQuestion -> {
                 viewModelScope.launch {
                     try {
                         comparisonQuizCore.skip()
                     } catch (e: InsufficientDiamondsException) {
                         e.printStackTrace()
-                        // TODO: Show error dialog
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(message = "Insufficient diamonds")
+                        )
                     }
                 }
             }

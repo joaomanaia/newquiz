@@ -7,6 +7,8 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -37,6 +39,7 @@ internal fun ExpandedContainer(
     otherItems: ImmutableList<NavigationItem>,
     selectedItem: NavigationItem.Item?,
     userDiamonds: UInt = 0u,
+    snackbarHostState: SnackbarHostState,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
@@ -66,6 +69,9 @@ internal fun ExpandedContainer(
     ) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            },
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
@@ -115,7 +121,8 @@ private fun MediumContainerPreview() {
                 primaryItems = getPrimaryItems(),
                 otherItems = otherItems,
                 selectedItem = selectedItem,
-                userDiamonds = 100u
+                userDiamonds = 100u,
+                snackbarHostState = SnackbarHostState()
             )
         }
     }

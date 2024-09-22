@@ -14,6 +14,8 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -47,6 +49,7 @@ internal fun CompactContainer(
     selectedItem: NavigationItem.Item?,
     userDiamonds: UInt = 0u,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    snackbarHostState: SnackbarHostState,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -76,6 +79,9 @@ internal fun CompactContainer(
     ) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            },
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
@@ -168,7 +174,8 @@ private fun CompactContainerPreview() {
                 primaryItems = getPrimaryItems(),
                 otherItems = otherItems,
                 selectedItem = selectedItem,
-                userDiamonds = 100u
+                userDiamonds = 100u,
+                snackbarHostState = SnackbarHostState()
             )
         }
     }
