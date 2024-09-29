@@ -53,6 +53,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 androidTestImplementation(libs.findLibrary("androidx.test.runner").get())
                 androidTestImplementation(libs.findLibrary("androidx.test.rules").get())
                 androidTestImplementation(libs.findLibrary("androidx.compose.ui.test").get())
+                androidTestImplementation(libs.findLibrary("turbine").get())
                 androidTestImplementation(project(":core:testing"))
 
                 // Fix for problem of duplicate classes with guava

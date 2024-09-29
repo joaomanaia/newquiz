@@ -15,6 +15,18 @@ interface DailyChallengeDao {
     @Query("SELECT * FROM daily_challenge_tasks ORDER BY endDate DESC")
     suspend fun getAllTasks(): List<DailyChallengeTaskEntity>
 
+    /**
+     * Get all tasks that are available for the current date.
+     * A task is available if the [currentTime] date is between the start date and end date of the task.
+     *
+     * @param currentTime The current date in milliseconds.
+     */
+    @Query("SELECT * FROM daily_challenge_tasks WHERE startDate <= :currentTime AND endDate >= :currentTime ORDER BY endDate DESC")
+    suspend fun getAvailableTasks(currentTime: Long): List<DailyChallengeTaskEntity>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM daily_challenge_tasks WHERE startDate <= :currentTime AND endDate >= :currentTime)")
+    suspend fun tasksAreAvailable(currentTime: Long): Boolean
+
     @Query("SELECT * FROM daily_challenge_tasks WHERE type = :type ORDER BY endDate DESC")
     suspend fun getTaskByType(type: String): DailyChallengeTaskEntity?
 

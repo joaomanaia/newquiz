@@ -39,5 +39,6 @@ dependencies {
     implementation(projects.core.userServices)
     implementation(projects.domain)
     implementation(projects.model)
+    testImplementation(projects.core.testing)
     androidTestImplementation(projects.core.testing)
 }

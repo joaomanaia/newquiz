@@ -24,6 +24,8 @@ dependencies {
 
     debugApi(libs.androidx.compose.ui.testManifest)
 
+    implementation(libs.kotlinx.datetime)
+
     implementation(projects.model)
     implementation(projects.core)
     implementation(projects.core.analytics)
