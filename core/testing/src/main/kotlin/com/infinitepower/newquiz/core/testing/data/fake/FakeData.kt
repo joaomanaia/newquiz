@@ -38,7 +38,7 @@ object FakeData {
     fun generateTasksWithOffset(
         size: Int = 10,
         instant: Instant = Clock.System.now(),
-        offset: Duration = (-4).days // Offset to ensure tasks are in the 4 days in the past
+        offset: Duration = DEFAULT_TASKS_OFFSET.days // Offset to ensure tasks are in the 4 days in the past
     ): List<DailyChallengeTask> {
         return List(size) { day ->
             val startDate = instant + day.days + offset
@@ -65,3 +65,5 @@ object FakeData {
         }
     }
 }
+
+private const val DEFAULT_TASKS_OFFSET = -4
