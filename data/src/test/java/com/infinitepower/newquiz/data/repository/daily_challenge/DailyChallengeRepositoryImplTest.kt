@@ -88,6 +88,7 @@ internal class DailyChallengeRepositoryImplTest {
         assertThat(resultTasks).containsExactlyElementsIn(tasks)
 
         coVerify(exactly = 1) { comparisonQuizRepository.getCategories() }
+        confirmVerified()
     }
 
     @Test
@@ -95,9 +96,13 @@ internal class DailyChallengeRepositoryImplTest {
         val tasks = FakeData.generateTasks()
         val expiredTasks = FakeData.generateTasks(
             count = 5,
-            dayDuration = (-1).days..0.days
+            dayDuration = (-2).days..(-1).days
         )
-        val allTasks = tasks + expiredTasks
+        val newTasks = FakeData.generateTasks(
+            count = 5,
+            dayDuration = (1).days..10.days
+        )
+        val allTasks = tasks + expiredTasks + newTasks
 
         dailyChallengeRepository.getAvailableTasksFlow().test {
             dailyChallengeDao.insertAll(allTasks.map(DailyChallengeTask::toEntity))
