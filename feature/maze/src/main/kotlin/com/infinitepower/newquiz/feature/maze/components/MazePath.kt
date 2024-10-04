@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Lock
@@ -25,6 +26,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -43,6 +45,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
@@ -130,30 +133,67 @@ fun MazePath(
 
         var pressedOffset by remember { mutableStateOf(Offset.Zero) }
 
+        val scrollToCurrentItem: () -> Unit = {
+            currentPlayItemIndex?.let { index ->
+                // Get the current play item's y position.
+                val currentPlayItemY = points[index].y
+                // Get the height of the screen divided by 2.
+                // This is used to center the current play item on the screen.
+                val halfScreenHeight = screenHeight / 2
+
+                val newTopScroll = -currentPlayItemY + halfScreenHeight
+
+                // If the top scroll is less than 0, it means that the current play item is
+                // not above the screen. In this case, we don't need to scroll.
+                if (newTopScroll >= 0) {
+                    val newGraphHeight = graphHeight - newTopScroll
+
+                    topScroll = if (newGraphHeight >= screenHeight) {
+                        newTopScroll
+                    } else {
+                        graphHeight - screenHeight
+                    }
+                } else {
+                    topScroll = 0f
+                }
+            }
+        }
+
+        val visibleScreenHeightRange = remember(topScroll, graphHeight) {
+            graphHeight - topScroll - screenHeight..graphHeight - topScroll
+        }
+
+        // The scroll button is visible if the current play item is not visible in the screen.
+        val scrollButtonState = remember(currentPlayItemIndex, visibleScreenHeightRange) {
+            if (currentPlayItemIndex == null) {
+                ScrollButtonState.HIDDEN
+            } else {
+                val currentPlayItemY = points[currentPlayItemIndex].y + graphHeight - screenHeight
+                if (currentPlayItemY !in visibleScreenHeightRange) {
+                    if (currentPlayItemY < visibleScreenHeightRange.start) {
+                        ScrollButtonState.SCROLL_TO_TOP
+                    } else {
+                        ScrollButtonState.SCROLL_TO_BOTTOM
+                    }
+                } else {
+                    ScrollButtonState.HIDDEN
+                }
+            }
+        }
+
+        ScrollToCurrentQuestionButton(
+            modifier = Modifier
+                .zIndex(1f)
+                .align(Alignment.BottomEnd)
+                .padding(MaterialTheme.spacing.medium),
+            state = scrollButtonState,
+            onClick = scrollToCurrentItem
+        )
+
         // If the startScrollToCurrentItem is true, scroll to the current item.
         LaunchedEffect(key1 = Unit) {
             if (startScrollToCurrentItem) {
-                currentPlayItemIndex?.let { index ->
-                    // Get the current play item's y position.
-                    val currentPlayItemY = points[index].y
-                    // Get the height of the screen divided by 2.
-                    // This is used to center the current play item on the screen.
-                    val halfScreenHeight = screenHeight / 2
-
-                    val newTopScroll = -currentPlayItemY + halfScreenHeight
-
-                    // If the top scroll is less than 0, it means that the current play item is
-                    // not above the screen. In this case, we don't need to scroll.
-                    if (newTopScroll >= 0) {
-                        val newGraphHeight = graphHeight - newTopScroll
-
-                        topScroll = if (newGraphHeight >= screenHeight) {
-                            newTopScroll
-                        } else {
-                            graphHeight - screenHeight
-                        }
-                    }
-                }
+                scrollToCurrentItem()
             }
         }
 

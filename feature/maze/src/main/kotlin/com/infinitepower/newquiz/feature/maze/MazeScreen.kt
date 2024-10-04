@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.feature.maze
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -75,7 +74,7 @@ private fun MazeScreenImpl(
     onItemClick: (item: MazeItem) -> Unit
 ) {
     when {
-        uiState.loading  -> CircularProgressIndicator()
+        uiState.loading -> CircularProgressIndicator()
         !uiState.loading && uiState.isMazeEmpty -> GenerateMazeScreen(onBackClick = navigateBack)
         !uiState.loading && !uiState.isMazeEmpty -> MazePathScreen(
             uiState = uiState,
@@ -147,23 +146,20 @@ private fun MazePathScreen(
                             )
                         }
                     }
-                }
+                },
             )
         }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-        ) {
-            if (!uiState.isMazeEmpty) {
-                MazePath(
-                    modifier = Modifier.fillMaxSize(),
-                    items = uiState.maze.items,
-                    mazeSeed = uiState.mazeSeed ?: 0,
-                    onItemClick = onItemClick,
-                    startScrollToCurrentItem = uiState.autoScrollToCurrentItem
-                )
-            }
+        if (!uiState.isMazeEmpty) {
+            MazePath(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                items = uiState.maze.items,
+                mazeSeed = uiState.mazeSeed ?: 0,
+                onItemClick = onItemClick,
+                startScrollToCurrentItem = uiState.autoScrollToCurrentItem
+            )
         }
     }
 }
