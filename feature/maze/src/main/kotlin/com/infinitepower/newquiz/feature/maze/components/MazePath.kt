@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.vector.VectorPainter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -336,56 +337,54 @@ private fun DrawScope.drawPoints(
         val itemPlayed = items.isItemPlayed(itemIndex)
         val isPlayableItem = items.isPlayableItem(itemIndex)
 
-        val canPress = (isPlayableItem || itemPlayed) && pressedOffset.isInsideCircle(
+        val canPress = isPlayableItem || itemPlayed
+        val isPressed = canPress && pressedOffset.isInsideCircle(
             pointOffset,
             CircleSize.toPx()
         )
 
-        drawCircle(
-            color = colors.circleContainerColor(
-                played = itemPlayed,
-                isPlayItem = isPlayableItem
-            ),
-            radius = if (canPress) {
-                CircleSize.toPx() * CirclePressScale
-            } else {
-                CircleSize.toPx()
-            },
-            center = pointOffset
-        )
-
-        if (isPlayableItem) {
+        scale(
+            scale = if (isPressed) CirclePressScale else 1f,
+            pivot = pointOffset
+        ) {
             drawCircle(
-                color = colors.currentCircleInnerColor(),
-                radius = if (canPress) {
-                    CurrentCircleInnerSize.toPx() * CirclePressScale
-                } else {
-                    CurrentCircleInnerSize.toPx()
-                },
+                color = colors.circleContainerColor(
+                    played = itemPlayed,
+                    isPlayItem = isPlayableItem
+                ),
+                radius = CircleSize.toPx(),
                 center = pointOffset
             )
-        }
 
-        translate(
-            left = pointOffset.x - IconSize.toPx() / 2,
-            top = pointOffset.y - IconSize.toPx() / 2
-        ) {
-            with(
-                when {
-                    !isPlayableItem && !itemPlayed -> lockPainter // Locked
-                    !isPlayableItem && itemPlayed -> playedPainter // Played
-                    else -> playPainter
-                }
+            if (isPlayableItem) {
+                drawCircle(
+                    color = colors.currentCircleInnerColor(),
+                    radius = CurrentCircleInnerSize.toPx(),
+                    center = pointOffset
+                )
+            }
+
+            translate(
+                left = pointOffset.x - IconSize.toPx() / 2,
+                top = pointOffset.y - IconSize.toPx() / 2
             ) {
-                draw(
-                    size = Size(IconSize.toPx(), IconSize.toPx()),
-                    colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
-                        colors.circleContentColor(
-                            played = itemPlayed,
-                            isPlayItem = isPlayableItem
+                with(
+                    when {
+                        !isPlayableItem && !itemPlayed -> lockPainter // Locked
+                        !isPlayableItem && itemPlayed -> playedPainter // Played
+                        else -> playPainter
+                    }
+                ) {
+                    draw(
+                        size = Size(IconSize.toPx(), IconSize.toPx()),
+                        colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
+                            colors.circleContentColor(
+                                played = itemPlayed,
+                                isPlayItem = isPlayableItem
+                            )
                         )
                     )
-                )
+                }
             }
         }
     }
