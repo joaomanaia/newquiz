@@ -43,6 +43,7 @@ internal fun NavigationButtonWidget(
 @Composable
 internal fun NavigationButton(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     title: String,
     icon: @Composable (() -> Unit)?,
     description: String? = null,
@@ -50,7 +51,6 @@ internal fun NavigationButton(
     enabled: Boolean = true,
     singleLineTitle: Boolean = true,
     singleLineSummary: Boolean = true,
-    onClick: () -> Unit,
 ) {
     val transition = updateTransition(
         targetState = isSelected,

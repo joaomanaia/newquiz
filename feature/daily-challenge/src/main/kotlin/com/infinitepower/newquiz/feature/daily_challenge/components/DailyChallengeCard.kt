@@ -33,6 +33,8 @@ import com.infinitepower.newquiz.core.R as CoreR
 @Composable
 internal fun DailyChallengeCard(
     modifier: Modifier = Modifier,
+    onClaimClick: () -> Unit,
+    onCardClick: () -> Unit,
     now: Instant,
     title: String,
     currentValue: UInt,
@@ -42,8 +44,6 @@ internal fun DailyChallengeCard(
     isClaimed: Boolean,
     diamondsReward: UInt,
     userCanClaim: Boolean = true,
-    onClaimClick: () -> Unit,
-    onCardClick: () -> Unit
 ) {
     val isExpired = remember(dateRange, now) {
         now > dateRange.endInclusive
@@ -77,6 +77,8 @@ internal fun DailyChallengeCard(
 @Composable
 internal fun DailyChallengeCard(
     modifier: Modifier = Modifier,
+    onClaimClick: () -> Unit,
+    onCardClick: () -> Unit,
     title: String,
     currentValue: UInt,
     maxValue: UInt,
@@ -85,8 +87,6 @@ internal fun DailyChallengeCard(
     diamondsReward: UInt,
     enabled: Boolean = true,
     userCanClaim: Boolean = true,
-    onClaimClick: () -> Unit,
-    onCardClick: () -> Unit
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 

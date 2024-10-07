@@ -39,10 +39,10 @@ import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 @Composable
 internal fun ComparisonItem(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     item: ComparisonQuizItem,
     helperContentAlignment: Alignment,
-    helperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN,
-    onClick: () -> Unit
+    helperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN
 ) {
     ComparisonItem(
         modifier = modifier,
@@ -58,12 +58,12 @@ internal fun ComparisonItem(
 @Composable
 internal fun ComparisonItem(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     title: String,
     image: Uri,
     helperValue: String,
     helperContentAlignment: Alignment,
-    helperValueState: ComparisonQuizHelperValueState,
-    onClick: () -> Unit
+    helperValueState: ComparisonQuizHelperValueState
 ) {
     val spaceExtraSmall = MaterialTheme.spacing.extraSmall
     val spaceMedium = MaterialTheme.spacing.medium

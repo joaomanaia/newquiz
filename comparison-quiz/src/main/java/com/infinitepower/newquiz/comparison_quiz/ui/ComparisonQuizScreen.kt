@@ -189,6 +189,9 @@ data class ComparisonQuizScreenNavArg(
 @ExperimentalAnimationApi
 private fun ComparisonQuizContent(
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    onSkipClick: () -> Unit,
+    onAnswerClick: (ComparisonQuizItem) -> Unit,
     currentQuestion: ComparisonQuizCurrentQuestion,
     gameCategory: ComparisonQuizCategory,
     gameDescription: String,
@@ -197,10 +200,7 @@ private fun ComparisonQuizContent(
     verticalContent: Boolean,
     userAvailable: Boolean,
     firstItemHelperValueState: ComparisonQuizHelperValueState,
-    animationState: AnimationState,
-    onBackClick: () -> Unit,
-    onAnswerClick: (ComparisonQuizItem) -> Unit,
-    onSkipClick: () -> Unit
+    animationState: AnimationState
 ) {
     ComparisonQuizContainer(
         modifier = modifier.fillMaxSize(),

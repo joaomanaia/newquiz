@@ -20,7 +20,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.feature.settings.common.BuildVariant
@@ -29,14 +28,15 @@ import com.infinitepower.newquiz.feature.settings.model.ScreenKey
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
 import kotlinx.collections.immutable.persistentListOf
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @ExperimentalMaterial3Api
 internal fun MainScreen(
     modifier: Modifier = Modifier,
-    currentScreen: ScreenKey?,
+    onBackClick: () -> Unit,
     onScreenSelect: (key: ScreenKey) -> Unit,
-    onBackClick: () -> Unit
+    currentScreen: ScreenKey?
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
 

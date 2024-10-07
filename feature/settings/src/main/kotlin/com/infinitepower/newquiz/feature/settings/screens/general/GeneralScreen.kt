@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.infinitepower.newquiz.core.NumberFormatter.Distance.DistanceUnitType
+import com.infinitepower.newquiz.core.NumberFormatter.Temperature.TemperatureUnit
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -28,8 +30,6 @@ import com.infinitepower.newquiz.feature.settings.model.ScreenKey
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
 import com.infinitepower.newquiz.feature.settings.util.getShowCategoryConnectionInfoEntryMap
-import com.infinitepower.newquiz.core.NumberFormatter.Temperature.TemperatureUnit
-import com.infinitepower.newquiz.core.NumberFormatter.Distance.DistanceUnitType
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,10 +60,10 @@ internal fun GeneralScreen(
 internal fun GeneralScreen(
     modifier: Modifier = Modifier,
     uiState: GeneralScreenUiState = GeneralScreenUiState(),
+    onEvent: (GeneralScreenUiEvent) -> Unit,
     isScreenExpanded: Boolean,
     onBackClick: () -> Unit,
-    navigateToScreen: (key: ScreenKey) -> Unit,
-    onEvent: (GeneralScreenUiEvent) -> Unit
+    navigateToScreen: (key: ScreenKey) -> Unit
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
     val scope = rememberCoroutineScope()

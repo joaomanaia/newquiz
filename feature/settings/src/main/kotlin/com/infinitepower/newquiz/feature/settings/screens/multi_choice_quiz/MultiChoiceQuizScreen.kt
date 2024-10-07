@@ -4,19 +4,19 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
 import kotlinx.collections.immutable.persistentListOf
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @ExperimentalMaterial3Api
 internal fun MultiChoiceQuizScreen(
     modifier: Modifier = Modifier,
-    isScreenExpanded: Boolean,
     onBackClick: () -> Unit,
+    isScreenExpanded: Boolean,
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
 

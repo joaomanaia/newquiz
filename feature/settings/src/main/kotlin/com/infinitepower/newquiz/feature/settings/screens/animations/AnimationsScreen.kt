@@ -8,20 +8,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.feature.settings.model.Preference
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
 import kotlinx.collections.immutable.persistentListOf
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @ExperimentalMaterial3Api
 internal fun AnimationsScreen(
     modifier: Modifier = Modifier,
-    isScreenExpanded: Boolean,
     onBackClick: () -> Unit,
+    isScreenExpanded: Boolean,
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
 

@@ -82,10 +82,10 @@ internal fun AboutAndHelpButtons(
 @Composable
 internal fun FilledIconButton(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     imageVector: ImageVector,
     contentDescription: String?,
-    containerColor: Color = MaterialTheme.colorScheme.primary,
-    onClick: () -> Unit
+    containerColor: Color = MaterialTheme.colorScheme.primary
 ) {
     FilledIconButton(
         modifier = modifier,

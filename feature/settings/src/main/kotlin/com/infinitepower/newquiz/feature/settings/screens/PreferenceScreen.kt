@@ -31,11 +31,11 @@ import kotlinx.collections.immutable.ImmutableList
 @ExperimentalMaterial3Api
 fun PreferenceScreen(
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
     title: String,
     items: ImmutableList<Preference>,
     dataStoreManager: DataStoreManager,
-    isScreenExpanded: Boolean,
-    onBackClick: () -> Unit
+    isScreenExpanded: Boolean
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 

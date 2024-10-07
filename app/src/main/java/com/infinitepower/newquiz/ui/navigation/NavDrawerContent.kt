@@ -30,10 +30,10 @@ import com.infinitepower.newquiz.core.R as CoreR
 @ExperimentalMaterial3Api
 internal fun NavigationDrawerContent(
     modifier: Modifier = Modifier,
+    onItemClick: (item: NavigationItem.Item) -> Unit,
     permanent: Boolean = false,
     items: ImmutableList<NavigationItem>,
-    selectedItem: NavigationItem.Item?,
-    onItemClick: (item: NavigationItem.Item) -> Unit
+    selectedItem: NavigationItem.Item?
 ) {
     NavigationDrawerContainer(
         modifier = modifier,
@@ -71,9 +71,9 @@ private fun NavigationDrawerContainer(
 @ExperimentalMaterial3Api
 private fun NavigationDrawerContent(
     modifier: Modifier = Modifier,
+    onItemClick: (item: NavigationItem.Item) -> Unit,
     items: ImmutableList<NavigationItem>,
     selectedItem: NavigationItem.Item?,
-    onItemClick: (item: NavigationItem.Item) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
@@ -124,7 +124,9 @@ private fun NavigationDrawerContent(
                                     )
                                 }
                             }
-                        } else null
+                        } else {
+                            null
+                        }
                     )
                 }
             }

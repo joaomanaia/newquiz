@@ -222,7 +222,7 @@ private fun SavedMultiChoiceQuestionsScreenImpl(
                             SavedQuestionItem(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .animateItemPlacement(),
+                                    .animateItem(),
                                 question = question,
                                 selected = selected,
                                 onClick = {

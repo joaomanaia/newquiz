@@ -85,9 +85,9 @@ internal fun ListPreferenceWidget(
 @Composable
 private fun SelectableListItem(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit
+    isSelected: Boolean
 ) {
     ListItem(
         headlineContent = { Text(text = text) },

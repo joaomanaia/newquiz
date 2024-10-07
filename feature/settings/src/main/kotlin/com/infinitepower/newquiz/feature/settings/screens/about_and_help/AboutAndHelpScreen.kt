@@ -28,8 +28,8 @@ import kotlinx.collections.immutable.persistentListOf
 @ExperimentalMaterial3Api
 internal fun AboutAndHelpScreen(
     modifier: Modifier = Modifier,
-    isScreenExpanded: Boolean,
     onBackClick: () -> Unit,
+    isScreenExpanded: Boolean,
 ) {
     val dataStoreManager = rememberSettingsDataStoreManager()
 

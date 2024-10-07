@@ -41,7 +41,6 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.category.CategoryComponent
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.core.util.asString
-import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.model.BaseCategory
@@ -49,6 +48,7 @@ import com.infinitepower.newquiz.model.GameMode
 import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @ExperimentalMaterial3Api
@@ -302,9 +302,9 @@ private fun <T : BaseCategory> LazyListScope.categoriesItems(
 
 @Composable
 private fun HelperChipsRow(
-    modifier: Modifier = Modifier,
     onSelectAllClick: () -> Unit,
-    onOnlyOfflineClick: () -> Unit
+    onOnlyOfflineClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyRow(
         modifier = modifier,
