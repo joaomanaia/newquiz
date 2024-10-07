@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
@@ -47,6 +48,9 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.graphics.shapes.CornerRounding
+import androidx.graphics.shapes.RoundedPolygon
+import androidx.graphics.shapes.toPath
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
@@ -347,19 +351,30 @@ private fun DrawScope.drawPoints(
             scale = if (isPressed) CirclePressScale else 1f,
             pivot = pointOffset
         ) {
-            drawCircle(
+            val currentItemRoundedPolygon = RoundedPolygon(
+                numVertices = ITEM_POLYGON_NUM_VERTICES,
+                radius = CircleSize.toPx(),
+                centerX = pointOffset.x,
+                centerY = pointOffset.y,
+                rounding = CornerRounding(
+                    radius = size.minDimension / ITEM_POLYGON_RADIUS_PERCENTAGE,
+                    smoothing = 0.1f
+                )
+            )
+            val roundedPolygonPath = currentItemRoundedPolygon.toPath().asComposePath()
+
+            drawPath(
+                path = roundedPolygonPath,
                 color = colors.circleContainerColor(
                     played = itemPlayed,
                     isPlayItem = isPlayableItem
                 ),
-                radius = CircleSize.toPx(),
-                center = pointOffset
             )
 
             if (isPlayableItem) {
                 drawCircle(
                     color = colors.currentCircleInnerColor(),
-                    radius = CurrentCircleInnerSize.toPx(),
+                    radius = CircleInnerSize.toPx(),
                     center = pointOffset
                 )
             }
@@ -511,8 +526,9 @@ class MazeColors internal constructor(
 }
 
 private val PointSpacing = 100.dp
-private val CircleSize = 30.dp
-private val CurrentCircleInnerSize = 20.dp
+private val CircleSize = 35.dp
+private const val CIRCLE_INNER_SIZE_PERCENTAGE = 0.6f
+private val CircleInnerSize = CircleSize * CIRCLE_INNER_SIZE_PERCENTAGE
 private val IconSize = 30.dp
 private val LineSize = 12.dp
 
@@ -522,6 +538,9 @@ private val LineSize = 12.dp
 private const val PathSmoothness = 0.25f
 
 private const val CirclePressScale = 1.1f
+
+private const val ITEM_POLYGON_NUM_VERTICES = 6
+private const val ITEM_POLYGON_RADIUS_PERCENTAGE = 30f
 
 private const val MazePathEffectWidth = 50f
 private const val MazePathEffectSpacing = 50f

@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
     implementation(libs.androidx.compose.material.iconsExtended)
+    implementation(libs.androidx.graphics.shapes)
 
     implementation(projects.core.datastore)
     implementation(projects.data)
