@@ -136,6 +136,7 @@
     <string name="copy_maze_seed">Copy maze seed</string>
     <string name="restart_maze">Restart maze</string>
     <string name="generate_maze">Generate maze</string>
+    <string name="maze_completed">Maze completed!</string>
     <string name="generate_offline_maze">Generate offline maze</string>
     <string name="generate_offline_maze_description">Generate maze with all game modes that don\'t need internet connection.</string>
     <string name="random_maze">Random maze</string>

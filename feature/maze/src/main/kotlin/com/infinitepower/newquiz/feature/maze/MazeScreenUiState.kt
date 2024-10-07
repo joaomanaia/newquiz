@@ -13,6 +13,9 @@ data class MazeScreenUiState(
     val isMazeEmpty: Boolean
         get() = maze.items.isEmpty()
 
+    val isMazeCompleted: Boolean
+        get() = maze.items.all { it.played }
+
     val mazeSeed: Int?
         get() = maze.items.firstOrNull()?.mazeSeed
 }

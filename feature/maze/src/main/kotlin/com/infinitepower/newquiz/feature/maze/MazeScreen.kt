@@ -1,17 +1,22 @@
 package com.infinitepower.newquiz.feature.maze
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.RestartAlt
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,7 +34,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
+import com.infinitepower.newquiz.feature.maze.components.MazeCompletedCard
 import com.infinitepower.newquiz.feature.maze.components.MazePath
 import com.infinitepower.newquiz.feature.maze.generate.GenerateMazeScreen
 import com.infinitepower.newquiz.model.maze.MazeQuiz
@@ -74,7 +81,11 @@ private fun MazeScreenImpl(
     onItemClick: (item: MazeItem) -> Unit
 ) {
     when {
-        uiState.loading -> CircularProgressIndicator()
+        uiState.loading -> {
+            Box {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            }
+        }
         !uiState.loading && uiState.isMazeEmpty -> GenerateMazeScreen(onBackClick = navigateBack)
         !uiState.loading && !uiState.isMazeEmpty -> MazePathScreen(
             uiState = uiState,
@@ -96,6 +107,8 @@ private fun MazePathScreen(
     val clipboardManager = LocalClipboardManager.current
 
     var moreOptionsExpanded by remember { mutableStateOf(false) }
+
+    val spaceMedium = MaterialTheme.spacing.medium
 
     Scaffold(
         topBar = {
@@ -151,15 +164,33 @@ private fun MazePathScreen(
         }
     ) { innerPadding ->
         if (!uiState.isMazeEmpty) {
-            MazePath(
+            Column(
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize(),
-                items = uiState.maze.items,
-                mazeSeed = uiState.mazeSeed ?: 0,
-                onItemClick = onItemClick,
-                startScrollToCurrentItem = uiState.autoScrollToCurrentItem
-            )
+            ) {
+                MazePath(
+                    modifier = Modifier.weight(1f),
+                    items = uiState.maze.items,
+                    mazeSeed = uiState.mazeSeed ?: 0,
+                    onItemClick = onItemClick,
+                    startScrollToCurrentItem = uiState.autoScrollToCurrentItem
+                )
+
+                if (uiState.isMazeCompleted) {
+                    MazeCompletedCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(
+                                start = spaceMedium,
+                                end = spaceMedium,
+                                bottom = spaceMedium
+                            ),
+                        onRestartClick = { uiEvent(MazeScreenUiEvent.RestartMaze) }
+                    )
+                }
+            }
         }
     }
 }
@@ -198,7 +229,7 @@ private fun MazeScreenPreview() {
                 ),
                 navigateBack = {},
                 uiEvent = {},
-                onItemClick = {}
+                onItemClick = {},
             )
         }
     }
