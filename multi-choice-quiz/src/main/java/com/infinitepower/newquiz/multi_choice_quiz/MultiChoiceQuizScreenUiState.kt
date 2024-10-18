@@ -26,11 +26,11 @@ data class MultiChoiceQuizScreenUiState(
 
     /**
      * Gets new question index.
-     * If question is the last question retuns -1.
+     * If question is the last question returns -1.
      * @return new question index
      */
     fun getNextIndex(): Int = if (currentQuestionIndex == questionSteps.lastIndex) -1 else currentQuestionIndex + 1
 
     val isGameEnded: Boolean
-        get() = questionSteps.isAllCompleted()
+        get() = !loading && questionSteps.isAllCompleted()
 }

@@ -24,10 +24,11 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
-import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
+import com.infinitepower.newquiz.core.navigation.MazeNavigator
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipQuestionDialog
 import com.infinitepower.newquiz.core.util.toAndroidUri
@@ -40,11 +41,14 @@ import com.infinitepower.newquiz.multi_choice_quiz.components.CardQuestionAnswer
 import com.infinitepower.newquiz.multi_choice_quiz.components.MultiChoiceQuizContainer
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizStepViewRow
 import com.infinitepower.newquiz.multi_choice_quiz.components.QuizTopBar
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.popUpTo
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.seconds
 
 internal val MULTI_CHOICE_QUIZ_COUNTDOWN_TIME = 30.seconds
@@ -67,29 +71,25 @@ data class MultiChoiceQuizScreenNavArg(
 @OptIn(ExperimentalMaterial3Api::class)
 fun MultiChoiceQuizScreen(
     navigator: DestinationsNavigator,
+    mazeNavigator: MazeNavigator,
+    navController: NavController,
     windowSizeClass: WindowSizeClass,
     viewModel: QuizScreenViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = true) {
-        viewModel
-            .navEvent
-            .collect { event ->
-                when (event) {
-                    is NavEvent.Navigate -> {
-                        navigator.navigate(event.direction) {
-                            launchSingleTop = true
+    LaunchedEffect(uiState.isGameEnded) {
+        if (uiState.isGameEnded) {
+            val backStackEntry = navController.currentBackStackEntry ?: return@LaunchedEffect
+            val args = MultiChoiceQuizScreenDestination.argsFrom(backStackEntry)
 
-                            popUpTo(MultiChoiceQuizScreenDestination) {
-                                inclusive = true
-                            }
-                        }
-                    }
-
-                    else -> {}
-                }
-            }
+            navigateToResultsScreen(
+                navigator = navigator,
+                mazeNavigator = mazeNavigator,
+                args = args,
+                questionSteps = uiState.questionSteps.filterIsInstance<MultiChoiceQuestionStep.Completed>()
+            )
+        }
     }
 
     MultiChoiceQuizScreenImpl(
@@ -199,6 +199,36 @@ private fun MultiChoiceQuizScreenImpl(
             )
         }
     )
+}
+
+private fun navigateToResultsScreen(
+    navigator: DestinationsNavigator,
+    mazeNavigator: MazeNavigator,
+    args: MultiChoiceQuizScreenNavArg,
+    questionSteps: List<MultiChoiceQuestionStep.Completed>
+) {
+    val questionFromMaze = args.mazeItemId != null
+
+    if (questionFromMaze) {
+        mazeNavigator.navigateToMazeResults(args.mazeItemId?.toIntOrNull() ?: return)
+    } else {
+        val questionStepsStr = Json.encodeToString(questionSteps)
+
+        navigator.navigate(
+            MultiChoiceQuizResultsScreenDestination(
+                questionStepsStr = questionStepsStr,
+                byInitialQuestions = args.initialQuestions.isNotEmpty(),
+                category = args.category,
+                difficulty = args.difficulty
+            )
+        ) {
+            launchSingleTop = true
+
+            popUpTo(MultiChoiceQuizScreenDestination) {
+                inclusive = true
+            }
+        }
+    }
 }
 
 @Composable

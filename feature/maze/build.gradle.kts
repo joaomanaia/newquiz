@@ -16,6 +16,8 @@ dependencies {
     implementation(libs.androidx.compose.material.iconsExtended)
     implementation(libs.androidx.graphics.shapes)
 
+    implementation(libs.lottie.compose)
+
     implementation(projects.core.datastore)
     implementation(projects.data)
     implementation(projects.domain)

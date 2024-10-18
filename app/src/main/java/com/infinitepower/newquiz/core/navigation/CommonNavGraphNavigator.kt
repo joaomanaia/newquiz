@@ -6,7 +6,7 @@ import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.feature.daily_challenge.DailyChallengeScreenNavigator
-import com.infinitepower.newquiz.feature.maze.MazeScreenNavigator
+import com.infinitepower.newquiz.feature.maze.destinations.LevelResultsScreenDestination
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.maze.MazeQuiz
@@ -22,7 +22,7 @@ class CommonNavGraphNavigator(
     private val navController: NavController,
     private val remoteConfig: RemoteConfig
 ) : SavedQuestionsScreenNavigator,
-    MazeScreenNavigator,
+    MazeNavigator,
     DailyChallengeScreenNavigator {
 
     override fun navigateToWordleQuiz(type: WordleQuizType) {
@@ -37,9 +37,11 @@ class CommonNavGraphNavigator(
     }
 
     override fun navigateToMultiChoiceQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {
-        val remoteConfigDifficulty = remoteConfig.get(RemoteConfigValue.MULTICHOICE_QUICKQUIZ_DIFFICULTY).run {
-            if (this == "random") null else this
-        }
+        val remoteConfigDifficulty = remoteConfig
+            .get(RemoteConfigValue.MULTICHOICE_QUICKQUIZ_DIFFICULTY)
+            .run {
+                if (this == "random") null else this
+            }
 
         navController.navigate(
             MultiChoiceQuizScreenDestination(
@@ -50,9 +52,11 @@ class CommonNavGraphNavigator(
     }
 
     override fun navigateToMultiChoiceQuiz(category: MultiChoiceBaseCategory) {
-        val remoteConfigDifficulty = remoteConfig.get(RemoteConfigValue.MULTICHOICE_QUICKQUIZ_DIFFICULTY).run {
-            if (this == "random") null else this
-        }
+        val remoteConfigDifficulty = remoteConfig
+            .get(RemoteConfigValue.MULTICHOICE_QUICKQUIZ_DIFFICULTY)
+            .run {
+                if (this == "random") null else this
+            }
 
         navController.navigate(
             MultiChoiceQuizScreenDestination(
@@ -72,6 +76,7 @@ class CommonNavGraphNavigator(
                     textHelper = item.wordleWord.textHelper
                 )
             }
+
             is MazeQuiz.MazeItem.MultiChoice -> {
                 MultiChoiceQuizScreenDestination(
                     initialQuestions = arrayListOf(item.question),
@@ -80,6 +85,24 @@ class CommonNavGraphNavigator(
             }
         }
 
-        navController.navigate(destination)
+        navController.navigate(destination) {
+            popUpTo(LevelResultsScreenDestination.route) {
+                inclusive = true
+            }
+        }
+    }
+
+    override fun navigateToMazeResults(itemId: Int) {
+        navController.navigate(LevelResultsScreenDestination(itemId)) {
+            launchSingleTop = true
+
+            // Remove current screen from back stack
+            val currentRoute = navController.currentDestination?.route
+            if (currentRoute != null) {
+                popUpTo(currentRoute) {
+                    inclusive = true
+                }
+            }
+        }
     }
 }

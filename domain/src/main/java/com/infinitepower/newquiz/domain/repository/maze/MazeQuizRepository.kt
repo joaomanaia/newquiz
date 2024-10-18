@@ -9,4 +9,10 @@ interface MazeQuizRepository {
     suspend fun countAllItems(): Int
 
     suspend fun insertItems(items: List<MazeQuiz.MazeItem>)
+
+    suspend fun getMazeItemById(id: Int): MazeQuiz.MazeItem?
+
+    suspend fun getNextAvailableMazeItem(): MazeQuiz.MazeItem?
+
+    suspend fun completeMazeItem(id: Int)
 }

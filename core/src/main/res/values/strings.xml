@@ -303,4 +303,10 @@
     <string name="no_data">No data</string>
     <string name="no_questions_saved_yet">No questions saved yet!</string>
     <string name="no_questions_saved_description">Save or download questions to start playing offline.</string>
+    <string name="level_completed">Level completed!</string>
+    <string name="next_level">Next Level</string>
+    <string name="main_menu">Main Menu</string>
+    <string name="try_again">Try Again</string>
+    <string name="level_failed">Level failed!</string>
+    <string name="level_failed_description">Don\'t give up! Try again to beat this level.</string>
 </resources>

@@ -11,6 +11,13 @@ object SnackbarController {
     suspend fun sendEvent(event: SnackbarEvent) {
         _events.send(event)
     }
+
+    /**
+     * Show a short message to the user.
+     */
+    suspend fun sendShortMessage(message: String) {
+        sendEvent(event = SnackbarEvent(message))
+    }
 }
 
 data class SnackbarEvent(

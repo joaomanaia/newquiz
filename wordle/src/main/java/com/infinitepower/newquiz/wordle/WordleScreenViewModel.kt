@@ -11,7 +11,7 @@ import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
-import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
+import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.Resource
 import com.infinitepower.newquiz.model.global_event.GameEvent
@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,12 +42,14 @@ class WordleScreenViewModel @Inject constructor(
     private val wordleRepository: WordleRepository,
     private val savedStateHandle: SavedStateHandle,
     private val workManager: WorkManager,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
+    private val mazeQuizRepository: MazeQuizRepository
 ) : ViewModel() {
     private var _uiState = MutableStateFlow(WordleScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
+        // TODO Add flow combine
         wordleRepository
             .isColorBlindEnabled()
             .onEach { res ->
@@ -74,10 +77,10 @@ class WordleScreenViewModel @Inject constructor(
         generateGame()
     }
 
-    override fun onCleared() {
-        endGame()
-        super.onCleared()
-    }
+//    override fun onCleared() {
+//        endGame()
+//        super.onCleared()
+//    }
 
     fun onEvent(event: WordleScreenUiEvent) {
         when (event) {
@@ -215,7 +218,7 @@ class WordleScreenViewModel @Inject constructor(
     }
 
     private fun verifyRow() {
-        _uiState.update { currentState ->
+        val state = _uiState.updateAndGet { currentState ->
             if (currentState.word == null) return
             if (currentState.wordleQuizType == null) return
             if (!currentState.currentRowCompleted) return
@@ -230,7 +233,7 @@ class WordleScreenViewModel @Inject constructor(
             )
 
             if (!wordValid) {
-                return@update currentState.copy(
+                return@updateAndGet currentState.copy(
                     errorMessage = "Left formula is not equal to right solution"
                 )
             }
@@ -250,7 +253,7 @@ class WordleScreenViewModel @Inject constructor(
                     verifiedItems containsAllLastRevealedHints last2RowItems
 
                 if (!containsAllLastRevealedHints) {
-                    return@update currentState.copy(
+                    return@updateAndGet currentState.copy(
                         errorMessage = "You need to use all hints from last row!"
                     )
                 }
@@ -283,14 +286,22 @@ class WordleScreenViewModel @Inject constructor(
                 errorMessage = null
             )
         }
+
+        if (state.isGamedEnded) {
+            endGame(state)
+        }
     }
 
-    private fun endGame() {
-        val currentState = uiState.value
-
+    private fun endGame(currentState: WordleScreenUiState) {
         val isLastRowCorrect = currentState.rows.lastOrNull()?.isRowCorrect == true
 
         val mazeItemId = savedStateHandle.get<String?>(WordleScreenNavArgs::mazeItemId.name)
+
+        if (mazeItemId != null && isLastRowCorrect) {
+            viewModelScope.launch {
+                mazeQuizRepository.completeMazeItem(mazeItemId.toInt())
+            }
+        }
 
         val wordleEndGameWorkRequest = OneTimeWorkRequestBuilder<WordleEndGameWorker>()
             .setInputData(
@@ -305,14 +316,5 @@ class WordleScreenViewModel @Inject constructor(
             ).build()
 
         workManager.enqueue(wordleEndGameWorkRequest)
-
-        if (mazeItemId != null && isLastRowCorrect) {
-            // Runs the end game maze worker if is maze game mode and the question is correct
-            val endGameMazeQuizWorkerRequest = OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
-                .setInputData(workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId.toIntOrNull()))
-                .build()
-
-            workManager.enqueue(endGameMazeQuizWorkerRequest)
-        }
     }
 }

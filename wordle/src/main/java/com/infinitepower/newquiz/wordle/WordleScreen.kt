@@ -2,7 +2,17 @@ package com.infinitepower.newquiz.wordle
 
 import androidx.annotation.Keep
 import androidx.annotation.VisibleForTesting
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -11,12 +21,31 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -32,6 +61,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.infinitepower.newquiz.core.navigation.MazeNavigator
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.animationsEnabled
 import com.infinitepower.newquiz.core.theme.spacing
@@ -46,9 +77,11 @@ import com.infinitepower.newquiz.wordle.components.WordleKeyBoard
 import com.infinitepower.newquiz.wordle.components.WordleRowComponent
 import com.infinitepower.newquiz.wordle.components.getItemRowBackgroundColor
 import com.infinitepower.newquiz.wordle.components.getItemRowTextColor
+import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.delay
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Keep
@@ -69,22 +102,41 @@ data class WordleScreenNavArgs(
 )
 fun WordleScreen(
     navigator: DestinationsNavigator,
+    mazeNavigator: MazeNavigator,
+    navController: NavController,
     windowSizeClass: WindowSizeClass,
     wordleScreenViewModel: WordleScreenViewModel = hiltViewModel()
 ) {
     val uiState by wordleScreenViewModel.uiState.collectAsStateWithLifecycle()
 
+    val backStackEntry = navController.currentBackStackEntry
+    val args = backStackEntry?.let { WordleScreenDestination.argsFrom(it) }
+    val mazeItemId = args?.mazeItemId?.toIntOrNull()
+
     WordleScreenImpl(
+        fromMaze = mazeItemId != null,
         uiState = uiState,
         onEvent = wordleScreenViewModel::onEvent,
         onBackClick = navigator::popBackStack,
         windowSizeClass = windowSizeClass
     )
+
+    // If the game is over and is from maze, navigate to maze results
+    LaunchedEffect(uiState.isGamedEnded) {
+        if (uiState.isGamedEnded && mazeItemId != null) {
+            if (!uiState.isGameOver) {
+                // Show a delay before moving to maze results
+                delay(NAV_TO_RESULTS_DELAY_MILLIS)
+                mazeNavigator.navigateToMazeResults(mazeItemId)
+            }
+        }
+    }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 private fun WordleScreenImpl(
+    fromMaze: Boolean = false,
     uiState: WordleScreenUiState,
     onEvent: (event: WordleScreenUiEvent) -> Unit,
     onBackClick: () -> Unit,
@@ -92,7 +144,7 @@ private fun WordleScreenImpl(
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
-    val (gameOverPopupVisible, setGameOverPopupVisibility) = remember(uiState.isGameOver) {
+    val (gameOverPopupVisible, setGameOverPopupVisibility) = remember(uiState.isGameOver && !fromMaze) {
         mutableStateOf(uiState.isGameOver)
     }
 
@@ -108,7 +160,7 @@ private fun WordleScreenImpl(
         windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
                 && windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact
     }
-    
+
     val keyboardBottomPadding = if (!rowLayout) {
         MaterialTheme.spacing.extraLarge
     } else 0.dp
@@ -203,7 +255,13 @@ private fun WordleScreenImpl(
                     WordleRowComponent(
                         wordleRowItem = rowItem,
                         word = uiState.word.orEmpty(),
-                        onItemClick = { itemIndex -> onEvent(WordleScreenUiEvent.OnRemoveKeyClick(itemIndex)) },
+                        onItemClick = { itemIndex ->
+                            onEvent(
+                                WordleScreenUiEvent.OnRemoveKeyClick(
+                                    itemIndex
+                                )
+                            )
+                        },
                         isColorBlindEnabled = uiState.isColorBlindEnabled,
                         isLetterHintsEnabled = uiState.isLetterHintEnabled,
                         modifier = Modifier.testTag(WordleScreenTestTags.WORDLE_ROW),
@@ -235,7 +293,7 @@ private fun WordleScreenImpl(
                     )
                 }
 
-                if (uiState.isGamedEnded) {
+                if (uiState.isGamedEnded && !fromMaze) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(spaceMedium),
@@ -317,7 +375,7 @@ private fun InfoDialog(
                 }
 
                 item { Spacer(modifier = Modifier.padding(MaterialTheme.spacing.medium)) }
-               
+
                 item {
                     InfoDialogCard(isColorBlindEnabled = isColorBlindEnabled)
                 }
@@ -480,6 +538,8 @@ private fun WordleContainer(
         }
     }
 }
+
+private const val NAV_TO_RESULTS_DELAY_MILLIS = 1000L
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal object WordleScreenTestTags {

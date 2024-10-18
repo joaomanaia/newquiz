@@ -19,6 +19,9 @@ interface MazeQuizDao {
     @Query("SELECT * FROM mazeItems WHERE id = :id LIMIT 1")
     suspend fun getMazeItemById(id: Int): MazeQuizItemEntity?
 
+    @Query("SELECT * FROM mazeItems WHERE played = 0 LIMIT 1")
+    suspend fun getFirstAvailableMazeItem(): MazeQuizItemEntity?
+
     @Query("SELECT COUNT(id) FROM mazeItems")
     suspend fun countAllItems(): Int
 

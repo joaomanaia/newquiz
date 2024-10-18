@@ -38,7 +38,7 @@ data class WordleScreenUiState(
             ?.isRowCorrect == true
 
     val isGamedEnded: Boolean
-        get() = currentRowPosition + 1 > rowLimit || currentRowCorrect
+        get() = !loading && currentRowPosition + 1 > rowLimit || currentRowCorrect
 
     val isGameOver: Boolean
         get() = isGamedEnded && !currentRowCorrect

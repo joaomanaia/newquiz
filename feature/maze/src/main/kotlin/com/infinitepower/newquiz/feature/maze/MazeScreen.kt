@@ -33,6 +33,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.infinitepower.newquiz.core.navigation.MazeNavigator
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
@@ -59,7 +60,7 @@ import com.infinitepower.newquiz.core.R as CoreR
 @OptIn(ExperimentalMaterial3Api::class)
 fun MazeScreen(
     navigator: DestinationsNavigator,
-    mazeScreenNavigator: MazeScreenNavigator,
+    mazeNavigator: MazeNavigator,
     viewModel: MazeScreenViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -68,7 +69,7 @@ fun MazeScreen(
         uiState = uiState,
         navigateBack = navigator::popBackStack,
         uiEvent = viewModel::onEvent,
-        onItemClick = mazeScreenNavigator::navigateToGame
+        onItemClick = mazeNavigator::navigateToGame
     )
 }
 

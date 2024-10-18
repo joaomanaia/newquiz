@@ -2,14 +2,13 @@ package com.infinitepower.newquiz.multi_choice_quiz
 
 import android.os.CountDownTimer
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
-import com.infinitepower.newquiz.core.common.viewmodel.NavEvent
-import com.infinitepower.newquiz.core.common.viewmodel.NavEventViewModel
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
 import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
@@ -20,8 +19,8 @@ import com.infinitepower.newquiz.core.translation.TranslatorUtil
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.core.user_services.workers.MultiChoiceQuizEndGameWorker
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
-import com.infinitepower.newquiz.data.worker.maze.EndGameMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
+import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.saved_questions.SavedMultiChoiceQuestionsRepository
 import com.infinitepower.newquiz.domain.use_case.question.GetRandomMultiChoiceQuestionUseCase
 import com.infinitepower.newquiz.domain.use_case.question.IsQuestionSavedUseCase
@@ -33,11 +32,9 @@ import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
 import com.infinitepower.newquiz.model.multi_choice_quiz.SelectedAnswer
 import com.infinitepower.newquiz.model.multi_choice_quiz.isAllCorrect
-import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizResultsScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -68,8 +65,9 @@ class QuizScreenViewModel @Inject constructor(
     private val isQuestionSavedUseCase: IsQuestionSavedUseCase,
     private val analyticsHelper: AnalyticsHelper,
     private val userService: UserService,
-    private val remoteConfig: RemoteConfig
-) : NavEventViewModel() {
+    private val remoteConfig: RemoteConfig,
+    private val mazeQuizRepository: MazeQuizRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -136,7 +134,8 @@ class QuizScreenViewModel @Inject constructor(
             .distinctUntilChangedBy { it.currentQuestionStep?.question }
             .filter { it.currentQuestionStep?.question != null }
             .flatMapLatest { state ->
-                val question = state.currentQuestionStep?.question ?: return@flatMapLatest emptyFlow()
+                val question =
+                    state.currentQuestionStep?.question ?: return@flatMapLatest emptyFlow()
 
                 isQuestionSavedUseCase(question)
             }.onEach { res ->
@@ -161,7 +160,12 @@ class QuizScreenViewModel @Inject constructor(
             verifyQuestion(skipped = true)
 
             userService.addRemoveDiamonds(-currentState.skipCost)
-            analyticsHelper.logEvent(AnalyticsEvent.SpendDiamonds(currentState.skipCost, "skip_multichoicequestion"))
+            analyticsHelper.logEvent(
+                AnalyticsEvent.SpendDiamonds(
+                    currentState.skipCost,
+                    "skip_multichoicequestion"
+                )
+            )
 
             currentState.copy(userDiamonds = -1)
         }
@@ -303,7 +307,10 @@ class QuizScreenViewModel @Inject constructor(
                         // Update play question and get answers correct for global event data
                         viewModelScope.launch(Dispatchers.IO) {
                             val events = if (questionCorrect) {
-                                arrayOf(GameEvent.MultiChoice.PlayQuestions, GameEvent.MultiChoice.GetAnswersCorrect)
+                                arrayOf(
+                                    GameEvent.MultiChoice.PlayQuestions,
+                                    GameEvent.MultiChoice.GetAnswersCorrect
+                                )
                             } else {
                                 arrayOf(GameEvent.MultiChoice.PlayQuestions)
                             }
@@ -345,14 +352,9 @@ class QuizScreenViewModel @Inject constructor(
     private fun endGame(questionSteps: List<MultiChoiceQuestionStep.Completed>) {
         viewModelScope.launch(Dispatchers.IO) {
             val questionStepsStr = Json.encodeToString(questionSteps)
-            val category = savedStateHandle.get<MultiChoiceBaseCategory?>(MultiChoiceQuizScreenNavArg::category.name)
-                ?: MultiChoiceBaseCategory.Normal()
-
             val initialQuestions = savedStateHandle
                 .get<ArrayList<MultiChoiceQuestion>>(MultiChoiceQuizScreenNavArg::initialQuestions.name)
                 .orEmpty()
-
-            val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
 
             val endGameWorkRequest = OneTimeWorkRequestBuilder<MultiChoiceQuizEndGameWorker>()
                 .setInputData(
@@ -369,44 +371,19 @@ class QuizScreenViewModel @Inject constructor(
                 .get<String?>(MultiChoiceQuizScreenNavArg::mazeItemId.name)
                 ?.toIntOrNull()
 
-            // Update end quiz for global event data
-            viewModelScope.launch(Dispatchers.IO) {
-                UpdateGlobalEventDataWorker.enqueueWork(
-                    workManager = workManager,
-                    GameEvent.MultiChoice.EndQuiz
-                )
+            if (mazeItemId != null) {
+                analyticsHelper.logEvent(AnalyticsEvent.MazeItemPlayed(allCorrect))
 
-                if (mazeItemId != null) {
-                    analyticsHelper.logEvent(AnalyticsEvent.MazeItemPlayed(allCorrect))
+                if (allCorrect) {
+                    mazeQuizRepository.completeMazeItem(mazeItemId)
                 }
             }
 
-            if (mazeItemId != null && allCorrect) {
-                // Runs the end game maze worker if is maze game mode and the question is correct
-                val endGameMazeQuizWorkerRequest =
-                    OneTimeWorkRequestBuilder<EndGameMazeQuizWorker>()
-                        .setInputData(workDataOf(EndGameMazeQuizWorker.INPUT_MAZE_ITEM_ID to mazeItemId))
-                        .build()
+            workManager.enqueue(endGameWorkRequest)
 
-                workManager
-                    .beginWith(endGameMazeQuizWorkerRequest)
-                    .then(endGameWorkRequest)
-                    .enqueue()
-            } else {
-                workManager.enqueue(endGameWorkRequest)
-            }
-
-            delay(1000)
-
-            sendNavEventAsync(
-                NavEvent.Navigate(
-                    MultiChoiceQuizResultsScreenDestination(
-                        questionStepsStr = questionStepsStr,
-                        byInitialQuestions = initialQuestions.isNotEmpty(),
-                        category = category,
-                        difficulty = difficulty
-                    )
-                )
+            UpdateGlobalEventDataWorker.enqueueWork(
+                workManager = workManager,
+                GameEvent.MultiChoice.EndQuiz
             )
         }
     }
