@@ -103,40 +103,16 @@ class WordleRepositoryImpl @Inject constructor(
         return WordleWord(randomNumbers.joinToString(""))
     }
 
-    override fun isColorBlindEnabled(): FlowResource<Boolean> = flow {
-        try {
-            emit(Resource.Loading())
-
-            val isColorBlindEnabled = settingsDataStoreManager.getPreference(SettingsCommon.WordleColorBlindMode)
-            emit(Resource.Success(isColorBlindEnabled))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(Resource.Error(e.localizedMessage ?: "A error occurred while checking if color blind is enabled."))
-        }
+    override suspend fun isColorBlindEnabled(): Boolean {
+        return settingsDataStoreManager.getPreference(SettingsCommon.WordleColorBlindMode)
     }
 
-    override fun isLetterHintEnabled(): FlowResource<Boolean> = flow {
-        try {
-            emit(Resource.Loading())
-
-            val isLetterHintEnabled = settingsDataStoreManager.getPreference(SettingsCommon.WordleLetterHints)
-            emit(Resource.Success(isLetterHintEnabled))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(Resource.Error(e.localizedMessage ?: "A error occurred while checking if letter hint is enabled."))
-        }
+    override suspend fun isLetterHintEnabled(): Boolean {
+        return settingsDataStoreManager.getPreference(SettingsCommon.WordleLetterHints)
     }
 
-    override fun isHardModeEnabled(): FlowResource<Boolean> = flow {
-        try {
-            emit(Resource.Loading())
-
-            val isHardModeEnabled = settingsDataStoreManager.getPreference(SettingsCommon.WordleHardMode)
-            emit(Resource.Success(isHardModeEnabled))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(Resource.Error(e.localizedMessage ?: "A error occurred while checking if hard mode is enabled."))
-        }
+    override suspend fun isHardModeEnabled(): Boolean {
+        return settingsDataStoreManager.getPreference(SettingsCommon.WordleHardMode)
     }
 
     override suspend fun getWordleMaxRows(defaultMaxRow: Int?): Int {

@@ -28,8 +28,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
@@ -49,30 +47,19 @@ class WordleScreenViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        // TODO Add flow combine
-        wordleRepository
-            .isColorBlindEnabled()
-            .onEach { res ->
-                _uiState.update { currentState ->
-                    currentState.copy(isColorBlindEnabled = res.data == true)
-                }
-            }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            val isColorBlindEnabled = wordleRepository.isColorBlindEnabled()
+            val isLetterHintEnabled = wordleRepository.isLetterHintEnabled()
+            val isHardModeEnabled = wordleRepository.isHardModeEnabled()
 
-        wordleRepository
-            .isLetterHintEnabled()
-            .onEach { res ->
-                _uiState.update { currentState ->
-                    currentState.copy(isLetterHintEnabled = res.data == true)
-                }
-            }.launchIn(viewModelScope)
-
-        wordleRepository
-            .isHardModeEnabled()
-            .onEach { res ->
-                _uiState.update { currentState ->
-                    currentState.copy(isHardModeEnabled = res.data == true)
-                }
-            }.launchIn(viewModelScope)
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isColorBlindEnabled = isColorBlindEnabled,
+                    isLetterHintEnabled = isLetterHintEnabled,
+                    isHardModeEnabled = isHardModeEnabled
+                )
+            }
+        }
 
         generateGame()
     }

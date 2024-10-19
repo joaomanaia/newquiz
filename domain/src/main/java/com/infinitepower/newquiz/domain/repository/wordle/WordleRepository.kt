@@ -25,11 +25,11 @@ interface WordleRepository {
         random: Random = Random
     ): WordleWord
 
-    fun isColorBlindEnabled(): FlowResource<Boolean>
+    suspend fun isColorBlindEnabled(): Boolean
 
-    fun isLetterHintEnabled(): FlowResource<Boolean>
+    suspend fun isLetterHintEnabled(): Boolean
 
-    fun isHardModeEnabled(): FlowResource<Boolean>
+    suspend fun isHardModeEnabled(): Boolean
 
     suspend fun getWordleMaxRows(
         defaultMaxRow: Int? = null
