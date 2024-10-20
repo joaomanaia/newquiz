@@ -59,7 +59,7 @@ class QuizScreenViewModel @Inject constructor(
     @SettingsDataStoreManager private val settingsDataStoreManager: DataStoreManager,
     private val savedQuestionsRepository: SavedMultiChoiceQuestionsRepository,
     private val recentCategoriesRepository: RecentCategoriesRepository,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val translationUtil: TranslatorUtil,
     private val workManager: WorkManager,
     private val isQuestionSavedUseCase: IsQuestionSavedUseCase,
@@ -68,6 +68,8 @@ class QuizScreenViewModel @Inject constructor(
     private val remoteConfig: RemoteConfig,
     private val mazeQuizRepository: MazeQuizRepository
 ) : ViewModel() {
+    private val navArgs: MultiChoiceQuizScreenNavArg = savedStateHandle.navArgs()
+
     private val _uiState = MutableStateFlow(MultiChoiceQuizScreenUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -108,11 +110,8 @@ class QuizScreenViewModel @Inject constructor(
     }
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            val initialQuestions = savedStateHandle
-                .get<ArrayList<MultiChoiceQuestion>>(MultiChoiceQuizScreenNavArg::initialQuestions.name)
-                .orEmpty()
-                .toList()
+        viewModelScope.launch {
+            val initialQuestions = navArgs.initialQuestions
 
             if (initialQuestions.isEmpty()) {
                 loadByCloudQuestions()
@@ -175,11 +174,8 @@ class QuizScreenViewModel @Inject constructor(
         val questionSize =
             settingsDataStoreManager.getPreference(SettingsCommon.MultiChoiceQuizQuestionsSize)
 
-        val category = savedStateHandle
-            .get<MultiChoiceBaseCategory>(MultiChoiceQuizScreenNavArg::category.name)
-            ?: MultiChoiceBaseCategory.Normal()
-
-        val difficulty = savedStateHandle.get<String>(MultiChoiceQuizScreenNavArg::difficulty.name)
+        val category = navArgs.category
+        val difficulty = navArgs.difficulty
 
         if (category.hasCategory) {
             recentCategoriesRepository.addMultiChoiceCategory(category.id)
@@ -352,24 +348,19 @@ class QuizScreenViewModel @Inject constructor(
     private fun endGame(questionSteps: List<MultiChoiceQuestionStep.Completed>) {
         viewModelScope.launch(Dispatchers.IO) {
             val questionStepsStr = Json.encodeToString(questionSteps)
-            val initialQuestions = savedStateHandle
-                .get<ArrayList<MultiChoiceQuestion>>(MultiChoiceQuizScreenNavArg::initialQuestions.name)
-                .orEmpty()
 
             val endGameWorkRequest = OneTimeWorkRequestBuilder<MultiChoiceQuizEndGameWorker>()
                 .setInputData(
                     workDataOf(
                         MultiChoiceQuizEndGameWorker.INPUT_QUESTION_STEPS to questionStepsStr,
                         // Only generate XP if is not initial questions (saved questions)
-                        MultiChoiceQuizEndGameWorker.INPUT_GENERATE_XP to initialQuestions.isEmpty(),
+                        MultiChoiceQuizEndGameWorker.INPUT_GENERATE_XP to navArgs.initialQuestions.isEmpty(),
                     )
                 ).build()
 
 
             val allCorrect = questionSteps.isAllCorrect()
-            val mazeItemId = savedStateHandle
-                .get<String?>(MultiChoiceQuizScreenNavArg::mazeItemId.name)
-                ?.toIntOrNull()
+            val mazeItemId = navArgs.mazeItemId?.toIntOrNull()
 
             if (mazeItemId != null) {
                 analyticsHelper.logEvent(AnalyticsEvent.MazeItemPlayed(allCorrect))

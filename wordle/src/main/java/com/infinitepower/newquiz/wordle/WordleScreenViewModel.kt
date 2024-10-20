@@ -43,12 +43,12 @@ private const val TAG = "WordleScreenViewModel"
 @HiltViewModel
 class WordleScreenViewModel @Inject constructor(
     private val wordleRepository: WordleRepository,
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val workManager: WorkManager,
     private val analyticsHelper: AnalyticsHelper,
     private val mazeQuizRepository: MazeQuizRepository
 ) : ViewModel() {
-    private val args: WordleScreenNavArgs = savedStateHandle.navArgs()
+    private val navArgs: WordleScreenNavArgs = savedStateHandle.navArgs()
 
     private var _uiState = MutableStateFlow(WordleScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -86,12 +86,12 @@ class WordleScreenViewModel @Inject constructor(
     }
 
     private fun generateGame() = viewModelScope.launch(Dispatchers.IO) {
-        val quizType = args.quizType
+        val quizType = navArgs.quizType
 
         // Checks if saved state has an initial word.
         // If has, generate the rows with the word, if not create a new word.
-        if (args.word != null) {
-            generateRows(args.word, quizType, args.textHelper)
+        if (navArgs.word != null) {
+            generateRows(navArgs.word, quizType, navArgs.textHelper)
             return@launch
         }
 
@@ -128,7 +128,7 @@ class WordleScreenViewModel @Inject constructor(
         }
 
         // Gets the wordle max rows if the row limit from args is null, if not use the args row limit.
-        val rowLimit = wordleRepository.getWordleMaxRows(args.rowLimit)
+        val rowLimit = wordleRepository.getWordleMaxRows(navArgs.rowLimit)
 
         viewModelScope.launch {
             UpdateGlobalEventDataWorker.enqueueWork(
@@ -141,7 +141,7 @@ class WordleScreenViewModel @Inject constructor(
                     wordLength = word.length,
                     maxRows = rowLimit,
                     category = quizType.name,
-                    mazeItemId = args.mazeItemId?.toIntOrNull()
+                    mazeItemId = navArgs.mazeItemId?.toIntOrNull()
                 )
             )
         }
@@ -287,7 +287,7 @@ class WordleScreenViewModel @Inject constructor(
     private fun endGame(currentState: WordleScreenUiState) {
         val isLastRowCorrect = currentState.rows.lastOrNull()?.isRowCorrect == true
 
-        val mazeItemId = args.mazeItemId
+        val mazeItemId = navArgs.mazeItemId
 
         if (mazeItemId != null && isLastRowCorrect) {
             viewModelScope.launch {

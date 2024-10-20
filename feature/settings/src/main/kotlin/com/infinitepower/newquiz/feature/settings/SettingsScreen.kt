@@ -36,7 +36,6 @@ fun SettingsScreen(
     screenKey: ScreenKey? = null,
     windowSizeClass: WindowSizeClass,
     navigator: DestinationsNavigator,
-    // viewModel: MainSettingsViewModel = hiltViewModel()
 ) {
     val isScreenExpanded = remember(windowSizeClass.widthSizeClass) {
         windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
