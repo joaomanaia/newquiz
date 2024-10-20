@@ -214,17 +214,6 @@ private fun WordleScreenImpl(
                     }
                 }
 
-                // TODO: Replace with snackbar
-                if (uiState.errorMessage != null) {
-                    item {
-                        Text(
-                            text = uiState.errorMessage,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                }
-
                 if (uiState.textHelper != null) {
                     item {
                         Text(

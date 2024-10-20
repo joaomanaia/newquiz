@@ -309,4 +309,10 @@
     <string name="try_again">Try Again</string>
     <string name="level_failed">Level failed!</string>
     <string name="level_failed_description">Don\'t give up! Try again to beat this level.</string>
+    <string name="error_verifying_word">Error verifying word!</string>
+    <string name="need_to_use_all_hints_error">You need to use all hints from last row!</string>
+    <string name="empty_word">Empty word</string>
+    <string name="word_not_only_letters_error">The word must contain only letters</string>
+    <string name="word_not_only_digits_error">The word must contain only digits</string>
+    <string name="word_invalid_math_formula_error">Left formula is not equal to right solution</string>
 </resources>

@@ -8,7 +8,6 @@ import androidx.work.WorkManager
 import com.infinitepower.newquiz.comparison_quiz.core.workers.ComparisonQuizEndGameWorker
 import com.infinitepower.newquiz.core.game.ComparisonQuizCore
 import com.infinitepower.newquiz.core.ui.SnackbarController
-import com.infinitepower.newquiz.core.ui.SnackbarEvent
 import com.infinitepower.newquiz.core.user_services.InsufficientDiamondsException
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
@@ -149,9 +148,7 @@ class ComparisonQuizViewModel @Inject constructor(
                         comparisonQuizCore.skip()
                     } catch (e: InsufficientDiamondsException) {
                         e.printStackTrace()
-                        SnackbarController.sendEvent(
-                            event = SnackbarEvent(message = "Insufficient diamonds")
-                        )
+                        SnackbarController.sendShortMessage("Insufficient diamonds")
                     }
                 }
             }

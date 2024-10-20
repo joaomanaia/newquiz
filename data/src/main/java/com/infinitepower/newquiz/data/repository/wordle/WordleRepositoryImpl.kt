@@ -1,7 +1,6 @@
 package com.infinitepower.newquiz.data.repository.wordle
 
 import android.content.Context
-import androidx.core.text.isDigitsOnly
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.common.textWordleSupportedLang
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
@@ -31,7 +30,8 @@ class WordleRepositoryImpl @Inject constructor(
     private val baseNumbers by lazy { 0..9 }
 
     override suspend fun getAllWords(): Set<String> = withContext(Dispatchers.IO) {
-        val quizLanguage = settingsDataStoreManager.getPreference(SettingsCommon.InfiniteWordleQuizLanguage)
+        val quizLanguage =
+            settingsDataStoreManager.getPreference(SettingsCommon.InfiniteWordleQuizLanguage)
 
         val listRawId = textWordleSupportedLang.find { lang ->
             lang.key == quizLanguage
@@ -68,7 +68,10 @@ class WordleRepositoryImpl @Inject constructor(
                     val formula = mathQuizCoreRepository.generateMathFormula(random = random)
                     WordleWord(formula.fullFormula)
                 }
-                WordleQuizType.NUMBER_TRIVIA -> numberTriviaQuestionRepository.generateWordleQuestion(random = random)
+
+                WordleQuizType.NUMBER_TRIVIA -> numberTriviaQuestionRepository.generateWordleQuestion(
+                    random = random
+                )
             }
 
             emit(Resource.Success(randomWord))
@@ -118,7 +121,8 @@ class WordleRepositoryImpl @Inject constructor(
     override suspend fun getWordleMaxRows(defaultMaxRow: Int?): Int {
         if (defaultMaxRow == null) {
             // If is row limited return row limit value else return int max value
-            val isRowLimited = settingsDataStoreManager.getPreference(SettingsCommon.WordleInfiniteRowsLimited)
+            val isRowLimited =
+                settingsDataStoreManager.getPreference(SettingsCommon.WordleInfiniteRowsLimited)
             if (isRowLimited) return settingsDataStoreManager.getPreference(SettingsCommon.WordleInfiniteRowsLimit)
 
             return Int.MAX_VALUE
@@ -127,11 +131,30 @@ class WordleRepositoryImpl @Inject constructor(
         return defaultMaxRow
     }
 
-    override fun validateWord(word: String, quizType: WordleQuizType): Boolean {
-        return when (quizType) {
-            WordleQuizType.TEXT -> word.isNotBlank()
-            WordleQuizType.NUMBER, WordleQuizType.NUMBER_TRIVIA -> word.isDigitsOnly()
-            WordleQuizType.MATH_FORMULA -> mathQuizCoreRepository.validateFormula(word)
+    @Suppress("ReturnCount")
+    override fun validateWord(word: String, quizType: WordleQuizType): Result<Unit> {
+        if (word.isBlank()) return Result.failure(InvalidWordError.Empty)
+
+        when (quizType) {
+            WordleQuizType.TEXT -> {
+                if (!word.all(Char::isLetter)) {
+                    return Result.failure(InvalidWordError.NotOnlyLetters)
+                }
+            }
+
+            WordleQuizType.NUMBER, WordleQuizType.NUMBER_TRIVIA -> {
+                if (!word.all(Char::isDigit)) {
+                    return Result.failure(InvalidWordError.NotOnlyDigits)
+                }
+            }
+
+            WordleQuizType.MATH_FORMULA -> {
+                if (!mathQuizCoreRepository.validateFormula(word)) {
+                    return Result.failure(InvalidWordError.InvalidMathFormula)
+                }
+            }
         }
+
+        return Result.success(Unit)
     }
 }

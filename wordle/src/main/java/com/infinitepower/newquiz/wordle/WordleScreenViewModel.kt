@@ -9,17 +9,21 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
+import com.infinitepower.newquiz.core.ui.SnackbarController
 import com.infinitepower.newquiz.core.util.collections.indexOfFirstOrNull
+import com.infinitepower.newquiz.data.repository.wordle.InvalidWordError
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.Resource
+import com.infinitepower.newquiz.model.UiText
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
 import com.infinitepower.newquiz.model.wordle.emptyRowItem
 import com.infinitepower.newquiz.model.wordle.itemsToString
+import com.infinitepower.newquiz.wordle.util.asUiText
 import com.infinitepower.newquiz.wordle.util.word.containsAllLastRevealedHints
 import com.infinitepower.newquiz.wordle.util.word.getKeysDisabled
 import com.infinitepower.newquiz.wordle.util.word.verifyFromWord
@@ -32,6 +36,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.infinitepower.newquiz.core.R as CoreR
 
 private const val TAG = "WordleScreenViewModel"
 
@@ -146,7 +151,6 @@ class WordleScreenViewModel @Inject constructor(
             )
         }
 
-
         _uiState.update { currentState ->
             currentState.copy(
                 loading = false,
@@ -155,13 +159,11 @@ class WordleScreenViewModel @Inject constructor(
                 rows = rows,
                 currentRowPosition = 0,
                 keysDisabled = emptySet(),
-                errorMessage = null,
                 wordleQuizType = quizType,
                 textHelper = textHelper
             )
         }
     }
-
 
     private fun addKeyToCurrentRow(key: Char) {
         _uiState.update { currentState ->
@@ -214,15 +216,21 @@ class WordleScreenViewModel @Inject constructor(
             // Current row is the last row of the list.
             val currentItems = currentState.rows.lastOrNull()?.items ?: return
 
-            val wordValid = wordleRepository.validateWord(
+            wordleRepository.validateWord(
                 currentItems.itemsToString(),
                 currentState.wordleQuizType
-            )
+            ).onFailure { exception ->
+                viewModelScope.launch {
+                    if (exception is InvalidWordError) {
+                        SnackbarController.sendShortMessage(exception.asUiText())
+                    } else {
+                        SnackbarController.sendShortMessage(
+                            UiText.StringResource(CoreR.string.error_verifying_word)
+                        )
+                    }
+                }
 
-            if (!wordValid) {
-                return@updateAndGet currentState.copy(
-                    errorMessage = "Left formula is not equal to right solution"
-                )
+                return@updateAndGet currentState.copy()
             }
 
             // Verifies items with the word and verifies if the word is correct
@@ -240,9 +248,12 @@ class WordleScreenViewModel @Inject constructor(
                     verifiedItems containsAllLastRevealedHints last2RowItems
 
                 if (!containsAllLastRevealedHints) {
-                    return@updateAndGet currentState.copy(
-                        errorMessage = "You need to use all hints from last row!"
-                    )
+                    viewModelScope.launch {
+                        SnackbarController.sendShortMessage(
+                            UiText.StringResource(CoreR.string.need_to_use_all_hints_error)
+                        )
+                    }
+                    return@updateAndGet currentState.copy()
                 }
             }
 
@@ -270,7 +281,6 @@ class WordleScreenViewModel @Inject constructor(
                 currentRowPosition = newRowPosition,
                 rows = newRows,
                 keysDisabled = currentState.keysDisabled + keysDisabled,
-                errorMessage = null
             )
         }
 

@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizListScreenDestination
 import com.infinitepower.newquiz.core.R
@@ -30,6 +31,7 @@ import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.navigation.ScreenType
 import com.infinitepower.newquiz.core.ui.ObserveAsEvents
 import com.infinitepower.newquiz.core.ui.SnackbarController
+import com.infinitepower.newquiz.core.util.asString
 import com.infinitepower.newquiz.feature.daily_challenge.destinations.DailyChallengeScreenDestination
 import com.infinitepower.newquiz.feature.maze.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.feature.profile.destinations.ProfileScreenDestination
@@ -134,14 +136,16 @@ internal fun NavigationContainer(
         selectedItem != null && selectedItem.screenType == ScreenType.NORMAL
     }
 
+    val context = LocalContext.current
+
     val snackbarHostState = remember { SnackbarHostState() }
     ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
         scope.launch {
             snackbarHostState.currentSnackbarData?.dismiss()
 
             val result = snackbarHostState.showSnackbar(
-                message = event.message,
-                actionLabel = event.action?.name,
+                message = event.message.asString(context),
+                actionLabel = event.action?.name?.asString(context),
                 withDismissAction = event.withDismissAction,
                 duration = event.duration
             )

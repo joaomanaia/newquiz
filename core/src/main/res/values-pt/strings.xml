@@ -315,4 +315,10 @@
     <string name="try_again">Tentar Novamente</string>
     <string name="level_failed">Nível falhado!</string>
     <string name="level_failed_description">Não desistas! Tenta novamente vencer este nível.</string>
+    <string name="error_verifying_word">Erro ao verificar a palavra!</string>
+    <string name="need_to_use_all_hints_error">Precisas usar todas as dicas da última linha!</string>
+    <string name="empty_word">Palavra vazia</string>
+    <string name="word_not_only_letters_error">A palavra deve conter apenas letras</string>
+    <string name="word_not_only_digits_error">A palavra deve conter apenas dígitos</string>
+    <string name="word_invalid_math_formula_error">A fórmula da esquerda não é igual à solução da direita</string>
 </resources>

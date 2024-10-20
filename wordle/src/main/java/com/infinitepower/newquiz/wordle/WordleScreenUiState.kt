@@ -15,7 +15,6 @@ data class WordleScreenUiState(
     val isColorBlindEnabled: Boolean = false,
     val isLetterHintEnabled: Boolean = false,
     val isHardModeEnabled: Boolean = false,
-    val errorMessage: String? = null,
     val wordleQuizType: WordleQuizType? = null,
     val textHelper: String? = null
 ) {

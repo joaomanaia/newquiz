@@ -35,8 +35,5 @@ interface WordleRepository {
         defaultMaxRow: Int? = null
     ): Int
 
-    fun validateWord(
-        word: String,
-        quizType: WordleQuizType
-    ): Boolean
+    fun validateWord(word: String, quizType: WordleQuizType): Result<Unit>
 }
