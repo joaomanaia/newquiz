@@ -1,9 +1,7 @@
 package com.infinitepower.newquiz.model.wordle
 
-import androidx.annotation.Keep
-
-@Keep
-data class WordleRowItem(
+@JvmInline
+value class WordleRowItem(
     val items: List<WordleItem>
 ) {
     val isRowCorrect: Boolean

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,6 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -32,8 +30,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -51,14 +47,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -73,10 +64,9 @@ import com.infinitepower.newquiz.model.wordle.WordleChar
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
+import com.infinitepower.newquiz.wordle.components.InfoDialog
 import com.infinitepower.newquiz.wordle.components.WordleKeyBoard
 import com.infinitepower.newquiz.wordle.components.WordleRowComponent
-import com.infinitepower.newquiz.wordle.components.getItemRowBackgroundColor
-import com.infinitepower.newquiz.wordle.components.getItemRowTextColor
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
@@ -141,14 +131,13 @@ private fun WordleScreenImpl(
     onEvent: (event: WordleScreenUiEvent) -> Unit,
     onBackClick: () -> Unit,
     windowSizeClass: WindowSizeClass,
+    animationsEnabled: Boolean = MaterialTheme.animationsEnabled.wordle
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
     val (gameOverPopupVisible, setGameOverPopupVisibility) = remember(uiState.isGameOver && !fromMaze) {
         mutableStateOf(uiState.isGameOver)
     }
-
-    val snackbarHostState = remember { SnackbarHostState() }
 
     val (infoDialogVisible, setInfoDialogVisibility) = remember {
         mutableStateOf(false)
@@ -173,10 +162,7 @@ private fun WordleScreenImpl(
         }
     }
 
-    val wordleAnimationsEnabled = MaterialTheme.animationsEnabled.wordle
-
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text(text = screenTitle.asString()) },
@@ -225,10 +211,10 @@ private fun WordleScreenImpl(
                                 WordleScreenTestTags.LOADING_PROGRESS_INDICATOR
                             )
                         )
-
                     }
                 }
 
+                // TODO: Replace with snackbar
                 if (uiState.errorMessage != null) {
                     item {
                         Text(
@@ -265,8 +251,8 @@ private fun WordleScreenImpl(
                         isColorBlindEnabled = uiState.isColorBlindEnabled,
                         isLetterHintsEnabled = uiState.isLetterHintEnabled,
                         modifier = Modifier.testTag(WordleScreenTestTags.WORDLE_ROW),
-                        isPreview = !isCurrentRow,
-                        animationEnabled = wordleAnimationsEnabled
+                        enabled = isCurrentRow,
+                        animationEnabled = animationsEnabled
                     )
                 }
             },
@@ -337,147 +323,6 @@ private fun WordleScreenImpl(
             isColorBlindEnabled = uiState.isColorBlindEnabled,
             onDismissRequest = { setInfoDialogVisibility(false) }
         )
-    }
-}
-
-@Composable
-private fun InfoDialog(
-    isColorBlindEnabled: Boolean,
-    onDismissRequest: () -> Unit
-) {
-    // Word: QUIZ
-    val rowItem = WordleRowItem(
-        items = listOf(
-            WordleItem.fromChar('Q'), // None
-            WordleItem.Present(WordleChar('U')),
-            WordleItem.Correct(WordleChar('I')),
-            WordleItem.Present(WordleChar('Z')),
-        )
-    )
-
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        title = {
-            Text(text = stringResource(id = CoreR.string.info))
-        },
-        text = {
-            LazyColumn(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                item {
-                    WordleRowComponent(
-                        wordleRowItem = rowItem,
-                        word = "QUIZ",
-                        isPreview = true,
-                        isColorBlindEnabled = isColorBlindEnabled,
-                        onItemClick = {}
-                    )
-                }
-
-                item { Spacer(modifier = Modifier.padding(MaterialTheme.spacing.medium)) }
-
-                item {
-                    InfoDialogCard(isColorBlindEnabled = isColorBlindEnabled)
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) {
-                Text(text = stringResource(id = CoreR.string.close))
-            }
-        }
-    )
-}
-
-@Composable
-private fun InfoDialogCard(
-    isColorBlindEnabled: Boolean
-) {
-    val spaceMedium = MaterialTheme.spacing.medium
-
-    val presentBackgroundColor = getItemRowBackgroundColor(
-        item = WordleItem.Present(WordleChar('C')),
-        isColorBlindEnabled = isColorBlindEnabled
-    )
-    val presentTextColor = getItemRowTextColor(
-        item = WordleItem.Present(WordleChar('C')),
-        isColorBlindEnabled = isColorBlindEnabled
-    )
-
-    val correctBackgroundColor = getItemRowBackgroundColor(
-        item = WordleItem.Correct(WordleChar('C')),
-        isColorBlindEnabled = isColorBlindEnabled
-    )
-    val correctTextColor = getItemRowTextColor(
-        item = WordleItem.Correct(WordleChar('C')),
-        isColorBlindEnabled = isColorBlindEnabled
-    )
-
-    Card {
-        Column(
-            modifier = Modifier.padding(spaceMedium),
-            verticalArrangement = Arrangement.spacedBy(spaceMedium)
-        ) {
-            // Char none: Q
-            Text(
-                buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
-                        )
-                    ) {
-                        append('Q')
-                    }
-                    append(stringResource(id = CoreR.string.is_not_in_the_target_word_wordle))
-                }
-            )
-
-            // Chars present: U, Z
-            Text(
-                buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.Bold,
-                            background = presentBackgroundColor,
-                            color = presentTextColor,
-                            fontSize = 18.sp
-                        )
-                    ) {
-                        append('U')
-                    }
-                    append(',')
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.Bold,
-                            background = presentBackgroundColor,
-                            color = presentTextColor,
-                            fontSize = 18.sp
-                        )
-                    ) {
-                        append('Z')
-                    }
-                    append(stringResource(id = CoreR.string.is_in_the_word_but_in_the_wrong_spot_wordle))
-                }
-            )
-
-            // Char correct: I
-            Text(
-                buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.Bold,
-                            background = correctBackgroundColor,
-                            color = correctTextColor,
-                            fontSize = 18.sp
-                        )
-                    ) {
-                        append('I')
-                    }
-                    append(stringResource(id = CoreR.string.is_in_the_word_and_in_the_correct_spot_wordle))
-                }
-            )
-        }
     }
 }
 
@@ -556,11 +401,10 @@ private fun WordleScreenPreview() {
     val rowItems = listOf(
         WordleRowItem(
             items = listOf(
+                WordleItem.Correct(char = WordleChar('Q')),
                 WordleItem.None(char = WordleChar('A')),
-                WordleItem.None(char = WordleChar('A')),
-                WordleItem.None(char = WordleChar('A')),
-                WordleItem.None(char = WordleChar('A')),
-                WordleItem.Present(char = WordleChar('B')),
+                WordleItem.Present(char = WordleChar('Z')),
+                WordleItem.Present(char = WordleChar('I')),
                 WordleItem.Empty
             )
         )
@@ -574,15 +418,17 @@ private fun WordleScreenPreview() {
     NewQuizTheme {
         WordleScreenImpl(
             uiState = WordleScreenUiState(
+                word = "QUIZZ",
                 rows = rowItems,
                 currentRowPosition = 0,
                 loading = false,
-                wordleQuizType = WordleQuizType.MATH_FORMULA,
-                textHelper = "Wordle text helper for word."
+                wordleQuizType = WordleQuizType.TEXT,
+                textHelper = "Wordle text helper for word.",
             ),
             onEvent = {},
             onBackClick = {},
-            windowSizeClass = windowSizeClass
+            windowSizeClass = windowSizeClass,
+            animationsEnabled = false
         )
     }
 }

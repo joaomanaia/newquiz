@@ -1,11 +1,11 @@
 package com.infinitepower.newquiz.wordle
 
-sealed class WordleScreenUiEvent {
-    data class OnKeyClick(val key: Char) : WordleScreenUiEvent()
+sealed interface WordleScreenUiEvent {
+    data class OnKeyClick(val key: Char) : WordleScreenUiEvent
 
-    data class OnRemoveKeyClick(val index: Int) : WordleScreenUiEvent()
+    data class OnRemoveKeyClick(val index: Int) : WordleScreenUiEvent
 
-    object VerifyRow : WordleScreenUiEvent()
+    data object VerifyRow : WordleScreenUiEvent
 
-    object OnPlayAgainClick : WordleScreenUiEvent()
+    data object OnPlayAgainClick : WordleScreenUiEvent
 }

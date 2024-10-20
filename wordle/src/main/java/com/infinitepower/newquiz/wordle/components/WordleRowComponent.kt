@@ -9,8 +9,17 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
@@ -26,7 +35,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.core.theme.CustomColor
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.extendedColors
@@ -34,6 +42,7 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.model.wordle.WordleChar
 import com.infinitepower.newquiz.model.wordle.WordleItem
 import com.infinitepower.newquiz.model.wordle.WordleRowItem
+import com.infinitepower.newquiz.core.R as CoreR
 
 /**
  * This composable function creates a row of wordle items.
@@ -42,7 +51,6 @@ import com.infinitepower.newquiz.model.wordle.WordleRowItem
  * @param modifier Modifier to modify the row component
  * @param word wordle word
  * @param wordleRowItem An object containing all the items in the row
- * @param isPreview if true, row item click is disabled
  * @param onItemClick called when an item in the row is clicked
  */
 @Composable
@@ -50,7 +58,7 @@ internal fun WordleRowComponent(
     modifier: Modifier = Modifier,
     word: String,
     wordleRowItem: WordleRowItem,
-    isPreview: Boolean = false,
+    enabled: Boolean = true,
     isColorBlindEnabled: Boolean = false,
     isLetterHintsEnabled: Boolean = false,
     animationEnabled: Boolean = !LocalInspectionMode.current,
@@ -64,7 +72,7 @@ internal fun WordleRowComponent(
     ) { item, index, wordCharCount, itemCharCount ->
         WordleComponent(
             item = item,
-            enabled = !isPreview,
+            enabled = enabled,
             isColorBlindEnabled = isColorBlindEnabled,
             onClick = { onItemClick(index) },
             charCount = wordCharCount,
@@ -145,9 +153,9 @@ internal fun WordleComponent(
                 Badge {
                     val badgeNumber = charCount.toString()
                     Text(
-                        badgeNumber,
+                        text = badgeNumber,
                         modifier = Modifier.semantics {
-                            contentDescription = "$badgeNumber new notifications"
+                            contentDescription = "Hint: $badgeNumber letter(s) in the word"
                         }
                     )
                 }
@@ -211,7 +219,9 @@ private fun WordleComponentImpl(
 
     val stroke = if (item.char.isEmpty()) {
         BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
-    } else null
+    } else {
+        null
+    }
 
     val itemDescription = item.getItemDescription()
 
@@ -249,21 +259,23 @@ internal fun getItemRowBackgroundColor(
     item: WordleItem,
     isColorBlindEnabled: Boolean
 ): Color {
-    val backgroundCorrectColor = MaterialTheme.extendedColors.getColorByKey(
-        key = if (isColorBlindEnabled) {
-            CustomColor.Key.Blue
-        } else CustomColor.Key.Green
-    )
-
-    val backgroundPresentColor = MaterialTheme.extendedColors.getColorByKey(
-        key = if (isColorBlindEnabled) {
-            CustomColor.Key.Red
-        } else CustomColor.Key.Yellow
-    )
-
     return when (item) {
-        is WordleItem.Correct -> backgroundCorrectColor
-        is WordleItem.Present -> backgroundPresentColor
+        is WordleItem.Correct -> MaterialTheme.extendedColors.getColorByKey(
+            key = if (isColorBlindEnabled) {
+                CustomColor.Key.Blue
+            } else {
+                CustomColor.Key.Green
+            }
+        )
+
+        is WordleItem.Present -> MaterialTheme.extendedColors.getColorByKey(
+            key = if (isColorBlindEnabled) {
+                CustomColor.Key.Red
+            } else {
+                CustomColor.Key.Yellow
+            }
+        )
+
         else -> MaterialTheme.colorScheme.surface
     }
 }
@@ -274,21 +286,23 @@ internal fun getItemRowTextColor(
     item: WordleItem,
     isColorBlindEnabled: Boolean
 ): Color {
-    val backgroundCorrectColor = MaterialTheme.extendedColors.getOnColorByKey(
-        key = if (isColorBlindEnabled) {
-            CustomColor.Key.Blue
-        } else CustomColor.Key.Green
-    )
-
-    val backgroundPresentColor = MaterialTheme.extendedColors.getOnColorByKey(
-        key = if (isColorBlindEnabled) {
-            CustomColor.Key.Red
-        } else CustomColor.Key.Yellow
-    )
-
     return when (item) {
-        is WordleItem.Correct -> backgroundCorrectColor
-        is WordleItem.Present -> backgroundPresentColor
+        is WordleItem.Correct -> MaterialTheme.extendedColors.getOnColorByKey(
+            key = if (isColorBlindEnabled) {
+                CustomColor.Key.Blue
+            } else {
+                CustomColor.Key.Green
+            }
+        )
+
+        is WordleItem.Present -> MaterialTheme.extendedColors.getOnColorByKey(
+            key = if (isColorBlindEnabled) {
+                CustomColor.Key.Red
+            } else {
+                CustomColor.Key.Yellow
+            }
+        )
+
         else -> MaterialTheme.colorScheme.onSurface
     }
 }
@@ -328,11 +342,11 @@ private fun WordleComponentPreview() {
 private fun WordleRowComponentPreview() {
     val item = WordleRowItem(
         items = listOf(
-            WordleItem.Empty,
             WordleItem.None(char = WordleChar('A')),
             WordleItem.Present(char = WordleChar('B')),
             WordleItem.Correct(char = WordleChar('C')),
-            WordleItem.Present(char = WordleChar('B')),
+            WordleItem.Present(char = WordleChar('U')),
+            WordleItem.Empty,
         )
     )
 
@@ -340,7 +354,7 @@ private fun WordleRowComponentPreview() {
         Surface {
             WordleRowComponent(
                 modifier = Modifier.padding(16.dp),
-                word = "QUIZ",
+                word = "BUCZB",
                 wordleRowItem = item,
                 onItemClick = {},
                 isLetterHintsEnabled = true,
