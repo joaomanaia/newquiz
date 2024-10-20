@@ -76,7 +76,7 @@ import com.infinitepower.newquiz.core.R as CoreR
 
 @Keep
 data class WordleScreenNavArgs(
-    val rowLimit: Int = Int.MAX_VALUE,
+    val rowLimit: Int? = null,
     val word: String? = null,
     val quizType: WordleQuizType = WordleQuizType.TEXT,
     val mazeItemId: String? = null,
