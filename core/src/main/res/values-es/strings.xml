@@ -315,4 +315,10 @@
     <string name="main_menu">Menú principal</string>
     <string name="level_completed">¡Nivel completado!</string>
     <string name="next_level">Siguiente nivel</string>
+    <string name="need_to_use_all_hints_error">¡necesita utilizar todas las pistas de la última fila!</string>
+    <string name="empty_word">palabra vacía</string>
+    <string name="error_verifying_word">¡Error al verificar la palabra!</string>
+    <string name="word_invalid_math_formula_error">La fórmula de la izquierda no es igual a la solución de la derecha</string>
+    <string name="word_not_only_digits_error">La palabra debe contener solo dígitos</string>
+    <string name="word_not_only_letters_error">La palabra debe contener solo letras</string>
 </resources>
