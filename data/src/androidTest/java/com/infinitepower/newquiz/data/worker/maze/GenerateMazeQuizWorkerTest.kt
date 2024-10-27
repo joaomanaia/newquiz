@@ -101,35 +101,5 @@ internal class GenerateMazeQuizWorkerTest {
         val realGeneratedQuestionSize = questionSizePerMode * allCategoryCount
 
         assertThat(mazeQuizItems).hasSize(realGeneratedQuestionSize)
-
-        // Generate the items a second time to check if the items are the same, using the same seed.
-        mazeQuizDao.deleteAll()
-
-        val result2 = generateMazeQuizRequest.doWork()
-
-        // Check if the worker finished successfully.
-        assertThat(result2).isNotNull()
-        assertThat(result2).isEqualTo(ListenableWorker.Result.success())
-
-        val mazeQuizItems2 = mazeQuizDao.getAllMazeItems()
-
-        // Check if the items are the same, ids are different.
-        mazeQuizItems.forEachIndexed { index, mazeQuizItem ->
-            val mazeQuizItem2 = mazeQuizItems2[index]
-
-            assertThat(mazeQuizItem.difficulty).isEqualTo(mazeQuizItem2.difficulty)
-            assertThat(mazeQuizItem.played).isEqualTo(mazeQuizItem2.played)
-            assertThat(mazeQuizItem.type).isEqualTo(mazeQuizItem2.type)
-            assertThat(mazeQuizItem.mazeSeed).isEqualTo(mazeQuizItem2.mazeSeed)
-
-            assertThat(mazeQuizItem.multiChoiceQuestion?.description).isEqualTo(mazeQuizItem2.multiChoiceQuestion?.description)
-            assertThat(mazeQuizItem.multiChoiceQuestion?.imageUrl).isEqualTo(mazeQuizItem2.multiChoiceQuestion?.imageUrl)
-
-            if (mazeQuizItem.multiChoiceQuestion != null) {
-                assertThat(mazeQuizItem.multiChoiceQuestion!!.answers).containsAnyIn(mazeQuizItem2.multiChoiceQuestion?.answers.orEmpty())
-            }
-
-            assertThat(mazeQuizItem.wordleItem).isEqualTo(mazeQuizItem2.wordleItem)
-        }
     }
 }

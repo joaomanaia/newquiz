@@ -23,7 +23,6 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.FlagQuizRep
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.GuessMathSolutionRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.LogoQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoiceQuestionRepository
-import com.infinitepower.newquiz.domain.repository.numbers.NumberTriviaQuestionRepository
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.BaseCategory
 import com.infinitepower.newquiz.model.UiText
@@ -34,13 +33,13 @@ import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleCategory
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.model.wordle.WordleWord
-import com.infinitepower.newquiz.core.R as CoreR
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import kotlin.random.Random
+import com.infinitepower.newquiz.core.R as CoreR
 
 private val multiChoiceBaseCategoriesIds: List<String> = listOf(
     MultiChoiceBaseCategory.Random.id,
@@ -61,7 +60,6 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val wordleRepository: WordleRepository,
     private val multiChoiceQuestionRepository: MultiChoiceQuestionRepository,
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
-    private val numberTriviaQuestionRepository: NumberTriviaQuestionRepository,
     private val countryCapitalFlagsQuizRepository: CountryCapitalFlagsQuizRepository,
     private val remoteConfig: RemoteConfig,
     private val analyticsHelper: AnalyticsHelper
@@ -163,19 +161,17 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         val seed = inputData.getInt(INPUT_SEED, Random.nextInt())
 
         val multiChoiceCategoriesIds = inputData.getStringArray(INPUT_MULTI_CHOICE_CATEGORIES)
-            ?: throw RuntimeException("Multi choice categories is null")
-
+        requireNotNull(multiChoiceCategoriesIds)
         Log.i(TAG, "Multi choice categories: $multiChoiceCategoriesIds")
 
         val wordleCategoriesIds = inputData.getStringArray(INPUT_WORDLE_QUIZ_TYPES)
-            ?: throw RuntimeException("Wordle categories is null")
-
+        requireNotNull(wordleCategoriesIds)
         Log.i(TAG, "Wordle quiz types: $wordleCategoriesIds")
 
-        val remoteConfigQuestionSize =
+        val questionSize = inputData.getInt(
+            INPUT_QUESTION_SIZE,
             remoteConfig.get(RemoteConfigValue.MAZE_QUIZ_GENERATED_QUESTIONS)
-
-        val questionSize = inputData.getInt(INPUT_QUESTION_SIZE, remoteConfigQuestionSize)
+        )
 
         // Random to use in all of the generators
         val random = Random(seed)
@@ -219,8 +215,9 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
 
         val questionsCount = mazeMathQuizRepository.countAllItems()
 
-        if (questionsCount != allMazeQuestions.count())
-            throw RuntimeException("Maze saved questions: $questionsCount is not equal to generated questions: ${allMazeQuestions.count()}")
+        check(questionsCount == allMazeQuestions.count()) {
+            "Maze saved questions: $questionsCount is not equal to generated questions: ${allMazeQuestions.count()}"
+        }
 
         Log.d(TAG, "Generated $questionsCount questions")
 
@@ -268,10 +265,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
             )
 
             // Temporary disabled because of api limitations
-            is MultiChoiceBaseCategory.NumberTrivia -> numberTriviaQuestionRepository.generateMultiChoiceQuestion(
-                size = questionSize,
-                random = random
-            )
+            is MultiChoiceBaseCategory.NumberTrivia -> error("Number trivia is not supported")
         }
 
         return questions.map { question ->
@@ -290,8 +284,9 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
         random: Random = Random
     ): List<MazeQuiz.MazeItem> {
-        if (wordleQuizType == WordleQuizType.NUMBER_TRIVIA)
-            throw RuntimeException("Number trivia is not supported")
+        require(wordleQuizType != WordleQuizType.NUMBER_TRIVIA) {
+            "Number trivia is not supported"
+        }
 
         if (wordleQuizType == WordleQuizType.TEXT) {
             return wordleRepository.generateRandomTextWords(
@@ -321,7 +316,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
                         WordleWord(formula.fullFormula)
                     }
 
-                    else -> throw RuntimeException("Wordle quiz type not supported")
+                    else -> error("Wordle quiz type not supported")
                 }
             }
         ).map { word ->
