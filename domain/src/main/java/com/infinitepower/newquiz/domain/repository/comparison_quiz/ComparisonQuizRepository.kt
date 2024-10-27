@@ -8,11 +8,11 @@ import kotlin.random.Random
 interface ComparisonQuizRepository {
     fun getCategories(): List<ComparisonQuizCategory>
 
-    fun getQuestions(
+    suspend fun getQuestions(
         category: ComparisonQuizCategory,
         size: Int = 30,
         random: Random = Random
-    ): Flow<List<ComparisonQuizItem>>
+    ): List<ComparisonQuizItem>
 
     suspend fun getHighestPosition(
         categoryId: String

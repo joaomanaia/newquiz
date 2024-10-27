@@ -16,7 +16,6 @@ import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQui
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -37,44 +36,36 @@ class ComparisonQuizCoreImpl @Inject constructor(
     override val quizDataFlow = _quizData.asStateFlow()
 
     override suspend fun initializeGame(initializationData: InitializationData) {
-        comparisonQuizRepository.getQuestions(
-            category = initializationData.category
-        ).onCompletion { err ->
-            if (err != null) {
-                Log.e(TAG, "Error getting questions", err)
-                endGame()
-            } else {
-                Log.d(TAG, "Successfully got questions, starting game")
-                startGame()
-            }
-        }.collect { questions ->
-            if (questions.isNotEmpty()) {
-                val category = initializationData.category
-                val comparisonMode = initializationData.comparisonMode
-                val questionDescription = category.getQuestionDescription(comparisonMode)
+        val questions = comparisonQuizRepository.getQuestions(initializationData.category)
 
-                val firstItemHelperValue =
-                    remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE)
-
-                val quizData = QuizData(
-                    questions = questions,
-                    comparisonMode = comparisonMode,
-                    questionDescription = questionDescription,
-                    firstItemHelperValueState = firstItemHelperValue,
-                )
-
-                analyticsHelper.logEvent(
-                    AnalyticsEvent.ComparisonQuizGameStart(
-                        category = category.id,
-                        comparisonMode = comparisonMode.name,
-                    )
-                )
-
-                _quizData.emit(quizData)
-            } else {
-                return@collect endGame()
-            }
+        if (questions.isEmpty()) {
+            Log.w(TAG, "No questions found for category ${initializationData.category.id}")
+            return endGame()
         }
+
+        val category = initializationData.category
+        val comparisonMode = initializationData.comparisonMode
+        val questionDescription = category.getQuestionDescription(comparisonMode)
+
+        val firstItemHelperValue =
+            remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE)
+
+        val quizData = QuizData(
+            questions = questions,
+            comparisonMode = comparisonMode,
+            questionDescription = questionDescription,
+            firstItemHelperValueState = firstItemHelperValue,
+        )
+
+        analyticsHelper.logEvent(
+            AnalyticsEvent.ComparisonQuizGameStart(
+                category = category.id,
+                comparisonMode = comparisonMode.name,
+            )
+        )
+
+        _quizData.emit(quizData)
+        startGame()
     }
 
     override fun startGame() {

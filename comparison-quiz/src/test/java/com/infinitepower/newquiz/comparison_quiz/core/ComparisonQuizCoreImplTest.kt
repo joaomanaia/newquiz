@@ -1,9 +1,9 @@
 package com.infinitepower.newquiz.comparison_quiz.core
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.analytics.NoOpAnalyticsHelper
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
@@ -15,6 +15,7 @@ import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.testing.domain.FakeGameResultDao
+import com.infinitepower.newquiz.core.testing.utils.mockAndroidLog
 import com.infinitepower.newquiz.core.user_services.InsufficientDiamondsException
 import com.infinitepower.newquiz.core.user_services.LocalUserServiceImpl
 import com.infinitepower.newquiz.core.user_services.UserService
@@ -22,20 +23,19 @@ import com.infinitepower.newquiz.core.user_services.data.xp.ComparisonQuizXpGene
 import com.infinitepower.newquiz.core.user_services.data.xp.MultiChoiceQuizXpGeneratorImpl
 import com.infinitepower.newquiz.core.user_services.data.xp.WordleXpGeneratorImpl
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
-import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.toUiText
+import io.mockk.coEvery
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -65,6 +65,7 @@ internal class ComparisonQuizCoreImplTest {
 
     @BeforeEach
     fun setup() {
+        mockAndroidLog()
         val testDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.create(
             produceFile = { File(tmpDir, "user.preferences_pb") }
         )
@@ -88,10 +89,6 @@ internal class ComparisonQuizCoreImplTest {
             analyticsHelper = NoOpAnalyticsHelper,
             userService = userService
         )
-
-        mockkStatic(Log::class)
-        every { Log.d(any(), any()) } returns 0
-        every { Log.e(any(), any(), any()) } returns 0
 
         every {
             remoteConfig.getString("comparison_quiz_first_item_helper_value")
@@ -121,9 +118,9 @@ internal class ComparisonQuizCoreImplTest {
             )
         )
 
-        every {
+        coEvery {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(expectedQuestions)
+        } returns expectedQuestions
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -145,15 +142,17 @@ internal class ComparisonQuizCoreImplTest {
     fun `initializeGame should end game when error in data request`() = runTest {
         val initialData = getInitializationData()
 
-        every {
+        coEvery {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(emptyList())
+        } returns emptyList()
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
-        val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
-        assertThat(quizData.isGameOver).isTrue()
-        assertThat(quizData.currentQuestion).isNull()
+        comparisonQuizCoreImpl.quizDataFlow.test {
+            val quizData = awaitItem()
+            assertThat(quizData.isGameOver).isTrue()
+            assertThat(quizData.currentQuestion).isNull()
+        }
     }
 
     @Test
@@ -181,9 +180,9 @@ internal class ComparisonQuizCoreImplTest {
             )
         )
 
-        every {
+        coEvery {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(expectedQuestions)
+        } returns expectedQuestions
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -252,9 +251,9 @@ internal class ComparisonQuizCoreImplTest {
             )
         )
 
-        every {
+        coEvery {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(expectedQuestions)
+        } returns expectedQuestions
 
         // Loads the initial data and starts the game
         // This will also set the current question
@@ -309,9 +308,9 @@ internal class ComparisonQuizCoreImplTest {
             )
         )
 
-        every {
+        coEvery {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(expectedQuestions)
+        } returns expectedQuestions
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -356,9 +355,9 @@ internal class ComparisonQuizCoreImplTest {
             )
         )
 
-        every {
+        coEvery {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(expectedQuestions)
+        } returns expectedQuestions
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 
@@ -416,9 +415,9 @@ internal class ComparisonQuizCoreImplTest {
             )
         )
 
-        every {
+        coEvery {
             comparisonQuizRepository.getQuestions(category = initialData.category)
-        } returns flowOf(expectedQuestions)
+        } returns expectedQuestions
 
         comparisonQuizCoreImpl.initializeGame(initialData)
 

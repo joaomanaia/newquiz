@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.data.repository.comparison_quiz
 
 import com.infinitepower.newquiz.core.NumberFormatter
+import com.infinitepower.newquiz.core.NumberFormatter.Distance.DistanceUnitType
+import com.infinitepower.newquiz.core.NumberFormatter.Temperature.TemperatureUnit
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
@@ -12,10 +14,7 @@ import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQui
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import com.infinitepower.newquiz.core.NumberFormatter.Temperature.TemperatureUnit
-import com.infinitepower.newquiz.core.NumberFormatter.Distance.DistanceUnitType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.Json
 import java.net.URI
 import javax.inject.Inject
@@ -43,11 +42,11 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
         return categoriesCache
     }
 
-    override fun getQuestions(
+    override suspend fun getQuestions(
         category: ComparisonQuizCategory,
         size: Int,
         random: Random
-    ): Flow<List<ComparisonQuizItem>> = flow {
+    ): List<ComparisonQuizItem> {
         val entityQuestions = comparisonQuizApi.generateQuestions(
             category = category,
             size = size,
@@ -56,7 +55,7 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
 
         val userConfig = getUserConfig()
 
-        val questions = entityQuestions.map { entity ->
+        return entityQuestions.map { entity ->
             val valueFormatter = NumberFormatter.from(category.formatType)
 
             val helperValue = valueFormatter.formatValueToString(
@@ -72,8 +71,6 @@ class ComparisonQuizRepositoryImpl @Inject constructor(
                 imgUri = URI.create(entity.imgUrl)
             )
         }
-
-        emit(questions)
     }
 
     private suspend fun getUserConfig(): NumberFormatter.RegionalPreferences {

@@ -167,27 +167,23 @@ internal class ComparisonQuizRepositoryImplTest {
             size = questionsToGenerate,
         )
 
-        result.test {
-            awaitItem().forEachIndexed { index, question ->
-                assertThat(question.title).isNotEmpty()
-                assertThat(question.value).isEqualTo(index.toDouble())
-                assertThat(question.imgUri).isNotNull()
+        result.forEachIndexed { index, question ->
+            assertThat(question.title).isNotEmpty()
+            assertThat(question.value).isEqualTo(index.toDouble())
+            assertThat(question.imgUri).isNotNull()
 
-                val valueFormatter = NumberFormatter.from(category.formatType)
+            val valueFormatter = NumberFormatter.from(category.formatType)
 
-                val helperValue = valueFormatter.formatValueToString(
-                    value = index.toDouble(),
-                    helperValueSuffix = category.helperValueSuffix,
-                    regionalPreferences = NumberFormatter.RegionalPreferences(
-                        temperatureUnit = NumberFormatter.Temperature.TemperatureUnit.CELSIUS,
-                        distanceUnitType = NumberFormatter.Distance.DistanceUnitType.METRIC
-                    )
+            val helperValue = valueFormatter.formatValueToString(
+                value = index.toDouble(),
+                helperValueSuffix = category.helperValueSuffix,
+                regionalPreferences = NumberFormatter.RegionalPreferences(
+                    temperatureUnit = NumberFormatter.Temperature.TemperatureUnit.CELSIUS,
+                    distanceUnitType = NumberFormatter.Distance.DistanceUnitType.METRIC
                 )
+            )
 
-                assertThat(question.helperValue).isEqualTo(helperValue)
-            }
-
-            awaitComplete()
+            assertThat(question.helperValue).isEqualTo(helperValue)
         }
 
         coVerify(exactly = 1) {

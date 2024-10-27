@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ComparisonQuizItemEntity(
     val title: String,
-    val value: Double,
+    val value: Double = 0.0,
     val imgUrl: String
 ) : java.io.Serializable
