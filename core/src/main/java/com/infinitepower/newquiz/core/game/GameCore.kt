@@ -12,7 +12,7 @@ class GameOverException(
  * @param QuizData The data type representing the quiz-specific information.
  * @param InitializationData The data type representing the initialization parameters for the game.
  */
-sealed interface GameCore <QuizData, InitializationData> {
+sealed interface GameCore<QuizData, InitializationData> {
     /**
      * A [StateFlow] that emits the current quiz data.
      */

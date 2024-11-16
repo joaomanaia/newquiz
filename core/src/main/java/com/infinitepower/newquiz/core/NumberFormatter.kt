@@ -5,6 +5,9 @@ import android.icu.util.ULocale
 import android.os.Build
 import androidx.core.text.util.LocalePreferences
 import com.infinitepower.newquiz.model.NumberFormatType
+import com.infinitepower.newquiz.model.regional_preferences.DistanceUnitType
+import com.infinitepower.newquiz.model.regional_preferences.RegionalPreferences
+import com.infinitepower.newquiz.model.regional_preferences.TemperatureUnit
 import java.math.RoundingMode
 import java.text.DateFormat
 import java.text.NumberFormat
@@ -19,17 +22,6 @@ sealed class NumberFormatter(
         helperValueSuffix: String? = null,
         regionalPreferences: RegionalPreferences = RegionalPreferences(),
     ): String
-
-    /**
-     * The user configuration for the value formatter.
-     *
-     * @param locale The locale of the user.
-     */
-    data class RegionalPreferences(
-        val locale: Locale = Locale.getDefault(),
-        val temperatureUnit: Temperature.TemperatureUnit? = null,
-        val distanceUnitType: Distance.DistanceUnitType? = null,
-    )
 
     companion object {
         fun from(formatType: NumberFormatType): NumberFormatter {
@@ -94,7 +86,8 @@ sealed class NumberFormatter(
             helperValueSuffix: String?,
             regionalPreferences: RegionalPreferences
         ): String {
-            val dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, regionalPreferences.locale)
+            val dateFormat =
+                DateFormat.getDateInstance(DateFormat.MEDIUM, regionalPreferences.locale)
             val dateFormatted = dateFormat.format(value.toLong())
 
             return valueWithSuffix(dateFormatted, helperValueSuffix)
@@ -111,7 +104,8 @@ sealed class NumberFormatter(
             helperValueSuffix: String?,
             regionalPreferences: RegionalPreferences
         ): String {
-            val timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT, regionalPreferences.locale)
+            val timeFormat =
+                DateFormat.getTimeInstance(DateFormat.SHORT, regionalPreferences.locale)
             val timeFormatted = timeFormat.format(value.toLong())
 
             return valueWithSuffix(timeFormatted, helperValueSuffix)
@@ -162,51 +156,6 @@ sealed class NumberFormatter(
     object Temperature : NumberFormatter(
         formatType = NumberFormatType.TEMPERATURE
     ) {
-        enum class TemperatureUnit(
-            val key: String,
-            val value: String,
-        ) {
-            CELSIUS(key = "celsius", value = "°C"),
-            FAHRENHEIT(key = "fahrenhe", value = "°F"),
-            KELVIN(key = "kelvin", value = "K");
-
-            companion object {
-                fun fromKey(key: String): TemperatureUnit = entries
-                    .firstOrNull { it.key == key }
-                    ?: throw IllegalArgumentException("Unknown temperature unit: $key")
-
-            }
-
-            fun convert(
-                to: TemperatureUnit,
-                value: Double
-            ): Double {
-                if (this == to) return value
-
-                return when (this) {
-                    CELSIUS -> when (to) {
-                        FAHRENHEIT -> (value * 9 / 5) + 32
-                        KELVIN -> value + 273.15
-                        else -> throw IllegalArgumentException("Unknown temperature unit: $to")
-                    }
-
-                    FAHRENHEIT -> when (to) {
-                        CELSIUS -> (value - 32) * 5 / 9
-                        KELVIN -> (value + 459.67) * 5 / 9
-                        else -> throw IllegalArgumentException("Unknown temperature unit: $to")
-                    }
-
-                    KELVIN -> when (to) {
-                        CELSIUS -> value - 273.15
-                        FAHRENHEIT -> (value * 9 / 5) - 459.67
-                        else -> throw IllegalArgumentException("Unknown temperature unit: $to")
-                    }
-                }
-            }
-
-            override fun toString(): String = key
-        }
-
         /**
          * Formats the [value] to a string, the [helperValueSuffix] is the [LocalePreferences.TemperatureUnit] from the [regionalPreferences].
          *
@@ -222,11 +171,8 @@ sealed class NumberFormatter(
             val valueTemperatureUnit = TemperatureUnit.fromKey(helperValueSuffix)
 
             // If the user has configured a temperature unit, use it instead of the locale
-            val convertTemperatureUnitKey = if (regionalPreferences.temperatureUnit != null) {
-                regionalPreferences.temperatureUnit.key
-            } else {
-                LocalePreferences.getTemperatureUnit(regionalPreferences.locale)
-            }
+            val convertTemperatureUnitKey = regionalPreferences.temperatureUnit?.key
+                ?: LocalePreferences.getTemperatureUnit(regionalPreferences.locale)
 
             // If the value temperature unit is the same as the convert temperature unit, it's not necessary to convert
             // the value, just return the value with the suffix
@@ -234,8 +180,8 @@ sealed class NumberFormatter(
                 return valueWithSuffix(value.toString(), valueTemperatureUnit.value)
             }
 
-            val convertTemperatureUnit =
-                regionalPreferences.temperatureUnit ?: TemperatureUnit.fromKey(convertTemperatureUnitKey)
+            val convertTemperatureUnit = regionalPreferences.temperatureUnit
+                ?: TemperatureUnit.fromKey(convertTemperatureUnitKey)
 
             val convertedValue = valueTemperatureUnit.convert(
                 to = convertTemperatureUnit,
@@ -256,11 +202,6 @@ sealed class NumberFormatter(
     }
 
     object Distance : NumberFormatter(formatType = NumberFormatType.DISTANCE) {
-        enum class DistanceUnitType {
-            METRIC,
-            IMPERIAL,
-        }
-
         enum class DistanceUnit(
             val key: String,
             val value: String,
@@ -320,8 +261,15 @@ sealed class NumberFormatter(
                             when (from) {
                                 FOOT -> Pair(value * FOOT_TO_METER_MULTIPLIER, METER)
                                 MILE -> Pair(value * MILE_TO_KILOMETER_MULTIPLIER, KILOMETER)
-                                SQUARE_MILE -> Pair(value * MILE_TO_KILOMETER_MULTIPLIER.pow(2), SQUARE_KILOMETER)
-                                METER, KILOMETER, SQUARE_KILOMETER -> Pair(value, from) // Already metric
+                                SQUARE_MILE -> Pair(
+                                    value * MILE_TO_KILOMETER_MULTIPLIER.pow(2),
+                                    SQUARE_KILOMETER
+                                )
+
+                                METER, KILOMETER, SQUARE_KILOMETER -> Pair(
+                                    value,
+                                    from
+                                ) // Already metric
                             }
                         }
 
@@ -330,7 +278,11 @@ sealed class NumberFormatter(
                             when (from) {
                                 METER -> Pair(value * METER_TO_FOOT_MULTIPLIER, FOOT)
                                 KILOMETER -> Pair(value * KILOMETER_TO_MILE_MULTIPLIER, MILE)
-                                SQUARE_KILOMETER -> Pair(value * KILOMETER_TO_MILE_MULTIPLIER.pow(2), SQUARE_MILE)
+                                SQUARE_KILOMETER -> Pair(
+                                    value * KILOMETER_TO_MILE_MULTIPLIER.pow(2),
+                                    SQUARE_MILE
+                                )
+
                                 FOOT, MILE, SQUARE_MILE -> Pair(value, from) // Already imperial
                             }
                         }
@@ -376,7 +328,8 @@ sealed class NumberFormatter(
 
             // If the user has configured a distance unit, use it instead of the locale
             val convertDistanceUnitType =
-                regionalPreferences.distanceUnitType ?: regionalPreferences.locale.getDistanceUnitType()
+                regionalPreferences.distanceUnitType
+                    ?: regionalPreferences.locale.getDistanceUnitType()
 
             // If the value distance unit type is the same as the user distance unit type, return the value with the suffix
             if (valueDistanceUnit.type == convertDistanceUnitType) {

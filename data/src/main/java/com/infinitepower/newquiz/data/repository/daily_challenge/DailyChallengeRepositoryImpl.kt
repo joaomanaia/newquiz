@@ -7,7 +7,7 @@ import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
-import com.infinitepower.newquiz.data.util.mappers.toModel
+import com.infinitepower.newquiz.data.util.mappers.daily_challenge.toModel
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask

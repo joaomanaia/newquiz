@@ -39,7 +39,7 @@ import com.infinitepower.newquiz.core.database.util.converters.QuestionDifficult
         WordleGameResultEntity::class,
         ComparisonQuizGameResultEntity::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -54,7 +54,8 @@ import com.infinitepower.newquiz.core.database.util.converters.QuestionDifficult
             from = 5,
             to = 6,
             spec = AppDatabase.RemoveComparisonQuizHighestPositionTableMigration::class
-        )
+        ),
+        AutoMigration(from = 6, to = 7)
     ]
 )
 abstract class AppDatabase : RoomDatabase() {

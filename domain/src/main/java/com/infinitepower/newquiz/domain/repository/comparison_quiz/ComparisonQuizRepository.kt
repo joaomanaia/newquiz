@@ -8,6 +8,8 @@ import kotlin.random.Random
 interface ComparisonQuizRepository {
     fun getCategories(): List<ComparisonQuizCategory>
 
+    fun getCategoryById(id: String): ComparisonQuizCategory?
+
     suspend fun getQuestions(
         category: ComparisonQuizCategory,
         size: Int = 30,

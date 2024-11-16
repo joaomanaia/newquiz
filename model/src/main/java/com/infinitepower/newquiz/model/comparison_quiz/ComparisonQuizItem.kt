@@ -7,6 +7,5 @@ import java.net.URI
 data class ComparisonQuizItem(
     val title: String,
     val value: Double,
-    val helperValue: String = value.toString(),
     val imgUri: URI
 )

@@ -26,6 +26,8 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
+    api(libs.mockk)
+
     implementation(projects.model)
     implementation(projects.core)
     implementation(projects.core.analytics)

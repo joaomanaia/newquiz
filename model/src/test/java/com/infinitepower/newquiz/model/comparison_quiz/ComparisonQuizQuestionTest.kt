@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import java.net.URI
 
-internal class ComparisonQuizCurrentQuestionTest {
+internal class ComparisonQuizQuestionTest {
     private val emptyUri = URI("")
 
     @Test
@@ -21,7 +21,11 @@ internal class ComparisonQuizCurrentQuestionTest {
             value = 10.0
         )
 
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+        val question = ComparisonQuizQuestion(
+            questions = quizItem1 to quizItem2,
+            categoryId = "",
+            comparisonMode = ComparisonMode.GREATER
+        )
 
         val newQuestion = ComparisonQuizItem(
             title = "C",
@@ -52,13 +56,14 @@ internal class ComparisonQuizCurrentQuestionTest {
             value = 1.0
         )
 
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+        val question = ComparisonQuizQuestion(
+            questions = quizItem1 to quizItem2,
+            categoryId = "",
+            comparisonMode = ComparisonMode.GREATER
+        )
 
-        val isCorrectGreater = question.isCorrectAnswer(quizItem1, ComparisonMode.GREATER)
+        val isCorrectGreater = question.isCorrectAnswer(quizItem1)
         assertThat(isCorrectGreater).isTrue()
-
-        val isCorrectLower = question.isCorrectAnswer(quizItem1, ComparisonMode.LESSER)
-        assertThat(isCorrectLower).isFalse()
     }
 
     @Test
@@ -75,13 +80,14 @@ internal class ComparisonQuizCurrentQuestionTest {
             value = 1.0
         )
 
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+        val question = ComparisonQuizQuestion(
+            questions = quizItem1 to quizItem2,
+            categoryId = "",
+            comparisonMode = ComparisonMode.GREATER
+        )
 
-        val isCorrectGreater = question.isCorrectAnswer(quizItem2, ComparisonMode.GREATER)
+        val isCorrectGreater = question.isCorrectAnswer(quizItem2)
         assertThat(isCorrectGreater).isFalse()
-
-        val isCorrectLower = question.isCorrectAnswer(quizItem2, ComparisonMode.LESSER)
-        assertThat(isCorrectLower).isTrue()
     }
 
     @Test
@@ -98,13 +104,14 @@ internal class ComparisonQuizCurrentQuestionTest {
             value = 2.0
         )
 
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+        val question = ComparisonQuizQuestion(
+            questions = quizItem1 to quizItem2,
+            categoryId = "",
+            comparisonMode = ComparisonMode.GREATER
+        )
 
-        val isCorrectGreater = question.isCorrectAnswer(quizItem1, ComparisonMode.GREATER)
+        val isCorrectGreater = question.isCorrectAnswer(quizItem1)
         assertThat(isCorrectGreater).isFalse()
-
-        val isCorrectLower = question.isCorrectAnswer(quizItem1, ComparisonMode.LESSER)
-        assertThat(isCorrectLower).isTrue()
     }
 
     @Test
@@ -121,13 +128,14 @@ internal class ComparisonQuizCurrentQuestionTest {
             value = 2.0
         )
 
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+        val question = ComparisonQuizQuestion(
+            questions = quizItem1 to quizItem2,
+            categoryId = "",
+            comparisonMode = ComparisonMode.GREATER
+        )
 
-        val isCorrectGreater = question.isCorrectAnswer(quizItem2, ComparisonMode.GREATER)
+        val isCorrectGreater = question.isCorrectAnswer(quizItem2)
         assertThat(isCorrectGreater).isTrue()
-
-        val isCorrectLower = question.isCorrectAnswer(quizItem2, ComparisonMode.LESSER)
-        assertThat(isCorrectLower).isFalse()
     }
 
     @Test
@@ -144,12 +152,13 @@ internal class ComparisonQuizCurrentQuestionTest {
             value = 1.0
         )
 
-        val question = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2)
+        val question = ComparisonQuizQuestion(
+            questions = quizItem1 to quizItem2,
+            categoryId = "",
+            comparisonMode = ComparisonMode.GREATER
+        )
 
-        val isCorrectGreater = question.isCorrectAnswer(quizItem1, ComparisonMode.GREATER)
+        val isCorrectGreater = question.isCorrectAnswer(quizItem1)
         assertThat(isCorrectGreater).isTrue()
-
-        val isCorrectLower = question.isCorrectAnswer(quizItem1, ComparisonMode.LESSER)
-        assertThat(isCorrectLower).isTrue()
     }
 }

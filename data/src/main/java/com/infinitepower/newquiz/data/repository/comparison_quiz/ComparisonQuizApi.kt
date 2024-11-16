@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.data.repository.comparison_quiz
 
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import kotlin.random.Random
 
 interface ComparisonQuizApi {

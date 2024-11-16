@@ -26,9 +26,9 @@ import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQui
 import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizQuestion
 import com.infinitepower.newquiz.model.toUiText
 import io.mockk.coEvery
 import io.mockk.confirmVerified
@@ -129,8 +129,10 @@ internal class ComparisonQuizCoreImplTest {
         assertThat(quizData.questions).contains(expectedQuestions[2])
         assertThat(quizData.firstItemHelperValueState).isEqualTo(firstItemHelperValueState)
 
-        val expectedCurrentQuestion = ComparisonQuizCurrentQuestion(
-            questions = expectedQuestions[0] to expectedQuestions[1]
+        val expectedCurrentQuestion = ComparisonQuizQuestion(
+            questions = expectedQuestions[0] to expectedQuestions[1],
+            categoryId = "id",
+            comparisonMode = ComparisonMode.GREATER
         )
 
         // verify current question
@@ -317,8 +319,10 @@ internal class ComparisonQuizCoreImplTest {
         val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
         assertThat(quizData.questions).isEmpty()
 
-        val expectedCurrentQuestion = ComparisonQuizCurrentQuestion(
-            questions = expectedQuestions[0] to expectedQuestions[1]
+        val expectedCurrentQuestion = ComparisonQuizQuestion(
+            questions = expectedQuestions[0] to expectedQuestions[1],
+            categoryId = "id",
+            comparisonMode = ComparisonMode.GREATER
         )
 
         val currentQuestion = quizData.currentQuestion
@@ -364,8 +368,10 @@ internal class ComparisonQuizCoreImplTest {
         val quizData = comparisonQuizCoreImpl.quizDataFlow.first()
         assertThat(quizData.questions).isEmpty()
 
-        val expectedCurrentQuestion = ComparisonQuizCurrentQuestion(
-            questions = expectedQuestions[0] to expectedQuestions[1]
+        val expectedCurrentQuestion = ComparisonQuizQuestion(
+            questions = expectedQuestions[0] to expectedQuestions[1],
+            categoryId = "id",
+            comparisonMode = ComparisonMode.GREATER
         )
 
         val currentQuestion = quizData.currentQuestion

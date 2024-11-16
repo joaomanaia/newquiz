@@ -1,10 +1,11 @@
 package com.infinitepower.newquiz.core
 
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.model.NumberFormatType
-import com.infinitepower.newquiz.core.NumberFormatter.Temperature.TemperatureUnit
 import com.infinitepower.newquiz.core.NumberFormatter.Distance.DistanceUnit
-import com.infinitepower.newquiz.core.NumberFormatter.Distance.DistanceUnitType
+import com.infinitepower.newquiz.model.NumberFormatType
+import com.infinitepower.newquiz.model.regional_preferences.DistanceUnitType
+import com.infinitepower.newquiz.model.regional_preferences.RegionalPreferences
+import com.infinitepower.newquiz.model.regional_preferences.TemperatureUnit
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -154,9 +155,7 @@ internal class NumberFormatterTest {
         val formattedValue = formatter.formatValueToString(
             value = valueToFormat,
             helperValueSuffix = temperatureUnitStr,
-            regionalPreferences = NumberFormatter.RegionalPreferences(
-                locale = locale,
-            )
+            regionalPreferences = RegionalPreferences(locale = locale)
         )
         assertThat(formattedValue).isEqualTo(expected)
     }
@@ -179,7 +178,7 @@ internal class NumberFormatterTest {
         val formattedValue = formatter.formatValueToString(
             value = valueToFormat,
             helperValueSuffix = valueTemperatureUnit.key,
-            regionalPreferences = NumberFormatter.RegionalPreferences(
+            regionalPreferences = RegionalPreferences(
                 temperatureUnit = convertTemperatureUnit, // This should override the default locale
             )
         )
@@ -206,7 +205,7 @@ internal class NumberFormatterTest {
         val formattedValue = formatter.formatValueToString(
             value = valueToFormat,
             helperValueSuffix = distanceUnit,
-            regionalPreferences = NumberFormatter.RegionalPreferences(
+            regionalPreferences = RegionalPreferences(
                 locale = locale,
             )
         )
@@ -235,7 +234,7 @@ internal class NumberFormatterTest {
         val formattedValue = formatter.formatValueToString(
             value = valueToFormat,
             helperValueSuffix = valueDistanceUnit.key,
-            regionalPreferences = NumberFormatter.RegionalPreferences(
+            regionalPreferences = RegionalPreferences(
                 distanceUnitType = convertDistanceUnitType, // This should override the default locale
             )
         )

@@ -35,6 +35,10 @@ class FakeComparisonQuizRepositoryImpl @Inject constructor() : ComparisonQuizRep
         }
     }
 
+    override fun getCategoryById(id: String): ComparisonQuizCategory? {
+        return getCategories().find { it.id == id }
+    }
+
     override suspend fun getQuestions(
         category: ComparisonQuizCategory,
         size: Int,

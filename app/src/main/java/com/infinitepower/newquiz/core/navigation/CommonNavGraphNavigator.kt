@@ -5,10 +5,12 @@ import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScre
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
+import com.infinitepower.newquiz.data.util.mappers.comparisonquiz.toEntity
 import com.infinitepower.newquiz.feature.daily_challenge.DailyChallengeScreenNavigator
 import com.infinitepower.newquiz.feature.maze.destinations.LevelResultsScreenDestination
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
@@ -33,7 +35,7 @@ class CommonNavGraphNavigator(
         category: ComparisonQuizCategory,
         mode: ComparisonMode
     ) {
-        navController.navigate(ComparisonQuizScreenDestination(category.toEntity(), mode))
+        navController.navigate(ComparisonQuizScreenDestination(category.id, mode))
     }
 
     override fun navigateToMultiChoiceQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {
@@ -81,6 +83,18 @@ class CommonNavGraphNavigator(
                 MultiChoiceQuizScreenDestination(
                     initialQuestions = arrayListOf(item.question),
                     mazeItemId = item.id.toString()
+                )
+            }
+
+            is MazeQuiz.MazeItem.ComparisonQuiz -> {
+                val initialItems = item.question.questions
+                    .toList()
+                    .map(ComparisonQuizItem::toEntity)
+
+                ComparisonQuizScreenDestination(
+                    categoryId = item.question.categoryId,
+                    initialItems = ArrayList(initialItems),
+                    mazeItemId = item.id
                 )
             }
         }

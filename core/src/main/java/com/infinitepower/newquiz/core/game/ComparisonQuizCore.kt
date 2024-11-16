@@ -3,9 +3,10 @@ package com.infinitepower.newquiz.core.game
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizQuestion
 
 /**
  * Represents the core functionality of a comparison quiz.
@@ -33,12 +34,14 @@ interface ComparisonQuizCore :
      */
     @Keep
     data class QuizData(
+        val category: ComparisonQuizCategory? = null,
         val questions: List<ComparisonQuizItem> = emptyList(),
         val questionDescription: String? = null,
-        val currentQuestion: ComparisonQuizCurrentQuestion? = null,
+        val currentQuestion: ComparisonQuizQuestion? = null,
         val comparisonMode: ComparisonMode = ComparisonMode.GREATER,
         val currentPosition: Int = 0,
         val isGameOver: Boolean = false,
+        val isLastQuestionCorrect: Boolean = false,
         val firstItemHelperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN,
         val skippedAnswers: Int = 0
     ) {
@@ -56,6 +59,7 @@ interface ComparisonQuizCore :
          * @throws GameOverException If the questions list has less than two items.
          */
         fun getNextQuestion(skipped: Boolean = false): QuizData {
+            requireNotNull(category) { "Category cannot be null" }
             if (questions.isEmpty()) {
                 throw GameOverException("Questions list is empty")
             }
@@ -76,7 +80,11 @@ interface ComparisonQuizCore :
                 newQuestions.removeFirst()
                 newQuestions.removeAt(0)
 
-                ComparisonQuizCurrentQuestion(firstQuestion to secondQuestion)
+                ComparisonQuizQuestion(
+                    questions = firstQuestion to secondQuestion,
+                    categoryId = category.id,
+                    comparisonMode = comparisonMode
+                )
             } else {
                 // If is not a new game, gets the first question from the questions list
                 // And then removes from the questions list
@@ -118,6 +126,7 @@ interface ComparisonQuizCore :
     @Keep
     data class InitializationData(
         val category: ComparisonQuizCategory,
-        val comparisonMode: ComparisonMode
+        val comparisonMode: ComparisonMode,
+        val initialItems: List<ComparisonQuizItemEntity> = emptyList()
     )
 }

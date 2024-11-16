@@ -19,8 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.infinitepower.newquiz.core.NumberFormatter.Distance.DistanceUnitType
-import com.infinitepower.newquiz.core.NumberFormatter.Temperature.TemperatureUnit
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
@@ -30,6 +28,8 @@ import com.infinitepower.newquiz.feature.settings.model.ScreenKey
 import com.infinitepower.newquiz.feature.settings.screens.PreferenceScreen
 import com.infinitepower.newquiz.feature.settings.util.datastore.rememberSettingsDataStoreManager
 import com.infinitepower.newquiz.feature.settings.util.getShowCategoryConnectionInfoEntryMap
+import com.infinitepower.newquiz.model.regional_preferences.DistanceUnitType
+import com.infinitepower.newquiz.model.regional_preferences.TemperatureUnit
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

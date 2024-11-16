@@ -1,6 +1,7 @@
 @file:Suppress("unused")
 package com.infinitepower.newquiz.data.di
 
+import com.infinitepower.newquiz.data.repository.UserConfigRepositoryImpl
 import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizApi
 import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizApiImpl
 import com.infinitepower.newquiz.data.repository.comparison_quiz.ComparisonQuizRepositoryImpl
@@ -19,6 +20,7 @@ import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionApi
 import com.infinitepower.newquiz.data.repository.numbers.NumberTriviaQuestionRepositoryImpl
 import com.infinitepower.newquiz.data.repository.wordle.WordleRepositoryImpl
 import com.infinitepower.newquiz.domain.repository.CountryRepository
+import com.infinitepower.newquiz.domain.repository.UserConfigRepository
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
@@ -88,4 +90,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindComparisonQuizApi(impl: ComparisonQuizApiImpl): ComparisonQuizApi
+
+    @Binds
+    abstract fun bindUserConfigRepository(impl: UserConfigRepositoryImpl): UserConfigRepository
 }

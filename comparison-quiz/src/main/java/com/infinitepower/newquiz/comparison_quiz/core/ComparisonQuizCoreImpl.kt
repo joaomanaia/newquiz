@@ -12,8 +12,10 @@ import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.user_services.InsufficientDiamondsException
 import com.infinitepower.newquiz.core.user_services.UserService
+import com.infinitepower.newquiz.data.util.mappers.comparisonquiz.toModel
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -36,14 +38,19 @@ class ComparisonQuizCoreImpl @Inject constructor(
     override val quizDataFlow = _quizData.asStateFlow()
 
     override suspend fun initializeGame(initializationData: InitializationData) {
-        val questions = comparisonQuizRepository.getQuestions(initializationData.category)
+        val category = initializationData.category
+        val questions = initializationData.initialItems
+            .map(ComparisonQuizItemEntity::toModel)
+            .ifEmpty {
+                // If there are no initial items, get the questions from the repository
+                comparisonQuizRepository.getQuestions(initializationData.category)
+            }
 
         if (questions.isEmpty()) {
             Log.w(TAG, "No questions found for category ${initializationData.category.id}")
             return endGame()
         }
 
-        val category = initializationData.category
         val comparisonMode = initializationData.comparisonMode
         val questionDescription = category.getQuestionDescription(comparisonMode)
 
@@ -51,6 +58,7 @@ class ComparisonQuizCoreImpl @Inject constructor(
             remoteConfig.get(RemoteConfigValue.COMPARISON_QUIZ_FIRST_ITEM_HELPER_VALUE)
 
         val quizData = QuizData(
+            category = category,
             questions = questions,
             comparisonMode = comparisonMode,
             questionDescription = questionDescription,
@@ -80,24 +88,31 @@ class ComparisonQuizCoreImpl @Inject constructor(
     }
 
     override fun onAnswerClicked(answer: ComparisonQuizItem) {
+        Log.d(TAG, "Answer clicked: $answer")
+
         _quizData.update { currentData ->
             val currentQuestion = currentData.currentQuestion
+            val isQuestionCorrect = currentQuestion != null && currentQuestion.isCorrectAnswer(answer)
+            Log.d(TAG, "Is question correct: $isQuestionCorrect")
 
             // If the current question is null or the answer is correct, get the next question
-            if (currentQuestion == null || currentQuestion.isCorrectAnswer(
-                    answer,
-                    currentData.comparisonMode
-                )
-            ) {
+            if (currentQuestion == null || isQuestionCorrect) {
                 try {
                     currentData.getNextQuestion()
                 } catch (e: GameOverException) {
                     e.printStackTrace()
-                    return endGame()
+                    currentData.copy(
+                        currentQuestion = null,
+                        isGameOver = true,
+                        isLastQuestionCorrect = isQuestionCorrect
+                    )
                 }
             } else {
-                // Otherwise, end the game
-                return endGame()
+                currentData.copy(
+                    currentQuestion = null,
+                    isGameOver = true,
+                    isLastQuestionCorrect = false
+                )
             }
         }
     }

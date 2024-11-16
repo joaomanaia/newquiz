@@ -42,13 +42,14 @@ internal fun ComparisonItem(
     onClick: () -> Unit,
     item: ComparisonQuizItem,
     helperContentAlignment: Alignment,
+    helperValue: String,
     helperValueState: ComparisonQuizHelperValueState = ComparisonQuizHelperValueState.HIDDEN
 ) {
     ComparisonItem(
         modifier = modifier,
         title = item.title,
         image = item.imgUri.toAndroidUri(),
-        helperValue = item.helperValue,
+        helperValue = helperValue,
         helperContentAlignment = helperContentAlignment,
         helperValueState = helperValueState,
         onClick = onClick

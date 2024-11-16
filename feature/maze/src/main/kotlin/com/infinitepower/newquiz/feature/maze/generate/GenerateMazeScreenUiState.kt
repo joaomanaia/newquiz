@@ -13,4 +13,6 @@ data class GenerateMazeScreenUiState(
     val selectedMultiChoiceCategories: ImmutableList<BaseCategory> = persistentListOf(),
     val wordleCategories: ImmutableList<BaseCategory> = persistentListOf(),
     val selectedWordleCategories: ImmutableList<BaseCategory> = persistentListOf(),
+    val comparisonQuizCategories: ImmutableList<BaseCategory> = persistentListOf(),
+    val selectedComparisonQuizCategories: ImmutableList<BaseCategory> = persistentListOf(),
 )

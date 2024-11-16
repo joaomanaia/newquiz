@@ -78,6 +78,7 @@ private fun LevelResultsScreenImpl(
     }
 }
 
+// TODO: Add correct arg, so we can remove the delay in the end games
 data class LevelResultsScreenArgs(
     val mazeItemId: Int
 )

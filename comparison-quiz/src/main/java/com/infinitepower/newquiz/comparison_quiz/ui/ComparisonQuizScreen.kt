@@ -47,11 +47,14 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonItem
 import com.infinitepower.newquiz.comparison_quiz.ui.components.ComparisonMidContent
 import com.infinitepower.newquiz.comparison_quiz.ui.components.GameOverContent
+import com.infinitepower.newquiz.core.NumberFormatter
+import com.infinitepower.newquiz.core.navigation.MazeNavigator
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
@@ -61,10 +64,11 @@ import com.infinitepower.newquiz.core.util.emptyJavaURI
 import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategoryEntity
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizHelperValueState
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizQuestion
+import com.infinitepower.newquiz.model.regional_preferences.RegionalPreferences
 import com.infinitepower.newquiz.model.toUiText
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -76,6 +80,8 @@ import kotlinx.coroutines.delay
 fun ComparisonQuizScreen(
     windowSizeClass: WindowSizeClass,
     navigator: DestinationsNavigator,
+    mazeNavigator: MazeNavigator,
+    navController: NavController,
     viewModel: ComparisonQuizViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -92,10 +98,17 @@ fun ComparisonQuizScreen(
         }
     }
 
+    val mazeItemId = remember(navController.currentBackStackEntry) {
+        val backStackEntry = navController.currentBackStackEntry
+        val args = backStackEntry?.let(ComparisonQuizScreenDestination::argsFrom)
+        args?.mazeItemId
+    }
+
     ComparisonQuizScreenImpl(
         uiState = uiState,
         windowSizeClass = windowSizeClass,
         animationState = animationState,
+        isFromMaze = mazeItemId != null,
         onEvent = viewModel::onEvent,
         onBackClick = navigator::popBackStack,
         onPlayAgainClick = {
@@ -104,7 +117,7 @@ fun ComparisonQuizScreen(
 
             navigator.navigate(
                 ComparisonQuizScreenDestination(
-                    category = category.toEntity(),
+                    categoryId = category.id,
                     comparisonMode = comparisonMode
                 )
             ) {
@@ -114,6 +127,15 @@ fun ComparisonQuizScreen(
             }
         }
     )
+
+    // If the game is over and is from maze, navigate to maze results
+    LaunchedEffect(uiState.isGameOver) {
+        if (uiState.isGameOver && mazeItemId != null) {
+            // Show a delay before moving to maze results
+            delay(NAV_TO_RESULTS_DELAY_MILLIS)
+            mazeNavigator.navigateToMazeResults(mazeItemId)
+        }
+    }
 }
 
 @Composable
@@ -123,6 +145,7 @@ internal fun ComparisonQuizScreenImpl(
     uiState: ComparisonQuizUiState,
     windowSizeClass: WindowSizeClass,
     animationState: AnimationState,
+    isFromMaze: Boolean = false,
     onBackClick: () -> Unit = {},
     onPlayAgainClick: () -> Unit = {},
     onEvent: (event: ComparisonQuizUiEvent) -> Unit = {}
@@ -146,12 +169,13 @@ internal fun ComparisonQuizScreenImpl(
                 userAvailable = uiState.userAvailable,
                 firstItemHelperValueState = uiState.firstItemHelperValueState,
                 animationState = animationState,
+                regionalPreferences = uiState.regionalPreferences,
                 onAnswerClick = { onEvent(ComparisonQuizUiEvent.OnAnswerClick(it)) },
                 onSkipClick = { onEvent(ComparisonQuizUiEvent.ShowSkipQuestionDialog) },
             )
         }
 
-        uiState.isGameOver -> {
+        uiState.isGameOver && !isFromMaze -> {
             GameOverContent(
                 scorePosition = uiState.currentPosition,
                 highestPosition = uiState.highestPosition,
@@ -181,8 +205,10 @@ internal fun ComparisonQuizScreenImpl(
 
 @Keep
 data class ComparisonQuizScreenNavArg(
-    val category: ComparisonQuizCategoryEntity,
-    val comparisonMode: ComparisonMode = ComparisonMode.GREATER
+    val categoryId: String,
+    val comparisonMode: ComparisonMode = ComparisonMode.GREATER,
+    val initialItems: ArrayList<ComparisonQuizItemEntity> = arrayListOf(),
+    val mazeItemId: Int? = null
 )
 
 @Composable
@@ -192,7 +218,7 @@ private fun ComparisonQuizContent(
     onBackClick: () -> Unit,
     onSkipClick: () -> Unit,
     onAnswerClick: (ComparisonQuizItem) -> Unit,
-    currentQuestion: ComparisonQuizCurrentQuestion,
+    currentQuestion: ComparisonQuizQuestion,
     gameCategory: ComparisonQuizCategory,
     gameDescription: String,
     questionPosition: Int,
@@ -200,8 +226,13 @@ private fun ComparisonQuizContent(
     verticalContent: Boolean,
     userAvailable: Boolean,
     firstItemHelperValueState: ComparisonQuizHelperValueState,
-    animationState: AnimationState
+    animationState: AnimationState,
+    regionalPreferences: RegionalPreferences = RegionalPreferences()
 ) {
+    val valueFormatter = remember(gameCategory) {
+        NumberFormatter.from(gameCategory.formatType)
+    }
+
     ComparisonQuizContainer(
         modifier = modifier.fillMaxSize(),
         verticalContent = verticalContent,
@@ -215,8 +246,19 @@ private fun ComparisonQuizContent(
             )
         },
         firstQuestionContent = {
+            val item = currentQuestion.questions.first
+
+            val helperValue = remember(item, gameCategory, regionalPreferences, valueFormatter) {
+                valueFormatter.formatValueToString(
+                    value = item.value,
+                    helperValueSuffix = gameCategory.helperValueSuffix,
+                    regionalPreferences = regionalPreferences
+                )
+            }
+
             ComparisonItem(
-                item = currentQuestion.questions.first,
+                item = item,
+                helperValue = helperValue,
                 onClick = { onAnswerClick(currentQuestion.questions.first) },
                 helperContentAlignment = Alignment.BottomCenter,
                 helperValueState = firstItemHelperValueState,
@@ -225,6 +267,7 @@ private fun ComparisonQuizContent(
         secondQuestionContent = {
             ComparisonItem(
                 item = currentQuestion.questions.second,
+                helperValue = "", // No helper value for the second question
                 onClick = { onAnswerClick(currentQuestion.questions.second) },
                 helperContentAlignment = if (verticalContent) Alignment.TopCenter else Alignment.BottomCenter,
                 helperValueState = ComparisonQuizHelperValueState.HIDDEN,
@@ -429,6 +472,7 @@ private fun DataSourceAttributionContent(
 }
 
 private const val ANIMATIONS_DELAY = 1000L
+private const val NAV_TO_RESULTS_DELAY_MILLIS = 250L
 
 @Composable
 @PreviewScreenSizes
@@ -455,32 +499,38 @@ private fun ComparisonQuizScreenPreview() {
     val screenWidth = configuration.screenWidthDp.dp
     val windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(screenWidth, screenHeight))
 
+    val category = ComparisonQuizCategory(
+        name = "Social".toUiText(),
+        description = "Social media",
+        image = "",
+        id = "social",
+        questionDescription = ComparisonQuizCategory.QuestionDescription(
+            greater = "Which one is more popular?",
+            less = "Which one is less popular?"
+        ),
+        dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
+            text = "Data from NewQuiz"
+        ),
+        formatType = NumberFormatType.DEFAULT
+    )
+
     NewQuizTheme {
         Surface {
             ComparisonQuizScreenImpl(
                 uiState = ComparisonQuizUiState(
-                    currentQuestion = ComparisonQuizCurrentQuestion(
-                        questions = question1 to question2
+                    currentQuestion = ComparisonQuizQuestion(
+                        questions = question1 to question2,
+                        categoryId = category.id,
+                        comparisonMode = ComparisonMode.GREATER
                     ),
                     gameDescription = "Which one is more popular?",
-                    gameCategory = ComparisonQuizCategory(
-                        name = "Social".toUiText(),
-                        description = "Social media",
-                        image = "",
-                        id = "social",
-                        questionDescription = ComparisonQuizCategory.QuestionDescription(
-                            greater = "Which one is more popular?",
-                            less = "Which one is less popular?"
-                        ),
-                        dataSourceAttribution = ComparisonQuizCategory.DataSourceAttribution(
-                            text = "Data from NewQuiz"
-                        ),
-                        formatType = NumberFormatType.DEFAULT
-                    ),
+                    gameCategory = category,
                     userAvailable = true
                 ),
                 windowSizeClass = windowSizeClass,
-                animationState = AnimationState.Normal
+                animationState = AnimationState.Normal,
+                isFromMaze = false,
+                onEvent = {}
             )
         }
     }

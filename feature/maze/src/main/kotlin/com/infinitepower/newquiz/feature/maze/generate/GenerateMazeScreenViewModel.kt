@@ -5,10 +5,10 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import com.infinitepower.newquiz.core.R as CoreR
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
+import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.BaseCategory
 import com.infinitepower.newquiz.model.GameMode
 import com.infinitepower.newquiz.model.UiText
@@ -27,12 +27,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-private class NotSupportedGameModeException : IllegalStateException("Not supported game mode")
+import com.infinitepower.newquiz.core.R as CoreR
 
 @HiltViewModel
 class GenerateMazeScreenViewModel @Inject constructor(
     private val workManager: WorkManager,
+    private val comparisonQuizRepository: ComparisonQuizRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(GenerateMazeScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -43,6 +43,7 @@ class GenerateMazeScreenViewModel @Inject constructor(
                 currentState.copy(
                     multiChoiceCategories = getMultiChoiceCategories(),
                     wordleCategories = availableWordleCategories.toImmutableList(),
+                    comparisonQuizCategories = getComparisonQuizCategories(),
                     loading = false
                 )
             }
@@ -75,26 +76,6 @@ class GenerateMazeScreenViewModel @Inject constructor(
         }
     }
 
-    private fun getMultiChoiceCategories(): ImmutableList<MultiChoiceCategory> {
-        val allMultiChoiceCategories = multiChoiceQuestionCategories
-
-        val filteredCategories = allMultiChoiceCategories.filter { category ->
-            availableMultiChoiceCategoriesIds.contains(category.id)
-        }
-
-        // Because with the implementation with OpenTriviaDB, we can't select
-        // specific category, so we need to create a special category
-        // for this case, that contains all the categories.
-        val othersCategory = MultiChoiceCategory(
-            id = "others",
-            name = UiText.DynamicString("Others"),
-            image = CoreR.drawable.general_knowledge,
-            requireInternetConnection = true
-        )
-
-        return (filteredCategories + othersCategory).toImmutableList()
-    }
-
     /**
      * Select or deselect a category, depending on the current state.
      */
@@ -104,7 +85,7 @@ class GenerateMazeScreenViewModel @Inject constructor(
             val selectedCategories = when (category.gameMode) {
                 GameMode.MULTI_CHOICE -> currentState.selectedMultiChoiceCategories
                 GameMode.WORDLE -> currentState.selectedWordleCategories
-                else -> throw NotSupportedGameModeException()
+                GameMode.COMPARISON_QUIZ -> currentState.selectedComparisonQuizCategories
             }.toMutableList()
 
             // If the category is already selected, then deselect it.
@@ -120,10 +101,14 @@ class GenerateMazeScreenViewModel @Inject constructor(
                 GameMode.MULTI_CHOICE -> currentState.copy(
                     selectedMultiChoiceCategories = selectedCategories.toImmutableList()
                 )
+
                 GameMode.WORDLE -> currentState.copy(
                     selectedWordleCategories = selectedCategories.toImmutableList()
                 )
-                else -> throw NotSupportedGameModeException()
+
+                GameMode.COMPARISON_QUIZ -> currentState.copy(
+                    selectedComparisonQuizCategories = selectedCategories.toImmutableList()
+                )
             }
         }
     }
@@ -131,6 +116,7 @@ class GenerateMazeScreenViewModel @Inject constructor(
     private fun selectAllCategories() {
         selectMultiChoiceCategories(selectAll = true)
         selectWordleCategories(selectAll = true)
+        selectComparisonQuizCategories(selectAll = true)
     }
 
     private fun selectOnlyOffline() {
@@ -143,9 +129,15 @@ class GenerateMazeScreenViewModel @Inject constructor(
                 !category.requireInternetConnection
             }
 
+            val comparisonQuizOnlyOffline =
+                currentState.comparisonQuizCategories.filter { category ->
+                    !category.requireInternetConnection
+                }
+
             currentState.copy(
                 selectedMultiChoiceCategories = multiChoiceOnlyOffline.toImmutableList(),
-                selectedWordleCategories = wordleOnlyOffline.toImmutableList()
+                selectedWordleCategories = wordleOnlyOffline.toImmutableList(),
+                selectedComparisonQuizCategories = comparisonQuizOnlyOffline.toImmutableList()
             )
         }
     }
@@ -157,7 +149,7 @@ class GenerateMazeScreenViewModel @Inject constructor(
         when (gameMode) {
             GameMode.MULTI_CHOICE -> selectMultiChoiceCategories(selectAll)
             GameMode.WORDLE -> selectWordleCategories(selectAll)
-            else -> throw NotSupportedGameModeException()
+            GameMode.COMPARISON_QUIZ -> selectComparisonQuizCategories(selectAll)
         }
     }
 
@@ -181,6 +173,16 @@ class GenerateMazeScreenViewModel @Inject constructor(
         }
     }
 
+    private fun selectComparisonQuizCategories(selectAll: Boolean) {
+        _uiState.update { currentState ->
+            if (selectAll) {
+                currentState.copy(selectedComparisonQuizCategories = currentState.comparisonQuizCategories)
+            } else {
+                currentState.copy(selectedComparisonQuizCategories = persistentListOf())
+            }
+        }
+    }
+
     private fun generateMaze(seed: Int?) {
         viewModelScope.launch {
             val currentState = uiState.first()
@@ -189,9 +191,11 @@ class GenerateMazeScreenViewModel @Inject constructor(
                 workManager = workManager,
                 seed = seed,
                 multiChoiceCategories = currentState.selectedMultiChoiceCategories,
-                wordleCategories = currentState.selectedWordleCategories
+                wordleCategories = currentState.selectedWordleCategories,
+                comparisonQuizCategories = currentState.selectedComparisonQuizCategories
             )
 
+            // TODO: Add an error if the work fails
             workManager
                 .getWorkInfoByIdLiveData(workId)
                 .asFlow()
@@ -206,5 +210,32 @@ class GenerateMazeScreenViewModel @Inject constructor(
                     }
                 }.launchIn(viewModelScope)
         }
+    }
+
+    private fun getMultiChoiceCategories(): ImmutableList<MultiChoiceCategory> {
+        val allMultiChoiceCategories = multiChoiceQuestionCategories
+
+        val filteredCategories = allMultiChoiceCategories.filter { category ->
+            availableMultiChoiceCategoriesIds.contains(category.id)
+        }
+
+        // Because with the implementation with OpenTriviaDB, we can't select
+        // specific category, so we need to create a special category
+        // for this case, that contains all the categories.
+        val othersCategory = MultiChoiceCategory(
+            id = "others",
+            name = UiText.DynamicString("Others"),
+            image = CoreR.drawable.general_knowledge,
+            requireInternetConnection = true
+        )
+
+        return (filteredCategories + othersCategory).toImmutableList()
+    }
+
+    private fun getComparisonQuizCategories(): ImmutableList<BaseCategory> {
+        return comparisonQuizRepository
+            .getCategories()
+            .filterNot { it.isMazeDisabled }
+            .toImmutableList()
     }
 }

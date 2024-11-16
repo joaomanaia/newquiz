@@ -16,6 +16,7 @@ import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.core.util.kotlin.generateRandomUniqueItems
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
+import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.math_quiz.MathQuizCoreRepository
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.CountryCapitalFlagsQuizRepository
@@ -26,6 +27,9 @@ import com.infinitepower.newquiz.domain.repository.multi_choice_quiz.MultiChoice
 import com.infinitepower.newquiz.domain.repository.wordle.WordleRepository
 import com.infinitepower.newquiz.model.BaseCategory
 import com.infinitepower.newquiz.model.UiText
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizQuestion
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
@@ -61,8 +65,9 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
     private val multiChoiceQuestionRepository: MultiChoiceQuestionRepository,
     private val guessMathSolutionRepository: GuessMathSolutionRepository,
     private val countryCapitalFlagsQuizRepository: CountryCapitalFlagsQuizRepository,
+    private val comparisonQuizRepository: ComparisonQuizRepository,
     private val remoteConfig: RemoteConfig,
-    private val analyticsHelper: AnalyticsHelper
+    private val analyticsHelper: AnalyticsHelper,
 ) : CoroutineWorker(appContext, workerParams) {
     /**
      * Game modes available to generate the maze quiz.
@@ -110,6 +115,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         internal const val INPUT_QUESTION_SIZE = "INPUT_QUESTION_SIZE"
         internal const val INPUT_MULTI_CHOICE_CATEGORIES = "INPUT_MULTI_CHOICE_CATEGORIES"
         internal const val INPUT_WORDLE_QUIZ_TYPES = "INPUT_WORDLE_QUIZ_TYPES"
+        internal const val INPUT_COMPARISON_QUIZ_CATEGORIES = "INPUT_COMPARISON_QUIZ_CATEGORIES"
 
         /**
          * Enqueue a new work to generate a maze quiz.
@@ -126,6 +132,7 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
             seed: Int?,
             multiChoiceCategories: List<BaseCategory>,
             wordleCategories: List<BaseCategory>,
+            comparisonQuizCategories: List<BaseCategory>,
             questionSize: Int? = null
         ): UUID {
             val cleanSavedMazeRequest = OneTimeWorkRequestBuilder<CleanMazeQuizWorker>().build()
@@ -138,12 +145,17 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
                 category.id
             }.toTypedArray()
 
+            val comparisonQuizCategoriesIds = comparisonQuizCategories.map { category ->
+                category.id
+            }.toTypedArray()
+
             val generateMazeRequest = OneTimeWorkRequestBuilder<GenerateMazeQuizWorker>()
                 .setInputData(
                     workDataOf(
                         INPUT_SEED to seed,
                         INPUT_MULTI_CHOICE_CATEGORIES to multiChoiceCategoriesId,
                         INPUT_WORDLE_QUIZ_TYPES to wordleCategoriesIds,
+                        INPUT_COMPARISON_QUIZ_CATEGORIES to comparisonQuizCategoriesIds,
                         INPUT_QUESTION_SIZE to questionSize
                     )
                 ).build()
@@ -168,6 +180,10 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         requireNotNull(wordleCategoriesIds)
         Log.i(TAG, "Wordle quiz types: $wordleCategoriesIds")
 
+        val comparisonQuizCategoriesIds = inputData.getStringArray(INPUT_COMPARISON_QUIZ_CATEGORIES)
+        requireNotNull(comparisonQuizCategoriesIds)
+        Log.i(TAG, "Comparison quiz categories: $comparisonQuizCategoriesIds")
+
         val questionSize = inputData.getInt(
             INPUT_QUESTION_SIZE,
             remoteConfig.get(RemoteConfigValue.MAZE_QUIZ_GENERATED_QUESTIONS)
@@ -177,7 +193,9 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         val random = Random(seed)
 
         // Get the questions size per mode, this is the size of the questions that will be generated per mode
-        val allCategoryCount = multiChoiceCategoriesIds.count() + wordleCategoriesIds.count()
+        val allCategoryCount = multiChoiceCategoriesIds.count() +
+                wordleCategoriesIds.count() +
+                comparisonQuizCategoriesIds.count()
         val questionSizePerMode = questionSize / allCategoryCount
 
         Log.i(
@@ -207,7 +225,21 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
             )
         }
 
-        val allMazeQuestions = (multiChoiceMazeQuestions + wordleMazeQuestions)
+        val comparisonQuizCategories = comparisonQuizRepository.getCategories()
+        val comparisonMazeQuestions = comparisonQuizCategoriesIds.map { categoryId ->
+            val category = comparisonQuizCategories.find { it.id == categoryId }
+            // TODO: Handle if category is removed/dont exist
+            requireNotNull(category)
+
+            generateComparisonMazeItems(
+                category = category,
+                mazeSeed = seed,
+                questionSize = questionSizePerMode,
+                random = random
+            )
+        }
+
+        val allMazeQuestions = (multiChoiceMazeQuestions + wordleMazeQuestions + comparisonMazeQuestions)
             .flatten()
             .shuffled(random)
 
@@ -325,6 +357,34 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
                 wordleWord = word,
                 wordleQuizType = wordleQuizType,
                 difficulty = difficulty
+            )
+        }
+    }
+
+    private suspend fun generateComparisonMazeItems(
+        category: ComparisonQuizCategory,
+        mazeSeed: Int,
+        questionSize: Int,
+        random: Random = Random
+    ): List<MazeQuiz.MazeItem> {
+        // Each question has two items, so we need to request twice as many questions
+        val requestSize = questionSize * 2
+
+        return comparisonQuizRepository.getQuestions(
+            category = category,
+            size = requestSize,
+            random = random
+        ).chunked(2) { items ->
+            val firstQuestion = items.first()
+            val secondQuestion = items.last()
+
+            MazeQuiz.MazeItem.ComparisonQuiz(
+                mazeSeed = mazeSeed,
+                question = ComparisonQuizQuestion(
+                    questions = firstQuestion to secondQuestion,
+                    categoryId = category.id,
+                    comparisonMode = ComparisonMode.GREATER // In future we can make this random
+                ),
             )
         }
     }

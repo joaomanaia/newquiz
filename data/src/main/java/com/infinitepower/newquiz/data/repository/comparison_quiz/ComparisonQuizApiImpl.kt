@@ -4,6 +4,7 @@ import android.util.Log
 import com.infinitepower.newquiz.core.common.BaseApiUrls
 import com.infinitepower.newquiz.domain.repository.CountryRepository
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter

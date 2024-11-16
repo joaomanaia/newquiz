@@ -1,12 +1,11 @@
 package com.infinitepower.newquiz.core.game
 
-import android.util.Log
 import com.google.common.truth.Truth.assertThat
+import com.infinitepower.newquiz.core.testing.data.fake.FakeComparisonQuizData
+import com.infinitepower.newquiz.core.testing.utils.mockAndroidLog
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCurrentQuestion
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItem
-import io.mockk.every
-import io.mockk.mockkStatic
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizQuestion
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.net.URI
@@ -15,8 +14,7 @@ import kotlin.test.BeforeTest
 class ComparisonQuizDataTest {
     @BeforeTest
     fun setUp() {
-        mockkStatic(Log::class)
-        every { Log.d(any(), any()) } returns 0
+        mockAndroidLog()
     }
 
     @Test
@@ -37,7 +35,8 @@ class ComparisonQuizDataTest {
             questions = listOf(quizItem1, quizItem2),
             currentQuestion = null,
             questionDescription = "Which country has more population?",
-            comparisonMode = ComparisonMode.GREATER
+            comparisonMode = ComparisonMode.GREATER,
+            category = FakeComparisonQuizData.generateCategory()
         )
 
         assertThat(quizData.questions).containsExactly(quizItem1, quizItem2)
@@ -56,7 +55,8 @@ class ComparisonQuizDataTest {
             questions = emptyList(),
             currentQuestion = null,
             questionDescription = "Which country has more population?",
-            comparisonMode = ComparisonMode.GREATER
+            comparisonMode = ComparisonMode.GREATER,
+            category = FakeComparisonQuizData.generateCategory()
         )
 
         assertThat(quizData.questions).isEmpty()
@@ -93,7 +93,8 @@ class ComparisonQuizDataTest {
             questions = listOf(quizItem1, quizItem2, quizItem3),
             currentQuestion = null,
             questionDescription = "Which country has more population?",
-            comparisonMode = ComparisonMode.GREATER
+            comparisonMode = ComparisonMode.GREATER,
+            category = FakeComparisonQuizData.generateCategory()
         )
 
         assertThat(quizData.questions).containsExactly(quizItem1, quizItem2, quizItem3)
@@ -128,9 +129,14 @@ class ComparisonQuizDataTest {
 
         val quizData = ComparisonQuizCore.QuizData(
             questions = listOf(quizItem3),
-            currentQuestion = ComparisonQuizCurrentQuestion(quizItem1 to quizItem2),
+            currentQuestion = ComparisonQuizQuestion(
+                questions = quizItem1 to quizItem2,
+                categoryId = "",
+                comparisonMode = ComparisonMode.GREATER
+            ),
             questionDescription = "Which country has more population?",
-            comparisonMode = ComparisonMode.GREATER
+            comparisonMode = ComparisonMode.GREATER,
+            category = FakeComparisonQuizData.generateCategory()
         )
 
         assertThat(quizData.questions).containsExactly(quizItem3)

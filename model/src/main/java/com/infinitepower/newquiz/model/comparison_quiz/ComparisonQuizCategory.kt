@@ -2,8 +2,8 @@ package com.infinitepower.newquiz.model.comparison_quiz
 
 import androidx.annotation.Keep
 import com.infinitepower.newquiz.model.BaseCategory
-import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.GameMode
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.UiText
 import kotlinx.serialization.Serializable
 
@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
  * @param id The id of the category.
  * @param name The title of the category.
  * @param image The url of the image of the category.
+ * @param isMazeDisabled Whether the category is not available for the maze.
  * @param questionDescription The description of the question.
  * @param helperValueSuffix The suffix of the question value.
  * @param generateQuestionsLocally Whether the questions should be generated locally.
@@ -24,6 +25,7 @@ data class ComparisonQuizCategory(
     override val image: String,
     override val requireInternetConnection: Boolean = true,
     val generateQuestionsLocally: Boolean = false,
+    val isMazeDisabled: Boolean = false,
     val description: String,
     val questionDescription: QuestionDescription,
     val formatType: NumberFormatType,

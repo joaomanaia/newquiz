@@ -4,18 +4,16 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
 import com.infinitepower.newquiz.core.database.model.user.ComparisonQuizGameResultEntity
-import com.infinitepower.newquiz.core.datastore.di.SettingsDataStoreManager
-import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlin.test.BeforeTest
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.Rule
 import org.junit.runner.RunWith
 import javax.inject.Inject
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
 
@@ -34,10 +32,6 @@ internal class ComparisonQuizRepositoryImplTest {
 
     @Inject lateinit var comparisonQuizApi: ComparisonQuizApi
 
-    @Inject
-    @SettingsDataStoreManager
-    lateinit var settingsDataStoreManager: DataStoreManager
-
     private lateinit var repository: ComparisonQuizRepositoryImpl
 
     @BeforeTest
@@ -47,7 +41,6 @@ internal class ComparisonQuizRepositoryImplTest {
         repository = ComparisonQuizRepositoryImpl(
             remoteConfig = remoteConfig,
             gameResultDao = gameResultDao,
-            settingsDataStoreManager = settingsDataStoreManager,
             comparisonQuizApi = comparisonQuizApi,
         )
     }

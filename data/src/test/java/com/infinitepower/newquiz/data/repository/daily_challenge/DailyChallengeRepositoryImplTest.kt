@@ -5,10 +5,11 @@ import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
+import com.infinitepower.newquiz.core.testing.data.fake.FakeComparisonQuizData
 import com.infinitepower.newquiz.core.testing.data.fake.FakeData
 import com.infinitepower.newquiz.core.testing.domain.FakeDailyChallengeDao
 import com.infinitepower.newquiz.core.user_services.UserService
-import com.infinitepower.newquiz.data.util.mappers.toEntity
+import com.infinitepower.newquiz.data.util.mappers.daily_challenge.toEntity
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 import com.infinitepower.newquiz.model.global_event.GameEvent
@@ -37,7 +38,7 @@ internal class DailyChallengeRepositoryImplTest {
 
     @BeforeTest
     fun setup() {
-        val comparisonQuizCategories = FakeData.generateComparisonQuizCategories()
+        val comparisonQuizCategories = FakeComparisonQuizData.generateCategories()
         coEvery { comparisonQuizRepository.getCategories() } returns comparisonQuizCategories
 
         dailyChallengeRepository = DailyChallengeRepositoryImpl(

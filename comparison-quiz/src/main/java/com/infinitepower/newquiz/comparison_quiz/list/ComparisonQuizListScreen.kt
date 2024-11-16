@@ -13,21 +13,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScreenDestination
 import com.infinitepower.newquiz.comparison_quiz.list.components.ComparisonModeComponents
 import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.LocalAnalyticsHelper
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.home.HomeLazyColumn
 import com.infinitepower.newquiz.core.ui.home.homeCategoriesItems
 import com.infinitepower.newquiz.domain.repository.home.HomeCategories
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
-import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.toUiText
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -59,7 +59,7 @@ fun ComparisonQuizListScreen(
 
             navigator.navigate(
                 ComparisonQuizScreenDestination(
-                    category = category.toEntity(),
+                    categoryId = category.id,
                     comparisonMode = uiState.selectedMode
                 )
             )

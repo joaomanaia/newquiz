@@ -12,8 +12,10 @@ import com.infinitepower.newquiz.core.ui.SnackbarController
 import com.infinitepower.newquiz.core.user_services.InsufficientDiamondsException
 import com.infinitepower.newquiz.core.user_services.UserService
 import com.infinitepower.newquiz.data.worker.UpdateGlobalEventDataWorker
+import com.infinitepower.newquiz.domain.repository.UserConfigRepository
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.home.RecentCategoriesRepository
+import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,14 +38,16 @@ class ComparisonQuizViewModel @Inject constructor(
     comparisonQuizRepository: ComparisonQuizRepository,
     private val workManager: WorkManager,
     private val recentCategoriesRepository: RecentCategoriesRepository,
-    private val userService: UserService
+    private val userService: UserService,
+    private val mazeQuizRepository: MazeQuizRepository,
+    private val userConfigRepository: UserConfigRepository
 ) : ViewModel() {
     private val navArgs: ComparisonQuizScreenNavArg = savedStateHandle.navArgs()
 
     private val _uiState = MutableStateFlow(ComparisonQuizUiState())
     val uiState = combine(
         _uiState,
-        comparisonQuizRepository.getHighestPositionFlow(categoryId = navArgs.category.id),
+        comparisonQuizRepository.getHighestPositionFlow(categoryId = navArgs.categoryId),
         comparisonQuizCore.quizDataFlow
     ) { uiState, highestPosition, quizData ->
         val currentPosition = quizData.currentPosition
@@ -57,6 +61,7 @@ class ComparisonQuizViewModel @Inject constructor(
             gameDescription = quizData.questionDescription,
             currentPosition = currentPosition,
             isGameOver = quizData.isGameOver,
+            isLastQuestionCorrect = quizData.isLastQuestionCorrect,
             firstItemHelperValueState = quizData.firstItemHelperValueState,
             highestPosition = currentHighestPosition
         )
@@ -69,7 +74,9 @@ class ComparisonQuizViewModel @Inject constructor(
     init {
         // Start game
         viewModelScope.launch {
-            val category = navArgs.category.toModel()
+            val category = comparisonQuizRepository.getCategoryById(navArgs.categoryId)
+            // TODO: Handle if category is removed/dont exist
+            requireNotNull(category)
             val comparisonMode = navArgs.comparisonMode
 
             // Update initial state with data that don't change during the game.
@@ -78,14 +85,16 @@ class ComparisonQuizViewModel @Inject constructor(
                     gameCategory = category,
                     comparisonMode = comparisonMode,
                     skipCost = comparisonQuizCore.skipCost,
-                    userAvailable = userService.userAvailable()
+                    userAvailable = userService.userAvailable(),
+                    regionalPreferences = userConfigRepository.getRegionalPreferences()
                 )
             }
 
             comparisonQuizCore.initializeGame(
                 initializationData = ComparisonQuizCore.InitializationData(
                     category = category,
-                    comparisonMode = comparisonMode
+                    comparisonMode = comparisonMode,
+                    initialItems = navArgs.initialItems
                 )
             )
 
@@ -104,8 +113,14 @@ class ComparisonQuizViewModel @Inject constructor(
             .quizDataFlow
             .distinctUntilChangedBy { it.isGameOver }
             .onEach { quizData ->
+                Log.d(TAG, "Current question: ${quizData.currentQuestion}")
+
                 if (quizData.isGameOver) {
                     Log.d(TAG, "Game over, with position ${quizData.currentPosition}")
+
+                    if (navArgs.mazeItemId != null && quizData.isLastQuestionCorrect) {
+                        mazeQuizRepository.completeMazeItem(navArgs.mazeItemId)
+                    }
 
                     UpdateGlobalEventDataWorker.enqueueWork(
                         workManager = workManager,
@@ -114,7 +129,7 @@ class ComparisonQuizViewModel @Inject constructor(
 
                     ComparisonQuizEndGameWorker.enqueueWork(
                         workManager = workManager,
-                        categoryId = navArgs.category.id,
+                        categoryId = navArgs.categoryId,
                         comparisonMode = navArgs.comparisonMode,
                         endPosition = quizData.currentPosition,
                         skippedAnswers = quizData.skippedAnswers

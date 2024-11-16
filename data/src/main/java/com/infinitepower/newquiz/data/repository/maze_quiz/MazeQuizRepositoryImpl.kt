@@ -4,8 +4,8 @@ import com.infinitepower.newquiz.core.analytics.AnalyticsEvent
 import com.infinitepower.newquiz.core.analytics.AnalyticsHelper
 import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
 import com.infinitepower.newquiz.core.database.model.MazeQuizItemEntity
-import com.infinitepower.newquiz.core.database.model.toEntity
-import com.infinitepower.newquiz.core.database.model.toMazeQuizItem
+import com.infinitepower.newquiz.data.util.mappers.maze.toEntity
+import com.infinitepower.newquiz.data.util.mappers.maze.toMazeQuizItem
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import kotlinx.collections.immutable.toPersistentList

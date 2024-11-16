@@ -35,7 +35,7 @@ class SavedMultiChoiceQuestionsRepositoryImpl @Inject constructor(
             SortSavedQuestionsBy.BY_CATEGORY -> savedQuestionsDao.getFlowQuestionsSortedByCategory()
         }
 
-        return questionsFlow.map { flowQuestions -> flowQuestions.map(com.infinitepower.newquiz.core.database.model.MultiChoiceQuestionEntity::toModel) }
+        return questionsFlow.map { flowQuestions -> flowQuestions.map(MultiChoiceQuestionEntity::toModel) }
     }
 
     override suspend fun getQuestions(): List<MultiChoiceQuestion> = savedQuestionsDao

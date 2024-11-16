@@ -2,16 +2,14 @@ package com.infinitepower.newquiz.data.repository.comparison_quiz
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import com.infinitepower.newquiz.core.NumberFormatter
 import com.infinitepower.newquiz.core.database.dao.GameResultDao
-import com.infinitepower.newquiz.core.datastore.common.SettingsCommon
-import com.infinitepower.newquiz.core.datastore.manager.DataStoreManager
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.core.remote_config.RemoteConfigValue
 import com.infinitepower.newquiz.core.remote_config.get
 import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.UiText
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -33,7 +31,6 @@ internal class ComparisonQuizRepositoryImplTest {
 
     private val remoteConfig: RemoteConfig = mockk()
     private val gameResultDao: GameResultDao = mockk()
-    private val settingsDataStoreManager: DataStoreManager = mockk()
     private val comparisonQuizApi: ComparisonQuizApi = mockk()
 
     @BeforeTest
@@ -41,7 +38,6 @@ internal class ComparisonQuizRepositoryImplTest {
         repository = ComparisonQuizRepositoryImpl(
             remoteConfig = remoteConfig,
             gameResultDao = gameResultDao,
-            settingsDataStoreManager = settingsDataStoreManager,
             comparisonQuizApi = comparisonQuizApi
         )
     }
@@ -154,14 +150,6 @@ internal class ComparisonQuizRepositoryImplTest {
             )
         } returns questionsEntity
 
-        // Mock the regional preferences
-        coEvery {
-            settingsDataStoreManager.getPreference(SettingsCommon.TemperatureUnit)
-        } returns NumberFormatter.Temperature.TemperatureUnit.CELSIUS.name
-        coEvery {
-            settingsDataStoreManager.getPreference(SettingsCommon.DistanceUnitType)
-        } returns NumberFormatter.Distance.DistanceUnitType.METRIC.name
-
         val result = repository.getQuestions(
             category = category,
             size = questionsToGenerate,
@@ -171,19 +159,6 @@ internal class ComparisonQuizRepositoryImplTest {
             assertThat(question.title).isNotEmpty()
             assertThat(question.value).isEqualTo(index.toDouble())
             assertThat(question.imgUri).isNotNull()
-
-            val valueFormatter = NumberFormatter.from(category.formatType)
-
-            val helperValue = valueFormatter.formatValueToString(
-                value = index.toDouble(),
-                helperValueSuffix = category.helperValueSuffix,
-                regionalPreferences = NumberFormatter.RegionalPreferences(
-                    temperatureUnit = NumberFormatter.Temperature.TemperatureUnit.CELSIUS,
-                    distanceUnitType = NumberFormatter.Distance.DistanceUnitType.METRIC
-                )
-            )
-
-            assertThat(question.helperValue).isEqualTo(helperValue)
         }
 
         coVerify(exactly = 1) {
@@ -193,14 +168,6 @@ internal class ComparisonQuizRepositoryImplTest {
             )
         }
 
-        coVerify(exactly = 1) {
-            settingsDataStoreManager.getPreference(SettingsCommon.TemperatureUnit)
-        }
-
-        coVerify(exactly = 1) {
-            settingsDataStoreManager.getPreference(SettingsCommon.DistanceUnitType)
-        }
-
-        confirmVerified(comparisonQuizApi, settingsDataStoreManager)
+        confirmVerified(comparisonQuizApi)
     }
 }

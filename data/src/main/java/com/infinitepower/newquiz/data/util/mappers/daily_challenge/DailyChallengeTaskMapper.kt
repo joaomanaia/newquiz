@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.util.mappers
+package com.infinitepower.newquiz.data.util.mappers.daily_challenge
 
 import com.infinitepower.newquiz.core.database.model.DailyChallengeTaskEntity
 import com.infinitepower.newquiz.data.repository.daily_challenge.util.getTitle

@@ -1,0 +1,482 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 7,
+    "identityHash": "d699dae423a5b36ad66302c323af52db",
+    "entities": [
+      {
+        "tableName": "saved_multi_choice_questions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `description` TEXT NOT NULL, `image_url` TEXT, `answers` TEXT NOT NULL, `lang` TEXT NOT NULL, `category` TEXT NOT NULL, `correct_ans` INTEGER NOT NULL, `type` TEXT NOT NULL, `difficulty` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imageUrl",
+            "columnName": "image_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "answers",
+            "columnName": "answers",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lang",
+            "columnName": "lang",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "correctAns",
+            "columnName": "correct_ans",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "difficulty",
+            "columnName": "difficulty",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "mazeItems",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `difficulty` TEXT NOT NULL, `played` INTEGER NOT NULL, `type` TEXT NOT NULL, `mazeSeed` INTEGER NOT NULL, `maze_question_id` INTEGER, `maze_question_description` TEXT, `maze_question_image_url` TEXT, `maze_question_answers` TEXT, `maze_question_lang` TEXT, `maze_question_category` TEXT, `maze_question_correct_ans` INTEGER, `maze_question_type` TEXT, `maze_question_difficulty` TEXT, `maze_wordle_wordleWord` TEXT, `maze_wordle_wordleQuizType` TEXT, `maze_wordle_textHelper` TEXT, `comparison_quiz_category` TEXT, `comparison_quiz_comparisonMode` TEXT, `comparison_quiz_first_question_title` TEXT, `comparison_quiz_first_question_value` REAL, `comparison_quiz_first_question_imgUrl` TEXT, `comparison_quiz_second_question_title` TEXT, `comparison_quiz_second_question_value` REAL, `comparison_quiz_second_question_imgUrl` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "difficulty",
+            "columnName": "difficulty",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "played",
+            "columnName": "played",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mazeSeed",
+            "columnName": "mazeSeed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "multiChoiceQuestion.id",
+            "columnName": "maze_question_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "multiChoiceQuestion.description",
+            "columnName": "maze_question_description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "multiChoiceQuestion.imageUrl",
+            "columnName": "maze_question_image_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "multiChoiceQuestion.answers",
+            "columnName": "maze_question_answers",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "multiChoiceQuestion.lang",
+            "columnName": "maze_question_lang",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "multiChoiceQuestion.category",
+            "columnName": "maze_question_category",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "multiChoiceQuestion.correctAns",
+            "columnName": "maze_question_correct_ans",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "multiChoiceQuestion.type",
+            "columnName": "maze_question_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "multiChoiceQuestion.difficulty",
+            "columnName": "maze_question_difficulty",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "wordleItem.wordleWord",
+            "columnName": "maze_wordle_wordleWord",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "wordleItem.wordleQuizType",
+            "columnName": "maze_wordle_wordleQuizType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "wordleItem.textHelper",
+            "columnName": "maze_wordle_textHelper",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comparisonQuizQuestion.category",
+            "columnName": "comparison_quiz_category",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comparisonQuizQuestion.comparisonMode",
+            "columnName": "comparison_quiz_comparisonMode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comparisonQuizQuestion.firstQuestion.title",
+            "columnName": "comparison_quiz_first_question_title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comparisonQuizQuestion.firstQuestion.value",
+            "columnName": "comparison_quiz_first_question_value",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comparisonQuizQuestion.firstQuestion.imgUrl",
+            "columnName": "comparison_quiz_first_question_imgUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comparisonQuizQuestion.secondQuestion.title",
+            "columnName": "comparison_quiz_second_question_title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comparisonQuizQuestion.secondQuestion.value",
+            "columnName": "comparison_quiz_second_question_value",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comparisonQuizQuestion.secondQuestion.imgUrl",
+            "columnName": "comparison_quiz_second_question_imgUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "daily_challenge_tasks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `diamondsReward` INTEGER NOT NULL, `experienceReward` INTEGER NOT NULL, `isClaimed` INTEGER NOT NULL, `currentValue` INTEGER NOT NULL, `maxValue` INTEGER NOT NULL, `type` TEXT NOT NULL, `startDate` INTEGER NOT NULL, `endDate` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diamondsReward",
+            "columnName": "diamondsReward",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "experienceReward",
+            "columnName": "experienceReward",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isClaimed",
+            "columnName": "isClaimed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentValue",
+            "columnName": "currentValue",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxValue",
+            "columnName": "maxValue",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startDate",
+            "columnName": "startDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endDate",
+            "columnName": "endDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "multi_choice_game_results",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `correct_answers` INTEGER NOT NULL, `skipped_questions` INTEGER NOT NULL, `question_count` INTEGER NOT NULL, `average_answer_time` REAL NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "correctAnswers",
+            "columnName": "correct_answers",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "skippedQuestions",
+            "columnName": "skipped_questions",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "questionCount",
+            "columnName": "question_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averageAnswerTime",
+            "columnName": "average_answer_time",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedXp",
+            "columnName": "earned_xp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playedAt",
+            "columnName": "played_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "game_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "wordle_game_results",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL, `word_length` INTEGER NOT NULL, `rows_used` INTEGER NOT NULL, `max_rows` INTEGER NOT NULL, `category_id` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedXp",
+            "columnName": "earned_xp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playedAt",
+            "columnName": "played_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wordLength",
+            "columnName": "word_length",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rowsUsed",
+            "columnName": "rows_used",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxRows",
+            "columnName": "max_rows",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "game_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "comparison_quiz_game_results",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `earned_xp` INTEGER NOT NULL, `played_at` INTEGER NOT NULL, `category_id` TEXT NOT NULL, `comparison_mode` TEXT NOT NULL, `end_position` INTEGER NOT NULL, `skipped_answers` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "gameId",
+            "columnName": "game_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "earnedXp",
+            "columnName": "earned_xp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playedAt",
+            "columnName": "played_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comparisonMode",
+            "columnName": "comparison_mode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endPosition",
+            "columnName": "end_position",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "skippedAnswers",
+            "columnName": "skipped_answers",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "game_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd699dae423a5b36ad66302c323af52db')"
+    ]
+  }
+}

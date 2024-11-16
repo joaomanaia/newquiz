@@ -1,8 +1,6 @@
 package com.infinitepower.newquiz.core.testing.data.fake
 
-import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.UiText
-import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
 import com.infinitepower.newquiz.model.global_event.GameEvent
 import kotlinx.datetime.Clock
@@ -46,22 +44,6 @@ object FakeData {
             val dateRange = startDate..endDate
 
             generateTask(id = day + 1, dateRange)
-        }
-    }
-
-    fun generateComparisonQuizCategories(count: Int = 10): List<ComparisonQuizCategory> {
-        return List(count) { id ->
-            ComparisonQuizCategory(
-                id = id.toString(),
-                name = UiText.DynamicString("Category $id"),
-                image = "image_url_$id",
-                description = "Description $id",
-                questionDescription = ComparisonQuizCategory.QuestionDescription(
-                    greater = "Greater $id",
-                    less = "Less $id"
-                ),
-                formatType = NumberFormatType.DEFAULT,
-            )
         }
     }
 }

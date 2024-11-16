@@ -45,7 +45,10 @@ import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoi
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.model.BaseCategory
 import com.infinitepower.newquiz.model.GameMode
+import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.category.ShowCategoryConnectionInfo
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
+import com.infinitepower.newquiz.model.toUiText
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import com.infinitepower.newquiz.core.R as CoreR
@@ -75,12 +78,14 @@ internal fun GenerateMazeScreenImpl(
     val showGenerateButton = remember(
         uiState.selectedMultiChoiceCategories.size,
         uiState.selectedWordleCategories.size,
+        uiState.selectedComparisonQuizCategories.size,
         uiState.loading,
         uiState.generatingMaze
     ) {
         derivedStateOf {
-            val anySelectCategory = uiState.selectedMultiChoiceCategories.isNotEmpty()
-                    || uiState.selectedWordleCategories.isNotEmpty()
+            val anySelectCategory = uiState.selectedMultiChoiceCategories.isNotEmpty() ||
+                    uiState.selectedWordleCategories.isNotEmpty() ||
+                    uiState.selectedComparisonQuizCategories.isNotEmpty()
 
             !uiState.loading && !uiState.generatingMaze && anySelectCategory
         }
@@ -121,13 +126,7 @@ internal fun GenerateMazeScreenImpl(
                         onEvent(GenerateMazeScreenUiEvent.SelectOnlyOfflineCategories)
                     }
                 )
-                CategoriesContent(
-                    multiChoiceCategories = uiState.multiChoiceCategories,
-                    selectedMultiChoiceCategories = uiState.selectedMultiChoiceCategories,
-                    wordleCategories = uiState.wordleCategories,
-                    selectedWordleCategories = uiState.selectedWordleCategories,
-                    onEvent = onEvent
-                )
+                CategoriesContent(onEvent = onEvent, uiState = uiState)
             }
         }
     }
@@ -136,29 +135,31 @@ internal fun GenerateMazeScreenImpl(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CategoriesContent(
-    multiChoiceCategories: ImmutableList<BaseCategory>,
-    selectedMultiChoiceCategories: ImmutableList<BaseCategory>,
-    wordleCategories: ImmutableList<BaseCategory>,
-    selectedWordleCategories: ImmutableList<BaseCategory>,
-    onEvent: (event: GenerateMazeScreenUiEvent) -> Unit
+    onEvent: (event: GenerateMazeScreenUiEvent) -> Unit,
+    uiState: GenerateMazeScreenUiState,
 ) {
     val multiChoiceParentBoxState = rememberParentBoxState(
-        selectedCategories = selectedMultiChoiceCategories,
-        categories = multiChoiceCategories
+        selectedCategories = uiState.selectedMultiChoiceCategories,
+        categories = uiState.multiChoiceCategories
     )
-
     val wordleParentBoxState = rememberParentBoxState(
-        selectedCategories = selectedWordleCategories,
-        categories = wordleCategories
+        selectedCategories = uiState.selectedWordleCategories,
+        categories = uiState.wordleCategories
+    )
+    val comparisonQuizParentBoxState = rememberParentBoxState(
+        selectedCategories = uiState.selectedComparisonQuizCategories,
+        categories = uiState.comparisonQuizCategories
     )
 
     val multiChoiceHeader = stringResource(id = CoreR.string.multi_choice_quiz)
     val wordleHeader = stringResource(id = CoreR.string.wordle)
+    val comparisonQuizHeader = stringResource(id = CoreR.string.comparison_quiz)
 
     LazyColumn(
         contentPadding = PaddingValues(vertical = MaterialTheme.spacing.medium),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
     ) {
+        // Multi choice
         categoriesStickyHeader(
             title = multiChoiceHeader,
             parentBoxState = multiChoiceParentBoxState,
@@ -171,16 +172,16 @@ private fun CategoriesContent(
                 )
             }
         )
-
         categoriesItems(
-            categories = multiChoiceCategories,
-            selectedCategories = selectedMultiChoiceCategories,
+            categories = uiState.multiChoiceCategories,
+            selectedCategories = uiState.selectedMultiChoiceCategories,
             baseItemKey = "multi-choice",
             onSelectClick = { category ->
                 onEvent(GenerateMazeScreenUiEvent.SelectCategory(category = category))
             }
         )
 
+        // Wordle
         categoriesStickyHeader(
             title = wordleHeader,
             parentBoxState = wordleParentBoxState,
@@ -193,11 +194,32 @@ private fun CategoriesContent(
                 )
             }
         )
-
         categoriesItems(
-            categories = wordleCategories,
-            selectedCategories = selectedWordleCategories,
+            categories = uiState.wordleCategories,
+            selectedCategories = uiState.selectedWordleCategories,
             baseItemKey = "wordle",
+            onSelectClick = { category ->
+                onEvent(GenerateMazeScreenUiEvent.SelectCategory(category = category))
+            }
+        )
+
+        // Comparison quiz
+        categoriesStickyHeader(
+            title = comparisonQuizHeader,
+            parentBoxState = comparisonQuizParentBoxState,
+            onSelectAllClick = { selectAll ->
+                onEvent(
+                    GenerateMazeScreenUiEvent.SelectCategories(
+                        gameMode = GameMode.COMPARISON_QUIZ,
+                        selectAll = selectAll
+                    )
+                )
+            }
+        )
+        categoriesItems(
+            categories = uiState.comparisonQuizCategories,
+            selectedCategories = uiState.selectedComparisonQuizCategories,
+            baseItemKey = "comparison-quiz",
             onSelectClick = { category ->
                 onEvent(GenerateMazeScreenUiEvent.SelectCategory(category = category))
             }
@@ -353,6 +375,20 @@ private fun MazeScreenPreview() {
     val wordleCategories = WordleCategories.allCategories.toImmutableList()
     val selectedWordleCategories = wordleCategories.take(2).toImmutableList()
 
+    val comparisonQuizCategories = List(5) {
+        ComparisonQuizCategory(
+            id = it.toString(),
+            name = "Category $it".toUiText(),
+            image = "",
+            description = "",
+            questionDescription = ComparisonQuizCategory.QuestionDescription(
+                greater = "greater",
+                less = "less"
+            ),
+            formatType = NumberFormatType.DEFAULT,
+        )
+    }.toImmutableList()
+
     NewQuizTheme {
         Surface {
             GenerateMazeScreenImpl(
@@ -361,6 +397,7 @@ private fun MazeScreenPreview() {
                     selectedMultiChoiceCategories = selectedMultiChoiceCategories,
                     wordleCategories = wordleCategories,
                     selectedWordleCategories = selectedWordleCategories,
+                    comparisonQuizCategories = comparisonQuizCategories,
                     loading = false
                 )
             )

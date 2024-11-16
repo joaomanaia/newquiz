@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.model.maze
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
 import com.infinitepower.newquiz.model.wordle.WordleQuizType
@@ -31,6 +32,15 @@ data class MazeQuiz(
         @Keep
         data class MultiChoice(
             val question: MultiChoiceQuestion,
+            override val id: Int = 0,
+            override val mazeSeed: Int,
+            override val difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
+            override val played: Boolean = false
+        ) : MazeItem
+
+        @Keep
+        data class ComparisonQuiz(
+            val question: ComparisonQuizQuestion,
             override val id: Int = 0,
             override val mazeSeed: Int,
             override val difficulty: QuestionDifficulty = QuestionDifficulty.Easy,

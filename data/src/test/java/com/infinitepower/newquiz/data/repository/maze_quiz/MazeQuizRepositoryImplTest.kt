@@ -4,7 +4,7 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.analytics.LocalDebugAnalyticsHelper
 import com.infinitepower.newquiz.core.database.dao.MazeQuizDao
-import com.infinitepower.newquiz.core.database.model.toEntity
+import com.infinitepower.newquiz.data.util.mappers.maze.toEntity
 import com.infinitepower.newquiz.domain.repository.maze.MazeQuizRepository
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.question.QuestionDifficulty

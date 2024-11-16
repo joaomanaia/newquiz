@@ -1,4 +1,4 @@
-package com.infinitepower.newquiz.data.repository.comparison_quiz
+package com.infinitepower.newquiz.model.comparison_quiz
 
 import androidx.annotation.Keep
 import kotlinx.serialization.Serializable

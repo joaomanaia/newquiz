@@ -6,7 +6,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import com.infinitepower.newquiz.core.database.dao.DailyChallengeDao
 import com.infinitepower.newquiz.data.repository.daily_challenge.util.getTitle
-import com.infinitepower.newquiz.data.util.mappers.toEntity
+import com.infinitepower.newquiz.data.util.mappers.comparisonquiz.toEntity
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
 import com.infinitepower.newquiz.domain.repository.daily_challenge.DailyChallengeRepository
 import com.infinitepower.newquiz.model.daily_challenge.DailyChallengeTask
