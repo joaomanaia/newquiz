@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.newquiz.jvm.library)
-    id("newquiz.detekt")
+    alias(libs.plugins.newquiz.detekt)
 }
 
 dependencies {

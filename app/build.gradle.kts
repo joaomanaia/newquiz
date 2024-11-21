@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.newquiz.kotlin.serialization)
     id("kotlin-parcelize")
     id("com.google.android.gms.oss-licenses-plugin")
-    id("newquiz.detekt")
+    alias(libs.plugins.newquiz.detekt)
 }
 
 android {

@@ -1,7 +1,7 @@
 [versions]
 
 androidDesugarJdkLibs = "2.1.2"
-androidGradlePlugin = "8.7.1"
+androidGradlePlugin = "8.7.2"
 androidxAnnotation = "1.8.2"
 androidxActivity = "1.9.2"
 androidxAppCompat = "1.7.0"
@@ -167,14 +167,15 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
-newquiz-android-application = { id = "newquiz.android.application", version = "unspecified" }
-newquiz-android-application-compose = { id = "newquiz.android.application.compose", version = "unspecified" }
-newquiz-android-feature = { id = "newquiz.android.feature", version = "unspecified" }
-newquiz-android-hilt = { id = "newquiz.android.hilt", version = "unspecified" }
-newquiz-android-compose-destinations = { id = "newquiz.android.compose.destinations", version = "unspecified" }
-newquiz-android-library = { id = "newquiz.android.library", version = "unspecified" }
-newquiz-android-library-compose = { id = "newquiz.android.library.compose", version = "unspecified" }
-newquiz-android-room = { id = "newquiz.android.room", version = "unspecified" }
-newquiz-kotlin-serialization = { id = "newquiz.kotlin.serialization", version = "unspecified" }
-newquiz-jvm-library = { id = "newquiz.jvm.library", version = "unspecified" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
+newquiz-android-application = { id = "newquiz.android.application" }
+newquiz-android-application-compose = { id = "newquiz.android.application.compose" }
+newquiz-android-feature = { id = "newquiz.android.feature" }
+newquiz-android-hilt = { id = "newquiz.android.hilt" }
+newquiz-android-compose-destinations = { id = "newquiz.android.compose.destinations" }
+newquiz-android-library = { id = "newquiz.android.library" }
+newquiz-android-library-compose = { id = "newquiz.android.library.compose" }
+newquiz-android-room = { id = "newquiz.android.room" }
+newquiz-kotlin-serialization = { id = "newquiz.kotlin.serialization" }
+newquiz-jvm-library = { id = "newquiz.jvm.library" }
+newquiz-detekt = { id = "newquiz.detekt" }
+#jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android" }

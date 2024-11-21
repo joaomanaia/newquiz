@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.newquiz.android.feature)
     alias(libs.plugins.newquiz.android.compose.destinations)
-    id("newquiz.detekt")
+    alias(libs.plugins.newquiz.detekt)
 }
 
 android {
