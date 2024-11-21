@@ -5,6 +5,7 @@ import com.infinitepower.newquiz.core.database.util.mappers.toEntity
 import com.infinitepower.newquiz.core.database.util.mappers.toModel
 import com.infinitepower.newquiz.data.util.mappers.comparisonquiz.toEntity
 import com.infinitepower.newquiz.data.util.mappers.comparisonquiz.toModel
+import com.infinitepower.newquiz.model.GameMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizQuestion
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.wordle.WordleWord
@@ -15,7 +16,7 @@ fun MazeQuiz.MazeItem.toEntity(): MazeQuizItemEntity = when (this) {
         mazeSeed = mazeSeed,
         difficulty = difficulty,
         played = played,
-        type = MazeQuizItemEntity.Type.WORDLE,
+        type = GameMode.WORDLE,
         wordleItem = MazeQuizItemEntity.WordleEntity(
             wordleWord = wordleWord.word,
             wordleQuizType = wordleQuizType,
@@ -28,7 +29,7 @@ fun MazeQuiz.MazeItem.toEntity(): MazeQuizItemEntity = when (this) {
         mazeSeed = mazeSeed,
         difficulty = difficulty,
         played = played,
-        type = MazeQuizItemEntity.Type.MULTI_CHOICE,
+        type = GameMode.MULTI_CHOICE,
         multiChoiceQuestion = question.toEntity()
     )
 
@@ -37,7 +38,7 @@ fun MazeQuiz.MazeItem.toEntity(): MazeQuizItemEntity = when (this) {
         mazeSeed = mazeSeed,
         difficulty = difficulty,
         played = played,
-        type = MazeQuizItemEntity.Type.COMPARISON_QUIZ,
+        type = GameMode.COMPARISON_QUIZ,
         comparisonQuizQuestion = MazeQuizItemEntity.ComparisonQuizEntity(
             category = question.categoryId,
             comparisonMode = question.comparisonMode,
@@ -48,7 +49,7 @@ fun MazeQuiz.MazeItem.toEntity(): MazeQuizItemEntity = when (this) {
 }
 
 fun MazeQuizItemEntity.toMazeQuizItem(): MazeQuiz.MazeItem = when (type) {
-    MazeQuizItemEntity.Type.WORDLE -> {
+    GameMode.WORDLE -> {
         val wordleItem = this.wordleItem ?: throw NullPointerException("Wordle word is null")
         MazeQuiz.MazeItem.Wordle(
             wordleWord = WordleWord(
@@ -62,13 +63,13 @@ fun MazeQuizItemEntity.toMazeQuizItem(): MazeQuiz.MazeItem = when (type) {
         )
     }
 
-    MazeQuizItemEntity.Type.MULTI_CHOICE -> {
+    GameMode.MULTI_CHOICE -> {
         val questionEntity = this.multiChoiceQuestion
             ?: throw NullPointerException("Question is null")
         MazeQuiz.MazeItem.MultiChoice(questionEntity.toModel(), id, mazeSeed, difficulty, played)
     }
 
-    MazeQuizItemEntity.Type.COMPARISON_QUIZ -> {
+    GameMode.COMPARISON_QUIZ -> {
         val questionEntity = this.comparisonQuizQuestion
             ?: throw NullPointerException("Question is null")
 

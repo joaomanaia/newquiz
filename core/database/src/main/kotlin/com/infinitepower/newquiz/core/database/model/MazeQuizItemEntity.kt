@@ -4,6 +4,7 @@ import androidx.annotation.Keep
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.infinitepower.newquiz.model.GameMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizItemEntity
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
@@ -16,7 +17,7 @@ data class MazeQuizItemEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val difficulty: QuestionDifficulty,
     val played: Boolean,
-    val type: Type,
+    val type: GameMode,
     val mazeSeed: Int,
 
     // Multi choice quiz
@@ -47,7 +48,4 @@ data class MazeQuizItemEntity(
         @Embedded("second_question_")
         val secondQuestion: ComparisonQuizItemEntity
     )
-
-    // TODO: Change this to GameMode enum
-    enum class Type { WORDLE, MULTI_CHOICE, COMPARISON_QUIZ }
 }
