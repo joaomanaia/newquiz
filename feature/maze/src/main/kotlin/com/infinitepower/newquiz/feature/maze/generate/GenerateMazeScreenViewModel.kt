@@ -5,6 +5,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.infinitepower.newquiz.core.ui.SnackbarController
 import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
 import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
@@ -195,18 +196,16 @@ class GenerateMazeScreenViewModel @Inject constructor(
                 comparisonQuizCategories = currentState.selectedComparisonQuizCategories
             )
 
-            // TODO: Add an error if the work fails
             workManager
                 .getWorkInfoByIdLiveData(workId)
                 .asFlow()
                 .onEach { workInfo ->
                     _uiState.update { currentState ->
-                        val loading = when (workInfo.state) {
-                            WorkInfo.State.SUCCEEDED -> false
-                            else -> true
+                        if (workInfo.state == WorkInfo.State.FAILED) {
+                            SnackbarController.sendShortMessage("Failed to generate maze")
                         }
 
-                        currentState.copy(generatingMaze = loading)
+                        currentState.copy(generatingMaze = !workInfo.state.isFinished)
                     }
                 }.launchIn(viewModelScope)
         }
