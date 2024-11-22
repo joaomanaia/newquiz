@@ -75,8 +75,13 @@ class ComparisonQuizViewModel @Inject constructor(
         // Start game
         viewModelScope.launch {
             val category = comparisonQuizRepository.getCategoryById(navArgs.categoryId)
-            // TODO: Handle if category is removed/dont exist
-            requireNotNull(category)
+            if (category == null) {
+                Log.e(TAG, "Category with id ${navArgs.categoryId} not found")
+                comparisonQuizCore.endGame()
+                SnackbarController.sendShortMessage("Category not found")
+                return@launch
+            }
+
             val comparisonMode = navArgs.comparisonMode
 
             // Update initial state with data that don't change during the game.

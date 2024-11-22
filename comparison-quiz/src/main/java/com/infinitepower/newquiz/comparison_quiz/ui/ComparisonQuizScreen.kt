@@ -130,10 +130,14 @@ fun ComparisonQuizScreen(
 
     // If the game is over and is from maze, navigate to maze results
     LaunchedEffect(uiState.isGameOver) {
-        if (uiState.isGameOver && mazeItemId != null) {
-            // Show a delay before moving to maze results
+        if (uiState.isGameOver) {
             delay(NAV_TO_RESULTS_DELAY_MILLIS)
-            mazeNavigator.navigateToMazeResults(mazeItemId)
+
+            if (uiState.gameCategory == null) {
+                navigator.popBackStack()
+            } else if (mazeItemId != null) {
+                mazeNavigator.navigateToMazeResults(mazeItemId)
+            }
         }
     }
 }
@@ -175,7 +179,7 @@ internal fun ComparisonQuizScreenImpl(
             )
         }
 
-        uiState.isGameOver && !isFromMaze -> {
+        uiState.isGameOver && uiState.gameCategory != null && !isFromMaze -> {
             GameOverContent(
                 scorePosition = uiState.currentPosition,
                 highestPosition = uiState.highestPosition,
