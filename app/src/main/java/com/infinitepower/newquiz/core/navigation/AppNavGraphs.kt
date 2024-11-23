@@ -12,6 +12,7 @@ import com.infinitepower.newquiz.comparison_quiz.destinations.ComparisonQuizScre
 import com.infinitepower.newquiz.core.remote_config.RemoteConfig
 import com.infinitepower.newquiz.feature.daily_challenge.destinations.DailyChallengeScreenDestination
 import com.infinitepower.newquiz.feature.maze.destinations.LevelResultsScreenDestination
+import com.infinitepower.newquiz.feature.maze.destinations.MazeCategoriesInfoScreenDestination
 import com.infinitepower.newquiz.feature.maze.destinations.MazeScreenDestination
 import com.infinitepower.newquiz.feature.profile.destinations.ProfileScreenDestination
 import com.infinitepower.newquiz.feature.settings.destinations.SettingsScreenDestination
@@ -53,6 +54,7 @@ internal object AppNavGraphs {
             WordleScreenDestination,
             WordleListScreenDestination,
             MazeScreenDestination,
+            MazeCategoriesInfoScreenDestination,
             LevelResultsScreenDestination,
             ComparisonQuizScreenDestination,
             ComparisonQuizListScreenDestination,

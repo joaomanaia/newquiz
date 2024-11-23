@@ -6,18 +6,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.infinitepower.newquiz.core.ui.SnackbarController
-import com.infinitepower.newquiz.data.local.multi_choice_quiz.category.multiChoiceQuestionCategories
-import com.infinitepower.newquiz.data.local.wordle.WordleCategories
 import com.infinitepower.newquiz.data.worker.maze.GenerateMazeQuizWorker
 import com.infinitepower.newquiz.domain.repository.comparison_quiz.ComparisonQuizRepository
+import com.infinitepower.newquiz.feature.maze.common.MazeCategories
 import com.infinitepower.newquiz.model.BaseCategory
 import com.infinitepower.newquiz.model.GameMode
-import com.infinitepower.newquiz.model.UiText
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
-import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceCategory
-import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +22,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.infinitepower.newquiz.core.R as CoreR
 
 @HiltViewModel
 class GenerateMazeScreenViewModel @Inject constructor(
@@ -42,25 +35,12 @@ class GenerateMazeScreenViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    multiChoiceCategories = getMultiChoiceCategories(),
-                    wordleCategories = availableWordleCategories.toImmutableList(),
-                    comparisonQuizCategories = getComparisonQuizCategories(),
+                    multiChoiceCategories = MazeCategories.getMultiChoiceCategories().toImmutableList(),
+                    wordleCategories = MazeCategories.availableWordleCategories.toImmutableList(),
+                    comparisonQuizCategories = getComparisonQuizCategories().toImmutableList(),
                     loading = false
                 )
             }
-        }
-    }
-
-    companion object {
-        private val availableMultiChoiceCategoriesIds = listOf(
-            MultiChoiceBaseCategory.Logo.id,
-            MultiChoiceBaseCategory.Flag.id,
-            MultiChoiceBaseCategory.CountryCapitalFlags.id,
-            MultiChoiceBaseCategory.GuessMathSolution.id,
-        )
-
-        private val availableWordleCategories = WordleCategories.allCategories.filter { category ->
-            category.id != WordleQuizType.NUMBER_TRIVIA.name
         }
     }
 
@@ -211,30 +191,7 @@ class GenerateMazeScreenViewModel @Inject constructor(
         }
     }
 
-    private fun getMultiChoiceCategories(): ImmutableList<MultiChoiceCategory> {
-        val allMultiChoiceCategories = multiChoiceQuestionCategories
-
-        val filteredCategories = allMultiChoiceCategories.filter { category ->
-            availableMultiChoiceCategoriesIds.contains(category.id)
-        }
-
-        // Because with the implementation with OpenTriviaDB, we can't select
-        // specific category, so we need to create a special category
-        // for this case, that contains all the categories.
-        val othersCategory = MultiChoiceCategory(
-            id = "others",
-            name = UiText.DynamicString("Others"),
-            image = CoreR.drawable.general_knowledge,
-            requireInternetConnection = true
-        )
-
-        return (filteredCategories + othersCategory).toImmutableList()
-    }
-
-    private fun getComparisonQuizCategories(): ImmutableList<BaseCategory> {
-        return comparisonQuizRepository
-            .getCategories()
-            .filterNot { it.isMazeDisabled }
-            .toImmutableList()
+    private fun getComparisonQuizCategories(): List<BaseCategory> {
+        return comparisonQuizRepository.getCategories().filterNot { it.isMazeDisabled }
     }
 }

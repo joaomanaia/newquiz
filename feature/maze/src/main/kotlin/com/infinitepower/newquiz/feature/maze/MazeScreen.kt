@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ContentCopy
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material3.DropdownMenu
@@ -39,6 +40,7 @@ import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.feature.maze.components.MazeCompletedCard
 import com.infinitepower.newquiz.feature.maze.components.MazePath
+import com.infinitepower.newquiz.feature.maze.destinations.MazeCategoriesInfoScreenDestination
 import com.infinitepower.newquiz.feature.maze.generate.GenerateMazeScreen
 import com.infinitepower.newquiz.model.maze.MazeQuiz
 import com.infinitepower.newquiz.model.maze.MazeQuiz.MazeItem
@@ -69,7 +71,8 @@ fun MazeScreen(
         uiState = uiState,
         navigateBack = navigator::popBackStack,
         uiEvent = viewModel::onEvent,
-        onItemClick = mazeNavigator::navigateToGame
+        onItemClick = mazeNavigator::navigateToGame,
+        navigateToCategoriesInfo = { navigator.navigate(MazeCategoriesInfoScreenDestination) }
     )
 }
 
@@ -79,7 +82,8 @@ private fun MazeScreenImpl(
     uiState: MazeScreenUiState,
     navigateBack: () -> Unit,
     uiEvent: (event: MazeScreenUiEvent) -> Unit,
-    onItemClick: (item: MazeItem) -> Unit
+    onItemClick: (item: MazeItem) -> Unit,
+    navigateToCategoriesInfo: () -> Unit
 ) {
     when {
         uiState.loading -> {
@@ -92,7 +96,8 @@ private fun MazeScreenImpl(
             uiState = uiState,
             navigateBack = navigateBack,
             uiEvent = uiEvent,
-            onItemClick = onItemClick
+            onItemClick = onItemClick,
+            navigateToCategoriesInfo = navigateToCategoriesInfo
         )
     }
 }
@@ -103,7 +108,8 @@ private fun MazePathScreen(
     uiState: MazeScreenUiState,
     navigateBack: () -> Unit,
     uiEvent: (event: MazeScreenUiEvent) -> Unit,
-    onItemClick: (item: MazeItem) -> Unit
+    onItemClick: (item: MazeItem) -> Unit,
+    navigateToCategoriesInfo: () -> Unit
 ) {
     val clipboardManager = LocalClipboardManager.current
 
@@ -130,6 +136,19 @@ private fun MazePathScreen(
                         onDismissRequest = { moreOptionsExpanded = false }
                     ) {
                         if (!uiState.isMazeEmpty) {
+                            DropdownMenuItem(
+                                text = { Text("Categories Info") },
+                                onClick = {
+                                    moreOptionsExpanded = false
+                                    navigateToCategoriesInfo()
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Info,
+                                        contentDescription = null
+                                    )
+                                }
+                            )
                             uiState.mazeSeed?.let { mazeSeed ->
                                 DropdownMenuItem(
                                     text = { Text(stringResource(id = CoreR.string.copy_maze_seed)) },
@@ -231,6 +250,7 @@ private fun MazeScreenPreview() {
                 navigateBack = {},
                 uiEvent = {},
                 onItemClick = {},
+                navigateToCategoriesInfo = {}
             )
         }
     }

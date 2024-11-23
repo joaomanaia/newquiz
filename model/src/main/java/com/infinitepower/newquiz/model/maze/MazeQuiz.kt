@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.model.maze
 
 import androidx.annotation.Keep
+import com.infinitepower.newquiz.model.GameMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.question.QuestionDifficulty
@@ -18,6 +19,8 @@ data class MazeQuiz(
         val mazeSeed: Int
         val difficulty: QuestionDifficulty
         val played: Boolean
+        val gameMode: GameMode
+        val categoryId: String
 
         @Keep
         data class Wordle(
@@ -26,8 +29,12 @@ data class MazeQuiz(
             override val id: Int = 0,
             override val mazeSeed: Int,
             override val difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
-            override val played: Boolean = false
-        ) : MazeItem
+            override val played: Boolean = false,
+        ) : MazeItem {
+            override val gameMode: GameMode = GameMode.WORDLE
+
+            override val categoryId: String = wordleQuizType.name
+        }
 
         @Keep
         data class MultiChoice(
@@ -36,7 +43,11 @@ data class MazeQuiz(
             override val mazeSeed: Int,
             override val difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
             override val played: Boolean = false
-        ) : MazeItem
+        ) : MazeItem {
+            override val gameMode: GameMode = GameMode.MULTI_CHOICE
+
+            override val categoryId: String = question.category.id
+        }
 
         @Keep
         data class ComparisonQuiz(
@@ -45,7 +56,11 @@ data class MazeQuiz(
             override val mazeSeed: Int,
             override val difficulty: QuestionDifficulty = QuestionDifficulty.Easy,
             override val played: Boolean = false
-        ) : MazeItem
+        ) : MazeItem {
+            override val gameMode: GameMode = GameMode.COMPARISON_QUIZ
+
+            override val categoryId: String = question.categoryId
+        }
     }
 }
 

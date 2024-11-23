@@ -42,6 +42,7 @@ fun CategoryComponent(
     showConnectionInfo: ShowCategoryConnectionInfo = ShowCategoryConnectionInfo.NONE,
     checked: Boolean = false,
     enabled: Boolean = true,
+    clickEnabled: Boolean = enabled,
     textStyle: TextStyle = MaterialTheme.typography.headlineLarge,
     shape: Shape = MaterialTheme.shapes.large,
     onClick: () -> Unit = {},
@@ -61,7 +62,7 @@ fun CategoryComponent(
         modifier = modifier.height(120.dp),
         shape = shape,
         onClick = onClick,
-        enabled = enabled,
+        enabled = enabled && clickEnabled,
         border = if (checked) {
             BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
         } else {
