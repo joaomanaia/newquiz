@@ -37,6 +37,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -328,6 +329,8 @@ private fun ComparisonQuizContainer(
         label = "Main Content"
     )
 
+    val reusableMidContent = remember(midContent) { movableContentOf(midContent) }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -363,7 +366,7 @@ private fun ComparisonQuizContainer(
                     )
                 }
                 Spacer(modifier = Modifier.height(spaceMedium))
-                midContent()
+                reusableMidContent()
                 Spacer(modifier = Modifier.height(spaceMedium))
                 mainContentTransition.AnimatedVisibility(
                     visible = { state -> state != AnimationState.StartGame },
@@ -411,7 +414,7 @@ private fun ComparisonQuizContainer(
                         )
                     }
                     Spacer(modifier = Modifier.width(spaceMedium))
-                    midContent()
+                    reusableMidContent()
                     Spacer(modifier = Modifier.width(spaceMedium))
                     mainContentTransition.AnimatedVisibility(
                         visible = { state -> state != AnimationState.StartGame },
