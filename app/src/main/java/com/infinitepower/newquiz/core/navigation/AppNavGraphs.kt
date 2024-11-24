@@ -67,7 +67,7 @@ internal object AppNavGraphs {
 internal fun DestinationScopeWithNoDependencies<*>.currentNavigator(
     remoteConfig: RemoteConfig
 ): CommonNavGraphNavigator {
-    return CommonNavGraphNavigator(navController, remoteConfig)
+    return CommonNavGraphNavigator(destinationsNavigator, navController, remoteConfig)
 }
 
 @Composable

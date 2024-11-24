@@ -18,9 +18,11 @@ import com.infinitepower.newquiz.model.wordle.WordleQuizType
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.multi_choice_quiz.saved_questions.SavedQuestionsScreenNavigator
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
-import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.utils.destination
 
 class CommonNavGraphNavigator(
+    private val navigator: DestinationsNavigator,
     private val navController: NavController,
     private val remoteConfig: RemoteConfig
 ) : SavedQuestionsScreenNavigator,
@@ -28,14 +30,14 @@ class CommonNavGraphNavigator(
     DailyChallengeScreenNavigator {
 
     override fun navigateToWordleQuiz(type: WordleQuizType) {
-        navController.navigate(WordleScreenDestination(quizType = type))
+        navigator.navigate(WordleScreenDestination(quizType = type))
     }
 
     override fun navigateToComparisonQuiz(
         category: ComparisonQuizCategory,
         mode: ComparisonMode
     ) {
-        navController.navigate(ComparisonQuizScreenDestination(category.id, mode))
+        navigator.navigate(ComparisonQuizScreenDestination(category.id, mode))
     }
 
     override fun navigateToMultiChoiceQuiz(initialQuestions: ArrayList<MultiChoiceQuestion>) {
@@ -45,7 +47,7 @@ class CommonNavGraphNavigator(
                 if (this == "random") null else this
             }
 
-        navController.navigate(
+        navigator.navigate(
             MultiChoiceQuizScreenDestination(
                 initialQuestions = initialQuestions,
                 difficulty = remoteConfigDifficulty
@@ -60,7 +62,7 @@ class CommonNavGraphNavigator(
                 if (this == "random") null else this
             }
 
-        navController.navigate(
+        navigator.navigate(
             MultiChoiceQuizScreenDestination(
                 difficulty = remoteConfigDifficulty,
                 category = category
@@ -99,21 +101,21 @@ class CommonNavGraphNavigator(
             }
         }
 
-        navController.navigate(destination) {
-            popUpTo(LevelResultsScreenDestination.route) {
+        navigator.navigate(destination) {
+            popUpTo(LevelResultsScreenDestination) {
                 inclusive = true
             }
         }
     }
 
     override fun navigateToMazeResults(itemId: Int) {
-        navController.navigate(LevelResultsScreenDestination(itemId)) {
+        navigator.navigate(LevelResultsScreenDestination(itemId)) {
             launchSingleTop = true
 
             // Remove current screen from back stack
-            val currentRoute = navController.currentDestination?.route
-            if (currentRoute != null) {
-                popUpTo(currentRoute) {
+            val currentDestination = navController.currentBackStackEntry?.destination()
+            if (currentDestination != null) {
+                popUpTo(currentDestination) {
                     inclusive = true
                 }
             }

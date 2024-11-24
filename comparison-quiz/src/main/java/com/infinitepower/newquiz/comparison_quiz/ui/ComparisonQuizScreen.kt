@@ -126,7 +126,7 @@ fun ComparisonQuizScreen(
                     comparisonMode = comparisonMode
                 )
             ) {
-                popUpTo(ComparisonQuizScreenDestination.route) {
+                popUpTo(ComparisonQuizScreenDestination) {
                     inclusive = true
                 }
             }

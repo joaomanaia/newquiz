@@ -21,7 +21,8 @@
         android:appCategory="game"
         android:isGame="true"
         android:theme="@style/Theme.NewQuiz.Starting"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name="com.infinitepower.newquiz.ui.main.MainActivity"
             android:exported="true"

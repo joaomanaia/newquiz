@@ -19,12 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.ui.components.DiamondsCounter
-import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -34,7 +33,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 @ExperimentalMaterial3Api
 internal fun ExpandedContainer(
-    navController: NavController,
+    navigator: DestinationsNavigator,
     primaryItems: ImmutableList<NavigationItem.Item>,
     otherItems: ImmutableList<NavigationItem>,
     selectedItem: NavigationItem.Item?,
@@ -62,7 +61,7 @@ internal fun ExpandedContainer(
                 selectedItem = selectedItem,
                 items = allNavigationItems,
                 onItemClick = { item ->
-                    navController.navigate(item.direction)
+                    navigator.navigate(item.direction)
                 },
             )
         }
@@ -114,7 +113,7 @@ private fun MediumContainerPreview() {
     NewQuizTheme {
         Surface {
             ExpandedContainer(
-                navController = rememberNavController(),
+                navigator = EmptyDestinationsNavigator,
                 content = {
                     Text(text = "NewQuiz")
                 },

@@ -1,6 +1,5 @@
 package com.infinitepower.newquiz.ui.navigation
 
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material.icons.Icons
@@ -42,6 +41,7 @@ import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizL
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
+import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -110,7 +110,6 @@ private fun List<NavigationItem>.getNavigationItemBy(
 ): NavigationItem.Item? = filterIsInstance<NavigationItem.Item>()
     .find { item -> item.direction == route }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 @ExperimentalMaterial3Api
 internal fun NavigationContainer(
@@ -122,6 +121,7 @@ internal fun NavigationContainer(
 ) {
     val scope = rememberCoroutineScope()
 
+    val navigator = navController.rememberDestinationsNavigator()
     val destination by navController.currentDestinationAsState()
 
     val primaryItems = remember { getPrimaryItems() }
@@ -162,6 +162,7 @@ internal fun NavigationContainer(
     if (navigationVisible) {
         when (windowWidthSize) {
             WindowWidthSizeClass.Compact -> CompactContainer(
+                navigator = navigator,
                 navController = navController,
                 primaryItems = primaryItems,
                 otherItems = otherItems,
@@ -172,7 +173,7 @@ internal fun NavigationContainer(
             )
 
             WindowWidthSizeClass.Medium -> MediumContainer(
-                navController = navController,
+                navigator = navigator,
                 primaryItems = primaryItems,
                 otherItems = otherItems,
                 selectedItem = selectedItem,
@@ -182,7 +183,7 @@ internal fun NavigationContainer(
             )
 
             WindowWidthSizeClass.Expanded -> ExpandedContainer(
-                navController = navController,
+                navigator = navigator,
                 primaryItems = primaryItems,
                 otherItems = otherItems,
                 selectedItem = selectedItem,

@@ -28,12 +28,13 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.infinitepower.newquiz.core.navigation.NavigationItem
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
+import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.infinitepower.newquiz.ui.components.DiamondsCounter
-import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
@@ -43,6 +44,7 @@ import kotlinx.coroutines.launch
 @Composable
 @ExperimentalMaterial3Api
 internal fun CompactContainer(
+    navigator: DestinationsNavigator,
     navController: NavController,
     primaryItems: ImmutableList<NavigationItem.Item>,
     otherItems: ImmutableList<NavigationItem>,
@@ -72,7 +74,7 @@ internal fun CompactContainer(
                 items = otherItems,
                 onItemClick = { item ->
                     scope.launch { drawerState.close() }
-                    navController.navigate(item.direction)
+                    navigator.navigate(item.direction)
                 },
             )
         }
@@ -134,11 +136,12 @@ private fun CompactBottomBar(
             NavigationBarItem(
                 selected = item == selectedItem,
                 onClick = {
-                    navController.navigate(item.direction) {
+                    navController.navigate(item.direction.route) {
                         // Pop up to the start destination of the graph to
                         // avoid building up a large stack of destinations
                         // on the back stack as users select items
-                        popUpTo(navController.graph.findStartDestination().id)
+                        val startDestination = navController.graph.startDestinationRoute
+                        popUpTo(startDestination ?: MultiChoiceQuizScreenDestination.route)
                         // Avoid multiple copies of the same destination when re-selecting the same item
                         launchSingleTop = true
                     }
@@ -168,6 +171,7 @@ private fun CompactContainerPreview() {
         Surface {
             CompactContainer(
                 navController = rememberNavController(),
+                navigator = EmptyDestinationsNavigator,
                 content = {
                     Text(text = "NewQuiz")
                 },

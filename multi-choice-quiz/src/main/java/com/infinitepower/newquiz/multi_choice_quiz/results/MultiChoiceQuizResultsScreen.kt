@@ -59,7 +59,6 @@ import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizR
 import com.infinitepower.newquiz.multi_choice_quiz.destinations.MultiChoiceQuizScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.popUpTo
 import kotlinx.serialization.json.Json
 import com.infinitepower.newquiz.core.R as CoreR
 
