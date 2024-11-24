@@ -10,13 +10,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.movableContentOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.infinitepower.newquiz.comparison_quiz.ui.AnimationState
+import com.infinitepower.newquiz.core.common.compose.preview.BooleanPreviewParameterProvider
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.R as CoreR
 
@@ -57,15 +61,25 @@ private fun ComparisonMidContainer(
     highestPositionContent: @Composable () -> Unit,
     midContent: @Composable () -> Unit
 ) {
+    val movableCurrentPositionContent = remember(currentPositionContent) {
+        movableContentOf(currentPositionContent)
+    }
+    val movableHighestPositionContent = remember(highestPositionContent) {
+        movableContentOf(highestPositionContent)
+    }
+    val movableMidContent = remember(midContent) {
+        movableContentOf(midContent)
+    }
+
     if (verticalContent) {
         Row(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            currentPositionContent()
-            midContent()
-            highestPositionContent()
+            movableCurrentPositionContent()
+            movableMidContent()
+            movableHighestPositionContent()
         }
     } else {
         Column(
@@ -73,22 +87,24 @@ private fun ComparisonMidContainer(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            currentPositionContent()
-            midContent()
-            highestPositionContent()
+            movableCurrentPositionContent()
+            movableMidContent()
+            movableHighestPositionContent()
         }
     }
 }
 
 @Composable
 @PreviewLightDark
-private fun ComparisonMidContentPreview() {
+private fun ComparisonMidContentPreview(
+    @PreviewParameter(BooleanPreviewParameterProvider::class) verticalContent: Boolean
+) {
     NewQuizTheme {
         Surface {
             ComparisonMidContent(
                 questionPosition = 1,
                 highestPosition = 10,
-                verticalContent = true,
+                verticalContent = verticalContent,
                 modifier = Modifier.padding(16.dp),
                 animationState = AnimationState.Normal
             )
