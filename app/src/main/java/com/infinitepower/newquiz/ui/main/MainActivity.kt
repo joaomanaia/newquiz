@@ -3,11 +3,12 @@ package com.infinitepower.newquiz.ui.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
@@ -52,16 +53,16 @@ class MainActivity : ComponentActivity() {
         // Update the uiState
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel
-                    .uiState
-                    .onEach {
-                        uiState = it
-                    }.collect()
+                viewModel.uiState
+                    .onEach { uiState = it }
+                    .collect()
             }
         }
 
         // Keep the splash screen until the uiState is loaded
         splashScreen.setKeepOnScreenCondition { uiState.loading }
+
+        enableEdgeToEdge()
 
         setContent {
             CompositionLocalProvider(

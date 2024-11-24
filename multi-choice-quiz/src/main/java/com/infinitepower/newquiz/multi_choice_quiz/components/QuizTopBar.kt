@@ -34,6 +34,7 @@ import com.infinitepower.newquiz.core.ui.components.RemainingTimeComponent
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.model.RemainingTime
 import com.infinitepower.newquiz.multi_choice_quiz.MULTI_CHOICE_QUIZ_COUNTDOWN_TIME
+import kotlin.time.Duration.Companion.seconds
 import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
@@ -166,7 +167,7 @@ private fun QuizTopBarPreview() {
         Surface {
             QuizTopBar(
                 windowHeightSizeClass = WindowHeightSizeClass.Medium,
-                remainingTime = RemainingTime.ZERO,
+                remainingTime = RemainingTime(20.seconds),
                 skipsAvailable = true,
                 onBackClick = {},
                 onSkipClick = {},

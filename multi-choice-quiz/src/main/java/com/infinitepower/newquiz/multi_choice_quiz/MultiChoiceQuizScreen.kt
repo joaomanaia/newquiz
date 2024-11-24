@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -32,6 +34,7 @@ import com.infinitepower.newquiz.core.navigation.MazeNavigator
 import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipQuestionDialog
 import com.infinitepower.newquiz.core.util.toAndroidUri
+import com.infinitepower.newquiz.model.RemainingTime
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceBaseCategory
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestion
 import com.infinitepower.newquiz.model.multi_choice_quiz.MultiChoiceQuestionStep
@@ -108,6 +111,7 @@ fun MultiChoiceQuizScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MultiChoiceQuizScreenImpl(
     uiState: MultiChoiceQuizScreenUiState,
@@ -141,7 +145,9 @@ private fun MultiChoiceQuizScreenImpl(
                 onBackClick = onBackClick,
                 onSkipClick = { onEvent(MultiChoiceQuizScreenUiEvent.GetUserSkipQuestionDiamonds) },
                 onSaveClick = { onEvent(MultiChoiceQuizScreenUiEvent.SaveQuestion) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .windowInsetsPadding(TopAppBarDefaults.windowInsets)
+                    .fillMaxWidth(),
                 currentQuestionNull = uiState.currentQuestionStep == null,
                 questionSaved = uiState.questionSaved
             )
@@ -259,7 +265,8 @@ private fun QuizScreenPreview() {
                 questionSteps = questionSteps,
                 selectedAnswer = SelectedAnswer.fromIndex((0..3).random()),
                 currentQuestionIndex = 2,
-                loading = false
+                loading = false,
+                remainingTime = RemainingTime(20.seconds)
             ),
             windowSizeClass = windowSizeClass,
             onBackClick = {},

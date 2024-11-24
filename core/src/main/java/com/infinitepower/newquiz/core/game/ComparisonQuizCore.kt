@@ -77,7 +77,8 @@ interface ComparisonQuizCore :
                 val firstQuestion = newQuestions.first()
                 val secondQuestion = newQuestions[1]
 
-                newQuestions.removeFirst()
+                // Remove the two questions
+                newQuestions.removeAt(0)
                 newQuestions.removeAt(0)
 
                 ComparisonQuizQuestion(
@@ -89,7 +90,7 @@ interface ComparisonQuizCore :
                 // If is not a new game, gets the first question from the questions list
                 // And then removes from the questions list
                 val firstQuestion = newQuestions.first()
-                newQuestions.removeFirst()
+                newQuestions.removeAt(0)
 
                 currentQuestion.nextQuestion(firstQuestion)
             }

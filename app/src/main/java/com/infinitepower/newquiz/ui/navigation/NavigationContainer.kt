@@ -1,6 +1,8 @@
 package com.infinitepower.newquiz.ui.navigation
 
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.List
 import androidx.compose.material.icons.automirrored.rounded.ListAlt
@@ -108,6 +110,7 @@ private fun List<NavigationItem>.getNavigationItemBy(
 ): NavigationItem.Item? = filterIsInstance<NavigationItem.Item>()
     .find { item -> item.direction == route }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 @ExperimentalMaterial3Api
 internal fun NavigationContainer(
@@ -193,7 +196,10 @@ internal fun NavigationContainer(
             content = content,
             snackbarHost = {
                 SnackbarHost(hostState = snackbarHostState)
-            }
+            },
+            // This Scaffold only manages Snackbar display and shouldn't handle window insets.
+            // Insets are delegated to parent layouts or other Scaffolds in the composable hierarchy.
+            contentWindowInsets = WindowInsets(0, 0, 0, 0)
         )
     }
 }

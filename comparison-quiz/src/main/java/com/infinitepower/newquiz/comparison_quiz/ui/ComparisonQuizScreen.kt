@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,8 +26,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -61,6 +64,7 @@ import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipIconButton
 import com.infinitepower.newquiz.core.ui.components.skip_question.SkipQuestionDialog
 import com.infinitepower.newquiz.core.util.emptyJavaURI
+import com.infinitepower.newquiz.core.util.plus
 import com.infinitepower.newquiz.model.NumberFormatType
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonMode
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
@@ -302,6 +306,7 @@ private fun ComparisonQuizContent(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @ExperimentalAnimationApi
 private fun ComparisonQuizContainer(
@@ -323,115 +328,54 @@ private fun ComparisonQuizContainer(
         label = "Main Content"
     )
 
-    if (verticalContent) {
-        Column(
-            modifier = modifier
-                .padding(spaceMedium)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                backIconContent()
-                Spacer(modifier = Modifier.width(spaceMedium))
-                descriptionContent()
-                if (skipButtonContent != null) {
-                    Spacer(
-                        modifier = Modifier
-                            .padding(spaceMedium)
-                            .weight(1f)
-                    )
-                    skipButtonContent()
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = descriptionContent,
+                navigationIcon = backIconContent,
+                actions = {
+                    if (skipButtonContent != null) {
+                        skipButtonContent()
+                    }
                 }
-            }
-            Spacer(modifier = Modifier.height(spaceMedium))
-            mainContentTransition.AnimatedVisibility(
-                visible = { state -> state != AnimationState.StartGame },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                enter = fadeIn() + slideInHorizontally(),
-                exit = fadeOut() + slideOutHorizontally()
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    content = firstQuestionContent
-                )
-            }
-            Spacer(modifier = Modifier.height(spaceMedium))
-            midContent()
-            Spacer(modifier = Modifier.height(spaceMedium))
-            mainContentTransition.AnimatedVisibility(
-                visible = { state -> state != AnimationState.StartGame },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                // Make this animation from the opposite direction
-                enter = fadeIn() + slideInHorizontally(
-                    initialOffsetX = { it }
-                ),
-                exit = fadeOut() + slideOutHorizontally(
-                    targetOffsetX = { it }
-                )
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    content = secondQuestionContent
-                )
-            }
-            attributionContent?.let { content ->
-                Spacer(modifier = Modifier.height(spaceMedium))
-                content()
-            }
+            )
         }
-    } else {
-        Column(
-            modifier = modifier
-                .padding(spaceMedium)
-                .fillMaxSize()
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                backIconContent()
-                Spacer(modifier = Modifier.width(spaceMedium))
-                descriptionContent()
-                if (skipButtonContent != null) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    skipButtonContent()
-                }
-            }
-            Spacer(modifier = Modifier.height(spaceMedium))
-            Row(
-                modifier = Modifier.weight(1f)
+    ) { innerPadding ->
+        if (verticalContent) {
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding + PaddingValues(spaceMedium))
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 mainContentTransition.AnimatedVisibility(
                     visible = { state -> state != AnimationState.StartGame },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    enter = fadeIn() + slideInVertically(),
-                    exit = fadeOut() + slideOutVertically()
+                    enter = fadeIn() + slideInHorizontally(),
+                    exit = fadeOut() + slideOutHorizontally()
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         content = firstQuestionContent
                     )
                 }
-                Spacer(modifier = Modifier.width(spaceMedium))
+                Spacer(modifier = Modifier.height(spaceMedium))
                 midContent()
-                Spacer(modifier = Modifier.width(spaceMedium))
+                Spacer(modifier = Modifier.height(spaceMedium))
                 mainContentTransition.AnimatedVisibility(
                     visible = { state -> state != AnimationState.StartGame },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    enter = fadeIn() + slideInVertically(
-                        initialOffsetY = { it }
+                    // Make this animation from the opposite direction
+                    enter = fadeIn() + slideInHorizontally(
+                        initialOffsetX = { it }
                     ),
-                    exit = fadeOut() + slideOutVertically(
-                        targetOffsetY = { it }
+                    exit = fadeOut() + slideOutHorizontally(
+                        targetOffsetX = { it }
                     )
                 ) {
                     Box(
@@ -439,10 +383,58 @@ private fun ComparisonQuizContainer(
                         content = secondQuestionContent
                     )
                 }
+                attributionContent?.let { content ->
+                    Spacer(modifier = Modifier.height(spaceMedium))
+                    content()
+                }
             }
-            attributionContent?.let { attribution ->
-                Spacer(modifier = Modifier.height(spaceMedium))
-                attribution()
+        } else {
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding + PaddingValues(spaceMedium))
+                    .fillMaxSize()
+            ) {
+                Row(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    mainContentTransition.AnimatedVisibility(
+                        visible = { state -> state != AnimationState.StartGame },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        enter = fadeIn() + slideInVertically(),
+                        exit = fadeOut() + slideOutVertically()
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            content = firstQuestionContent
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(spaceMedium))
+                    midContent()
+                    Spacer(modifier = Modifier.width(spaceMedium))
+                    mainContentTransition.AnimatedVisibility(
+                        visible = { state -> state != AnimationState.StartGame },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        enter = fadeIn() + slideInVertically(
+                            initialOffsetY = { it }
+                        ),
+                        exit = fadeOut() + slideOutVertically(
+                            targetOffsetY = { it }
+                        )
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            content = secondQuestionContent
+                        )
+                    }
+                }
+                attributionContent?.let { attribution ->
+                    Spacer(modifier = Modifier.height(spaceMedium))
+                    attribution()
+                }
             }
         }
     }

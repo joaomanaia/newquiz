@@ -18,6 +18,6 @@ fun rememberAppVersion(): String {
             context.packageManager.getPackageInfo(context.packageName, 0)
         }
 
-        info.versionName
+        info.versionName ?: "Unknown"
     }
 }

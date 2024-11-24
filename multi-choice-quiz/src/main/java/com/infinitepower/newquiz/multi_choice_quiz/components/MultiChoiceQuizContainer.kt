@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,6 +32,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.infinitepower.newquiz.core.R
 import com.infinitepower.newquiz.core.theme.spacing
+import com.infinitepower.newquiz.core.util.plus
 
 @Composable
 internal fun MultiChoiceQuizContainer(
@@ -87,7 +89,7 @@ internal fun MultiChoiceQuizContainer(
         } else {
             if (verticalContent) {
                 VerticalContent(
-                    modifier = Modifier.padding(innerPadding),
+                    innerPadding = innerPadding,
                     stepsContent = stepsContent,
                     questionPositionContent = questionPositionContent,
                     questionDescriptionContent = questionDescriptionContent,
@@ -97,7 +99,7 @@ internal fun MultiChoiceQuizContainer(
                 )
             } else {
                 HorizontalContent(
-                    modifier = Modifier.padding(innerPadding),
+                    innerPadding = innerPadding,
                     stepsContent = stepsContent,
                     questionPositionContent = questionPositionContent,
                     questionDescriptionContent = questionDescriptionContent,
@@ -113,6 +115,7 @@ internal fun MultiChoiceQuizContainer(
 @Composable
 private fun VerticalContent(
     modifier: Modifier = Modifier,
+    innerPadding: PaddingValues = PaddingValues(),
     horizontalFractionSize: Float = 1f,
     stepsContent: @Composable BoxScope.() -> Unit,
     questionPositionContent: @Composable () -> Unit,
@@ -122,45 +125,42 @@ private fun VerticalContent(
 ) {
     val spaceMedium = MaterialTheme.spacing.medium
 
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.TopCenter
+    LazyColumn(
+        contentPadding = innerPadding + PaddingValues(
+            start = spaceMedium,
+            end = spaceMedium,
+            top = spaceMedium,
+            bottom = MaterialTheme.spacing.extraLarge
+        ),
+        verticalArrangement = Arrangement.spacedBy(spaceMedium),
+        modifier = modifier
+            .consumeWindowInsets(innerPadding)
+            .fillMaxWidth(horizontalFractionSize)
     ) {
-        LazyColumn(
-            contentPadding = PaddingValues(
-                start = spaceMedium,
-                end = spaceMedium,
-                top = spaceMedium,
-                bottom = MaterialTheme.spacing.extraLarge
-            ),
-            verticalArrangement = Arrangement.spacedBy(spaceMedium),
-            modifier = Modifier.fillMaxWidth(horizontalFractionSize)
-        ) {
-            item(key = "steps") {
-                Box(
-                    content = stepsContent,
-                    modifier = Modifier
-                        .fillParentMaxWidth()
-                        .padding(vertical = spaceMedium)
-                )
-            }
+        item(key = "steps") {
+            Box(
+                content = stepsContent,
+                modifier = Modifier
+                    .fillParentMaxWidth()
+                    .padding(vertical = spaceMedium)
+            )
+        }
 
-            item { questionPositionContent() }
-            item { questionDescriptionContent() }
+        item { questionPositionContent() }
+        item { questionDescriptionContent() }
 
-            // Question image, if exists
-            if (questionImageContent != null) {
-                item {
-                    questionImageContent()
-                }
-            }
-
+        // Question image, if exists
+        if (questionImageContent != null) {
             item {
-                Box(
-                    content = answersContent,
-                    modifier = Modifier.fillParentMaxWidth()
-                )
+                questionImageContent()
             }
+        }
+
+        item {
+            Box(
+                content = answersContent,
+                modifier = Modifier.fillParentMaxWidth()
+            )
         }
     }
 }
@@ -168,6 +168,7 @@ private fun VerticalContent(
 @Composable
 private fun HorizontalContent(
     modifier: Modifier = Modifier,
+    innerPadding: PaddingValues = PaddingValues(),
     windowSizeClass: WindowSizeClass,
     stepsContent: @Composable BoxScope.() -> Unit,
     questionPositionContent: @Composable () -> Unit,
@@ -182,8 +183,9 @@ private fun HorizontalContent(
 
     ConstraintLayout(
         modifier = modifier
+            .padding(innerPadding + PaddingValues(spaceMedium))
+            .consumeWindowInsets(innerPadding)
             .fillMaxSize()
-            .padding(spaceMedium)
     ) {
         val (stepsRef, descriptionRef, answersRef) = createRefs()
 

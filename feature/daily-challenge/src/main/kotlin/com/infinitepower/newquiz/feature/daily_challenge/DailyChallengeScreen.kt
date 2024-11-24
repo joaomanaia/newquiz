@@ -2,7 +2,6 @@ package com.infinitepower.newquiz.feature.daily_challenge
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,7 +24,7 @@ import com.infinitepower.newquiz.core.theme.NewQuizTheme
 import com.infinitepower.newquiz.core.theme.spacing
 import com.infinitepower.newquiz.core.ui.components.icon.button.BackIconButton
 import com.infinitepower.newquiz.core.util.asString
-import com.infinitepower.newquiz.core.R as CoreR
+import com.infinitepower.newquiz.core.util.plus
 import com.infinitepower.newquiz.feature.daily_challenge.components.DailyChallengeCard
 import com.infinitepower.newquiz.model.UiText
 import com.infinitepower.newquiz.model.comparison_quiz.ComparisonQuizCategory
@@ -36,6 +35,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import kotlin.time.Duration.Companion.minutes
+import com.infinitepower.newquiz.core.R as CoreR
 
 @Composable
 @Destination
@@ -86,8 +86,7 @@ private fun DailyChallengeScreen(
         }
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier.padding(innerPadding),
-            contentPadding = PaddingValues(spaceMedium),
+            contentPadding = innerPadding + PaddingValues(spaceMedium),
             verticalArrangement = Arrangement.spacedBy(spaceMedium)
         ) {
             items(
