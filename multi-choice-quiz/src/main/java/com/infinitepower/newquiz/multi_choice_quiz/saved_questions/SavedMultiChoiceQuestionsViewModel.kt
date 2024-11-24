@@ -109,15 +109,15 @@ class SavedMultiChoiceQuestionsViewModel @Inject constructor(
         workManager
             .getWorkInfoByIdFlow(downloadQuestionsRequest.id)
             .onEach { info ->
-                if (info.state == WorkInfo.State.SUCCEEDED) {
+                if (info?.state == WorkInfo.State.SUCCEEDED) {
                     SnackbarController.sendShortMessage("Downloaded successfully")
+                } else if (info?.state == WorkInfo.State.FAILED) {
+                    SnackbarController.sendShortMessage("Failed to download the questions")
                 }
 
-                _uiState.update {
-                    it.copy(
-                        downloadingQuestions = info.state == WorkInfo.State.RUNNING
-                                || info.state == WorkInfo.State.ENQUEUED
-                    )
+                _uiState.update { currentState ->
+                    val isFinished = info?.state?.isFinished ?: false
+                    currentState.copy(downloadingQuestions = !isFinished)
                 }
             }.launchIn(viewModelScope)
     }

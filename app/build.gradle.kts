@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "com.infinitepower.newquiz"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.infinitepower.newquiz"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 16
         versionName = "2.0.0"
 

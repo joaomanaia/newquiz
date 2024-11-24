@@ -35,7 +35,8 @@ class GenerateMazeScreenViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    multiChoiceCategories = MazeCategories.getMultiChoiceCategories().toImmutableList(),
+                    multiChoiceCategories = MazeCategories.getMultiChoiceCategories()
+                        .toImmutableList(),
                     wordleCategories = MazeCategories.availableWordleCategories.toImmutableList(),
                     comparisonQuizCategories = getComparisonQuizCategories().toImmutableList(),
                     loading = false
@@ -180,12 +181,13 @@ class GenerateMazeScreenViewModel @Inject constructor(
                 .getWorkInfoByIdLiveData(workId)
                 .asFlow()
                 .onEach { workInfo ->
-                    _uiState.update { currentState ->
-                        if (workInfo.state == WorkInfo.State.FAILED) {
-                            SnackbarController.sendShortMessage("Failed to generate maze")
-                        }
+                    if (workInfo?.state == WorkInfo.State.FAILED) {
+                        SnackbarController.sendShortMessage("Failed to generate maze")
+                    }
 
-                        currentState.copy(generatingMaze = !workInfo.state.isFinished)
+                    _uiState.update { currentState ->
+                        val isFinished = workInfo?.state?.isFinished ?: false
+                        currentState.copy(generatingMaze = !isFinished)
                     }
                 }.launchIn(viewModelScope)
         }
