@@ -98,8 +98,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     implementation(libs.kotlinx.coroutines.playServices)
 
-    implementation(libs.androidx.navigation.compose)
-
     implementation(libs.lottie.compose)
 
     implementation(libs.ktor.client.core)

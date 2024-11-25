@@ -12,7 +12,6 @@ androidxComposeBom = "2024.11.00"
 androidxDataStore = "1.1.1"
 androidxStartup = "1.2.0"
 androidxLifecycle = "2.8.0"
-androidxNavigation = "2.7.7"
 androidxWork = "2.10.0"
 androidxTestRules = "1.6.1"
 androidxTestRunner = "1.6.1"
@@ -83,7 +82,6 @@ androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecy
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "androidxWork" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
@@ -92,6 +90,7 @@ androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", versi
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+compose-destinations-animations-core = { group = "io.github.raamcosta.compose-destinations", name = "animations-core", version.ref = "composeDestinations" }
 compose-destinations-core = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "composeDestinations" }
 compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "composeDestinations" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "googleMaterial" }

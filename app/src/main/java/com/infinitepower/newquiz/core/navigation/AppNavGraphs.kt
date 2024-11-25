@@ -24,7 +24,9 @@ import com.infinitepower.newquiz.ui.navigation.NavigationContainer
 import com.infinitepower.newquiz.wordle.destinations.WordleListScreenDestination
 import com.infinitepower.newquiz.wordle.destinations.WordleScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
 import com.ramcosta.composedestinations.navigation.dependency
+import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.ramcosta.composedestinations.scope.DestinationScopeWithNoDependencies
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.spec.NavGraphSpec
@@ -93,7 +95,10 @@ internal fun AppNavigation(
             dependenciesContainerBuilder = {
                 dependency(currentNavigator(remoteConfig))
                 dependency(windowSizeClass)
-            }
+            },
+            engine = rememberNavHostEngine(
+                rootDefaultAnimations = RootNavGraphDefaultAnimations.ACCOMPANIST_FADING,
+            )
         )
     }
 }
