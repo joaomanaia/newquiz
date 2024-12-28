@@ -226,10 +226,9 @@ class GenerateMazeQuizWorker @AssistedInject constructor(
         }
 
         val comparisonQuizCategories = comparisonQuizRepository.getCategories()
-        val comparisonMazeQuestions = comparisonQuizCategoriesIds.map { categoryId ->
+        val comparisonMazeQuestions = comparisonQuizCategoriesIds.mapNotNull { categoryId ->
             val category = comparisonQuizCategories.find { it.id == categoryId }
-            // TODO: Handle if category is removed/dont exist
-            requireNotNull(category)
+            if (category == null) return@mapNotNull null
 
             generateComparisonMazeItems(
                 category = category,
