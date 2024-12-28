@@ -31,6 +31,11 @@ class MazeQuizRepositoryImpl @Inject constructor(
         mazeQuizDao.insertItems(entities)
     }
 
+    override suspend fun removeItems(items: List<MazeQuiz.MazeItem>) {
+        val entities = items.map(MazeQuiz.MazeItem::toEntity)
+        mazeQuizDao.removeItems(entities)
+    }
+
     override suspend fun getMazeItemById(id: Int): MazeQuiz.MazeItem? {
         return mazeQuizDao.getMazeItemById(id)?.toMazeQuizItem()
     }

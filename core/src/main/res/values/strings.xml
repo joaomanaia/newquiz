@@ -315,4 +315,8 @@
     <string name="word_not_only_letters_error">The word must contain only letters</string>
     <string name="word_not_only_digits_error">The word must contain only digits</string>
     <string name="word_invalid_math_formula_error">Left formula is not equal to right solution</string>
+    <string name="invalid_questions">Invalid questions</string>
+    <string name="invalid_questions_description">There are %1$d questions with invalid categories. Remove the questions to continue playing or restart the maze.</string>
+    <string name="remove_them">Remove them</string>
+    <string name="category_information">Category information</string>
 </resources>

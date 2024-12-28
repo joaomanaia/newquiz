@@ -321,4 +321,8 @@
     <string name="word_not_only_letters_error">A palavra deve conter apenas letras</string>
     <string name="word_not_only_digits_error">A palavra deve conter apenas dígitos</string>
     <string name="word_invalid_math_formula_error">A fórmula da esquerda não é igual à solução da direita</string>
+    <string name="invalid_questions">Perguntas inválidas</string>
+    <string name="invalid_questions_description">Existem %1$d perguntas com categorias inválidas. Remova as perguntas para continuar a jogar ou reinicie o labirinto.</string>
+    <string name="remove_them">Remova-as</string>
+    <string name="category_information">Informações de categoria</string>
 </resources>

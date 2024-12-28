@@ -10,6 +10,8 @@ interface MazeQuizRepository {
 
     suspend fun insertItems(items: List<MazeQuiz.MazeItem>)
 
+    suspend fun removeItems(items: List<MazeQuiz.MazeItem>)
+
     suspend fun getMazeItemById(id: Int): MazeQuiz.MazeItem?
 
     suspend fun getNextAvailableMazeItem(): MazeQuiz.MazeItem?

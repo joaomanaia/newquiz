@@ -21,4 +21,5 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.data)
     implementation(projects.domain)
+    testImplementation(projects.core.testing)
 }

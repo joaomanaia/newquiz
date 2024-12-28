@@ -1,6 +1,7 @@
 package com.infinitepower.newquiz.core.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -33,6 +34,9 @@ interface MazeQuizDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateItem(item: MazeQuizItemEntity)
+
+    @Delete
+    suspend fun removeItems(items: List<MazeQuizItemEntity>)
 
     @Query("DELETE FROM mazeItems")
     suspend fun deleteAll()
