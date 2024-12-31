@@ -89,6 +89,7 @@ fun CategoryComponent(
                 style = textStyle,
                 color = textColor,
                 textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.large)
             )
 
             Row(
