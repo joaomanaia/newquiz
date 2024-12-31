@@ -319,4 +319,7 @@
     <string name="invalid_questions_description">There are %1$d questions with invalid categories. Remove the questions to continue playing or restart the maze.</string>
     <string name="remove_them">Remove them</string>
     <string name="category_information">Category information</string>
+    <string name="cancel">Cancel</string>
+    <string name="restart">Restart</string>
+    <string name="restart_maze_dialog_description">Are you sure you want to restart the maze?</string>
 </resources>

@@ -325,4 +325,7 @@
     <string name="invalid_questions_description">Existem %1$d perguntas com categorias inválidas. Remova as perguntas para continuar a jogar ou reinicie o labirinto.</string>
     <string name="remove_them">Remova-as</string>
     <string name="category_information">Informações de categoria</string>
+    <string name="cancel">Cancelar</string>
+    <string name="restart">Reiniciar</string>
+    <string name="restart_maze_dialog_description">Tens a certeza de que queres reiniciar o labirinto?</string>
 </resources>

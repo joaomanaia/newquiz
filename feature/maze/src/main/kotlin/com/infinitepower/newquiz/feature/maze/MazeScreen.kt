@@ -12,6 +12,7 @@ import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.RestartAlt
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -125,6 +127,9 @@ private fun MazePathScreen(
     var moreOptionsExpanded by remember { mutableStateOf(false) }
     var categoriesInfoBottomSheetVisible by remember { mutableStateOf(false) }
 
+    var restartMazeDialogVisible by remember { mutableStateOf(false) }
+    val showRestartMazeDialog = { restartMazeDialogVisible = true }
+
     val categoriesByGameMode = remember(uiState.maze) {
         uiState.getAvailableCategoriesByGameMode()
     }
@@ -183,7 +188,7 @@ private fun MazePathScreen(
                             DropdownMenuItem(
                                 text = { Text(stringResource(id = CoreR.string.restart_maze)) },
                                 onClick = {
-                                    uiEvent(MazeScreenUiEvent.RestartMaze)
+                                    showRestartMazeDialog()
                                     moreOptionsExpanded = false
                                 },
                                 leadingIcon = {
@@ -227,7 +232,7 @@ private fun MazePathScreen(
                     InvalidCategoriesCard(
                         invalidQuestionsCount = invalidQuestions.size,
                         onRemoveClick = { uiEvent(MazeScreenUiEvent.RemoveInvalidCategories) },
-                        onRestartClick = { uiEvent(MazeScreenUiEvent.RestartMaze) },
+                        onRestartClick = showRestartMazeDialog,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
@@ -248,7 +253,7 @@ private fun MazePathScreen(
                                 end = spaceMedium,
                                 bottom = spaceMedium
                             ),
-                        onRestartClick = { uiEvent(MazeScreenUiEvent.RestartMaze) }
+                        onRestartClick = showRestartMazeDialog
                     )
                 }
             }
@@ -261,6 +266,35 @@ private fun MazePathScreen(
             categoriesByGameMode = categoriesByGameMode
         )
     }
+
+    if (restartMazeDialogVisible) {
+        RestartMazeDialog(
+            onDismissRequest = { restartMazeDialogVisible = false },
+            onConfirm = { uiEvent(MazeScreenUiEvent.RestartMaze) }
+        )
+    }
+}
+
+@Composable
+private fun RestartMazeDialog(
+    onDismissRequest: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        title = { Text(text = stringResource(CoreR.string.restart_maze)) },
+        text = { Text(text = stringResource(CoreR.string.restart_maze_dialog_description)) },
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(text = stringResource(CoreR.string.restart))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(text = stringResource(CoreR.string.cancel))
+            }
+        }
+    )
 }
 
 @Composable
