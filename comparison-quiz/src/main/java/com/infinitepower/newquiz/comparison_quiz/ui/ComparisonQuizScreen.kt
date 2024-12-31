@@ -103,10 +103,10 @@ fun ComparisonQuizScreen(
         }
     }
 
-    val mazeItemId = remember(navController.currentBackStackEntry) {
-        val backStackEntry = navController.currentBackStackEntry
-        val args = backStackEntry?.let(ComparisonQuizScreenDestination::argsFrom)
-        args?.mazeItemId
+    val mazeItemId = remember(navController) {
+        val backStackEntry = navController.getBackStackEntry(ComparisonQuizScreenDestination.route)
+        val args = ComparisonQuizScreenDestination.argsFrom(backStackEntry)
+        args.mazeItemId
     }
 
     ComparisonQuizScreenImpl(

@@ -99,9 +99,11 @@ fun WordleScreen(
 ) {
     val uiState by wordleScreenViewModel.uiState.collectAsStateWithLifecycle()
 
-    val backStackEntry = navController.currentBackStackEntry
-    val args = backStackEntry?.let { WordleScreenDestination.argsFrom(it) }
-    val mazeItemId = args?.mazeItemId?.toIntOrNull()
+    val mazeItemId = remember(navController) {
+        val backStackEntry = navController.getBackStackEntry(WordleScreenDestination.route)
+        val args = WordleScreenDestination.argsFrom(backStackEntry)
+        args.mazeItemId?.toIntOrNull()
+    }
 
     WordleScreenImpl(
         fromMaze = mazeItemId != null,

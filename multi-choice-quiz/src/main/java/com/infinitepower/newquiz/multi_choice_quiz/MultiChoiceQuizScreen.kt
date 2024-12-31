@@ -82,7 +82,7 @@ fun MultiChoiceQuizScreen(
 
     LaunchedEffect(uiState.isGameEnded) {
         if (uiState.isGameEnded) {
-            val backStackEntry = navController.currentBackStackEntry ?: return@LaunchedEffect
+            val backStackEntry = navController.getBackStackEntry(MultiChoiceQuizScreenDestination.route)
             val args = MultiChoiceQuizScreenDestination.argsFrom(backStackEntry)
 
             navigateToResultsScreen(
